@@ -1,0 +1,21 @@
+Fixes included in this updated jar file are as follows:
+
+1. Service package creation could fail when B390_AUTO_DELETE_DRIVER was
+   set to YES and no driver previously existed.
+2. gather_all could fail for TSO copies when filenames contain dollar
+   signs.  This fix is for gather.rexx, so to make use of the fix, you
+   will need to follow the installation instructions in the ODE Installation
+   and Administration Guide for MVS (running the MvsExecInstallation process).
+3. MVS job status check could throw a null exception.
+4. Service packaging could return a zero return code even when errors occur.
+5. Fix for USERMOD/UPD "ITEM ID NOT PROVIDED" problem.
+6. When sideDeckAppendDD is set to DUMMY, SMPDUMMY, or NULLFILE, the JCLIN
+   will use a simple "//SYSDEFSD DD DUMMY" line.
+7. Enable the ODE GUI on Windows XP.
+8. Added ability to pass the WORKPATH1 parameter to the CREATEDRIVER command
+   when creating a COPYSENT driver during Service Transfer.  The value comes
+   from the makefile variable or environment variable B390_WORKPATH1.
+   If the value is undefined, blank, or set to the internal default (/tmp),
+   the parameter is not passed to B/390 at all.  NOTE: the 20041004.0551
+   version of the rules_ebcdic.zip file is also required for this feature.
+9. Retrieval of a ++USERMOD should now work when PKG_TYPE=++USERMOD.

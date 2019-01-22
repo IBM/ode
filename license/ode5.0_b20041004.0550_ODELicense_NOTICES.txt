@@ -1,0 +1,161 @@
+NOTICES AND INFORMATION
+
+ODE is accompanied by IBM XML Parser for Java version 4.0.1 in binary form. The
+Apache 1.1 license applies to this product as follows:
+
+/*
+ * The Apache Software License, Version 1.1
+ *
+ *
+ * Copyright (c) 1999-2002 The Apache Software Foundation. All rights 
+ * reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer. 
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * 3. The end-user documentation included with the redistribution,
+ * if any, must include the following acknowledgment: 
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowledgment may appear in the software itself,
+ * if and wherever such third-party acknowledgments normally appear.
+ *
+ * 4. The names "Xerces" and "Apache Software Foundation" must
+ * not be used to endorse or promote products derived from this
+ * software without prior written permission. For written 
+ * permission, please contact apache@apache.org.
+ *
+ * 5. Products derived from this software may not be called "Apache",
+ * nor may "Apache" appear in their name, without prior written
+ * permission of the Apache Software Foundation.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by many
+ * individuals on behalf of the Apache Software Foundation and was
+ * originally based on software copyright (c) 1999, International
+ * Business Machines, Inc., http://www.ibm.com. For more
+ * information on the Apache Software Foundation, please see
+ * <http://www.apache.org/>.
+ */
+
+-----------------------------------------------
+
+ODE includes regex code in binary form under the terms and conditions of a
+license from Harry Spencer which requires reproduction of the following:
+
+/*- Copyright (c) 1994 The Regents of the University of California. All
+ *rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met: 1. Redistributions of source code must retain the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer. 2. Redistributions in binary form must reproduce the
+ * above copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided with
+ * the distribution. 3. All advertising materials mentioning features
+ * or use of this software must display the following acknowledgment:
+ * This product includes software developed by the University of
+ * California, Berkeley and its contributors. 4. Neither the name of
+ * the University nor the names of its contributors may be used to
+ * endorse or promote products derived from this software without
+ * specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS''
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @(#)COPYRIGHT 8.1 (Berkeley) 3/16/94
+ */
+
+-----------------------------------------------
+
+ODE includes utime code in binary form which is copyrighted as follows:
+
+/*
+ *************************************************************************
+ * *
+ * Copyright 2000 Compaq Computer Corporation *
+ * *
+ * COMPAQ Registered in U.S. Patent and Trademark Office. *
+ * *
+ *************************************************************************
+ * IMPORTANT: Carefully read the License Terms below before *
+ * proceeding. By use of these materials you agree to these terms. *
+ * If you do not agree to these terms, you may not use this software or *
+ * the accompanying documentation. *
+ *************************************************************************
+ * LICENSE TERMS *
+ * 1. GRANT *
+ * Compaq Computer Corporation ("COMPAQ") grants you the right to use, *
+ * modify, and distribute the following source code (the "Software") *
+ * on any number of computers. You may use the Software as part of *
+ * creating a software program or product intended for commercial or *
+ * non-commercial distribution in machine-readable source code, binary, *
+ * or executable formats. You may distribute the Software as *
+ * machine-readable source code provided this license is not removed *
+ * from the Software and any modifications are conspicuously indicated. *
+ * 2. COPYRIGHT *
+ * The Software is owned by COMPAQ and its suppliers and is protected by *
+ * copyright laws and international treaties. Your use of the Software *
+ * and associated documentation is subject to the applicable copyright *
+ * laws and the express rights and restrictions of these terms. *
+ * 3. RESTRICTIONS *
+ * You may not remove any copyright, trademark, or other proprietary *
+ * notices from the Software or the associated documentation. *
+ * You are responsible for compliance with all applicable export or *
+ * re-export control laws and regulations if you export the Software. *
+ * This license is governed by and is to be construed under the laws *
+ * of the State of Texas. *
+ * *
+ * DISCLAIMER OF WARRANTY AND LIABILITY *
+ * Compaq shall not be liable for technical or editorial errors or *
+ * omissions contained herein. The information contained herein is *
+ * subject to change without notice. *
+ * *
+ * THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. *
+ * THE ENTIRE RISK ARISING OUT OF THE USE OF THIS SOFTWARE REMAINS WITH *
+ * RECIPIENT. IN NO EVENT SHALL COMPAQ BE LIABLE FOR ANY DIRECT, *
+ * CONSEQUENTIAL, INCIDENTAL, SPECIAL, PUNITIVE OR OTHER DAMAGES *
+ * WHATSOEVER (INCLUDING WITHOUT LIMITATION DAMAGES FOR LOSS OF BUSINESS *
+ * PROFITS, BUSINESS INTERRUPTION, OR LOSS OF BUSINESS INFORMATION), *
+ * EVEN IF COMPAQ HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES *
+ * AND WHETHER IN AN ACTION OF CONTRACT OR TORT INCLUDING NEGLIGENCE. *
+ * *
+ * If you have any questions concerning this license, please contact: *
+ * Compaq Computer Corporation, Software Business Practices, ZKO1-2/D22, *
+ * 110 Spit Brook Road, Nashua, NH. 03062-2698. *
+ * *
+ *************************************************************************
+ */
+ 

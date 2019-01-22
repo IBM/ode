@@ -1,0 +1,7 @@
+Fixes included in this updated zip file are as follows:
+
+1. Added the B390_WORKPATH1 variable to the list of parameters sent
+   to the Service Transfer and Service Packaging processes.  This affects
+   only the pkg.runpkgtool.mk file, which adds this parameter to the calls
+   to the RunMvsInitSvc and RunMvsSvc classes.  These variables are only
+   utilized by build 20041004.0558 and higher of tools.jar.

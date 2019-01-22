@@ -1,0 +1,6 @@
+Changes included in this updated zip file are as follows:
+
+1. Added support for HP/OSS (running on both H-series Intel Itanium and
+   S-series MIPS machines).  If you do not need to use ODE on this platform,
+   you do NOT need this update.  The ODE tools for these machines are
+   located in the ia64_hposs_6.tar.Z and mips_hposs_6.tar.Z archives.

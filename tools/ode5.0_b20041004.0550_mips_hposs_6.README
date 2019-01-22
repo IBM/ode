@@ -1,0 +1,6 @@
+This is the ODE tools for the TNS/R S-series HP/OSS platform (MIPS chipset).
+
+To install, simply uncompress and untar the .tar.Z file to a directory of
+your choice, and set both PATH and _RLD_LIB_PATH variables to that dir.
+
+Note: you will need to use the 0551 version of rules.zip with these tools.
