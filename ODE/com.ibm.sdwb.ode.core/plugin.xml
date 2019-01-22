@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="com.ibm.sdwb.ode.core"
+   name="ODE Plug-in"
+   version="5.3.0.3"
+   provider-name="IBM"
+   class="com.ibm.sdwb.ode.core.ODECorePlugin">
+<requires>
+   <import plugin="org.eclipse.ui"/>
+   <import plugin="org.eclipse.core.runtime"/>
+   <import plugin="org.eclipse.core.resources"/>
+   <import plugin="org.eclipse.jdt.core"/>
+   <import plugin="org.eclipse.cdt.core"/>
+   <import plugin="org.eclipse.ui.console"/>
+</requires>
+
+<runtime>
+   <library name="ODECorePlugin.jar">
+     <export name="*"/>
+   </library>
+</runtime>
+
+<extension
+      point="org.eclipse.ui.popupMenus">
+   <objectContribution
+         objectClass="org.eclipse.core.resources.IProject"
+         id="com.ibm.sdwb.ode.core.ODEProjObj"
+         adaptable="true">
+      <menu
+            label="&amp;ODE"
+            path="additions"
+            id="com.ibm.sdwb.ode.core.ODEProjPopMenu">
+         <separator
+               name="features">
+         </separator>
+         <groupMarker name="additions"/>
+      </menu>
+      <action
+            label="&amp;Sandbox File Listing"
+            class="com.ibm.sdwb.ode.core.ODESblsAction"
+            menubarPath="com.ibm.sdwb.ode.core.ODEProjPopMenu/features"
+            enablesFor="1"
+            id="com.ibm.sdwb.ode.core.ODEProjMenuAct1">
+      </action>
+      <action
+            label="&amp;Generate Makefiles"
+            class="com.ibm.sdwb.ode.core.ODEMakefileGenerator"
+            menubarPath="com.ibm.sdwb.ode.core.ODEProjPopMenu/features"
+            enablesFor="1"
+            id="com.ibm.sdwb.ode.core.ODEProjMenuAct2">
+      </action>
+      <visibility>
+         <objectState
+               name="projectNature"
+               value="com.ibm.sdwb.ode.core.ODEProjectNature"/>
+      </visibility>
+      <action
+            class="com.ibm.sdwb.ode.core.RemoveProjNatureActionDelegate"
+            enablesFor="+"
+            id="com.ibm.sdwb.ode.core.removeODEProjNature"
+            label="Remove ODE Builder"
+            menubarPath="com.ibm.sdwb.ode.core.ODEProjPopMenu/additions"
+            tooltip="Removes the ODE builder from the selected project(s)"/>
+   </objectContribution>
+   <objectContribution
+         adaptable="true"
+         id="com.ibm.sdwb.ode.core.ODEProjObj"
+         objectClass="org.eclipse.core.resources.IProject">
+      <action
+            class="com.ibm.sdwb.ode.core.AddProjNatureActionDelegate"
+            enablesFor="+"
+            id="com.ibm.sdwb.ode.core.addODEProjNature"
+            label="Convert to ODE Project(s)"
+            menubarPath="additions"
+            tooltip="Configures the selected project(s) to use the ODE Builder">
+         <enablement>
+            <or>
+               <objectState
+                     name="projectNature"
+                     value="org.eclipse.cdt.core.cnature"/>
+               <objectState
+                     name="projectNature"
+                     value="org.eclipse.cdt.core.ccnature"/>
+               <objectState
+                     name="projectNature"
+                     value="org.eclipse.jdt.core.javanature"/>
+            </or>
+         </enablement>
+      </action>
+      <visibility>
+         <not>
+            <objectState
+                  name="projectNature"
+                  value="com.ibm.sdwb.ode.core.ODEProjectNature"/>
+         </not>
+      </visibility>
+   </objectContribution>
+</extension>
+
+<extension
+      point="org.eclipse.ui.popupMenus">
+   <objectContribution
+         objectClass="org.eclipse.core.resources.IFolder"
+         id="com.ibm.sdwb.ode.core.ODEFoldObj"
+         adaptable="true">
+      <menu
+            label="&amp;ODE"
+            path="additions"
+            id="com.ibm.sdwb.ode.core.ODEFoldPopMenu">
+         <separator
+               name="group1">
+         </separator>
+      </menu>
+      <action
+            label="&amp;Build Tree"
+            class="com.ibm.sdwb.ode.core.ODEBuilder"
+            menubarPath="com.ibm.sdwb.ode.core.ODEFoldPopMenu/group1"
+            enablesFor="1"
+            id="com.ibm.sdwb.ode.core.ODEFoldMenuAct1">
+      </action>
+      <action
+            label="&amp;Sandbox File Listing"
+            class="com.ibm.sdwb.ode.core.ODESblsAction"
+            menubarPath="com.ibm.sdwb.ode.core.ODEFoldPopMenu/group1"
+            enablesFor="1"
+            id="com.ibm.sdwb.ode.core.ODEFoldMenuAct2">
+      </action>
+       <action
+            label="&amp;Generate Makefiles"
+            class="com.ibm.sdwb.ode.core.ODEMakefileGenerator"
+            menubarPath="com.ibm.sdwb.ode.core.ODEFoldPopMenu/group1"
+            enablesFor="1"
+            id="com.ibm.sdwb.ode.core.ODEFoldMenuAct3">
+      </action>
+       <visibility>
+          <objectState
+                name="projectNature"
+                value="com.ibm.sdwb.ode.core.ODEProjectNature"/>
+       </visibility>
+   </objectContribution>
+</extension>
+
+<extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="ODE"
+            class="com.ibm.sdwb.ode.core.ODEPreferencePage"
+            id="com.ibm.sdwb.ode.core.ODEPreferencePage">
+      </page>
+</extension>
+
+<extension
+      point="org.eclipse.ui.propertyPages">
+   <page
+         objectClass="org.eclipse.core.resources.IProject"
+         adaptable="true"
+         name="ODE"
+         class="com.ibm.sdwb.ode.core.ODEPropertyPage"
+         id="com.ibm.sdwb.ode.core.ODEPropertyPage">
+    </page>
+</extension>
+<extension
+      id="odeBuilder"
+      name="ODE Incremental Builder"
+      point="org.eclipse.core.resources.builders">
+   <builder
+         hasNature="true"
+         isConfigurable="true">
+      <run class="com.ibm.sdwb.ode.core.ODEBuilder">
+      </run>
+   </builder>
+</extension>
+<extension
+      id="ODEProjectNature"
+      name="ODE Project Nature"
+      point="org.eclipse.core.resources.natures">
+   <builder id="com.ibm.sdwb.ode.core.odeBuilder"/>
+   <runtime>
+      <run class="com.ibm.sdwb.ode.core.ODENature"/>
+   </runtime>
+</extension>
+<extension
+      id="errorMarker"
+      name="ODE Build Error Marker"
+      point="org.eclipse.core.resources.markers">
+   <persistent value="true"/>
+   <super type="org.eclipse.core.resources.problemmarker"/>
+</extension>
+
+</plugin>

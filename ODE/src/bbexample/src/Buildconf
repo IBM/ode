@@ -1,0 +1,65 @@
+################################################################################
+#
+# Buildconf
+#
+# This file is expanded only for the backing build level of the backing chain.
+# The sandbox_base variable will therefore represent the backing build for
+# this file's processing.
+#
+################################################################################
+
+# For UNIX systems a path separator is a colon ':' and a directory
+# separator is a forward slash '/'.
+#
+replace setenv PATHSEP :
+replace setenv DIRSEP  /
+replace setenv CMDSEP  &&
+
+# For non-UNIX systems a path separator is a semi-colon ';' and
+# a directory separator is a backwards slash '\\'.
+#
+#
+# The comments on the DIRSEP lines are to prevent the backslash
+# from being treated as a continuation character.  This is preferable
+# to using double backslashes, since the old version of ODE didn't
+# treat them as escape chars.
+#
+on x86_os2_4 replace setenv PATHSEP ;
+on x86_os2_4 replace setenv DIRSEP  \    # don't remove this comment
+on x86_nt_4  replace setenv PATHSEP ;
+on x86_nt_4  replace setenv DIRSEP  \     # don't remove this comment
+on x86_nt_5  replace setenv PATHSEP ;
+on x86_nt_5  replace setenv DIRSEP  \     # don't remove this comment
+on x86_95_4  replace setenv PATHSEP ;
+on x86_95_4  replace setenv DIRSEP  \     # don't remove this comment
+
+# COMMAND.COM doesn't use the ampersand as a command separator.
+# Use a pipe symbol instead.  Users should override CMDSEP
+# if they use a better shell, such as 4DOS.COM.
+on x86_95_4  replace setenv CMDSEP  |
+
+# disable jit compiler on MVS/OE:
+#
+on mvs390_oe_2 replace setenv JAVA_COMPILER ""
+
+# Set the maximum number of jobs 'mk' can run in parallel.
+#
+setenv NPROC 8
+
+# Windows 95/98 and OpenVMS don't always process multiple jobs nicely.
+on x86_95_4  replace setenv NPROC 1
+on alpha_openvms_7 replace setenv NPROC 1
+
+# Misc variables
+#
+replace source_base ${sandbox_base}${DIRSEP}${ODESRCNAME}
+
+replace setenv OBJECTDIR ..${DIRSEP}obj${DIRSEP}${CONTEXT}
+replace setenv EXPORTDIR ..${DIRSEP}export${DIRSEP}${CONTEXT}
+replace setenv MAKESYSPATH ${source_base}${DIRSEP}rules_mk
+
+# Chain the CLASSPATH variable so we can build and run Java in a sandbox.
+# Use the source base first in case Jikes is used.
+#
+replace setenv CLASSPATH ${source_base}${PATHSEP}${sandbox_base}${DIRSEP}export${DIRSEP}classes${PATHSEP}${CLASSPATH}${PATHSEP}
+

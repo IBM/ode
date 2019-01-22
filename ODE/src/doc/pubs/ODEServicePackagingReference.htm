@@ -1,0 +1,109 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="updated" content="Tue, 17 Mar 1998 11:52:28">
+   <meta http-equiv="review" content="Wed, 17 Mar 1999 11:52:28">
+   <meta http-equiv="expires" content="Fri, 17 Mar 2000 11:52:28">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <meta name="Author" content="Chad Holliday">
+   <title>ODE Service Packaging Reference</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+<img SRC="bannerx.gif" ALT="IBM Books" BORDER=0 height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+ODE Service Packaging Reference</h1>
+Open Development Environment
+<br>Service Packaging Reference
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<p>
+<hr>
+<h2>
+<a NAME="ToC"></a>Table of Contents</h2>
+<a NAME="ToC_2"></a><b><a href="#HDRINTRO">Introduction</a></b>
+<p><a NAME="ToC_service"></a><b><a href="#service">Service Packaging with
+ODE</a></b>
+<blockquote>
+<li>
+<a NAME="ToC_sp_overview"></a><b><a href="#sp_overview">Overview</a></b></li>
+
+<li>
+<a NAME="TOC_FixStrat"></a><b><a href="#FixStrat">Fix Strategies</a></b></li>
+</blockquote>
+<b>Service Packaging Implementations by Platform</b>
+<ul>
+<li>
+<b><a href="SolarisServicePackagingReference.htm">Solaris Service Packaging
+User's Guide</a></b></li>
+
+<br>&nbsp;
+<li>
+<b><a href="HPServicePackagingReference.htm">HP-UX Service Packaging User's
+Guide</a></b></li>
+</ul>
+
+<ul>
+<li>
+<b><a href="RPMServicePackagingReference.htm">RPM Service Packaging User's
+Guide</a></b></li>
+
+<br>&nbsp;
+<li>
+<b><a href="ode390_service_config.htm">ODE 390 Service Packaging Configuration</a></b></li>
+
+<li>
+<b><a href="ode390_service_scenario.htm">ODE 390 Service Packaging Scenarios</a></b></li>
+
+<li>
+<b><a href="ode390_service_users.htm">ODE 390 Service User's Guide</a></b></li>
+</ul>
+
+<hr WIDTH="100%">
+<h1>
+<a NAME="HDRINTRO"></a><a href="#ToC_2">Introduction</a></h1>
+The IBM Open Development Environment (ODE) provides a method for developers
+to prepare service packages for installation against existing product installations.
+<p>
+<hr SIZE=0 WIDTH="100%">
+<h1>
+<a NAME="service"></a><a href="#ToC_service">Service Packaging with ODE</a></h1>
+
+<h3>
+<a NAME="sp_overview"></a><b><a href="#ToC_sp_overview">Overview</a></b></h3>
+ODE supports two main types of packaging; initial product packaging (IPP)
+and service packaging.&nbsp; IPP is a full and complete package, containing
+the entire contents of a product.&nbsp; Service packaging is generally
+a partial, or incremental set of files used to update or refresh an existing
+software installation.&nbsp; The most important difference between initial
+product packaging and service packaging is that not all parts are necessarily
+included in a service package.&nbsp; This section of will discuss some
+of the features of service packaging.
+<h3>
+<a NAME="FixStrat"></a><a href="#TOC_FixStrat">Fix Strategies</a></h3>
+The determination and collection of the shippable parts is required for
+service packaging. What parts should be collected is determined by interrogating
+the fix strategy. There are currently two fix strategies that are supported
+by ODE:
+<p>&nbsp;&nbsp;&nbsp;&nbsp; <b>refresh</b> - the whole product is shipped
+for service
+<br>&nbsp;&nbsp;&nbsp;&nbsp; <b>cumulative</b> - the parts changed for
+this build, plus any parts changed in previous builds, up to, but not including
+the original product shipment, are included in the service package (cumulative
+has two types - fix and maintenance)
+<p>The fix strategy chosen has interesting implications for the complexity
+and size of the installable packages to be produced. For example, a refresh
+strategy implies the complete superseding of a previously shipped package,
+resulting in a package that is the same size as the original product shipment.&nbsp;
+The cumulative strategy implies a forced supersede, but a smaller installable
+package than the original product. A product will most likely select a
+fix strategy and stick with it for the life of the product; however, there
+are some platforms which alternate between fix and maintenance type cumulative
+fix strategies. This allows the product owner to "clean up" a serviceable
+entity if its cumulative package becomes as large as the initial product
+package, and start the service stream over again.
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+</body>
+</html>

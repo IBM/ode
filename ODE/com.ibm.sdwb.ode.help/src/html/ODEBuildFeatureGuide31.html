@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<title>ODE Build Feature properties</title>
+<!-- All rights reserved. Licensed Materials Property of IBM -->
+<!-- US Government Users Restricted Rights                   -->
+<!-- Use, duplication or disclosure restricted by            -->
+<!-- GSA ADP Schedule Contract with IBM Corp.                -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="dc.date" scheme="iso8601" content="2003-09-23" />
+<meta name="copyright" content="(C) Copyright IBM Corporation 2003" />
+<meta name="security" content="" />
+<meta name="dc.language" scheme="rfc1766" content="en-us" />
+<meta name="Robots" content="index,follow"/>
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<meta name="keywords" content="project properties, ODE feature,
+setting ODE project properties, general project properties,
+build flags project properties, build flags properties,
+other build project properties, other build properties,
+makefile generation project properties, makefile generation properties" />
+<link rel="stylesheet" type="text/css" href="ibmidwb.css" />
+<link rel="stylesheet" type="text/css" href="help.css" />
+</head>
+<body>
+<a id="Top_Of_Page" name="Top_Of_Page"></a>
+<a name="gphead4"></a>
+<h3 id="gphead4">ODE Build Feature properties</h3>
+<p><a id="idx41" name="idx41"></a><a id="idx42" name="idx42"></a>To set
+the ODE project properties:</p>
+<ol type="1">
+<li>Right-click on an ODE project in the Navigator view.</li>
+<li>Click <span class="bold">Properties</span>. 
+<a name="wq36"></a>
+<div class="fignone" id="wq36"><span class="figcap"><a href="ODEBuildFeatureGuide03.html#FT_Figure_12">Figure 12. Setting ODE project properties</a></span>
+<div class="mmobj">
+<img src="odeproperties.gif" alt="Selecting ODE properties menu item" /></div></div></li>
+<li>Select ODE from the list of possible properties.</li></ol>
+<p><a href="ODEBuildFeatureGuide31.html#rgetstart1011328">Figure 13</a> shows the General section of
+the ODE properties window and tabbed sections for other properties. To select
+another section, click on the desired tab.</p>
+<a name="rgetstart1011328"></a>
+<div class="fignone" id="rgetstart1011328"><span class="figcap"><a href="ODEBuildFeatureGuide03.html#FT_Figure_13">Figure 13. General properties for ODE</a></span>
+<div class="mmobj">
+<img src="props.gif" alt="General properties for ODE" /></div></div>
+<p><a id="idx43" name="idx43"></a><a id="idx44" name="idx44"></a><a href="ODEBuildFeatureGuide31.html#rgetstart1011731">Table 3</a> describes each field in the General
+section of the ODE project properties window:</p>
+<a name="rgetstart1011731"></a>
+<table id="rgetstart1011731" width="100%" summary="" border="1" frame="border" rules="all">
+<caption><a href="ODEBuildFeatureGuide04.html#FT_Table_3">Table 3. General project properties: ODE Build Feature</a></caption>
+<thead valign="bottom">
+<tr>
+<th id="wq37" width="22%" align="left">Option</th>
+<th id="wq38" width="11%" align="left">Required</th>
+<th id="wq39" width="33%" align="left">Description</th>
+<th id="wq40" width="33%" align="left">Default</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td headers="wq37">Sandbox name</td>
+<td headers="wq38">Yes</td>
+<td headers="wq39">Specifies the name for a sandbox that will be created by
+the  <span class="bold">ODE > Build Project</span> action.</td>
+<td headers="wq40">project name</td>
+</tr>
+<tr>
+<td headers="wq37">Project is a component of the sandbox</td>
+<td headers="wq38">No</td>
+<td headers="wq39">This check box is used to specify if the project corresponds
+to a subdirectory in the source tree of an existing sandbox.&nbsp; This should
+not be used if you are new to ODE. See <a href="ODEBuildFeatureGuide31.html#addtinfo">additional information</a>.</td>
+<td headers="wq40">Off</td>
+</tr>
+<tr>
+<td headers="wq37">Component name</td>
+<td headers="wq38">No</td>
+<td headers="wq39">Specifies the path to the subdirectory of the sandbox relative
+to the source directory of an existing sandbox. This field is enabled only
+if the <span class="bold">Project is a component of the sandbox check</span> box
+is selected. See <a href="ODEBuildFeatureGuide31.html#addtinfo">additional information</a>.</td>
+<td headers="wq40">none</td>
+</tr>
+<tr>
+<td headers="wq37">Backing build path</td>
+<td headers="wq38">Yes</td>
+<td headers="wq39">Specifies the path to a backing build.</td>
+<td headers="wq40">C:\ode\mybb on Windows 
+<br />/ode/mybb
+on Unix</td>
+</tr>
+<tr>
+<td headers="wq37">Sandbox RC pathname</td>
+<td headers="wq38">No</td>
+<td headers="wq39">Specifies the path to the sandbox configuration file. Specifying
+no value in this field is equivalent to specifying  <span class="italic">%HOME%\.sandboxrc</span>.</td>
+<td headers="wq40">&lt;project directory>\.sandboxrc</td>
+</tr>
+<tr>
+<td headers="wq37">Jar file name</td>
+<td headers="wq38">No</td>
+<td headers="wq39">Specifies the name of the jar file created by the <span class="bold">ODE > Build Project</span> action. This jar file will contain all the class
+files in the output directory. The value of this field is also used by the <span class="bold">ODE > Generate Makefiles</span> action to generate <span class="bold">JAR_LIBRARIES</span> makefile variable in the top level makefile.</td>
+<td headers="wq40">none</td>
+</tr>
+<tr>
+<td headers="wq37">Log file for the Build output</td>
+<td headers="wq38">No</td>
+<td headers="wq39">Specifies the path to the ODE build output file. This file
+will contain the output of the last build command. The output of the previous
+build command is stored in the .prev file at the same location. If this field
+is empty, then a log file is not generated.</td>
+<td headers="wq40">none</td>
+</tr>
+</tbody>
+</table>
+<a name="addtinfo"></a>
+<p id="addtinfo"><span class="bold">Additional
+information on component options:</span></p>
+<p>Selecting the <span class="bold">Project is a component of the sandbox</span> option
+indicates that your project is a single subdirectory tree of an existing sandbox,
+rather than an entire sandbox. This is typically the case when the directories
+in <span class="italic">src</span> are subprojects, and you are working in a single
+subproject. For example, if your ODE sandbox contains subdirectories under <span class="italic">src</span> called <span class="italic">project1</span> and <span class="italic">project2</span>, and your project only includes the files in <span class="italic">project1</span>, you can select the checkbox and type <span class="italic">project1</span> in the <span class="bold">Component name</span> field.  With this option
+selected, all project-level ODE builds and sandbox file listings apply to <span class="italic">src/project1</span> rather than <span class="italic">src</span>.
+The component name field contains only one directory, but the path to that
+directory may be of any depth (for example, <span class="italic">com/ibm/myproject</span>).</p>
+<p>The Build Flags section of the ODE project properties window is shown in <a href="ODEBuildFeatureGuide31.html#rgetstart1012565">Figure 14</a>: </p>
+<a name="rgetstart1012565"></a>
+<div class="fignone" id="rgetstart1012565"><span class="figcap"><a href="ODEBuildFeatureGuide03.html#FT_Figure_14">Figure 14. Build Flags properties for ODE</a></span>
+<div class="mmobj">
+<img src="build_flags.gif" alt="Build flags properties window" /></div></div>
+<p><a id="idx45" name="idx45"></a><a id="idx46" name="idx46"></a><a href="ODEBuildFeatureGuide31.html#rgetstart1012209">Table 4</a> describes each field in the Build Flags
+section of the ODE project properties window:</p>
+<a name="rgetstart1012209"></a>
+<table id="rgetstart1012209" width="100%" summary="" border="1" frame="border" rules="all">
+<caption><a href="ODEBuildFeatureGuide04.html#FT_Table_4">Table 4. Build Flags project properties: ODE Build Feature</a></caption>
+<thead valign="bottom">
+<tr>
+<th id="wq41" width="20%" align="left">Option</th>
+<th id="wq42" width="14%" align="left">Required</th>
+<th id="wq43" width="33%" align="left">Description</th>
+<th id="wq44" width="33%" align="left">Default</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td headers="wq41">CONTEXT</td>
+<td headers="wq42">No</td>
+<td headers="wq43">Permits the user to specify the -m flag argument on the <span class="italic">build</span> command.&nbsp; This becomes the value of the environment
+variable CONTEXT during the build session.</td>
+<td headers="wq44">none</td>
+</tr>
+<tr>
+<td headers="wq41"># of concurrent jobs</td>
+<td headers="wq42">No</td>
+<td headers="wq43">Contains the argument for the -j flag.&nbsp; This specifies
+the number of concurrent jobs that can execute for each directory.</td>
+<td headers="wq44">none</td>
+</tr>
+<tr>
+<td headers="wq41">Ignore errors</td>
+<td headers="wq42">No</td>
+<td headers="wq43">Activates the -i flag, which causes all errors that mk
+encounters from spawned commands to be ignored.</td>
+<td headers="wq44">Off</td>
+</tr>
+<tr>
+<td headers="wq41">Forced rebuild</td>
+<td headers="wq42">No</td>
+<td headers="wq43">Turns on the -a flag, which causes all targets to be recreated,
+even if they are up-to-date.</td>
+<td headers="wq44">Off</td>
+</tr>
+<tr>
+<td headers="wq41">Do not build</td>
+<td headers="wq42">No</td>
+<td headers="wq43">Enables the -n flag, which causes mk to display the commands
+on the screen. No build is performed.</td>
+<td headers="wq44">Off</td>
+</tr>
+<tr>
+<td headers="wq41">Space indent</td>
+<td headers="wq42">No</td>
+<td headers="wq43">Activates the -w flag, which allows ordinary white space
+to be used in makefiles to indent commands (hard tabs are required by default).</td>
+<td headers="wq44">Off</td>
+</tr>
+<tr>
+<td headers="wq41">Debugging options</td>
+<td headers="wq42">No</td>
+<td headers="wq43">Enables various debugging options.  Refer to the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEMakeReference.htm" target="_blank">ODE Make Reference</a> for details.</td>
+<td headers="wq44">none</td>
+</tr>
+</tbody>
+</table>
+<p>The Other Build Options section of the ODE project properties window is
+shown in <a href="ODEBuildFeatureGuide31.html#rgetstart1012911">Figure 15</a>: </p>
+<a name="rgetstart1012911"></a>
+<div class="fignone" id="rgetstart1012911"><span class="figcap"><a href="ODEBuildFeatureGuide03.html#FT_Figure_15">Figure 15. Other Build Options properties for ODE</a></span>
+<div class="mmobj">
+<img src="other_build.gif" alt="Other build properties window" /></div></div>
+<p><a id="idx47" name="idx47"></a><a id="idx48" name="idx48"></a><a href="ODEBuildFeatureGuide31.html#rgetstart1013066">Table 5</a> describes each field in the Other Build
+Options section of the ODE project properties window:</p>
+<a name="rgetstart1013066"></a>
+<table id="rgetstart1013066" width="100%" summary="" border="1" frame="border" rules="all">
+<caption><a href="ODEBuildFeatureGuide04.html#FT_Table_5">Table 5. Other Build Options project properties: ODE Build Feature</a></caption>
+<thead valign="bottom">
+<tr>
+<th id="wq45" width="22%" align="left">Option</th>
+<th id="wq46" width="11%" align="left">Required</th>
+<th id="wq47" width="33%" align="left">Description</th>
+<th id="wq48" width="33%" align="left">Default</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td headers="wq45">Primary Target(s)</td>
+<td headers="wq46">No</td>
+<td headers="wq47">Allows the user to select one or more main ODE targets
+to run.&nbsp;build_all is the default target.&nbsp; If more than one target
+is selected, the order is always as follows: clobber_all, build_all, and 
+package_all.</td>
+<td headers="wq48">build_all</td>
+</tr>
+<tr>
+<td headers="wq45">Pass</td>
+<td headers="wq46">No</td>
+<td headers="wq47">Allows a particular ODE pass to be run.&nbsp; The default
+is for all of the individual passes shown to be run.</td>
+<td headers="wq48">all passes</td>
+</tr>
+<tr>
+<td headers="wq45">Other build/mk arguments</td>
+<td headers="wq46">No</td>
+<td headers="wq47">Specifies any other command line options for the ODE <span class="italic">build</span> and/or <span class="italic">mk</span> commands. Refer
+to the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEMakeReference.htm" target="_blank">ODE Make Reference</a> for
+a full list of valid parameters that can be passed to the ODE <span class="italic">mk</span> command.</td>
+<td headers="wq48">none</td>
+</tr>
+</tbody>
+</table>
+<p>To learn more about the ODE build and mk commands, refer to
+the <a href="http://w3.sdwb.ibm.com/ode/documentation.html" target="_blank">ODE Documentation Web page</a>.
+Consult the following reference documents: </p>
+<ul>
+<li>build command: <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEBuildReference.htm" target="_blank">ODE Build Reference</a></li>
+<li>mk command: <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEMakeReference.htm" target="_blank">ODE Make Reference</a></li></ul>
+<p>The Makefile Generation section of the ODE project properties window is
+shown in <a href="ODEBuildFeatureGuide31.html#rgetstart1013476">Figure 16</a>: </p>
+<a name="rgetstart1013476"></a>
+<div class="fignone" id="rgetstart1013476"><span class="figcap"><a href="ODEBuildFeatureGuide03.html#FT_Figure_16">Figure 16. Makefile Generation properties for ODE</a></span>
+<div class="mmobj">
+<img src="makefile.gif" alt="Makefile generation properties window" /></div></div>
+<p><a id="idx49" name="idx49"></a><a id="idx50" name="idx50"></a><a href="ODEBuildFeatureGuide31.html#rgetstart1013653">Table 6</a> describes each
+field in the Makefile Generation section of the ODE project properties window:</p>
+<a name="rgetstart1013653"></a>
+<table id="rgetstart1013653" width="100%" summary="" border="1" frame="border" rules="all">
+<caption><a href="ODEBuildFeatureGuide04.html#FT_Table_6">Table 6. Makefile Generation project properties: ODE Build Feature</a></caption>
+<thead valign="bottom">
+<tr>
+<th id="wq50" width="30%" align="left">Option</th>
+<th id="wq51" width="12%" align="left">Required</th>
+<th id="wq52" width="33%" align="left">Description</th>
+<th id="wq53" width="25%" align="left">Default</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td headers="wq50">Compile Java files</td>
+<td headers="wq51">No</td>
+<td headers="wq52">Causes a JAVA_CLASSES variable to be created in each makefile,
+which contains a list of all the .java files in the packages corresponding
+to each directory.</td>
+<td headers="wq53">none</td>
+</tr>
+<tr>
+<td headers="wq50">Create Jar libraries</td>
+<td headers="wq51">No</td>
+<td headers="wq52">Creates a JAR_LIBRARIES entry in the makefile so the entire
+Java build output tree will be put into a jar file.</td>
+<td headers="wq53">none</td>
+</tr>
+<tr>
+<td headers="wq50">Create Java docs</td>
+<td headers="wq51">No</td>
+<td headers="wq52">Causes the JAVADOCS variable to be created in order to
+run the javadoc command so that Java documentation is generated.</td>
+<td headers="wq53">none</td>
+</tr>
+<tr>
+<td headers="wq50">Run JAVADOC after compiling java files</td>
+<td headers="wq51">No</td>
+<td headers="wq52">Allows the user to override the default time during which
+ODE creates Java documentation.&nbsp; Normally, it is run first, before the
+EXPINC/JAVAH pass.&nbsp;Selecting this checkbox will cause the documentation
+to be generated after the OBJECTS/JAVAC pass.&nbsp;Many users wish to ensure
+their source code compiles fully before generating documentation, and this
+is how to enable that behavior.</td>
+<td headers="wq53">none</td>
+</tr>
+<tr>
+<td headers="wq50">Compile C/C++ files</td>
+<td headers="wq51">No</td>
+<td headers="wq52">Causes an OBJECTS variable to be created in each directory
+which contains all C/C++ source files (.c, .cpp, etc.) in that directory.&nbsp;This
+will trigger the files to be compiled during the build.&nbsp;Users must edit
+the makefiles they wish in order to take action beyond object file creation,
+such as creating programs or libraries (with the PROGRAMS, LIBRARIES, and/or
+SHARED_LIBRARIES variables).</td>
+<td headers="wq53">none</td>
+</tr>
+<tr>
+<td headers="wq50">Export C/C++ header files</td>
+<td headers="wq51">No</td>
+<td headers="wq52">Creates an INCLUDES variable in each directory that contains
+a list of all header files (.h, etc.) in that directory, along with a default
+export location.</td>
+<td headers="wq53">none</td>
+</tr>
+</tbody>
+</table>
+<a id="Bot_Of_Page" name="Bot_Of_Page"></a>
+</body>
+</html>

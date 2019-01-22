@@ -1,0 +1,40 @@
+InstallEntity {
+ent1:
+EntityInfo {
+        entityName = "tdirpkg";
+        entityId = "tdirpkg";
+        fullEntityName = ["tdirpkg"];
+        description = "test";
+        version = '1';
+        versionDate = "1234";
+        release = '1';
+        copyright = < ./crap.txt >;
+    }
+LinkInfo {
+        parent = NULL;
+        immChildFiles = [ < ./tfile > ];
+    }
+MvsInfo {
+         applid = 'tester';
+         srel = 'z038';
+         delete = "abcd123";
+         fesn = '1234567';
+         type = [ 'ipp' ];
+         distlibs = [ "crap,5,6" ];
+    }
+}
+
+file {
+         partNum           = '1';
+         fileType          = 'mod' ;
+         sourceFile        = "tfile";
+         targetFile        = "tfile";
+         sourceDir         = "." ;
+         targetDir         = "." ;
+         permissions       = "755";
+         userId            = "test";
+         groupId           = "test";
+         comp              = '1234';
+         shipType          = [ 'ipp' ];
+        
+    }

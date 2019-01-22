@@ -1,0 +1,51 @@
+InstallEntity {
+ent1:
+EntityInfo {
+        entityName = "tdirpkg";
+        fullEntityName = ["tdirpkg"];
+        description = "test";
+        imageName = "td";
+        version = '1';
+        release = '1';
+        maintLevel = '0';
+        fixLevel = '0';
+        category = 'application';
+    }
+LinkInfo {
+        immChildEntities = [ "tfilepkg" ];
+        parent = NULL;
+}
+ArchitectureInfo {
+         machineType = "R";
+}
+}
+
+InstallEntity {
+ent1:
+EntityInfo {
+        entityName = "tfilepkg";
+        entityId   = "tfilepkg";
+        description = "test";
+        version = '1';
+        release = '1';
+        maintLevel = '0';
+        fixLevel = '0';
+    }
+LinkInfo {
+        parent = "tdirpkg";
+        immChildFiles = [
+                          < ./tfile > ];
+}
+InstallStatesInfo {
+         bootReqmt = 'n';
+}
+
+}
+
+file {
+         fileType          = 'F' ;
+         sourceFile        = "tfile";
+         targetFile        = "tfile";
+         sourceDir         = "." ;
+         targetDir         = "." ;
+      }

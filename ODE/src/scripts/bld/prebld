@@ -1,0 +1,75 @@
+#!/bin/ksh -e
+# prebld:
+#   - Maps Release, Level and Build Date information
+#   - Removes .gone files
+#   - This script is intended to run after a Level extract and
+#     before the source is copied or built
+#
+if [ !(($# = 2) || ($# = 3)) ]; then
+  echo "Usage:   prebld <release> <build name> [<directory>]"
+  echo "Example: prebld i2.3 15 /ode/test/sspeiche/sbox/test/src/doc/pubs"
+  echo " This script is intended to run after a Level extract and "
+  echo "    before the source is copied or built"
+  echo " When used with the optional <directory> parameter, "
+  echo "    files from that directory will be processed instead of"
+  echo "    files in the VerRel.lst file."
+  exit 1
+fi
+
+_basedir=/ode/build
+_releasenum=$1
+_levelname=$2
+_releasename=ODE$_releasenum
+_releasenamelower=ode$_releasenum
+_buildbasedir=$_basedir/${_releasenum}/${_levelname}/src
+
+# Main processing for versions and release
+_filelist=${_buildbasedir}/scripts/bld/VerRel.lst
+
+_levelkey=%LEVEL_NAME%
+_releasenumkey=%RELEASE_NUM%
+_releasekey=%RELEASE_NAME%
+_releasekeylower=%release_name%
+_datekey=%BUILD_DATE%
+_pluginver=%PLUGIN_VER%
+
+_month=`date +%m`
+_monthname=`date +%b`
+_day=`date +%d`
+_hour=`date +%H`
+_min=`date +%M`
+_year=`date +%Y`
+_cent=`date +%C`
+_now=${_day}-${_monthname}-${_year}
+_plugver=0.9.${_year}${_month}${_day}.${_hour}${_min}
+
+if [ $# -lt 3 ]; then
+  _files=`cat $_filelist`
+  _allfiles=`cd $_buildbasedir && ls $_files`
+else
+  _buildbasedir=$3
+  _allfiles=`cd $_buildbasedir && ls *`
+fi
+for _file in $_allfiles; do
+  _filename=$_buildbasedir/$_file
+  echo Processing $_filename
+  chmod u+w $_filename
+  sed -e "s;$_levelkey;$_levelname;g" \
+      -e "s;$_releasenumkey;$_releasenum;g" \
+      -e "s;$_releasekey;$_releasename;g" \
+      -e "s;$_releasekeylower;$_releasenamelower;g" \
+      -e "s;$_datekey;$_now;g" \
+      -e "s;$_pluginver;$_plugver;g" \
+      < $_filename > ${_filename}.tmp
+  mv ${_filename}.tmp ${_filename}
+  chmod u-w $_filename
+done
+
+# Cleanup the .gone files
+if [[ -f $_buildbasedir/.gone ]]; then
+  for _file in `cat $_buildbasedir/.gone`; do
+    echo rm -f $_buildbasedir/$_file
+    rm -f $_buildbasedir/$_file
+  done
+fi
+

@@ -1,0 +1,1298 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+    
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+    
+  <meta name="Author" content="default">
+    
+  <meta name="GENERATOR"
+ content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>CMF Generation User's Guide</title>
+</head>
+  <body>
+ <img src="bannerx.gif" alt="IBM Books" height="92" width="490">
+ <br>
+&nbsp; 
+<h1> CMF Generation User's Guide</h1>
+ SDWB <br>
+CMF Generation User's Guide <br>
+Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%) <br>
+ 
+<hr> 
+<h2> Contents</h2>
+  
+<ul>
+ <li> <a name="Toc_Introduction"></a><a href="#Introduction">Introduction</a></li>
+  <li> <a name="Toc_Overview"></a><a href="#Overview">Overview</a></li>
+  <li> <a name="Toc_CMF Generation Makefile Targets"></a><a
+ href="#CMF%20Generation%20Makefile%20Targets">CMF Generation Makefile Targets</a></li>
+  <li> <a name="Toc_CMF Generation Makefile Variables"></a><a
+ href="#CMF%20Generation%20Makefile%20Variables">CMF Generation Makefile
+Variables</a></li>
+  <li> <a name="Toc_Notes on CMF"></a><a href="#Notes%20on%20CMF">Notes on
+CMF Generation</a></li>
+  
+  <ul>
+ <li> <a name="Toc_Specifying Shippable"></a><a
+ href="#Specifying%20Shippable">Specifying Shippable Files</a></li>
+  <li> <a name="Toc_Adding extra shippable files not defined in"></a><a
+ href="#Adding%20extra%20shippable%20files%20not%20defined%20in">Adding extra
+shippable files not defined in ILIST</a></li>
+  <li> <a name="Toc_Excluding Shippable"></a><a
+ href="#Excluding%20Shippable">Excluding Shippable Files</a></li>
+  <li> <a name="Toc_Specifying Product"></a><a
+ href="#Specifying%20Product">Specifying Product Data</a></li>
+  <li> <a name="Toc_Attribute"></a><a href="#Attribute">Attribute Types</a></li>
+  <li> <a name="Toc_Multiple PackageData"></a><a
+ href="#Multiple%20PackageData">Multiple PackageData Stanzas</a></li>
+ 
+  </ul>
+  <li> <a name="Toc_Examples"></a><a href="#Examples:">Examples</a></li>
+  
+  <ul>
+ <li> <a name="Toc_Ex_Typical UNIX"></a><a href="#Ex_Typical%20UNIX">Typical
+UNIX Case</a></li>
+  <li> <a name="Toc_Ex_Symlinks and"></a><a href="#Ex_Symlinks%20and">Symlinks
+and Directories</a></li>
+  <li> <a name="Toc_Ex_Multiple PackageData"></a><a
+ href="#Ex_Multiple%20Package%20Data">Multiple PackageData Stanzas</a></li>
+  <li> <a name="Toc_Ex_Complete 390 Part"></a><a
+ href="#Ex_Complete%20390%20Part">Complete 390 Part Metadata</a></li>
+  <li> <a name="Toc_Ex_Specifying Product Data for the 390"></a><a
+ href="#Ex_Specifying%20Product%20Data%20for%20the%20390">Specifying Product
+Data for the 390 example</a></li>
+ 
+  </ul>
+  <li> <a name="Toc_Limitations"></a><a href="#Limitations">Limitations</a></li>
+ 
+</ul>
+  
+<hr width="100%"> 
+<h2> <a name="Introduction"></a><a href="#Toc_Introduction">Introduction</a></h2>
+ The ODE Common Metadata File (CMF) is used to represent packaging metadata 
+in a common, platform-independent way. This file is parsed by the ODE packaging 
+tools, and converted into the necessary control files used to drive the platform-specific
+packaging tools. The CMF consists of part-level data (File stanza) which
+represents the individual shippable components to be included in the package,
+and product-level data (InstallEntity stanza) that represents the high-level
+product information. 
+<p>The CMF can be generated automatically from various makefile variables. 
+These makefile variables include the variables needed to build the source 
+files and some exclusive variables just for generating the CMF. This document 
+explains the targets and makefile variables needed to generate the CMF and
+the limitations of this functionality. This document assumes that the reader
+is well familiar with the ODE packaging process and the role of CMF in the
+creation of a package. </p>
+<p> </p>
+<hr width="100%"> 
+<h2> <a name="Overview"></a><a href="#Toc_Overview">Overview</a></h2>
+ The CMF can be generated through a couple of ODE makefile targets which are
+<b>genmetadata_all</b> and <b>gencmf_all</b>. The tool run by <b>genmetadata_all</b> 
+will create an intermediate metadata file representing the part metadata for
+each subdirectory. Each such part metadata file will be in the XML format.
+The information needed to create these metadata files will be obtained from
+the makefile variables which are already defined to build the directory. Any
+packaging specific variables needed to be put in the CMF can be defined in
+a format as described in the sections below. A second tool run by <b>gencmf_all</b> 
+will gather all the intermediate part metadata files, along with user-supplied 
+product metadata (in the CMF format), to create the final CMF. This CMF will
+be used by the ODE packaging target <b>parse_all</b> to create the platform
+specific product specification file. 
+<p> </p>
+<hr width="100%"> 
+<h2> <a name="CMF Generation Makefile Targets"></a><a
+ href="#Toc_CMF%20Generation%20Makefile%20Targets">CMF Generation Makefile
+Targets</a></h2>
+ CMF can be generated through three ODE makefile targets. They are 
+<ul>
+ <li> <b>genmetadata_all</b></li>
+  <li> <b>gencmf_all</b></li>
+ 
+</ul>
+ The two targets, <b>genmetadata_all</b> and <b>gencmf_all</b> should be executed
+sequentially to create the CMF. 
+<h3> genmetadata_all</h3>
+ This target creates part metadata files in the XML format. It recursively 
+goes in to all the sub directories under the directory specified by the makefile
+variable <b>GENMETADATA_SUBDIRS</b> and runs a tool in each such directory
+and creates the metadata files in the corresponding directories under <b>obj</b>
+directory. The information needed for generating the metadata files will
+be extracted from various makefile variables defined for those directories.
+Most of the needed information is obtained from the makefile variables used
+to build the directory. Any extra information needed for the package can
+be provided using several other makefile variables in a specified format.
+All the metadata files created will be named after <b>FILESTANZA_METADATA_URI</b>. 
+A metadata file created for a directory will contain information on all the
+shippable files that are defined in that directory and each such shippable 
+file corresponds to a file stanza in the CMF. Note that the metadata files 
+will be created for only the directories defining the makefile variable <b>GENMETADATA</b>. 
+Makefile variables <b>CMF_PROP_FILE</b> and <b>FILESTANZA_SCHEMA_URI</b> are
+also used by this target. For a complete list of makefile variables and their
+descriptions, check <a href="#CMF%20Generation%20Makefile%20Variables">CMF 
+Generation Makefile Variables</a> section. 
+<h3> gencmf_all</h3>
+ This target will read each of the part metadata files created by the target 
+<b>genmetadata_all</b> along with the product data supplied by the user and
+generates the CMF. The tool run by this target searches in each sub directory
+under the directory specified by <b>FILESTANZA_METADATA_DIR</b> for the metadata
+files specified by <b>FILESTANZA_METADATA_URI</b>. The makefile variable
+<b>GENCMF</b> should be defined in the directory in which this tool is run.
+After reading all the metadata files and the product data supplied by the
+user, this tool merges the information and creates the CMF specified by the
+makefile variable <b>PKG_CMF_FILE</b>. The product data required by this
+tool will not be generated automatically and hence should be provided by
+the variable <b>PKG_CMF_PRODUCT_FILE</b>. For more information, check Specifying
+Product Data. For a detailed explanation of these variables, check <a
+ href="#CMF%20Generation%20Makefile%20Variables">CMF Generation Makefile
+Variables</a> section. 
+<p> </p>
+<hr width="100%"> 
+<h2> <a name="CMF Generation Makefile Variables"></a><a
+ href="#Toc_CMF%20Generation%20Makefile%20Variables">CMF Generation Makefile
+Variables</a></h2>
+ Makefile variables will be defined by the user and will be used as input 
+for the CMF generation process. There are two kinds of makefile variables 
+used in this process. The first set of makefile variables define the external 
+values needed for generating the CMF, like the location of the product data
+file, name of the metadata file being generated, location of the schema, etc.
+The other set of makefile variables define the values to be inserted into
+various file stanzas in the CMF. As mentioned above, each shippable file
+corresponds to a file stanza in the CMF and these makefile variables define
+the values of various CMF attributes in those file stanzas. 
+<p>The makefile variables needed to run the CMF generation tools are described 
+below. </p>
+<p><b>GENMETADATA_SUBDIRS</b> (required) <br>
+This makefile variable is used by the target <b>genmetadata_all</b>. This
+target is executed recursively in the sub directories of the directory specified
+by this variable to generate the part metadata files in the corresponding 
+directories under <b>MAKEOBJDIR</b>. This defaults to the makefile variable 
+<b>SUBDIRS</b>. </p>
+<p><b>FILESTANZA_METADATA_URI</b> (required) <br>
+This makefile variable is used by both the targets <b>genmetadata_all</b> 
+and <b>gencmf_all</b>. It defines the name of the metadata files to be created
+and later to be searched to generate the CMF. This defaults to <b><tt>fileMetadata.xml</tt></b>. 
+</p>
+<p><b>FILESTANZA_SCHEMA_URI</b> (required) <br>
+This makefile variable is used by both the targets <b>genmetadata_all</b> 
+and <b>gencmf_all</b>. It defines the path to the XML schema which constrains 
+the structure of the metadata files. This XML schema is used by the gencmf_all 
+target to check the validity of metadat files. This defaults to the file <b><tt>metadata.xsd</tt></b> 
+in the <b>rules_mk</b> directory. It will be used if present in the sandbox 
+and if not, the backing builds up the chain will be searched until it is found. 
+</p>
+<p><b>CMF_PROP_FILE</b> (required) <br>
+This makefile variable is used by the target <b>genmetadata_all</b>. This
+target while generating the metadata files, first extracts the information 
+from the makefile variables and creates text files named after this variable 
+with that information. Such text file will be created in every directory where
+a metadata file is going to be created. These text files will be used by
+this target to generate the metadata files. This defaults to <b><tt>file.properties</tt></b>. 
+</p>
+<p><b>GENMETADATA</b> (required) <br>
+This makefile variable is used by the target <b>genmetadata_all</b>. When
+<b><tt>mk genmetadata_all</tt></b> command is run, as mentioned above, the
+<b>genmetadata_all</b> target is executed recursively in the directories specified
+by the <b>GENMETADATA_SUBDIRS </b>makefile variable. This target is a no-op
+if the <b>GENMETADATA</b> makefile variable is not defined. If the GENMETADATA
+makefile variable is defined then this target creates a metadata file in
+the corresponding directory under OBJ tree. </p>
+<p><b>FILESTANZA_METADATA_DIR</b> (required) <br>
+This makefile variable is used by the target <b>gencmf_all</b>. When this
+target is run in a directory, it invokes a tool which recursively searches
+all the directories under the directory specified by this variable for the
+metadata files. Any metadata files present in the sandbox but not under the
+directory specified by this variable will not be read and hence not included
+in the CMF. This defaults to <b>MAKEOBJDIR</b>. </p>
+<p><b>GENCMF</b> (required) <br>
+This makefile variable is used by the target <b>gencmf_all</b>. This variable
+needs to be defined in the directory where this target is run to generate
+the CMF. </p>
+<p><b>PKG_CMF_FILE</b> (required) <br>
+This makefile variable is used by the target <b>gencmf_all</b>. This variable
+defines the full path to the CMF being generated. Note that this variable
+includes the name of the CMF. </p>
+<p><b>PKG_CMF_PRODUCT_FILE</b> (required) <br>
+This makefile variable is used by the target <b>gencmf_all</b>. This variable
+defines the full path to the file containing the product data. This file
+will be used to get the product level data while generating the CMF. This
+process is further explained in Specifying Product Data. </p>
+<p>As mentioned above, there is another set of makefile variables to define 
+the values for the attributes inside the file stanzas in the CMF. These makefile
+variables used in the generation of file stanzas are shown in the table below. 
+</p>
+<h3> File Stanza Attributes/Makefile Variables Mapping</h3>
+ The table below reflects the makefile variables that will be used to define&nbsp; 
+packaging metadata to the CMF generation process. <br>
+&nbsp; 
+<table border="1" cellspacing="0" cellpadding="0" cols="5" width="100%">
+ <tbody>
+    <tr bgcolor="#cccccc">
+ <td align="center" valign="CENTER"><b>File Stanza Attribute</b></td>
+  <td align="center" valign="CENTER"><b>Makefile Variable</b></td>
+  <td align="center" valign="CENTER"><b>Default Value</b></td>
+  <td align="center" valign="CENTER"><b>Required by ODE</b></td>
+  <td align="center" valign="CENTER"><b>Description/Comment</b></td>
+ </tr>
+  <tr>
+ <td align="left" valign="CENTER">sourceFile</td>
+  <td align="left" valign="CENTER"><b>ILIST</b></td>
+  <td align="left" valign="CENTER">--</td>
+  <td align="left" valign="CENTER">Yes</td>
+  <td align="left" valign="CENTER">The value is obtained from ILIST</td>
+ </tr>
+  <tr>
+ <td>sourceDir</td>
+  <td><b>IDIR</b></td>
+  <td>--</td>
+  <td>Yes</td>
+  <td>The value is obtained from IDIR</td>
+ </tr>
+  <tr>
+ <td>permissions</td>
+  <td><b>IMODE</b></td>
+  <td>755</td>
+  <td>Yes</td>
+  <td>The value is obtained from IMODE</td>
+ </tr>
+  <tr>
+ <td>groupId</td>
+  <td><b>IGROUP</b></td>
+  <td>staff</td>
+  <td>Yes</td>
+  <td>The value is obtained from IGROUP</td>
+ </tr>
+  <tr>
+ <td>userId</td>
+  <td><b>IOWNER</b></td>
+  <td>$USER or root</td>
+  <td>Yes</td>
+  <td>The value is obtained from IOWNER</td>
+ </tr>
+  <tr>
+ <td>targetFile</td>
+  <td><b>CMF_TARGET_FILE</b></td>
+  <td>sourceFile</td>
+  <td>Yes</td>
+  <td>Not needed if the fileType is 'd'</td>
+ </tr>
+  <tr>
+ <td>targetDir</td>
+  <td><b>CMF_TARGET_DIR</b></td>
+  <td>sourceDir</td>
+  <td>Yes</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>fileType</td>
+  <td><b>CMF_FILE_TYPE</b></td>
+  <td>'f' for UNIX tools, MOD for MVS</td>
+  <td>Yes</td>
+  <td>allowed values are <i>f</i>, <i>F</i>, <i>d</i>, <i>s</i>, and SMPMCS 
+elements like <i>mod</i>, <i>hfs</i>, <i>program</i>, <i>jclin</i> etc</td>
+ </tr>
+  <tr>
+ <td>flags</td>
+  <td><b>CMF_FLAGS</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>partNum</td>
+  <td><b>CMF_PART_NUM</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>majorDevNum</td>
+  <td><b>CMF_MAJOR_DEV_NUM</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>minorDevNum</td>
+  <td><b>CMF_MINOR_DEV_NUM</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>fileDirectives</td>
+  <td><b>CMF_FILE_DIRECTIVES</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>partInfo</td>
+  <td><b>CMF_PART_INFO_xxx</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td>xxx is any valid ODE supported SMP/E tag</td>
+ </tr>
+  <tr>
+ <td>shipType</td>
+  <td><b>CMF_SHIP_TYPE</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>lkedTo</td>
+  <td><b>CMF_LKED_TO</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td>allowed values are <i>hfs</i>, <i>pds</i>, <i>both</i>. It is required 
+if the file needs to be link edited</td>
+ </tr>
+  <tr>
+ <td>lkedParms</td>
+  <td><b>CMF_LKED_PARMS</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+      <td valign="top">lkedCond<br>
+      </td>
+      <td valign="top"><b>CMF_LKED_COND</b><br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">No<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+    </tr>
+    <tr>
+ <td>hfsCopyType</td>
+  <td><b>CMF_HFS_COPY_TYPE</b></td>
+  <td>binary</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>lkedRc</td>
+  <td><b>CMF_LKED_RC</b></td>
+  <td>0</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>hfsAlias</td>
+  <td><b>CMF_HFS_ALIAS</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>pdsAlias</td>
+  <td><b>CMF_PDS_ALIAS</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>hfsLkedName</td>
+  <td><b>CMF_HFS_LKED_NAME</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td>It is required for JCLIN generation if lkedTo is 'HFS' or 'BOTH'</td>
+ </tr>
+  <tr>
+ <td>pdsLkedName</td>
+  <td><b>CMF_PDS_LKED_NAME</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td>It is required for JCLIN generation if lkedTo is 'PDS' or 'BOTH'</td>
+ </tr>
+  <tr>
+ <td>setCode</td>
+  <td><b>CMF_SET_CODE</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>entry</td>
+  <td><b>CMF_ENTRY</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>extAttr</td>
+  <td><b>CMF_EXT_ATTR</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>include</td>
+  <td><b>CMF_INCLUDE</b></td>
+  <td>--</td>
+  <td><br>
+      </td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>order</td>
+  <td><b>CMF_ORDER</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>distLib</td>
+  <td><b>CMF_DIST_LIB</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>sysLibs</td>
+  <td><b>CMF_SYS_LIBS</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>jclinMode</td>
+  <td><b>CMF_JCLIN_MODE</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>jclinLkedParms</td>
+  <td><b>CMF_JCLIN_LKED_PARMS</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td>It is a required attribute for a file that needs to be link edited</td>
+ </tr>
+  <tr>
+ <td>libraryDD</td>
+  <td><b>CMF_LIBRARY_DD</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>sysLibsLibraryDD</td>
+  <td><b>CMF_SYS_LIBS_LIBRARY_DD</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+      <td valign="top">sideDeckAppendDD<br>
+      </td>
+      <td valign="top"><b>CMF_SIDE_DECK_APPEND_DD</b><br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">No<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+    </tr>
+    <tr>
+ <td>vplSecurity</td>
+  <td><b>CMF_VPL_SECURITY</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+  <tr>
+ <td>vplPartqual</td>
+  <td><b>CMF_VPL_PARTQUAL</b></td>
+  <td>--</td>
+  <td>No</td>
+  <td><br>
+      </td>
+ </tr>
+ 
+  </tbody>
+</table>
+  
+<p>The above listed makefile variables apply to all the shippable files that
+are in the directory where they are defined. If a makefile variable needs
+to be applied to files that are in different directories then define the
+makefile variable in the <b><tt>Makeconf</tt> </b>file. But, a shippable file
+can override it by defining shippable file specific makefile variable of
+the form <i>&lt;shippable file name&gt;_&lt;makefile variable name&gt;.</i> 
+</p>
+<p>For example, in the case of the ODE bbexample: <br>
+If <b>CMF_FILE_TYPE</b> is defined in the makefile of <i>client </i>directory, 
+then it applies to all the files that are in the <i>client</i> directory. 
+If the shippable file <i>client.p</i> wants to override the value defined 
+by <b>CMF_FILE_TYPE</b>, then the makefile variable <b>client.p_CMF_FILE_TYPE</b> 
+has to be defined. </p>
+<p>In addition to the above mentioned makefile variables, another variable 
+<b>CMF_PARENT</b> needs to be defined. Though this variable does not correspond
+to any CMF attribute in the file stanza, it is needed to specify the InstallEntity 
+(identified by <b><tt>entityName</tt></b> in the <b>EntityInfo</b> stanza 
+of the CMF) the shippable file belongs to. This attribute will be used for
+generating <b><tt>immChildFiles</tt></b> list of the <b>LinkInfo</b> stanza
+in the product level data of the CMF as explained in Specifying Product Data. 
+</p>
+<p>For example, in the case of the ODE bbexample for MVS, there are two InstallEntities,
+<i>hbps112</i> and <i>jbps112</i> in the CMF<i>.</i> All the files in <i>bin</i>
+directory should belong to <i>hbps112</i> and all the files under <i>doc</i>
+directory should belong to <i>jbps112</i>. Then in the makefile in <i>bin</i>
+directory, <b>CMF_PARENT</b> should be set to <i>hbps112</i> and in the makefile
+in <i>doc</i> directory, <b>CMF_PARENT</b> should be set to <i>jbps112</i>.
+If the file <i>client.p</i> belongs to a new InstallEnitity called <i>kbps112</i>,
+then in the makefile in <i>bin/client</i> directory, <b>client.p_CMF_PARENT</b>
+should be set to <i>kbps112</i>. </p>
+<p> </p>
+<hr width="100%"> 
+<h2> <a name="Notes on CMF"></a><a href="#Toc_Notes%20on%20CMF">Notes on
+CMF Generation</a></h2>
+  
+<h3> <a name="Specifying Shippable"></a><b><a
+ href="#Toc_Specifying%20Shippable">Specifying Shippable Files</a></b></h3>
+ The <b>ILIST</b> makefile variable is the primary variable used to specify 
+shippable files. Each ILIST entry will correspond to a File stanza in the 
+CMF, unless specifically excluded by the <b>EXCLUDE_ILIST</b> variable. 
+<h3> <a name="Adding extra shippable files not defined in"></a><b><a
+ href="#Toc_Adding%20extra%20shippable%20files%20not%20defined%20in">Adding 
+extra shippable files not defined in ILIST</a></b></h3>
+ Symlinks and directories are usually not listed in the <b>ILIST</b> makefile 
+variable. To account for any shippable file that is not listed in the <b>ILIST</b> 
+makefile variable, the <b>EXTRA_ILIST</b> makefile variable will be used to
+denote additional files to be processed by the CMF generation process. 
+<h3> <a name="Excluding Shippable"></a><b><a
+ href="#Toc_Excluding%20Shippable">Excluding Shippable Files</a></b></h3>
+ In some cases, files listed in the ILIST makefile variable may not need to
+be packaged. To handle such situations, the <b>EXCLUDE_ILIST</b> makefile 
+variable will be used to denote files to ignore during the CMF generation 
+process. 
+<h3> <a name="Specifying Product"></a><b><a
+ href="#Toc_Specifying%20Product">Specifying Product Data</a></b></h3>
+ As mentioned above, the product data will not be automatically generated. 
+Hence the user will have to specify all the product level information in the
+CMF format in a file and specify the path using <b>PKG_CMF_PRODUCT_FILE</b>. 
+This file will be read by the target <b>gencmf_all</b> while generating the
+CMF. This file will not be checked for the syntax or the validity of the
+content. Hence it is important that this product data file conforms to the
+CMF syntax and accurate in content. The product level data read from this
+file will be directly merged with the part level information obtained from
+the metadata files. No formatting will be done to the product data except
+that the CMF attribute <b>immChildFiles</b> will be populated. As explained
+in the Packaging Reference, <b>immChildFiles</b> is a CMF attribute specified
+at the product level and contains all the files to be included in that product.
+This list will be automatically generated in the CMF using a tag as illustrated
+in the following example. 
+<p>Assume that the CMF is being generated for a product called <i>odehello 
+</i>(specified by <b>entityName </b>in the CMF). Then in the product level
+information supplied by the user, <b>immChildFiles</b> should be set to <i>%odehello%</i> 
+like <i>immChildFiles = [ %odehello% ]</i>. This tag indicates to the CMF 
+generation tool that all the shippable files with <i>odehello</i> as the parent
+should be included here. Each shippable file can specify that it needs to
+be included in <i>odehello</i> by setting the makefile variable <b>CMF_PARENT</b> 
+to <i>odehello</i>. </p>
+<p>This is further illustrated in detail in <a
+ href="#Ex_Specifying%20Product%20Data%20for%20the%20390">Specifying Product
+Data for the 390 example</a>. </p>
+<h3> <a name="Attribute"></a><b><a href="#Toc_Attribute">Attribute Types</a></b></h3>
+ As explained in the Packaging Reference document, there are several types 
+of CMF attributes. While representing these attributes in the makefiles the
+following points should be noted. The CMF generation tool will format these
+values into appropriate types while generating them in the CMF. Note that
+when representing a list of values, the normal convention for the makefiles
+should be followed. In cases where the list elements themselves contain spaces,
+the values must be enclosed in double-quotes. 
+<h3> <a name="Multiple PackageData"></a><b><a
+ href="#Toc_Multiple%20PackageData">Multiple PackageData Stanzas</a></b></h3>
+ For File stanzas that require multiple PackageData stanzas, pipe "|" seperated 
+lists will be used to delimit the attributes for each PackageData stanza. 
+A file indicates that it needs to have multiple PackageData stanzas by setting
+it's makefile variable <b>CMF_TARGET_FILE</b> to multiple values. 
+<p>For example, if the file <i>client.p</i> needs to have multiple PackageData 
+stanzas <i>client1</i>, <i>client2</i>, <i>client3</i> then the makefile should
+have <i>client.p_TARGET_FILE=client1|client2|client3</i> and the attributes
+such as <b>sysLibs</b> for the PackageData stanzas of client.p should be
+specified as <i>client.p_SYS_LIBS=sys1|sys2|sys3</i>. Note that these attributes
+should be strictly mentioned in order. In other words, the first value goes
+to the first PackageData stanza in <i>client.p</i> i.e. <i>client1</i> etc.
+If the value needs to be omitted for a PackageData it needs to be omitted
+in the makefile. For example, if there is no <i>sysLi</i>b for the PackageData
+<i>client1</i>, it should be specified as <i>client.p_CMF_SYS_LIBS=||sys2|sys3</i> 
+</p>
+<p>For more information on specifying multiple PackageData stanzas, check 
+<a href="#Ex_Multiple%20Package%20Data">Multiple PackageData Stanzas</a>. 
+</p>
+<p> </p>
+<hr width="100%"> 
+<h2> <a name="Examples:"></a><a href="#Toc_Examples">Examples</a></h2>
+ The following examples demonstrate the use of makefile variables in generating 
+the CMF. 
+<h3> <a name="Ex_Typical UNIX"></a><a href="#Toc_Ex_Typical%20UNIX">Typical
+UNIX Case</a></h3>
+ The example below demonstrates how to use makefile variables to generate 
+file stanzas on UNIX platforms. <br>
+&nbsp; 
+<table border="1" cellspacing="0" cellpadding="0" width="100%">
+ <tbody>
+    <tr bgcolor="#cccccc">
+ <td align="center" valign="CENTER"><b>File Stanzas in the CMF</b></td>
+  <td align="center" valign="CENTER"><b>Makefile</b></td>
+ </tr>
+  <tr>
+ <td><tt>file {&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; 'F'&nbsp; ;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp; = "logger";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "/usr/odehello/bin/" 
+;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "/usr/odehello/bin/" 
+;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp; = "logger";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; permissions&nbsp;&nbsp;&nbsp; = "755" ;&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "spatest";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "staff";&nbsp;</tt> <br>
+      <tt>}&nbsp;</tt> 
+      <p><tt>file {&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; 'F'&nbsp; ;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp; = "server";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "/usr/odehello/bin/" 
+;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "/usr/odehello/bin/" 
+;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp; = "aixserver";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; permissions&nbsp;&nbsp;&nbsp; = "755" ;&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "spatest";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "staff";&nbsp;</tt> <br>
+      <tt>}</tt> </p>
+      <p><tt>file {&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; 'F'&nbsp; ;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp; = "newfile";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "/usr/odehello/bin/" 
+;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "/usr/odehello/bin/" 
+;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp; = "server";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; permissions&nbsp;&nbsp;&nbsp; = "755" ;&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "spatest";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "staff";&nbsp;</tt> <br>
+      <tt>}</tt></p>
+      </td>
+  <td align="left" valign="top"><tt># Should be already defined in makefiles&nbsp;</tt> 
+      <br>
+      <tt>IDIR&nbsp;&nbsp;&nbsp; = /usr/odehello/bin&nbsp;</tt> <br>
+      <tt>ILIST&nbsp;&nbsp; = logger server client&nbsp;</tt> <br>
+      <tt>IMODE&nbsp;&nbsp; = 755&nbsp;</tt> <br>
+      <tt>IGROUP&nbsp; = spatest&nbsp;</tt> <br>
+      <tt>IOWNER&nbsp; = staff&nbsp;</tt> 
+      <p><tt>#Do not generate a file stanza for client</tt> <br>
+      <tt>EXCLUDE_ILIST = client</tt> </p>
+      <p><tt>#Add newfile to ILIST so as to generate a file stanza</tt> <br>
+      <tt>EXTRA_ILIST = newfile</tt> </p>
+      <p><tt># Metadata settings for all file stanzas in this makefile</tt> 
+      <br>
+      <tt>CMF_PARENT = odehello.bin&nbsp;</tt> </p>
+      <p><tt>#Change targetFile for server</tt> <br>
+      <tt>server_CMF_TARGET_FILE = aixserver</tt> </p>
+      <p>&nbsp;</p>
+      </td>
+ </tr>
+ 
+  </tbody>
+</table>
+  
+<p><b>Notes:</b> </p>
+<ul>
+ <li> Typically, the variables IDIR, ILIST, IMODE, IGROUP and IOWNER would
+already be defined to build the directory. They will be reused for generating
+the CMF.</li>
+  <li> <b>sourceFile</b> and <b>sourceDir</b> are derived from the ILIST
+and IDIR variables.</li>
+  <li> <b>targetFile</b> and <b>targetDir</b> if not specified will default
+to <b>sourceFile</b> and <b>sourceDir</b> respectively.</li>
+  <li> The default value for fileType is 'F' for Unix packaging tools, so
+specifying it would not be necessary.</li>
+  <li> The makefile variable CMF_PARENT is used to denote which package entity 
+the file stanza belongs to. In this case all the file stanzas belong to the
+InstallEntity <i>odehello.bin</i>.</li>
+ 
+</ul>
+  
+<h3> <a name="Ex_Symlinks and"></a><a href="#Toc_Ex_Symlinks%20and">Symlinks
+and Directories</a></h3>
+ The example below demonstrates how to generate file stanzas for symbolic 
+links and directories. Three file stanzas (a regular file, a symbolic link 
+and a directory are shown). <br>
+&nbsp; 
+<table border="1" cellspacing="0" cellpadding="0" width="100%">
+ <tbody>
+    <tr bgcolor="#cccccc">
+ <td align="center" valign="CENTER"><b>File Stanzas in the CMF</b></td>
+  <td align="center" valign="CENTER"><b>Makefile</b></td>
+ </tr>
+  <tr>
+ <td><tt>file&nbsp;</tt> <br>
+      <tt>{</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = '1' ;&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp; = "/usr/odehello/bin/" 
+;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp; = "server" ;&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp; = "/usr/odehello/bin/" 
+;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp; = "server" ;&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp; = 'f' ;&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; permissions&nbsp; = "755";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 
+"root";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "sys";&nbsp;</tt> 
+      <br>
+      <tt>}&nbsp;</tt> 
+      <p><tt>file&nbsp;</tt> <br>
+      <tt>{&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = '1';&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp; = 'S' ;&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp; = "/usr/odehello/links/";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp; = "server" ;&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp; = "/usr/odehello/bin/";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp; = "server" ;&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; permissions&nbsp; = "755";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 
+"root";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "sys";&nbsp;</tt> 
+      <br>
+      <tt>}&nbsp;</tt> </p>
+      <p><tt>// Adding empty directory&nbsp;</tt> <br>
+      <tt>file&nbsp;</tt> <br>
+      <tt>{&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp; = '1';&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp; = 'D' ;&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp; = "/usr/odehello/logs/" 
+;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp; = "/usr/odehello/logs/</tt>" 
+;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <tt>permissions = "755";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "root";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp; = "sys";&nbsp;</tt> 
+      <br>
+      <tt>}</tt></p>
+      </td>
+  <td align="left" valign="top"><tt># Should be already defined in makefiles&nbsp;</tt> 
+      <br>
+      <tt>IMODE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 755&nbsp;</tt> 
+      <br>
+      <tt>IGROUP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = sys&nbsp;</tt> 
+      <br>
+      <tt>IOWNER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = root</tt> <br>
+      <tt>IDIR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = /usr/odehello/bin&nbsp;</tt> 
+      <br>
+      <tt>ILIST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = server&nbsp;</tt> 
+      <br>
+      <tt>CMF_FILE_TYPE = f&nbsp;</tt> <br>
+      <tt>CMF_PART_NUM&nbsp; = 1&nbsp;</tt> 
+      <p><tt># Local variables&nbsp;</tt> <br>
+      <tt>LOGDIR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = /usr/odehello/logs&nbsp;</tt> 
+      <br>
+      <tt>EXTRA_ILIST&nbsp; = /usr/odehello/links/server {LOGDIR}&nbsp;</tt> 
+      <br>
+      <tt>CMF_PARENT&nbsp;&nbsp; = odehello.bin&nbsp;</tt> </p>
+      <p><tt># sourceFile/sourceDir for the CMF will be derived</tt> <br>
+      <tt>#from EXTRA_ILIST (if filetype = s)&nbsp;</tt> <br>
+      <tt># targetFile will default to sourceFile&nbsp;</tt> <br>
+      <tt>/usr/odehello/links/server_CMF_TARGET_DIR = /usr/odehello/bin&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+/usr/odehello/links/server_CMF_FILE_TYPE&nbsp;&nbsp; = S&nbsp;</tt> </p>
+      <p><tt># don't need targetFile since its a directory&nbsp;</tt> <br>
+      <tt># don't need targetDir, will default to sourceDir&nbsp;</tt> <br>
+      <tt>${LOGDIR}_CMF_FILE_TYPE = D&nbsp;</tt> <br>
+      <tt>${LOGDIR}_CMF_PARENT&nbsp;&nbsp;&nbsp; = odehello.doc</tt> <br>
+&nbsp;</p>
+      </td>
+ </tr>
+ 
+  </tbody>
+</table>
+  
+<p><b>Notes:</b> </p>
+<ul>
+ <li> Symlinks and directories will be listed in the EXTRA_ILIST makefile
+variable. Unlike ordinary files, the path to the symlink and the directory
+needs to be specified. So, in CMF terms, path constitutes sourceDir/sourceFile. 
+In the above example: EXTRA_ILIST=/usr/odehello/links/server ${LOGDIR} where
+/usr/odehello/links/server is the full path to the symlink, server, in the
+ship tree.</li>
+  <li> If the path becomes overly long, an extra variable could be defined
+which could be used to define file-specific makefile variables. In the above 
+example: LOGDIR=/usr/odehello/logs where /usr/odehello/logs represents an
+empty directory that needs to be shipped. LOGDIR is used in EXTRA_ILIST and
+also used to define the fileType: ${LOGDIR}_CMF_FILETYPE = D.</li>
+ 
+</ul>
+  
+<h3> <a name="Ex_Multiple Package Data"></a><a
+ href="#Toc_Ex_Multiple%20PackageData">Multiple PackageData Stanzas</a></h3>
+ This example demonstrates how to represent multiple PackageData stanzas within
+a single file stanza.&nbsp; Two file stanzas are shown below - with and without
+PackageData stanzas. <br>
+&nbsp; 
+<table border="1" cellspacing="0" cellpadding="0" width="100%">
+ <tbody>
+    <tr bgcolor="#cccccc">
+ <td align="center" valign="CENTER"><b>File Stanzas in the CMF</b></td>
+  <td align="center" valign="CENTER"><b>Makefile</b></td>
+ </tr>
+  <tr>
+ <td><tt>file&nbsp;</tt> <br>
+      <tt>&nbsp;{&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp; = "/usr/odehello/bin/";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp; = "logger.p";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= 'mod';&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp; = "client";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp; = "abpsbin";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; hfsCopyType&nbsp;&nbsp; = 'binary';&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;}&nbsp;</tt> 
+      <p><tt>&nbsp;file&nbsp;</tt> <br>
+      <tt>&nbsp;{&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; SourceData&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; {&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp; = "/usr/odehello/bin/";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp; = "client.p";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp; }&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; PackageData&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; {&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= 'mod';&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp; = "client1";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp; = "abpsbin";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; hfsCopyType&nbsp;&nbsp; = 'binary';&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp; }&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; PackageData&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; {&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= 'mod';&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp; = "client2";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp; = "abpsbin";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; hfsCopyType&nbsp;&nbsp; = 'binary';&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; sysLibs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= [ "sceelked" "csslib" ];</tt> <br>
+      <tt>&nbsp;&nbsp; }&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; PackageData&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; {&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= 'mod';&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp; = "client2";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp; = "abpsbin";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; hfsCopyType&nbsp;&nbsp; = 'binary';&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp; sysLibs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= [ "other" "syslibs" ];&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; }&nbsp;</tt> <br>
+      <tt>&nbsp;}</tt></p>
+      </td>
+  <td align="left" valign="top"><tt># Should be already defined in makefiles</tt> 
+      <br>
+      <tt>IDIR&nbsp;&nbsp;&nbsp; = /usr/odehello/bin</tt> <br>
+      <tt>ILIST&nbsp;&nbsp; = logger.p client.p&nbsp;</tt> 
+      <p><tt># Defaults for all file stanzas&nbsp;</tt> <br>
+      <tt>CMF_PARENT = HBPS112&nbsp;</tt> </p>
+      <p><tt># Defaults for all package data stanzas</tt> <br>
+      <tt>CMF_FILE_TYPE&nbsp;&nbsp;&nbsp;&nbsp; = MOD</tt> <br>
+      <tt>CMF_HFS_COPY_TYPE = binary&nbsp;</tt> <br>
+      <tt>CMF_TARGET_DIR&nbsp;&nbsp;&nbsp; = abpsbin&nbsp;</tt> </p>
+      <p><tt># part-specific variables - pipe "|" delimits the&nbsp;</tt> 
+      <br>
+      <tt># entries for multiple PackageData stanzas&nbsp;</tt> <br>
+      <tt>client.p_CMF_TARGET_FILE = client1|client2|client3</tt> <br>
+      <tt># Specifying sysLibs only for client2 and client3</tt> <br>
+      <tt>client.p_CMF_SYS_LIBS = ||sceelked csslib|other syslibs</tt> <br>
+&nbsp;</p>
+      </td>
+ </tr>
+ 
+  </tbody>
+</table>
+  
+<p><b>Notes:</b> </p>
+<ul>
+ <li> Uniqueness for each File stanza is determined by the combination of
+sourceDir and sourceFile (which can be represented in the SourceData stanza).</li>
+  <li> Uniqueness for each PackageData stanza is determined by the combination 
+of targetDir and targetFile.</li>
+  <li> To represent attributes for multiple PackageData stanzas belonging
+to the same source part, a pipe "|" delimited list is used for PackageData.
+The number of such list entries in the CMF_TARGET_FILE attributes determines 
+the number of PackageData stanzas that will be included in this file stanza. 
+For other attributes, if no such list is given, it will be assumed that all
+PackageData stanzas will have the same value (i.e. CMF_HFS_COPY_TYPE attribute
+in the above example).</li>
+ 
+</ul>
+  
+<h3> <a name="Ex_Complete 390 Part"></a><a
+ href="#Toc_Ex_Complete%20390%20Part">Complete 390 Part Metadata</a></h3>
+ This example shows the entire set of 390 metadata that could be defined for
+a given part. Note this is demonstrating the 'worst-case scenario', with
+all the possible metadata defined for SMP/E, JCLIN, and link-editing. There
+is one file stanza in the example. <br>
+&nbsp; 
+<table border="1" cellspacing="0" cellpadding="0" width="100%">
+ <tbody>
+    <tr bgcolor="#cccccc">
+ <td align="center" valign="CENTER"><b>File Stanzas in the CMF</b></td>
+  <td align="center" valign="CENTER"><b>Makefile</b></td>
+ </tr>
+  <tr>
+ <td align="left" valign="top"><tt>file&nbsp;</tt> <br>
+      <tt>{&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "part3.p";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "part3";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "/usr/lpp/odehello/bin/" ;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "atstbin" ;&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= 'mod';&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; shipType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= ['ipp' 'ptf']&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; hfsCopyType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 'binary';&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp; lkedTo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= 'both';&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; lkedParms&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=</tt> <br>
+      <tt>&nbsp;"NOXREF,NOLIST,NOMAP,RENT,REUS,NCAL,LET,AMOD=31,RMOD=ANY";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp; jclinLkedParms&nbsp;&nbsp;&nbsp; = "call,rent";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp; order = "EXTPRT1,PART2,EXTPRT2,EXTPRT3,EXTPRT4";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp; partInfo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= [&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; ("pdssyslib" "sgldpds")&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; ("hfssyslib" "sgldhfs")&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; ("symlink" "../../../../../bin/symlnk1,../bin/symlnk2")&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; ("sympath"&nbsp;&nbsp;&nbsp; "../bin/sympath,../another/sympath")&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+];&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= [ "eextinc1" "eextinc2" ];&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; pdsLkedName&nbsp;&nbsp;&nbsp;&nbsp; = "PDSPRT3";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp; hfsLkedName&nbsp;&nbsp;&nbsp;&nbsp; = "HFSPRT1";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp; lkedRc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; '0';&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; hfsAlias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= [ "../ldapcp" "../test" "/ode/test" ];&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; pdsAlias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= [ "mypdsal1" "mpdsal2" "mypdsal3" ];&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; permissions&nbsp;&nbsp;&nbsp;&nbsp; = "0755";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "user";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "sys";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; extAttr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "extAttr1,extAttr2";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; entry&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "ceestart";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; setCode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "AC(0)";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; libraryDD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "ststbin";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp; sysLibs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= [ "sceelked" "csslib" ];&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; sysLibsLibraryDD&nbsp; = [ "BPXCALL3" "BPXCALL4" ];&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;&nbsp; jclinMode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= "testmode";&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp; jclinLkedParms&nbsp;&nbsp;&nbsp; = "CALL,RENT";&nbsp;</tt> 
+      <br>
+      <tt>&nbsp;}&nbsp;</tt></td>
+  <td align="left" valign="top"><tt>#Should be already defined in makefiles&nbsp;</tt> 
+      <br>
+      <tt>IDIR&nbsp;&nbsp;&nbsp; = /usr/lpp/odehello/bin&nbsp;</tt> <br>
+      <tt>ILIST&nbsp;&nbsp; = part3.p&nbsp;</tt> <br>
+      <tt>IMODE&nbsp;&nbsp; = 755</tt> <br>
+      <tt>IGROUP&nbsp; = sys&nbsp;</tt> <br>
+      <tt>IOWNER&nbsp; = user&nbsp;</tt> 
+      <p><tt>CMF_PARENT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= HBPS112&nbsp;</tt> <br>
+      <tt>CMF_TARGET_DIR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = ATSTBIN&nbsp;</tt> 
+      <br>
+      <tt>CMF_HFS_COPY_TYPE&nbsp;&nbsp;&nbsp; = binary&nbsp;</tt> <br>
+      <tt>CMF_JCLIN_LKED_PARMS = call,rent&nbsp;</tt> <br>
+      <tt>CMF_LKED_RC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= 0&nbsp;</tt> <br>
+      <tt>CMF_SET_CODE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = AC(0)&nbsp;</tt> 
+      <br>
+      <tt>CMF_LKED_PARMS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =</tt> <br>
+      <tt>&nbsp;NOXREF,NOLIST,NOMAP,RENT,REUS,NCAL,LET,AMOD=31,RMOD=ANY&nbsp;</tt> 
+      </p>
+      <p><tt>#target specific attribute makefile variables&nbsp;</tt> <br>
+      <tt>part3.p_CMF_TARGET_FILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= part3&nbsp;</tt> <br>
+      <tt>part3.p_CMF_SHIP_TYPE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= ipp ptf</tt> </p>
+      <p><tt># makefile variables required for JCLIN generation part3.p_CMF_LKED_TO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= BOTH&nbsp;</tt> <br>
+      <tt>part3.p_CMF_PDS_LKED_NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = PDSPRT3&nbsp;</tt> 
+      <br>
+      <tt>part3.p_CMF_HFS_LKED_NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = HFSPRT1&nbsp;</tt> 
+      <br>
+      <tt>part3.p_CMF_JCLIN_LKED_PARMS&nbsp;&nbsp; = CALL,RENT&nbsp;</tt> 
+      </p>
+      <p><tt>#optional makefile variables for JCLIN generation&nbsp;</tt> 
+      <br>
+      <tt>part3.p_CMF_ORDER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXTPRT1,PART2,EXTPRT2,EXTPRT3,EXTPRT4&nbsp;</tt> 
+      <br>
+      <tt>part3.p_CMF_INCLUDE&nbsp;&nbsp;&nbsp; = eextinc1 eextinc2&nbsp;</tt> 
+      <br>
+      <tt>part3.p_CMF_HFS_ALIAS&nbsp; = ../ldapcp ../test /ode/test&nbsp;</tt> 
+      <br>
+      <tt>part3.p_CMF_PDS_ALIAS&nbsp; = mypdsal1 mpdsal2 mypdsal3&nbsp;</tt> 
+      <br>
+      <tt>part3.p_CMF_EXT_ATTR&nbsp;&nbsp; = extAttr1,extAttr2&nbsp;</tt> 
+      <br>
+      <tt>part3.p_CMF_ENTRY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = ceestart&nbsp;</tt> 
+      <br>
+      <tt>part3.p_CMF_SYS_LIBS&nbsp;&nbsp; = sceelked csslib&nbsp;</tt> <br>
+      <tt>part3.p_CMF_LIBRARY_DD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= ststbin part3.p_CMF_SYS_LIBS_LIBRARY_DD = BPXCALL3 BPXCALL4&nbsp;</tt> <br>
+      <tt>part3.p_CMF_JCLIN_MODE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+= testmode</tt> </p>
+      <p><tt>part3.p_CMF_PART_INFO_PDSSYSLIB = sgldpds&nbsp;</tt> <br>
+      <tt>part3.p_CMF_PART_INFO_HFSSYSLIB = sgldhfs&nbsp;</tt> <br>
+      <tt>part3.p_CMF_PART_INFO_SYMLINK&nbsp;&nbsp; =</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+../../../../../bin/symlnk1,../bin/symlnk2&nbsp;</tt> <br>
+      <tt>part3.p_CMF_PART_INFO_SYMPATH&nbsp;&nbsp; =</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+../bin/sympath,../another/sympath</tt></p>
+      </td>
+ </tr>
+ 
+  </tbody>
+</table>
+  
+<p><b>Note:</b> </p>
+<ul>
+ <li> The default value for fileType is <i>'MOD'</i> for a 390 part, so specifying 
+it would not be necessary unless overwriting it.</li>
+  <li> A list of values is represented by assigning space separated strings.
+For example: the syslibs attribute for <i>part3.p</i> is specified by <i>part3.p_CMF_SYSLIBS 
+= sceelked csslib</i>.</li>
+  <li> The makefile variables of the form CMF_PART_INFO_xxx are used to specify 
+SMP/E tags and JCLIN parameters that are specified in the <b>partInfo</b> 
+CMF attribute. For example: <i>part3.p_CMF_PART_INFO_SYMLINK&nbsp;&nbsp; =
+../../../../../bin/symlnk1,../bin/symlnk2.</i></li>
+  <li> Some of the makefile variables are defined at the directory level
+so that they apply to all the shippable files in the directory. For example:
+CMF_PARENT, CMF_TARGET_DIR, CMF_HFS_COPY_TYPE, CMF_JCLIN_LKED_PARMS, CMF_LKED_RC,
+CMF_SET_CODE and CMF_LKED_PARMS defined in the above example apply to all
+the shippable files defined in the ILIST or EXTRA_ILIST makefile variables.</li>
+ 
+</ul>
+  
+<h3> <a name="Ex_Specifying Product Data for the 390"></a><a
+ href="#Toc_Ex_Specifying%20Product%20Data%20for%20the%20390">Specifying Product
+Data for the 390 example:</a></h3>
+ This example shows how to specify the Product Data for the above example. 
+Note that this is not the complete product data and it just demonstrates the
+procedure to generate <b><tt>immChildFiles</tt></b> list in the CMF. <br>
+&nbsp; 
+<table border="1" cellspacing="0" cellpadding="0" cols="1" width="43%">
+ <tbody>
+    <tr>
+ <td><tt>InstallEntity</tt> <br>
+      <tt>{</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; Common :</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EntityInfo</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityName&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; "hbps112";</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; "hbps112";</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; versionDate&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; "7302";</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; '3' ;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; '0' ;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkInfo</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //Note the 
+value of immChildFiles.&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //It should 
+refer to entityName.</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildFiles&nbsp;&nbsp; 
+=&nbsp; [ %hbps112% ];</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; NULL;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</tt> <br>
+      <tt>}</tt></td>
+ </tr>
+ 
+  </tbody>
+</table>
+  
+<p>The following demonstrates the Product Data part of the CMF generated by
+the CMF Generation tool. In the above example, assume that there is one more
+file in addition to <i>part3.p</i> called <i>part4.p </i>with the same parent
+<i>hbps112</i>. <br>
+&nbsp; 
+<table border="1" cellspacing="0" cellpadding="0" cols="1" width="57%">
+ <tbody>
+    <tr>
+ <td><tt>InstallEntity</tt> <br>
+      <tt>{</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp; Common :</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EntityInfo</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityName&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; "hbps112";</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; "hbps112";</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; versionDate&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; "7302";</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; '3' ;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; '0' ;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkInfo</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //Note the 
+value of immChildFiles.&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //The value 
+is replaced by all the files with&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //CMF_PARENT=hbps112</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildFiles&nbsp;&nbsp; 
+=&nbsp; [&nbsp;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/usr/lpp/odehello/bin/part3.p&gt;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/usr/lpp/odehello/bin/part4.p&gt;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+];</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+=&nbsp; NULL;</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</tt> <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</tt> <br>
+      <tt>}</tt></td>
+ </tr>
+ 
+  </tbody>
+</table>
+  </p>
+<p> </p>
+<hr width="100%"> 
+<h2> <a name="Limitations"></a><a href="#Toc_Limitations">Limitations</a></h2>
+ The following are the limitations of the CMF Generation tool. 
+<ol>
+ <li> The Product level information including all the sub-packages should
+be supplied by the user in a file in the CMF format. The syntax of this file 
+will not be checked. Hence it is the responsibility of the user to make sure
+that all the CMF attributes are written in the correct syntax. Any syntax
+errors will be reported by ODE only during making the <b>parse_all</b> target
+in which case the CMF should be generated again.</li>
+  <li> If the CMFs created on Windows platforms are used on Unix platforms
+or vice versa, there could be some issues with file separators as ODE will 
+not change the file separators in the CMF based on the platform.</li>
+ 
+</ol>
+  <br>
+</body>
+</html>

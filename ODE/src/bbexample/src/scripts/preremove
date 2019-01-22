@@ -1,0 +1,3 @@
+rm -fr /opt/odehello/links/logger
+rm -fr /opt/odehello/links/server
+rm -fr /opt/odehello/links

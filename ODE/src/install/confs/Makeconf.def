@@ -1,0 +1,124 @@
+#
+# Sample Makeconf.def file.  See rules_mk/std.mk for details on
+# the default values used here.  Edit as desired.  Typically
+# included by Makeconf.  Store this file in the rules_mk directory.
+#
+
+.if empty(MACHINE:Mx86_os2_*) && empty(MACHINE:Mx86_nt_*) && \
+    empty(MACHINE:Mx86_95_*) && empty(MACHINE:M*_openvms_*)
+UNIX ?= UNIX
+.endif
+
+CCFAMILY  ?= cset
+
+TARGET_MACHINE ?= ${MACHINE}
+
+.ifdef UNIX
+CC_SUFF ?= .c .cc .cpp .C .cxx
+.else
+CC_SUFF ?= .c .cc .cpp .cxx
+.endif
+
+YACC_COMPILE_SUFF ?= .c
+YACC_HEADER_SUFF  ?= .h
+YACC_SUFF ?= .y
+LEX_COMPILE_SUFF ?= .c
+LEX_SUFF ?= .l
+
+.if (!defined(UNIX)) && (${CCFAMILY} != "gnu")
+OBJ_SUFF?=.obj
+.else
+OBJ_SUFF?=.o
+.endif
+
+.if defined(UNIX)
+PROG_SUFF?=
+.else
+PROG_SUFF?=.exe
+.endif
+
+.if !empty(MACHINE:M*_openvms_*)
+STATLIB_SUFF?=.olb
+.elif (!defined(UNIX)) && (${CCFAMILY} != "gnu")
+STATLIB_SUFF?=.lib
+.else
+STATLIB_SUFF?=.a
+.endif
+
+MAJOR_VER_LIBSUFF ?= .0
+MINOR_VER_LIBSUFF ?= .0
+
+.if !empty(MACHINE:M*_openvms_*)
+IMPLIB_SUFF?=.exe
+.elif (!defined(UNIX)) && (${CCFAMILY} != "gnu")
+IMPLIB_SUFF?=.lib
+.elif !empty(TARGET_MACHINE:Mrios_aix_*)
+IMPLIB_SUFF?=.a
+.elif !empty(TARGET_MACHINE:Mhp9000_ux_*) || !empty(MACHINE:Mia64_hpux_*)
+IMPLIB_SUFF?=.sl
+.elif !empty(TARGET_MACHINE:Mmvs390_oe_*)
+IMPLIB_SUFF?=.x
+.elif !empty(TARGET_MACHINE:Mx86_netbsd_*) || \
+      !empty(TARGET_MACHINE:Mx86_openbsd_*)
+IMPLIB_SUFF?=|.so${MAJOR_VER_LIBSUFF}${MINOR_VER_LIBSUFF}
+.else
+IMPLIB_SUFF?=.so
+.endif
+
+.if !empty(MACHINE:M*_openvms_*)
+SHLIB_SUFF?=.exe
+.elif (!defined(UNIX)) && (${CCFAMILY} != "gnu")
+SHLIB_SUFF?=.dll
+.elif !empty(TARGET_MACHINE:Mhp9000_ux_*) || !empty(MACHINE:Mia64_hpux_*)
+SHLIB_SUFF?=.sl
+.elif !empty(TARGET_MACHINE:Mrios_aix_*) || !empty(TARGET_MACHINE:Mmvs390_oe_*)
+SHLIB_SUFF?=.a
+.elif !empty(TARGET_MACHINE:Mx86_netbsd_*) || \
+      !empty(TARGET_MACHINE:Mx86_openbsd_*)
+SHLIB_SUFF?=|.so${MAJOR_VER_LIBSUFF}${MINOR_VER_LIBSUFF}
+.else
+SHLIB_SUFF?=.so
+.endif
+
+.if defined(UNIX) || (${CCFAMILY} == "gnu" && empty(MACHINE:Mx86_os2_*))
+LIB_PREF ?= lib
+.else
+LIB_PREF ?=
+.endif
+
+.ifdef USE_SHARED_LIBRARY
+LIB_SUFF ?= ${IMPLIB_SUFF}
+.else
+LIB_SUFF ?= ${STATLIB_SUFF}
+.endif
+
+DEFFILE_SUFF  ?= .def
+
+.if !empty(MACHINE:M*_openvms_*)
+RESPFILE_SUFF ?= .com
+.else
+RESPFILE_SUFF ?= .rsp
+.endif
+
+EXPFILE_SUFF  ?= .exp
+
+LST_SUFF ?= .lst
+MAP_SUFF ?= .map
+
+PRE_SUFF?=.p
+PP_SUFF?=.pp
+DEP_SUFF?=.u
+MSG_SUFF ?= .msg
+CAT_SUFF ?= .cat
+RES_SUFF ?= .res
+RC_SUFF  ?= .rc
+HDR_SUFF ?= .h
+
+MC_SUFF  ?= .mc
+HLP_SUFF ?= .hlp
+HPJ_SUFF ?= .hpj
+RTF_SUFF ?= .rtf
+IPF_SUFF ?= .ipf
+INF_SUFF ?= .inf
+
+ICONV_SUFF ?= .iconv

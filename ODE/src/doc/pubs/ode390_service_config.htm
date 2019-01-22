@@ -1,0 +1,1133 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Wayne Mathis">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>ODE 390 Service Configuration Guide</title>
+</head>
+<body bgcolor="#FFFFFF">
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+ODE 390 Service Packaging Configuration</h1>
+Open Development Environment
+<br>ODE 390 Service Configuration
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<p>
+<hr>
+<h2>
+Table of Contents</h2>
+<b><a href="#intro">Introduction</a></b>
+<ul>
+<li>
+<a href="#ipp">ODE IPP</a></li>
+
+<li>
+<a href="#servicetransfer">ODE Service Transfer</a></li>
+
+<li>
+<a href="#servicepkg">ODE Service Packaging</a></li>
+</ul>
+<b><a href="#gettingstarted">Getting Started with Service Transfer</a></b>
+<ul>
+<li>
+<a href="#envsetup">Setting up the environment</a></li>
+
+<li>
+<a href="#fmidtable">Setting Create FMID/CMVC Release mapping table</a></li>
+
+<li>
+<a href="#CLASSPATH">Setting CLASSPATH</a></li>
+
+<li>
+<a href="#PARMFILE">Create Parmfile</a></li>
+
+<li>
+<a href="#stvars">Set Service Transfer Variables</a></li>
+
+<ul>
+<li>
+<a href="#CMF">CMF Attributes</a></li>
+
+<li>
+<a href="#MAKEFILE">Makefile variables</a></li>
+</ul>
+
+<li>
+<font color="#000000"><a href="#CLIENT.SER">Create Setup File</a></font></li>
+</ul>
+<b><a href="#stprocess">Service Transfer Process</a></b>
+<ul>
+<li>
+<a href="#runst">Builder Performs the Service Transfer</a></li>
+</ul>
+<b><a href="#appendix">Appendix</a></b>
+<ul>
+<li>
+<a href="#ststeps">Steps performed during Service Transfer</a></li>
+
+<ul>
+<li>
+<a href="#initpdtdb">Create PDT (INITPDTDB)</a></li>
+
+<li>
+<a href="#createshadow">Create the Build/390 Release (CREATESHADOW)</a></li>
+
+<li>
+<font color="#000000"><a href="#createdriver">Create the Build/390 Copysent
+Driver (CREATEDRIVER)</a></font></li>
+
+<li>
+<a href="#defver">Define the FMID to the PDT (DEFVER)</a></li>
+</ul>
+
+<li>
+<a href="#errorrec">Error Recovery Situations</a></li>
+
+<li>
+<a href="#toolversion">Tool Version Information</a></li>
+</ul>
+
+<p><br>
+<hr ALIGN=LEFT WIDTH="100%">
+<h2>
+<a NAME="intro"></a>Introduction</h2>
+ODE 390 Service Packaging is provided as a solution for those who wish
+to package USS products in the native environment using ODE.&nbsp; This
+solution involves other SDWB components in addition to ODE to take advantage
+of functions that exist in other SDWB tools.&nbsp; Please consult the <a href="http://w3.sdwb.raleigh.ibm.com/glossary.htm">SDWB
+Glossary</a> for definition of terms.&nbsp; This document provides the
+necessary instructions to set up and configure the user's environment for
+running ODE 390 Service Packaging.
+<h3>
+<a NAME="ipp"></a>ODE IPP</h3>
+ODE Initial Product Packaging (IPP) builds products for GA using ODE packaging
+as documented in the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEPackagingReference.htm">ODE
+Packaging Reference.</a>&nbsp; Refer to this document for all information
+on ODE IPP.&nbsp; In order to create service packages in the SDWB environment,
+the initial package process should be performed before the service transfer
+process takes place.&nbsp; Building with ODE IPP will ensure there is a
+functioning
+<a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEPackagingReference.htm#HDRCMF">Common
+Metadata File</a> (CMF) and a <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEConcepts.htm#Header_8">backing
+build</a> with the appropriate directory structure for later service packaging.
+<h3>
+<a NAME="servicetransfer"></a>ODE Service Transfer</h3>
+ODE Service Transfer involves setting up a service environment for storing
+information about the product which will be used later in APAR and PTF
+processing.&nbsp; Service Transfer requires an ODE CMF (usually the same
+CMF from IPP), and a functional Build/390 environment, complete with server
+and USS client installation.&nbsp; Service Transfer results in a PDT database
+created for tracking the FMIDs, APARs and PTFs for the product. Service
+transfer is run once for service packaging environment.&nbsp; This enables
+the product for service by adding the product version to a PDT database.
+<h3>
+<a NAME="servicepkg"></a>ODE Service Packaging</h3>
+ODE Service Packaging facilitates building of APARs and PTFs that can eventually
+be shipped to customers.&nbsp; An SMP/E-installable package is created
+to provide an installable fix, and service history information is stored
+in a PTF Definition Tool (PDT) database that resides on an MVS host.&nbsp;
+In order to build a service package for USS, service transfer must be complete,
+and an IPP backing build of the GA code or latest level service code must
+be available.&nbsp; The reader should be familiar with ODE packaging basics
+provided in the
+<a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEPackagingConcepts.htm">ODE
+Packaging Concepts </a>and the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEPackagingReference.htm">ODE
+Packaging Reference</a>.&nbsp; The <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEPkgTutorial.htm">ODE
+Packaging Tutorial</a> is also available online.
+<br>
+<hr>
+<h2>
+<a NAME="gettingstarted"></a>Getting Started with Service Transfer</h2>
+Service Transfer begins with setting up the environment to allow for Service
+Packaging.
+<h3>
+<a NAME="envsetup"></a>Setting up the environment</h3>
+The tools required for ODE 390 Service Packaging include <a href="http://w3.sdwb.ibm.com/ode/">ODE</a>
+in the USS environment, <a href="http://w3.sdwb.ibm.com/bps/">BPS</a> server
+on AIX, <a href="http://w3.sdwb.ibm.com/cmvc50/">CMVC</a> server on AIX
+with Build/390 and BPS user exits, and a <a href="http://w3.sdwb.ibm.com/build390/">Build/390</a>
+client on USS, and a Build/390 server installed on the MVS host system.&nbsp;
+Each of these tools require installation and customization for this environment.&nbsp;
+Please refer to the individual SDWB tool documents at the sites above for
+installation and configuration.&nbsp; Specific customization details of
+these tools for this solution are addressed in this document.
+<p>These are the server requirements for the ODE 390 service environment.
+<br>&nbsp;
+<table BORDER CELLSPACING=0 CELLPADDING=0 COLS=5 WIDTH="99%" >
+<tr BGCOLOR="#999999">
+<td><b>Tool</b></td>
+
+<td><b>Java</b></td>
+
+<td><b>DB2</b></td>
+
+<td><b>AIX</b></td>
+
+<td><b>Other</b></td>
+</tr>
+
+<tr>
+<td>ODE [%release_name%]</td>
+
+<td>1.1.6 with APAR OW38252 or greater</td>
+
+<td>n/a</td>
+
+<td>n/a</td>
+
+<td>Build/390 client is called directly from ODE on USS</td>
+</tr>
+
+<tr>
+<td>BPS 4.0</td>
+
+<td>JRE 1.3</td>
+
+<td>V6 or V7 4.3.3</td>
+
+<td>4.3.3</td>
+
+<td>also must have user exits installed on CMVC family server</td>
+</tr>
+
+<tr>
+<td>Build/390 4.0 or higher Server and Subserver</td>
+
+<td>n/a</td>
+
+<td>n/a</td>
+
+<td>USS consistent with the MVS version installed (used only for USS parts
+processing).&nbsp;</td>
+
+<td><a href="http://w3.sdwb.ibm.com/b390doc50/B390ClientUsersGuide50.html#ToC_9">Build/390
+Hardware and software requirements page</a></td>
+</tr>
+
+<tr>
+<td>Build/390 4.0 or higher Library Server for CMVC and BPS Interaction
+(RMI)&nbsp;</td>
+
+<td>JRE shipped with product&nbsp;</td>
+
+<td>n/a</td>
+
+<td>n/a</td>
+
+<td>-</td>
+</tr>
+
+<tr>
+<td>CMVC</td>
+
+<td>n/a</td>
+
+<td>V6 or V7</td>
+
+<td>4.3.3</td>
+
+<td>-</td>
+</tr>
+</table>
+
+<p>These are the client requirements for the ODE 390 service environment.
+<br>&nbsp;
+<table BORDER CELLSPACING=0 CELLPADDING=0 COLS=4 WIDTH="100%" >
+<tr BGCOLOR="#999999">
+<td><b>Tool</b></td>
+
+<td><b>Java</b></td>
+
+<td><b>client</b></td>
+
+<td><b>Other</b></td>
+</tr>
+
+<tr>
+<td>ODE [%release_name%]</td>
+
+<td>n/a</td>
+
+<td>n/a</td>
+
+<td>Build/390 USS client is called by ODE and must be installed.</td>
+</tr>
+
+<tr>
+<td>BPS 4.0</td>
+
+<td>JRE 1.3 or Java Webstart</td>
+
+<td><a href="http://w3.sdwb.ibm.com/bps/40documentation.html">BPS 4.0 Documentation</a></td>
+
+<td>-</td>
+</tr>
+
+<tr>
+<td>Build/390 4.0 or higher USS client</td>
+
+<td>JRE 1.3</td>
+
+<td>USS consistent with the MVS version installed
+<br>JRE Version in USS java full version "J2RE 1.3.0 IBM build hm130-20010424"&nbsp;
+or the latest available</td>
+
+<td><a href="http://w3.sdwb.ibm.com/build390/download.html">Build/390 Client
+download page</a></td>
+</tr>
+
+<tr>
+<td>CMVC&nbsp;</td>
+
+<td>n/a</td>
+
+<td><a href="http://w3.sdwb.ibm.com/support.html">CMVC Client/Server Support
+page</a></td>
+
+<td>-</td>
+</tr>
+</table>
+
+<p>To begin establishing this environment ODE, Build/390 server
+<a href="http://w3.sdwb.ibm.com/build390">Build/390
+client</a>, and Build390 RMIServer must be installed.&nbsp; The rest of
+this section describes some of the specific configurations that must be
+in place and files needed for the ODE 390 service environment
+<p>The following BPS customizations must be configured.&nbsp; These options
+are available through the BPS Admin GUI, and some are available through
+the BPS Service GUI with service administration authority.
+<ul>
+<li>
+The default defect name must be set to the APAR name when configuring the
+CMVC library information.</li>
+
+<li>
+The PDT flag must be checked in the BPS RETAIN release configuration for
+each RETAIN release enabled for service.</li>
+
+<li>
+<font color="#000000">The BPS Service390 subsystem must be configured and
+running as well as the Service subsystem</font></li>
+
+<li>
+<font color="#000000">The latest Build390.jar should be obtained from http://ssdwrk01.sanjose.ibm.com/clear/testdownloadode.html</font></li>
+
+<li>
+<font color="#000000">The RETAIN components and releases must be defined
+to BPS and activated.</font></li>
+
+<li>
+<font color="#000000">RETAIN components must use strict mapping in BPS
+(as opposed to relaxed mapping.)</font></li>
+
+<li>
+<font color="#000000">The latest <b>bpsServicePackaging.jar</b> file should
+be obtained for use with ODE when building PTFs on USS</font></li>
+</ul>
+<font color="#000000">The following ODE items should be reviewed</font>
+<ul>
+<li>
+The distribution of ODE common makefile rules, <b>ode%release_name%_bxx_rules_ebcdic.zip</b>,
+should be obtained from the SDWB tools distribution site.</li>
+
+<li>
+The ODE packaging tools jar file, <b>ode%release_name%_bxx_tools.jar</b>,
+should be obtained from the SDWB tools distribution site.</li>
+</ul>
+<font color="#000000">The following Build/390 items should be reviewed</font>
+<ul>
+<li>
+<font color="#000000">The latest updates to Build/390 packaging should
+be installed for USS client and server</font></li>
+
+<li>
+<font color="#000000">Use the custom USS client <a href="http://w3.sdwb.ibm.com/build390/download.html">http://w3.sdwb.ibm.com/build390/download.html</a>
+page for Build390 Release 5.0</font></li>
+</ul>
+<font color="#000000">The following CMVC items should be reviewed</font>
+<ul>
+<li>
+<font color="#000000">The Build/390 and BPS user exits need to be installed
+including RMI servers that run on the CMVC server.&nbsp; This configuration
+uses the userExits.b390ode file.&nbsp; Stop the CMVC server before untaring
+the RMI server code.</font></li>
+
+<li>
+<font color="#000000">The libraryServer.perl file must be customized by
+changing three variables:</font></li>
+
+<ul><font color="#000000"><tt>$familyName</tt> - has to be set manually.&nbsp;
+It should point the the family schema (short name)&nbsp; not the family
+address</font>
+<br><font color="#000000"><tt>$databaseId </tt>- needs to be the family
+database ID</font>
+<br><font color="#000000"><tt>$databasePassword</tt> - needs to be the
+DB2 password for the ID named in databaseID</font></ul>
+
+<li>
+<font color="#000000">Establish a Level type default for the CMVC family</font></li>
+
+<li>
+<font color="#000000">Add the service process with track, service, fix,
+level, test, trackfixhold, and review subprocesses.</font></li>
+</ul>
+
+<h3>
+<a NAME="fmidtable"></a>Setting Create FMID/CMVC Release mapping table</h3>
+A DB2 table is required to map FMIDs to a CMVC release for this service
+solution.&nbsp; This table is created as part of the CMVC family and therefore
+resides on the CMVC server.&nbsp; Scripts are provided to create this table
+and add any FMID mappings needed.&nbsp; The CMVC server and user exits
+should be restarted after every insert to this table.&nbsp; These scripts
+should reside in the bin directory under the family home directory on the
+machine hosting the CMVC family.
+<p>The script <b>create_table.ksh</b> will create the B390CMVCRELMAP table
+on the family database, which can then be populated with FMID/Release mappings.
+<p><b>&nbsp;&nbsp;&nbsp;<tt> ==> create_table.ksh</tt></b>
+<p>The script <b>insert_values.ksh</b> will populate the B390CMVCRELMAP
+table with the appropriate FMID/Release mappings.&nbsp; This script takes
+as arguments the name of the CMVC release and its corresponding FMID.
+<p><b>&nbsp;&nbsp;&nbsp; <tt>==> insert_values.ksh <i>CMVC_Release FMID</i></tt></b>
+<p>These scripts can be downloaded in the 
+<a target=_blank href=http://w3.opensource.ibm.com/projects/cmvc-utilities/>
+CMVC Utilities section of the IIOSB website.</a> See the <b>cmvc-ode-samples</b>
+package on that page, the filename should be <b>cmvc-ode-samples-1.1.zip</b>, or
+similar.
+<br>&nbsp;
+<h3>
+<a NAME="CLASSPATH"></a>Setting CLASSPATH</h3>
+To run the ODE service transfer commands, the user's CLASSPATH environment
+variable on USS must include the following:
+<ul>
+<li>
+<b>%release_name%_bxx_tools.jar</b> - ODE packaging tools</li>
+
+<li>
+<b>Build390.jar</b> - Build/390 Client to communicate with Build/390 Server.
+Anytime ODE is used for 390 service packaging this jar file must be included
+in the classpath for ODE to call the Build/390 client. This jar file is
+shipped with the Build/390 Client.</li>
+
+<li>
+<b>bpsService390.jar</b> - needed for Build/390 and BPS communication.
+It is shipped with the Build/390 Client.</li>
+
+<li>
+<b>bpsServicePackaging.jar</b> - for ODE to communicate with the BPS service
+packaging API. This jar file is shipped with BPS and is found at the SDWB
+distribution web site.</li>
+
+<li>
+<b>java390API.jar</b> - needed for Build/390 and CMVC communication.  It is shipped with the Build/390 Client.</li>
+
+</ul>
+
+<h3>
+<a NAME="PARMFILE"></a>Create Parmfile</h3>
+Create a parmfile for the Build/390 client. This file establishes the default
+settings for the Build/390 client which is called by ODE commands during
+service packaging.&nbsp; Each ODE user must create a parmfile, and this
+file must exist in a directory where the user has read access.&nbsp; The
+<b><tt>B390_PARM_FILE</tt></b>
+makefile variable should be defined to be the fully qualified path of the
+parmfile. This file will enable the ODE commands for service packaging
+to run without being prompted by Build/390 for more information.
+<p>Note that it is possible to define the <b>B390_PARM_FILE</b> makefile
+variable as an environment variable in the user's profile.&nbsp; This may
+be beneficial in that each user will must have their own parmfile, which
+will most likely not change often. An environment variable prevents them
+from continually adding the parmfile location to a makefile in each sandbox
+used for service packaging, or having to specify the location from the
+command line.
+<p>Variables required in this file include:
+<ul>
+<li>
+<b>hostname</b> - hostname of the USS system</li>
+
+<li>
+<b>port</b> - port number of the Build/390 server</li>
+
+<li>
+<b>uid</b> - userid of the ODE user</li>
+
+<li>
+<b>acct</b> - MVS accounting information for batch jobs</li>
+
+<li>
+<b>library</b> - CMVC</li>
+
+<li>
+<b>family</b> - the specific family used for this service area</li>
+
+<li>
+<b>famadr</b> - the machine name and port for the family</li>
+
+<li>
+<b>famport</b> - the port number for the family</li>
+
+<li>
+<b>libraryrmiport</b> - the Build/390 RMI port number used on the family
+server</li>
+
+<li>
+<b>famuser</b> - the id that has access to the family for service</li>
+
+<li>
+<b>librarypath</b> - path to the library executables</li>
+
+<li>
+<b>svchost</b> - the BPS hostname (used for APAR management)</li>
+
+<li>
+<b>svcport</b> - port number for the BPS server (default 1099)</li>
+
+<li>
+<font color="#000000"><b>svcrel</b> - any valid FMID in the product, used
+to obtain the PDT used by Build/390 packaging commands</font></li>
+
+<li>
+<b>password</b> - password for the ODE user</li>
+</ul>
+Sample parmfile:
+<blockquote><tt>FILENAME: <b>parmfile</b> in the /u/ODETEST/bld390 directory</tt>
+<br>hostname=winmvsk1.hursley.ibm.com
+<br>port=969
+<br>uid=ODETEST
+<br>acct=(ODETEST,ABCDEF,XXX,AAA)
+<br>library=CMVC
+<br>family=argo
+<br>famadr=argotest.hursley.ibm.com
+<br>famport=4444
+<br>libraryrmiport=55557
+<br>famuser=ODETEST
+<br>librarypath=????
+<br>svchost=buffalo.hursley.ibm.com
+<br>svcport=1099
+<br>svcrel=HEDS323
+<br>PWODETEST@WINMVSK1.HURSLEY.IBM.COM=odepw</blockquote>
+
+<h3>
+<a NAME="stvars"></a>Set Service Transfer Variables</h3>
+
+<h4>
+<a NAME="CMF"></a>CMF Attributes</h4>
+Packaging metadata is stored in the ODE CMF file.&nbsp; A sample CMF file
+is shipped with the ODE bbexample provided with the ODE code.&nbsp; For
+more information on the ODE CMF and the available attributes, see the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEPackagingReference.htm">ODE
+Packaging Reference.</a>
+<p>Here is a sample of some of the variables found in the CMF file.&nbsp;
+The <b>highlighted</b> variables are required for 390 service packaging,
+and used in the service transfer process.
+<blockquote><tt>ServiceInfo</tt>
+<br><tt>{</tt>
+<br><b><tt>&nbsp; retainComponent = "7340VSE01";</tt></b>
+<br><b><tt>&nbsp; retainChangeTeam = "ODETST";</tt></b>
+<br><b><tt>&nbsp; retainRelease = "G01" ;</tt></b>
+<br><tt>&nbsp; contactName = "Jack";</tt>
+<br><tt>&nbsp; contactPhone = "111-111-1111";</tt>
+<br><tt>&nbsp; contactNode = "odenode";</tt>
+<br><tt>&nbsp; contactUserId = "oderules";</tt>
+<br><tt>&nbsp; memoToUsers = "This is a sample memo";</tt>
+<br><tt>}</tt>
+<p>&nbsp;<tt>EntityInfo</tt>
+<br><tt>{</tt>
+<br><b><tt>&nbsp; entityName&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp; "heds323";</tt></b>
+<br><b><tt>&nbsp; entityId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;
+"heds323";</tt></b>
+<br><tt>&nbsp; versionDate&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp; "7302";</tt>
+<br><tt>&nbsp; version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '3' ;</tt>
+<br><tt>&nbsp; release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0' ;</tt>
+<br><tt>&nbsp; copyright&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp; &lt;
+./copyright.txt >;</tt>
+<br><tt>&nbsp; description&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp; "The executables
+in ODEHELLO";</tt>
+<br><tt>}</tt>
+<p><tt>MvsInfo</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp; applid = 'ODETEST';</tt>
+<br><tt>&nbsp; distlibs = [ "abpsbin,2,1,5,fb,80,6160" ];</tt>
+<br><tt>&nbsp; srel = 'z038';</tt>
+<br><tt>&nbsp; type = [ 'ipp' 'vpl' 'ptf' ];</tt>
+<br><tt>&nbsp; delete = "hbps111";</tt>
+<br><tt>&nbsp; fesn = '1234567';</tt>
+<br><tt>}</tt></blockquote>
+
+<h4>
+<a NAME="MAKEFILE"></a>Makefile Variables</h4>
+Set additional service transfer variables in the ODE makefile.&nbsp; These
+variables can be defined in any appropriate makefile such that they are
+defined to the packaging targets.&nbsp; Good candidates include the top-level
+src directory makefile, or the Makeconf file.&nbsp; The variables needed
+for the service transfer process are listed below.&nbsp; Note that many
+variables are optional, and if not specified, appropriate defaults will
+be used by Build/390.
+<br>&nbsp;
+<table BORDER CELLSPACING=0 CELLPADDING=0 COLS=3 WIDTH="100%" >
+<tr BGCOLOR="#999999">
+<td><b>Makefile variable</b></td>
+
+<td><b>Description</b></td>
+
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td><b><tt>B390_PDT</tt></b></td>
+
+<td>name of the PDT to be created or used during this service transfer
+step.&nbsp; Use MVS PDS naming standards</td>
+
+<td>required</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_INIT_PDT&nbsp;</tt></b></td>
+
+<td>create a new PDT or use an existing PDT. Specify "yes" or "no".&nbsp;</td>
+
+<td>required</td>
+</tr>
+
+<tr>
+<td><b><tt>CMVC_FAMILY</tt></b></td>
+
+<td>name of CMVC family that contains the code to be built for service.&nbsp;
+example: mycmvcfam</td>
+
+<td>required</td>
+</tr>
+
+<tr>
+<td><b><tt>CMVC_FAMILY_ADDR</tt></b></td>
+
+<td>the server name and port number of the CMVC family.&nbsp; example<tt>
+cmvcfamily.site.ibm.com@1301</tt></td>
+
+<td>required</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_PARM_FILE</tt></b></td>
+
+<td>the directory and name of the parmfile for this user</td>
+
+<td>required</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_PATH</tt></b></td>
+
+<td>directory to find Build/390 related files. The user must have write
+permission for Build/390 to use this directory for temp storage.</td>
+
+<td>required</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_PDT_STGCLS</tt></b></td>
+
+<td>represents the SMS Storage Class.&nbsp; If undefined or blank, SMS
+will/should choose a default.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_PDT_MGTCLS</tt></b></td>
+
+<td>the SMS Management Class.&nbsp; If undefined or blank, SMS will/should
+choose a default.&nbsp;</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_PDT_UBKP</tt></b></td>
+
+<td>the Main unibank primary space.&nbsp; This is the number of cylinders
+of space to allocate to the primary extent of the data portion of the VSAM
+cluster.&nbsp; If undefined or blank, SMS will/should choose a default.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_TRACE_ONLY</tt></b></td>
+
+<td>only display, without executing, the Build/390 commands (yes) or execute
+and show the Build/390 commands (no) Specify yes or no. Default is no.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_DEBUG_ON</tt></b></td>
+
+<td>specify <tt>yes</tt> to activate the <tt>/DEBUG1</tt> flag for all
+Build/390 commands to receive additional output and log information.&nbsp;
+Default is no.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_REL_STGCLS</tt></b></td>
+
+<td>the SMS storage class for the Build/390 releases.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_REL_MGTCLS&nbsp;</tt></b></td>
+
+<td>the SMS managment class for the Build/390 releases.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_REL_UBKP</tt></b></td>
+
+<td>the Unibank primary space in cylinders&nbsp; for the Build/390 releases.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_REL_BLKS</tt></b></td>
+
+<td><tt>t</tt>he bulk data set secondary sparc in cylinders for the Build/390
+releases.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_REL_BLKP</tt></b></td>
+
+<td>the bulk data set primary space in cylinders for the Build/390 releases.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_REL_STEPS</tt></b></td>
+
+<td>number of additional Unibank additional process steps for the Build/390
+releases.&nbsp;</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_REL_MAXCYL</tt></b></td>
+
+<td>bulk data set maximum size in cylinders for the Build/390 releases.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_REL_MAXEXT</tt></b></td>
+
+<td>the bulk data set maximum extents for the Build/390 releases.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_REL_COLLECTORS</tt></b></td>
+
+<td>the number of additional Unibank additional collectors for the Build/390
+releases.&nbsp; Default setting will be 2.&nbsp; Must have at least 1 collector
+set in order to use the 'C1' collector in the LST file during APAR processing.&nbsp;</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_REL_VOLID</tt></b></td>
+
+<td>the DASD volume serial for the Build/390 releases.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_DRV_STGCLS</tt></b></td>
+
+<td>is the SMS storage class for Build/390 drivers.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_DRV_MGTCLS</tt></b></td>
+
+<td>the SMS managment class for Build/390 drivers.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_DRV_UBKP</tt></b></td>
+
+<td>the Unibank primary space in cylinders for Build/390 drivers</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_DRV_BLKS</tt></b></td>
+
+<td>the bulk data set secondary space in cylinders for Build/390 drivers.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_DRV_BLKP</tt></b></td>
+
+<td>the bulk data set primary space in cylinders for Build/390 drivers.&nbsp;</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_DRV_MAXCYL</tt></b></td>
+
+<td>the bulk data set maximum size in cylinders for Build/390 drivers.</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_DRV_MAXEXT</tt></b></td>
+
+<td>the bulk data set maximum extents for Build/390 drivers.&nbsp;</td>
+
+<td>optional</td>
+</tr>
+
+<tr>
+<td><b><tt>B390_WORKPATH1</tt></b></td>
+
+<td>the temporary dir for both the local .UPD/.LST files as well as the
+parameter WORKPATH1 to the Build/390 CREATEDRIVER command for COPYSENT
+driver creation. The default is <b>/tmp</b>. If this variable is set
+during Service Transfer (when PKG_CLASS=ST), it should also be set during
+Service Packaging (PKG_CLASS=SP).</td>
+
+<td>optional</td>
+</tr>
+</table>
+
+<p>See the example below:
+<blockquote><tt>####################################</tt>
+<br><tt># Service Transfer Related Variables</tt>
+<br><tt>####################################</tt>
+<br><tt>B390_PDT = ODETEST.GETPDTS</tt>
+<br><tt>B390_INIT_PDT = yes</tt>
+<br><tt>B390_PDT_STGCLS = CLEARG</tt>
+<br><tt>B390_PDT_MGTCLS = CLEARLIB</tt>
+<br><tt>B390_PDT_UBKP = 1</tt>
+<br><tt>CMVC_FAMILY = mycmvcfam</tt>
+<br><tt>CMVC_FAMILY_ADDR = sdwbtr8.raleigh.ibm.com@1615</tt>
+<br><tt>B390_PARM_FILE = /u/ODETEST/bld390/parmfile</tt>
+<br><tt>B390_PATH = /u/ODETEST/bld390/</tt>
+<br><tt>B390_TRACE_ONLY = no</tt>
+<br><tt>B390_REL_STGCLS = CLEARG</tt>
+<br><tt>B390_REL_MGTCLS = CLEARLIB</tt>
+<br><tt>B390_REL_UBKP = 21</tt>
+<br><tt>B390_REL_BLKS = 24</tt>
+<br><tt>B390_REL_BLKP = 21</tt>
+<br><tt>B390_REL_MAXCYL = 100</tt>
+<br><tt>B390_REL_MAXEXT = 40</tt>
+<br><tt>B390_DRV_STGCLS = CLEARG</tt>
+<br><tt>B390_DRV_MGTCLS = CLEARLIB</tt>
+<br><tt>B390_DRV_UBKP = 21</tt>
+<br><tt>B390_DRV_BLKS = 24</tt>
+<br><tt>B390_DRV_BLKP = 21</tt>
+<br><tt>B390_DRV_MAXCYL = 2100</tt>
+<br><tt>B390_DRV_MAXEXT = 288</tt>
+<br><tt>B390_WORKPATH1 = /home/user1/mytemp</tt>
+<br><tt>####################################</tt></blockquote>
+
+<h3>
+<a NAME="CLIENT.SER"></a><font color="#000000">Create Setup File</font></h3>
+<font color="#000000">There is an ODE target, <b>createsetup_all</b>, that
+will create a client.ser file used for communication between the Build/390
+USS client and the Build/390 server.&nbsp; This file must be generated
+before any Build/390 client commands can be executed.&nbsp; See the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ode390_service_users.htm">User's
+Guide</a> for more info.</font>
+<p>The ODE createsetup_all target will invoke the Build/390 command: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ClientUsersGuide50.html#hdrclsetu">CREATESETUP.</a>
+<p>
+<hr SIZE=0 WIDTH="100%">
+<h2>
+<a NAME="stprocess"></a>Service Transfer Process</h2>
+One step performed by the user will run all the following service transfer
+actions.&nbsp; Service transfer is run once per product or product set.
+<h3>
+<a NAME="runst"></a>Builder Performs the Service Transfer</h3>
+The ODE Service Transfer target will instruct ODE to run Build/390 commands
+to create and initialize a Build/390 PDT and to create the necessary Build/390
+releases and copysent drivers.
+<p><b>NOTE:</b> The Initial Product Packaging (IPP) process should be completed
+prior to running service transfer.&nbsp; <font color="#000000">If service-specific
+updates have been made to the CMF, the file will need to be parsed again,
+which will require running <b>build parse_all,
+</b>as in the example below,before
+the service transfer is executed.</font>
+<p>To parse the CMF, execute the following from the top-level src directory
+of the backing build:
+<blockquote><tt>[SNJEDS3] ODETEST:/u/ODETEST/ode5.0/bbexample/src</tt>
+<br><tt>=> <b>build PKG_CLASS=st parse_all</b></tt></blockquote>
+To run the Build/390 service transfer commands with ODE, execute the following
+from the top-level src directory of the backing build:
+<blockquote><tt>[SNJEDS3] ODETEST:/u/ODETEST/ode5.0/bbexample/src</tt>
+<br><tt>=> <b>build PKG_CLASS=st runpkgtool_all</b></tt></blockquote>
+This command will run the various Build/390 service transfer commands to
+accomplish the following tasks
+<blockquote>
+<li>
+create a PDT</li>
+
+<li>
+create a Build/390 shadow release for each FMID in the product</li>
+
+<li>
+create a Build/390 copysent driver for each FMID in the product</li>
+
+<li>
+define the FMID to the PDT</li>
+</blockquote>
+
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="appendix"></a>Appendix</h2>
+
+<h3>
+<a NAME="ststeps"></a>Steps performed during Service Transfer</h3>
+The ODE service transfer target will run several Build/390 commands.&nbsp;
+Note: these commands do not have to be manually run during service transfer.&nbsp;
+The following section describes the Build/390 commands that are run during
+service transfer, and are listed here for informational purposes only.
+<h4>
+<a NAME="initpdtdb"></a>Create PDT (INITPDTDB)</h4>
+The ODE makefile variable <b>B390_INIT_PDT</b> should be set to yes if
+a new PDT is needed.&nbsp; If an existing PDT is to be used this variable
+should be set to no when service transfer is run with <b><tt>build PKG_CLASS=st
+runpkgtool_all</tt></b>.
+<p><font color="#000000">Create the necessary PDT for the product (set),
+if it is not already created.&nbsp; If you are migrating to ODE and Build/390
+from SPA/VM, you may want to reference the <a href="http://w3.sdwb.ibm.com/b390doc50/B390SPAMigrationGuide50.html">SPA
+Migration Guide</a></font><font color="#3366FF">.</font>
+<h5>
+<font color="#000000">Description</font></h5>
+A PDT (PTF Definition Tool) database needs to be created for each product
+set with related history. A PDT must contain all history for a product
+that is required to create the proper requisites for PTFs. A new PDT is
+required if a product set is the first such product to be serviced in the
+field. If the product set is a continuation of an existing product set,
+and the service history from prior releases needs to be maintained for
+the new release, then an existing PDT, which contains the prior release
+service history, must be used for the product set.
+<p>ODE will invoke the Build/390 command: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ProcessRef50.html#f1xbslist">INITPDTDB</a>&nbsp;
+to create a new PDT.
+<h5>
+Sample execution</h5>
+<tt>&nbsp;&nbsp; INITPDTDB CPDT=ODETEST.GETPDTS STGCLS=CLEARG MGTCLS=CLEARLIB
+UBKP=1</tt>
+<h5>
+Screen output</h5>
+
+<blockquote><tt>Processing command INITPDTDB...</tt>
+<br><tt>Checking client compatibility</tt>
+<br><tt>Getting defaults from host</tt>
+<br><tt>Creating a PDT - ODETEST.GETPDTS</tt>
+<br><tt>Initialize PDT Database completed successfully</tt>
+<br><tt>RC=0</tt></blockquote>
+
+<h4>
+<a NAME="createshadow"></a>Create the Build/390 Release (CREATESHADOW)</h4>
+<font color="#000000">Create the Build/390 shadow release for the product
+(set) being built in ODE.&nbsp; Each Build/390 release corresponds to an
+FMID, and multiple releases can be defined in one PDT.</font>
+<p><font color="#000000">ODE will create a Build/390 release for every
+FMID defined in the CMF.</font>
+<h5>
+Description</h5>
+Before the initial load of product data into Build/390, a release must
+be created in Build/390 to represent the product set.&nbsp; The Build/390
+release must conform to the MVS dataset naming standards because the release
+name will be used in dataset names. The CMF's applid and entityName are
+used as dataset qualifiers for the dataset that will store this build/390
+release object.
+<p>ODE will invoke the Build/390 command<font color="#000000">: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ProcessRef50.html#f1xbslist">CREATESHADOW</a></font>
+<h5>
+Sample execution</h5>
+<tt>&nbsp; CREATESHADOW CHILVL=ODETEST NEWSHADOW=HEDS323 LIBFAMILY=mycmvcfam
+LIBADDR=sdwbtr8.raleigh.ibm.com@1615 CBLKP=21 CBLKS=24 CUBKP=21 CMAXCYL=2100
+CMAXEXT=288 CSTGCLS=CLEARG CMGTCLS=CLEARLIB /ODEBUILD</tt>
+<h5>
+Screen output</h5>
+
+<blockquote><tt>Processing command CREATESHADOW...</tt>
+<br><tt>Checking client compatibility</tt>
+<br><tt>Getting defaults from host</tt>
+<br><tt>Creating mvs release HEDS323</tt>
+<br><tt>Create MVS Release(ODE) completed successfully</tt>
+<br><tt>RC=0</tt></blockquote>
+
+<h4>
+<a NAME="createdriver"></a><font color="#000000">Create the Build/390 Copysent
+Driver (CREATEDRIVER)</font></h4>
+Create the Build/390 Copysent Driver <font color="#000000">for the Build/390
+release</font>
+<p><font color="#000000">ODE will create a copysent driver for every FMID
+defined in the CMF.</font>
+<h5>
+Description</h5>
+Once the Build/390 release is created, then an empty driver must be created
+for the release. This driver must be called "COPYSENT."&nbsp; This driver
+will be the base driver for all subsequent APAR delta driver builds and
+PTF builds. The CMF's applid, entityName, and retainComponent are used
+as dataset qualifiers for the dataset that will store this Build/390 release
+object.&nbsp; Note that this copysent driver will remain empty, and defining
+part data to the driver and building the driver is not necessary.
+<p>ODE will invoke the Build/390 command: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ProcessRef50.html#f1xbslist">CREATEDRIVER</a>
+<br><b>NOTE: </b>The values of the makefile variables <tt><b>B390_DRV_UBKP</b>,
+<b>B390_DRV_BLKS</b>,
+<b>B390_DRV_BLKP</b>,</tt>
+<br><tt><b>B390_DRV_MAXCYL</b>,
+<b>B390_DRV_MAXEXT </b>are passed to this
+command
+</tt>to specify the driver sizes.<tt> </tt>Of these variables,
+if any of
+<tt><b>B390_DRV_UBKP</b>,
+<b>B390_DRV_BLKS</b>,
+<b>B390_DRV_BLKP</b>
+are</tt> not specified, then the values of these three variables will not
+be passed to this command.&nbsp; Instead, the number of shippable files
+in the FMID will be counted and passed to the command using the parameter
+NUMPARTS.
+<h5>
+Sample execution</h5>
+<tt>&nbsp; CREATEDRIVER CHILVL=ODETEST MVSRELEASE=HEDS323 NEWDRIVER=COPYSENT
+HLCOMP=7340 CPDT=ODETEST.GETPDTS <b>CBLKP=21 CBLKS=24 CUBKP=21</b> CMAXCYL=2100
+CMAXEXT=288 CSTGCLS=CLEARG CMGTCLS=CLEARLIB /ODEBUILD</tt>
+<p><tt>&nbsp; if any of <b>B390_DRV_UBKP, B390_DRV_BLKS, B390_DRV_BLKP</b>
+are not specified, then the sample execution is shown below:</tt>
+<p><tt>&nbsp; CREATEDRIVER CHILVL=ODETEST MVSRELEASE=HEDS323 NEWDRIVER=COPYSENT
+HLCOMP=7340 CPDT=ODETEST.GETPDTS <b>NUMPARTS=14</b> CMAXCYL=2100 CMAXEXT=288
+CSTGCLS=CLEARG CMGTCLS=CLEARLIB /ODEBUILD</tt>
+<br>&nbsp;
+<h5>
+Screen output</h5>
+&nbsp;&nbsp;&nbsp; Processing command CREATEDRIVER...
+<br>&nbsp;&nbsp;&nbsp; Checking client compatibility
+<br>&nbsp;&nbsp;&nbsp; Creating driver COPYSENT
+<br>&nbsp;&nbsp;&nbsp; Create MVS Driver completed successfully
+<br>&nbsp;&nbsp;&nbsp;&nbsp; RC=0
+<h4>
+<a NAME="defver"></a>Define the FMID to the PDT (DEFVER)</h4>
+ODE will define every FMID&nbsp; in the CMF to the PDT.
+<h5>
+Description</h5>
+The DEFVER command will be used to define to the PDT each InstallEntity
+in the CMF that maps to a SMP/E Function.&nbsp; An InstallEntity is an
+FMID in this case, and ODE calls DEFVER to define each FMID listed in the
+CMF to the PDT.
+<p>ODE will invoke the Build/390 command: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ProcessRef50.html#h1xdefver">DEFVER</a>
+<h5>
+Sample execution</h5>
+<tt>&nbsp; DEFVER COMPID=VSE01 RETREL=G01 PDT=ODETEST.GETPDTS VERSION=HEDS323
+LIBRELEASE=HEDS323 SREL=Z038 LIBFAMILY=mycmvcfam LIBFAMADR=sdwbtr8.raleigh.ibm.com@1615
+TEAM=ODETST FPI1=JEDS535 FSUPER=N PREFIX=A ADDSUP=OFF PRICED=ON SITE=B25
+SYS=EDS /ODEBUILD</tt>
+<h5>
+Screen output</h5>
+
+<blockquote>Processing command DEFVER...
+<br>Checking client compatibility
+<br>Defining fmid&nbsp; to PDT
+<br>Please see file /u/ODETEST/build390_50/misc/defver.prt
+<br>Defining fmid HEDS323 to PDT successful
+<br>Process Wrapper (Define FMID to PDT)&nbsp; completed successfully
+<br>RC=0</blockquote>
+
+<h3>
+
+<hr ALIGN=LEFT WIDTH="100%"></h3>
+
+<h3>
+<a NAME="errorrec"></a>Error recovery situations</h3>
+It may become necessary to back out steps during the service transfer process.&nbsp;&nbsp;
+Provided here is information on deleting these items in the case of unrecoverable
+errors.&nbsp; There is a PDT tool that can be used to view the PDT directly,
+Build/390 should be contacted to acquire this tool.&nbsp; This is optional.&nbsp;
+It may be useful to install the Build/390 client to work with some of the
+objects built during the service process.&nbsp; This is optional.
+<h4>
+Viewing the PDT</h4>
+Build/390 5.0 may ship a utility for viewing the PDT.&nbsp; This allows
+the administrator to view apar and ptf records with ability to edit them.
+<h4>
+Recovery Guide</h4>
+<a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/RecoveryGuide.htm">Recovery
+Guide for MVS/USS Service Packaging</a>
+<h4>
+Backup and Recovery</h4>
+Please see these references for information on backup and recovery of the
+SDWB components
+<br><a href="http://w3.sdwb.ibm.com/b390doc50/B390ServiceProcessGuide50.html#h1xtrouble">Build/390
+Service Process</a>
+<br><a href="http://w3.sdwb.ibm.com/bps/bps40Pubs/ADMGUIDE.html#hdrdivperformbpsbackuprestore">BPS
+Backup and Restore</a>
+<br><a href="http://w3.sdwb.ibm.com/bps/bps40Pubs/ADMGUIDE.html#hdrdivconfiguringdb">BPS
+Synchronization</a>
+<br><a href="http://w3.sdwb.ibm.com/cmvc/5.0/infocenter/">CMVC Backup and
+Recovery</a>
+<br>&nbsp;
+<h4>
+Other Administrative Considerations</h4>
+Build/390 creates a <b>build390.log </b>file in the <b>misc</b> directory.&nbsp;
+If the misc/build390.log's size is greater than 1MB a warning is displayed
+and the user should archive the log and proceed.&nbsp; It is a good idea
+to periodically clean up any old output files in the B390_PATH directory,
+as Build/390 creates many output files in that location, which can over
+time consume a great amount of disk space.
+<p>
+<hr ALIGN=LEFT WIDTH="100%">
+<h3>
+<a NAME="toolversion"></a>Tool Version Information</h3>
+The following commands can be executed from USS to obtain the version and
+build number of the corresponding tool.
+<p><b>ODE build tools</b>
+<blockquote><tt>==> mk -v</tt></blockquote>
+or, optionally
+<blockquote><tt>==> <i>anytool</i> -version</tt></blockquote>
+where <i>anytool</i> is any ODE build tool (mksb, build, workon, etc).
+<p><b>ODE packaging tools.jar file</b>
+<blockquote><tt>==> java com.ibm.ode.lib.io.Version</tt></blockquote>
+or, if in a workon session
+<blockquote><tt>==> mk odeversion</tt></blockquote>
+<b>Build/390 command line client</b>
+<blockquote><tt>==> java Build390.MBClient VERSION</tt></blockquote>
+<b>bpsService390.jar file</b>
+<blockquote><tt>==> java com.ibm.sdwb.bps.Version</tt></blockquote>
+<b>bpsServicePackaging.jar</b>
+<br>N/A
+<p><b>GUI-based tools</b>
+<br>Simply access '<tt>Help->About</tt>' from the menu panel for any GUI-based
+tool (i.e. BPS Service GUI, Build/390 GUI Client, etc.)
+</body>
+</html>

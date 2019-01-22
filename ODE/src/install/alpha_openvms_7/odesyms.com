@@ -1,0 +1,14 @@
+$ vbuild:==$ode$tools:oderun build
+$ vcrlfcon:==$ode$tools:oderun crlfcon
+$ vcurrentsb:==$ode$tools:oderun currentsb
+$ vgendep:==$ode$tools:oderun gendep
+$ vgenpath:==$ode$tools:oderun genpath
+$ vmk:==$ode$tools:oderun mk
+$ vmkbb:==$ode$tools:oderun mkbb
+$ vmkdep:==$ode$tools:oderun mkdep
+$ vmklinks:==$ode$tools:oderun mklinks
+$ vmkpath:==$ode$tools:oderun mkpath
+$ vmksb:==$ode$tools:oderun mksb
+$ vresb:==$ode$tools:oderun resb
+$ vsbinfo:==$ode$tools:oderun sbinfo
+$ vsbls:==$ode$tools:oderun sbls

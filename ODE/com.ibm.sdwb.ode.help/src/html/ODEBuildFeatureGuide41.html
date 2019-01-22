@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<title>Generating makefiles for a project containing Java and C/C++ files</title>
+<!-- All rights reserved. Licensed Materials Property of IBM -->
+<!-- US Government Users Restricted Rights                   -->
+<!-- Use, duplication or disclosure restricted by            -->
+<!-- GSA ADP Schedule Contract with IBM Corp.                -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="dc.date" scheme="iso8601" content="2003-09-23" />
+<meta name="copyright" content="(C) Copyright IBM Corporation 2003" />
+<meta name="security" content="" />
+<meta name="dc.language" scheme="rfc1766" content="en-us" />
+<meta name="Robots" content="index,follow"/>
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<meta name="keywords" content="combination Java and C/C++ project,
+natures settings" />
+<link rel="stylesheet" type="text/css" href="ibmidwb.css" />
+<link rel="stylesheet" type="text/css" href="help.css" />
+</head>
+<body>
+<a id="Top_Of_Page" name="Top_Of_Page"></a>
+<a name="genmakefilejavac2b2b"></a>
+<h3 id="genmakefilejavac2b2b">Generating makefiles for a project containing Java and C/C++ files</h3>
+<p><a id="idx60" name="idx60"></a>Makefiles
+can be generated for a project containing both Java and C/C++ files. For a
+project to have both Java and C/C++ project properties, it must be associated
+with both C/C++ and Java natures. The natures settings are stored inside the <span class="italic">.project</span> XML file in the root directory of the project.</p>
+<p><a id="idx61" name="idx61"></a>To create the natures elements,
+shut down the Workbench, open the <span class="italic">.project</span> file and
+add three nature elements with the following content: <span class="italic">org.eclipse.cdt.core.cnature</span>, <span class="italic">org.eclipse.cdt.core.ccnature</span>, and <span class="italic">org.eclipse.jdt.core.javanature</span>. The nature
+elements are added inside the &lt;natures> element. When completed, the XML
+coding looks like this example:</p>
+<pre class="xmp">&lt;natures>
+&nbsp;&nbsp; &lt;nature>org.eclipse.cdt.core.cnature&lt;/nature> 
+&nbsp;&nbsp; &lt;nature>org.eclipse.cdt.core.ccnature&lt;/nature>
+&nbsp;&nbsp; &lt;nature>org.eclipse.jdt.core.javanature&lt;/nature> 
+&lt;/natures> </pre>
+<a id="Bot_Of_Page" name="Bot_Of_Page"></a>
+</body>
+</html>

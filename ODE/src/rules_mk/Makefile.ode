@@ -1,0 +1,42 @@
+ILIST = \
+	bld.install.mk \
+	bld.passes.mk \
+	bld.rules.mk \
+	bld.std.mk \
+	clean.mk \
+	cmvc.mk \
+	dep.mk \
+	export.mk \
+	help.mk \
+	java.std.mk \
+	java.mk \
+	lib.mk \
+	Makefile.template\
+	nls.mk \
+	obj.mk \
+	passes.mk \
+	pkg.installmvs.mk \
+  pkg.metadata.mk \
+	pkg.parse.mk \
+	pkg.passes.mk \
+	pkg.svc390.mk \
+	pkg.rules.mk \
+	pkg.runpkgtool.mk \
+	pkg.std.mk \
+	prog.mk \
+	res.mk \
+	rules.mk \
+	std.mk \
+  metadata.xsd \
+	tso.mvsbld.mk \
+	tso.rules.mk \
+	tso.std.mk \
+  asmtemplate.jcl \
+  cbltemplate.jcl \
+  plstemplate.jcl \
+  plxtemplate.jcl 
+
+IDIR = /../rules_mk/
+
+.include <${RULES_MK}>
+

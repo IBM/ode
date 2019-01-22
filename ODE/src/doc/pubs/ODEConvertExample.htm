@@ -1,0 +1,1058 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Allen Springer">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (WinNT; U) [Netscape]">
+   <title>An Example Of Converting A Project To ODE</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<h1>
+<img SRC="bannerx.gif" ALT="IBM Books" BORDER=0 height=92 width=490></h1>
+
+<dl>
+<h1>
+An Example Of Converting A Project To ODE</h1>
+Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)</dl>
+
+<center>
+<hr SIZE=6></center>
+
+<h2>
+Table of Contents</h2>
+
+<ul>
+  <li> <a href="#Purpose of this document">Purpose of this document</a></li>
+
+  <li> <a href="#The Original Project">The original project</a></li>
+  <li> <a href="#Setting Up the ODE Files">Setting up the ODE files</a></li>
+
+  <li> <a href="#Reorganizing the source code">Reorganizing the source code</a></li>
+
+  <li> <a href="#The Original Makefile">The original makefile</a></li>
+
+  <li> <a href="#ODE Multiple Passes">ODE multiple passes</a></li>
+  <li> <a href="#Creating makefile.ode in src">Creating the makefile in src</a></li>
+
+  <li> <a href="#Creating makefile.ode for C++">Creating a makefile for C++ files</a></li>  
+  <li> <a href="#Creating makefile.ode for Resource">Creating a makefile for new 
+    file types</a></li>
+
+<ul>
+    <li> <a href="#Processing .icx">Processing .icx files in the EXPINC pass</a></li>    
+    <li> <a href="#Processing .rcx files">Processing .rcx files in the EXPINC 
+      pass</a></li>
+
+    <li> <a href="#Processing .rc files">Processing .rc files in the OBJECTS pass</a></li>
+</ul>
+
+  <li> <a href="#Building the executable in the STANDARD">Building the executable 
+    in the STANDARD pass</a></li>
+
+  <li> <a href="#Adding rules for the clean_all target">Adding rules for cleaning 
+    the new types of files</a></li>
+
+  <li> <a href="#NLS Structuring of Files">NLS structuring of files</a></li>
+
+  <li> <a href="#Actual Processing of Resources in ODE">Actual processing of resources 
+    in ODE</a></li>
+
+  <li> <a href="#AppendixACompleteMakefiles">Appendix A - the complete makefiles</a></li>
+
+<ul>
+<li>
+<a href="#The complete myproj.rules.mk file">The complete myproj.rules.mk
+file</a></li>
+
+    <li> <a href="#The complete makefile.ode for en_us">The complete makefile.ode 
+      for en us</a></li>
+</ul>
+
+  <li> <a href="#AppendixBSources">Appendix B - Sources for the example</a></li>
+
+  <li> <a href="#AppendixCCompilingResources">Appendix C - Compiling resources 
+    using the ODE rules</a></li>
+</ul>
+
+<p><br>
+<hr WIDTH="100%">
+<h2> <a NAME="Purpose of this document"></a>Purpose of this document</h2>
+
+This document provides a realistic example of how a project can be converted from 
+a more traditional "make" facility to ODE.&nbsp; Major points demonstrated by 
+this example are: 
+
+  <ul>
+    <li> Sandboxes can now be used for the project, which is probably the biggest 
+      advantage that ODE provides.</li>
+    <li> The source can be shared by several platforms to build the output for 
+      each platform. This is another ODE advantage.</li>
+    <li> New file types are added to ODE for the project to handle "resources" 
+      as used in Windows 95/98/NT and OS/2.</li>
+    <li> A number of ODE facilities are illustrated that go beyond the tutorial 
+      or documentation examples.</li>
+    <li> There are several build steps that can be done in parallel in ODE.</li>
+    <li> The program build was reorganized so that NLS enablement was easier to 
+      do. A simple example of adding a second language is shown.</li>
+    <li> A reasonably small "hello world" example was chosen as the project, so 
+      that the reader would not be overwhelmed by detail.</li>
+    <li> Virtually no changes were made to the original source.</li>
+    <li> No changes were made to the ODE rules files. Essentially all changes 
+      were in directory structure, makefiles, and the <b>myproj.rules.mk</b> file.</li>
+  </ul>
+  <p><br>
+    It is recommended that you review the <a href="index.htm"><i>ODE Documentation</i></a>, 
+    especially <a href="ODEAdminsGuide.htm"><i>ODE Installation and Administration 
+    Guide</i></a> and the <a href="ODEConcepts.htm"><i>ODE Concepts </i></a> before 
+    reading this document.&nbsp;</p>
+  <p> If you intend to convert your project to ODE in a way similar to what is 
+    illustrated here, the <a href="ODECommonMakefiles.htm"><i>ODE Common Makefiles</i></a> 
+    and the <a href="ODEMakeReference.htm#HDRMAKEDET">Makefile Syntax</a> section 
+    of the <a href="ODEMakeReference.htm"><i>ODE Make Reference</i></a> document 
+    will probably be major references.&nbsp; </p>
+  <p>The conversion process involves: <br>
+    &nbsp; 
+  <ul>
+    <li> Determining ODE rules for compiling and linking</li>
+    <li> Determining ODE directory conventions</li>
+    <li>Determining ODE pass structure </li>
+    <li> New rules will be added in <b>myproj.rules.mk</b> to support the use 
+      of three "resource" programs.</li>
+  </ul>
+<hr WIDTH="100%">
+<h2> <a NAME="The Original Project"></a>The original project</h2>
+
+The original project is a sample from IBM Visual Age C++ for Windows called HELLO4. 
+The files were all in one directory, and the makefile was self contained, assuming 
+only that IBM Visual Age C++ was installed.&nbsp; The project was built simply 
+by running <b>nmake</b> with no arguments, in the directory where the source was 
+located.&nbsp; The files could be moved anywhere, and the build still worked. 
+<p>HELLO4 consisted of two cpp files, three header files, a file to build an icon, 
+  and a resource file that supplied buttons, menus, displayed text, and key definitions 
+  for the program.&nbsp; The icon and the resource files contained everything 
+  that would normally be modified if the menus and text of the program were to 
+  be translated to another language.&nbsp; All the intermediate files created 
+  during the build were all in the same directory.&nbsp; The output of the build 
+  was the self-contained <b>hello4.exe</b> executable file. 
+<p>The original files were:
+  
+<p><b><samp>ADIALOG4.CPP&nbsp; AHELLOW4.CPP&nbsp; AHELLOW4.HPP&nbsp; ADIALOG4.HPP&nbsp; 
+  AHELLOW4.H&nbsp; AHELLOW4.ICX&nbsp;&nbsp; AHELLOW4.RCX&nbsp; MAKEFILE&nbsp; 
+  README.TXT&nbsp; HELLO4.IWO </samp></b> 
+<p>Other files included in the sample were intermediate steps in the build process, 
+  for example,<samp> <b>AHELLOW4.ICO</b></samp> or <b><samp>AHELLOW4.RC</samp></b>.&nbsp; 
+  These files would be rebuilt if they were erased and <b>nmake</b> would run 
+  again.&nbsp; As an exercise, ODE<b> mk</b> was used to build<samp> </samp>HELLO4, 
+  and it worked when -<b>w</b> was used on the <b>mk</b> command line.&nbsp; This 
+  meant HELLO4 was not built using <b>nmake</b> features that were not in <b>mk</b>.&nbsp; 
+  The -<b>w</b> flag was necessary because <b>mk</b> uses the UNIX makefile convention 
+  of having tab characters in front of command lines by default.&nbsp; Developers 
+  that are not used to UNIX makefiles should be aware of this difference. 
+<br>
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ffff00">Note: </td>
+    <td width="92%"> The filenames above are all upper case, so the sample can 
+      be used in all the file systems that Visual Age will run in.&nbsp; The version 
+      of ODE used in this example required the extensions <b>.H</b>,<b> .HPP</b>, 
+      and<b> .CPP</b> all be in lower case.&nbsp; This is not a requirement in 
+      later versions of ODE.&nbsp; However, for this port to ODE, the filenames 
+      were renamed to their lower case versions.</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+
+<hr WIDTH="100%">
+<h2> <a NAME="Setting Up the ODE Files"></a>Setting up the ODE files</h2>
+
+It is necessary to set up a directory structure and the files needed 
+  for a backing build, to take advantage of ODE. 
+  <ul>
+    <li> A backing build is created in an appropriate place.&nbsp; This example 
+      was created with the command:</li>
+    <ul>
+      <b>mkbb -dir d:\ testhello</b> 
+    </ul>
+    This creates the directory <b>d</b>:<b>\testhello</b> along with several subdirectories. 
+    <li> The ODE rules files <b>%release_name%_rules.zip </b>were put in <b>testhello\src\rules_mk</b>, 
+      as described in the <a href="ODETutorial.htm#Installing ODE and the Backing Build Example"><i>ODE 
+      Tutorial</i></a><i>.</i></li>
+    <li> Finally, the <b>Makeconf, Buildconf</b>, and <b>Buildconf.exp</b> files 
+      were copied from the tutorial <b>bbexample\src</b> directory to the <b>testhello\src 
+      </b>directory.</li>
+  </ul>
+
+
+<hr WIDTH="100%">
+<h2> <a NAME="Reorganizing the source code"></a>Reorganizing the source code</h2>
+
+By convention ODE has all the source for a project in the src directory or its 
+subdirectories. Building occurs in the <b>obj/<i>platform</i></b> directory and 
+subdirectories, where platform is a conventional name for a platform and operating 
+system.&nbsp; In the example described here, platform was x86_nt_4, and could 
+be x86_95_4 or x86_os2_4, without changes to the source files.&nbsp; If the ODE 
+version of the project were on a shared file system, the three versions of the 
+program could be built on each of the three platforms, while sharing the common 
+source code and makefiles. 
+<p>ODE recommends that a new project place all its headers in one directory.&nbsp; 
+  Although this is not necessary, it makes reorganization easier.&nbsp; After 
+  examining several ODE projects, the following directory structure was chosen. 
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ffff00">Note: </td>
+    <td width="92%"> The structure allows for new language versions. </td>
+  </tr>
+</table>
+<p>An example of a Texan language directory is shown. 
+<blockquote><samp>src&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    some files supplied by ODE go here <br>
+    src\include&nbsp;&nbsp;&nbsp;&nbsp; put headers here; shared by all language 
+    versions <br>
+    src\bin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; put cpp files here; 
+    shared by all language versions <br>
+    src\nls&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hold language dependent 
+    directories <br>
+    src\nls\en_us&nbsp;&nbsp; put original icx and rcx files here for USA English 
+    version <br>
+    src\nls\tx_tx&nbsp;&nbsp; copy icx and rcx files here, to be modified for 
+    Texan version <br>
+    src\rules_mk&nbsp;&nbsp;&nbsp; supplied by ODE</samp></blockquote>
+In the conversion process, new <b> makefile.ode</b> files were put in <b>src</b>, 
+  <b>src\bin</b>, <b>src\nls\en_us</b>, and <b>src\nls\tx_tx</b>.&nbsp; A new 
+  file <b>src\rules_mk\myproj.rules.mk</b> was also created.
+
+<hr WIDTH="100%">
+<h2> <a NAME="The Original Makefile"></a>The original makefile</h2>
+
+The new makefiles were created by reference to the original makefile, 
+  and by using the <a href="ODEMakeMake.htm"><i>ODE MakeMake</i></a><i> </i>program 
+  that is part of ODE.&nbsp; A text editor capable of inserting tab characters 
+  was also used. 
+  <p>The original makefile, with some comments deleted, is shown here: 
+  <blockquote><samp># --- Tool definitions ---</samp> <samp><br>
+    ERASE=ERASE <br>
+    GCPPC=ICC <br>
+    GLINK=ICC <br>
+    GRC=IRC<br>
+    GRCV=IRCCNV <br>
+    GIPFC=IPFC <br>
+    GHCW=HCW <br>
+    GIPFCVIEW=IVIEW <br>
+    GIMAGE=IBMPCNV </samp> 
+    <p><samp><tt># --- </tt>Tool flags --- <br>
+      ICLCPPOPTS=/Gm+ /Gd+ /Gh+ /Ti+ /Fb+ /Q+ <br>
+      GCPPFLAGS=$(LOCALOPTS) $(ICLCPPOPTS) <br>
+      GCPPLFLAGS=/Tdp /B"/pmtype:pm /debug /browse" <br>
+      GPERFOBJ=cppwpa3.obj <br>
+      GRCFLAGS=-DIC_WIN <br>
+      GRCVFLAGS= <br>
+      GIPFCFLAGS=/q <br>
+      GHCWFLAGS=/c /e <br>
+      GIMAGEFLAGS= </samp> 
+    <p><samp><tt>#</tt> --- Body --- </samp><br>
+      <samp>all:&nbsp; hello4.exe </samp>
+    <p><samp>hello4.exe:&nbsp; ahellow4.obj adialog4.obj ahellow4.res <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>$(GLINK) $(GCPPLFLAGS) $(GCPPFLAGS) 
+      /Fe"hello4.exe" \ <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>ahellow4.obj adialog4.obj $(GPERFOBJ) 
+      ahellow4.res </samp>
+    <p><samp>ahellow4.obj:&nbsp; ahellow4.cpp ahellow4.hpp ahellow4.h <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>$(GCPPC) /C+ $(GCPPFLAGS) ahellow4.cpp 
+      </samp>
+    <p><samp>adialog4.obj:&nbsp; adialog4.cpp adialog4.hpp ahellow4.h ahellow4.hpp 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>$(GCPPC) /C+ $(GCPPFLAGS) adialog4.cpp 
+      </samp>
+    <p><samp>ahellow4.res:&nbsp; ahellow4.rc ahellow4.h ahellow4.ico <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>$(GRC) $(GRCFLAGS) ahellow4.rc </samp>
+    <p><samp>ahellow4.rc:&nbsp; ahellow4.rcx <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>$(GRCV) $(GRCVFLAGS) ahellow4.rcx 
+      ahellow4.rc </samp>
+    <p><samp>ahellow4.ico:&nbsp; ahellow4.icx <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>$(GIMAGE) -I $(GIMAGEFLAGS) ahellow4.icx 
+      ahellow4.ico <br>
+      &nbsp;</samp>
+  </blockquote>
+We will show how this can be translated to equivalents in ODE. 
+<hr WIDTH="100%">
+<h2> <a NAME="ODE Multiple Passes"></a>ODE multiple passes</h2>
+
+ODE normally runs multiple passes for a build.&nbsp; This is because the normal 
+grouping of passes, and actions in them, allows ODE to run steps in the same pass 
+in parallel.&nbsp; For large projects this can result in saving time. 
+<p>The default rules for ODE provide four predefined passes that are relevant 
+    for C or C++ code. See <a href="ODECommonMakefiles.htm#PredefinedPasses">Predefined 
+    Passes and Associated Targets</a> for more information.<br>
+    &nbsp;
+<center>
+    <table BORDER WIDTH="71%" >
+      <tr>
+<td WIDTH="10%"><b>Pass</b></td>
+
+<td WIDTH="90%"><b>Description of some normal uses</b></td>
+</tr>
+
+<tr>
+<td>EXPINC</td>
+
+<td>Export header files.</td>
+</tr>
+
+<tr>
+<td>OBJECTS</td>
+
+<td>Generate C++ object files.</td>
+</tr>
+
+<tr>
+<td>EXPLIB</td>
+
+<td>Generate libraries.</td>
+</tr>
+
+<tr>
+<td>STANDARD</td>
+
+<td>Generate executables, and targets for cleaning, etc.</td>
+</tr>
+</table><p>&nbsp;</p></center>
+
+  
+<p>A summary of the use of these passes for building hello4, is: 
+<p>&nbsp; 
+<center>
+  <table BORDER WIDTH="67%" >
+    <tr>
+<td WIDTH="10%"><b>Pass</b></td>
+
+<td WIDTH="90%"><b>Description of normal use</b></td>
+</tr>
+
+<tr>
+<td>EXPINC</td>
+
+<td>Export header files is not done.&nbsp; Process icx and rcx files.</td>
+</tr>
+
+<tr>
+<td>OBJECTS</td>
+
+<td>Generate C++ object files.&nbsp;</td>
+</tr>
+
+<tr>
+<td>EXPLIB</td>
+
+<td>Generate libraries not done, so this pass is not used.</td>
+</tr>
+
+<tr>
+<td>STANDARD</td>
+
+<td>Generate executables, and targets for cleaning, etc.</td>
+</tr>
+</table></center>
+
+<p>
+<hr WIDTH="100%">
+<h2> <a NAME="Creating makefile.ode in src"></a>Creating the makefile in src</h2>
+
+The MakeMake tool can be used to create the makefile in the <b>src</b> 
+  directory, or it can be created with a text editor.&nbsp; If you choose to run 
+  <a href="ODEMakeMake.htm">MakeMake</a> (the GUI version, not the command line 
+  version), select the "process subdirectories" option.&nbsp; This causes MakeMake 
+  to visit each of the subdirectories, and by default it causes a <b>makefile.ode</b> 
+  file to be created with the following contents: 
+  <blockquote><b><samp>#</samp><b></b></b> <samp><br>
+    <tt># </tt>ODE makefile (D:\testhello\src\makefile.ode) <br>
+    <tt>#</tt> </samp> 
+    <p><samp><tt># </tt>the subdirs to traverse for the EXPINC pass <br>
+      EXPINC_SUBDIRS += bin include nls rules_mk </samp></p>
+    <p><samp><tt># </tt>the subdirs to traverse for the OBJECTS pass <br>
+      OBJECTS_SUBDIRS += bin include nls rules_mk </samp> 
+    <p><samp><tt># </tt>the subdirs to traverse for the EXPLIB pass <br>
+      EXPLIB_SUBDIRS += bin include nls rules_mk<b> </b></samp> 
+    <p><samp><tt># </tt>the subdirs to traverse for the STANDARD pass <br>
+      SUBDIRS += bin include nls rules_mk<b> </b></samp> 
+    <p><samp><tt># </tt>the unrecognized files in this directory (not used) <br>
+      UNKNOWN_FILES += Buildconf Buildconf.exp Makeconf&nbsp;<tt>&nbsp; \</tt> 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;<b> </b></tt>makefile.ode </samp> 
+    <p><samp><tt># </tt><em>include the ODE rules</em> <br>
+      <tt>.</tt>include &lt;${RULES_MK}></samp> 
+  </blockquote>
+Typically the user would edit the appropriate variables either in MakeMake, before 
+  saving that makefile, or afterwards with a text editor.&nbsp; By default MakeMake 
+  would create a <b>makefile.ode</b> in all the subdirectories, if "process subdirectories" 
+  was selected. 
+  <p><a NAME="New makefile.ode in src"></a>After editing, <b>src\makefile.ode</b> 
+    (with some comments removed) becomes: 
+  <blockquote><tt><samp># </samp></tt><samp>the subdirs to traverse for the EXPINC 
+    pass <br>
+    EXPINC_SUBDIRS += nls/tx_tx nls/en_us </samp>
+    <p><samp><tt># </tt>the subdirs to traverse for the OBJECTS pass <br>
+      OBJECTS_SUBDIRS += bin nls/tx_tx nls/en_us </samp>
+    <p><samp><tt># </tt>the subdirs to traverse for the STANDARD<b> </b>pass <br>
+      SUBDIRS += bin nls/tx_tx nls/en_us </samp>
+    <p><samp><tt># </tt>include the ODE rules <br>
+      .include &lt;${RULES_MK}></samp> 
+  </blockquote>
+<p>These changes are because the makefile only needs to cause the indicated directories 
+  to be visited during three of the four usual build passes.&nbsp; </p>
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ffff00">Note: </td>
+    <td width="92%"> The bin is in SUBDIRS only because the <b>STANDARD</b> pass 
+      is used to clean the <b>.obj</b> files there. </td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<hr WIDTH="100%">
+<h2> <a NAME="Creating makefile.ode for C++"></a>Creating a makefile for C++ files</h2>
+
+There are two C++ files in the <b>src\bin</b> directory, and they 
+  are to be compiled there.&nbsp; The resulting object files will be linked in 
+  another directory.&nbsp; ODE already has rules for compiling C++ files and linking 
+  them, and we will use them. 
+  <p>The relevant lines from the original makefile are:
+  <blockquote><samp>GCPPC=ICC <br>
+    ICLCPPOPTS=/Gm+ /Gd+ /Gh+ /Ti+ /Fb+ /Q+ <br>
+    GCPPFLAGS=$(LOCALOPTS) $(ICLCPPOPTS) </samp>
+    <p><samp>ahellow4.obj:&nbsp; ahellow4.cpp ahellow4.hpp ahellow4.h <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>$(GCPPC) /C+ $(GCPPFLAGS) ahellow4.cpp 
+      </samp>
+    <p><samp>adialog4.obj:&nbsp; adialog4.cpp adialog4.hpp ahellow4.h ahellow4.hpp 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>$(GCPPC) /C+ $(GCPPFLAGS) adialog4.cpp 
+      </samp> 
+  </blockquote>
+  <a NAME="new makefile for c++"></a>The new <b>src\bin\makefile.ode</b> for C++ 
+  files is 
+  <blockquote><samp># the object files (as targets) <br>
+    OBJECTS += ahellow4${OBJ_SUFF} adialog4${OBJ_SUFF} </samp>
+    <p><samp>CFLAGS += /Gm+ </samp>
+    <p><samp>INCFLAGS = -I${MAKETOP}include </samp>
+    <p><samp><tt># </tt>include the ODE rules <br>
+      .include &lt;${RULES_MK}></samp> 
+  </blockquote>
+  
+<p>The<i> OBJECTS</i> variable specifies two objects file targets to compile. 
+  <i>OBJ_SUFF </i>is a variable specifying the object file suffix for the current 
+  platform, which is "<samp>.obj</samp>".&nbsp; (That line was generated by MakeMake.)&nbsp; 
+  ODE <b>mk </b>will see the <b>ahellow4.cpp </b>and <b>adialog4.cpp</b> files 
+  and will call the compiler with some predefined flags.&nbsp; See <a href="ODECommonMakefiles.htm#CCppRules">C/C++ 
+  Rules</a> section in <a href="ODECommonMakefiles.htm"><i>ODE Common Makefiles</i></a>.&nbsp; 
+  The predefined flags do not include /Gm+ and so it must be specified using CFLAGS.&nbsp; 
+  It was the only flag needed to make the program compile and run.&nbsp; Some 
+  of the other flags from the sample makefile are to generate debug information 
+  and were omitted here.&nbsp; Header files are now located in a different directory, 
+  so the <i>INCFLAGS</i> variable is set with the location of that directory.&nbsp; 
+  ODE also will produce some dependency rules that express how the <b>OBJECTS</b> 
+  files depend on the header files in the <b>include</b> directory. </p>
+  <p>The inclusion of the rules defines all the target dependency information 
+    and commands to bring the targets up-to-date based on variables defined in 
+    the user's local makefile.</p>
+  
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ffff00">Note: </td>
+    <td width="92%"> MAKETOP specifies the location of the <b>src</b> directory.&nbsp; 
+      Also the ODE convention is to actually run the compile in the matching <b>obj</b> 
+      directory, in this case it is <b>d:\testhello\obj\x86_nt_4\bin</b>. </td>
+  </tr>
+</table>
+<p>&nbsp;
+<hr WIDTH="100%">
+<h2> <a NAME="Creating makefile.ode for Resource"></a>Creating a makefile for 
+  new file types</h2>
+
+The <b>src\nls\en_us</b> directory only contains the following files:&nbsp;<tt> 
+</tt><b>ahellow4.icx&nbsp; ahellow4.rcx </b> 
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ffff00">Note: </td>
+    <td width="92%"> USA English is used for language dependent operations in 
+      this directory.&nbsp; Thus there are the following tasks should be specified 
+      in the makefile: </td>
+  </tr>
+</table>
+<p>&nbsp;
+<ul>
+    <li> In the <b>EXPINC</b> pass, process the two files to produce the files:<tt>&nbsp; 
+      </tt><b>ahellow4.ico&nbsp; ahellow4.rc</b></li>
+
+    <li> In the <b>OBJECTS</b> pass, produce the file which will contain all the 
+      resources:<tt>&nbsp; </tt><b>ahellow4.res</b></li>
+
+    <li> In the <b>STANDARD</b> pass, link the two <b>obj</b> files and the <b>.res 
+      </b>file to produce:<tt>&nbsp; </tt><b>hello4.exe</b></li>
+  </ul>
+  Each of these steps will be discussed in separate sections below. 
+
+<p>Note that The output of MakeMake is not very useful as it stands: </p>
+<blockquote><tt><samp>#</samp></tt> <samp><br>
+    <tt># </tt>ODE makefile (D:\testhello\src\nls\en_us\makefile.ode) <br>
+    <tt>#</tt> </samp>
+    <p><samp><tt># </tt>the unrecognized files in this directory (not used) <br>
+      UNKNOWN_FILES += ahellow4.icx ahellow4.rcx makefile.ode </samp>
+    <p><samp><tt># </tt>include the ODE rules <br>
+      .include &lt;${RULES_MK}> </samp> 
+  </blockquote>
+However, if the intermediate and advanced GUI levels are chosen, an experienced 
+user can create the makefile by using the editing capabilities of MakeMake which 
+is explained in the <a href="#The complete makefile.ode for en_us">complete makefile.ode 
+for en-us</a> section. 
+<hr WIDTH="100%">
+<h3> <a NAME="Processing .icx"></a>Processing .icx files in the EXPINC pass</h3>
+
+The relevant lines from the original makefile are:
+  <blockquote><samp>GIMAGE=IBMPCNV <br>
+    GIMAGEFLAGS= <br>
+    ahellow4.ico<tt>:&nbsp; </tt>ahellow4.icx <br>
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt> $(GIMAGE) -I $(GIMAGEFLAGS) ahellow4.icx 
+    ahellow4.ico</samp></blockquote>
+The IBMPCNV program is used to convert bitmaps, cursors, icons and fonts between 
+the OS/2 and Windows forms.&nbsp; In the hello4 sample, the original version of 
+the icon is in the Visual Age portable icon file format, with the <tt>.</tt>icx 
+extension.&nbsp; It must be converted to the Windows NT form of an icon file.&nbsp; 
+This illustrates how rules for new processors and file types can be added to ODE. 
+<p>The relevant lines to be put in the new <b>makefile.ode</b> are: 
+  <blockquote><samp>ICO_TARGETS += ahellow4${ICO_SUFF<tt>}</tt> </samp>
+    <p><samp># include the ODE rules <br>
+      .include &lt;${RULES_MK}></samp> 
+  </blockquote>
+The <b>.include </b>should be after all variable assignments, but before any local 
+  dependency rules.&nbsp; See the complete <a href="#The complete makefile.ode for en_us">makefile.ode</a> 
+  file for the position of <b>.include</b>. 
+  <p>There are also some related lines that need to be added to the <b>src\rules_mk\myproj.rules.mk</b> 
+    file: 
+    
+  <blockquote><tt><samp>#</samp></tt><samp> icon file suffixes, for WinNT, Win95, 
+    and OS/2 <br>
+    ICO_SUFF?=.ico <br>
+    ICX_SUFF?=.icx </samp>
+    <p><samp><tt># </tt>name of tool to convert icx file to<b> </b>icon file <br>
+      <tt>_</tt>IBMPCNV_=ibmpcnv </samp>
+    <p><samp><tt># </tt>new suffixes for various kinds of resource files <br>
+      .SUFFIXES: ${RC_SUFF} ${RCX_SUFF} ${RES_SUFF} ${ICO_SUFF} ${ICX_SUFF} </samp></p>
+    <p><samp><tt># </tt>This is the command that converts icx to ico files. <br>
+      ${ICX_SUFF}${ICO_SUFF}: <br>
+      <tt>&nbsp;&nbsp;&nbsp; </tt>${_IBMPCNV_} -I ${_IBMPCNVFLAGS_} ${.IMPSRC} 
+      ${.TARGET} </samp>
+    <p><samp># Add new targets to EXPINC BUILD pass <br>
+      _BUILD_EXPINC_TARGETS_ += ${ICO_TARGETS} </samp> 
+  </blockquote>
+The <b>src\rules_mk\myproj.rules.mk</b> file is intended in ODE to allow the developer 
+to modify or add rules to ODE without changing the rules files that are shipped 
+with ODE.&nbsp; Please note that only a portion of the file is shown.&nbsp; The 
+total file is shown in the <a href="#The complete myproj.rules.mk file">appendix</a>. 
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ffff00">Note: </td>
+    <td width="92%"> The icon suffixes were defined in a general way.&nbsp; It 
+      is not strictly necessary to define the <i>ICO_SUFF</i> and <i>ICX_SUFF</i> 
+      variables.&nbsp; It was done here to show how a more general facility could 
+      be done, which might be adaptable to different platforms and development 
+      systems.&nbsp; The ODE compiling and linking facilities are an example of 
+      this, for eight platforms and more than eight compilers. </td>
+  </tr>
+</table>
+<p>&nbsp;
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ffff00">Note: </td>
+    <td width="92%"> The .SUFFIXES line is needed for ODE to handle new suffixes. 
+      It is shown with all the suffixes that are new to ODE. </td>
+  </tr>
+</table>
+<p>&nbsp;
+<p>.IMPSRC and .TARGET are local <a href="ODEMakeReference.htm#HDRVAR">variables 
+    </a> in makefiles. ${.IMPSRC} and ${.TARGET} are used in place of <tt>$&lt;</tt> 
+    and <tt>$@</tt> which are typically used in classic make facilities. 
+  <p>The _BUILD_EXPINC_TARGETS_ line causes the files listed in ICO_TARGETS in 
+    <b>makefile.ode</b> to be built during the build action of the <b>EXPINC</b> 
+    pass.&nbsp; This was done so that they would be available in the <b>OBJECTS</b> 
+    pass. 
+  
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ff6600">Caution: </td>
+    <td width="92%"> This section is an illustration of how <b>.ico</b> files 
+      are used as intermediate files which are converted from another file type 
+      .icx.&nbsp; This is not the general practice with <b>.ico</b> files.&nbsp; 
+      See <a href="#Actual Processing of Resources in ODE">Actual Processing of 
+      Resources in ODE</a> on how ODE really handles resource files. </td>
+  </tr>
+</table>
+<p>&nbsp;
+<hr WIDTH="100%">
+<h3> <a NAME="Processing .rcx files"></a>Processing .rcx files in the EXPINC pass</h3>
+
+Processing <b>.rcx</b> files is similar to processing <b>.icx</b> files.&nbsp; 
+The relevant lines from the original makefile are: 
+<blockquote><samp>GRCV=IRCCNV <br>
+    GRCVFLAGS= <br>
+    ahellow4.rc:&nbsp; ahellow4.rcx <br>
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>$(GRCV) $(GRCVFLAGS) ahellow4.rcx 
+    ahellow4.rc</samp></blockquote>
+The IRCCNV program is a utility for converting.<b>rc</b> files between the OS/2 
+and Windows forms of this file. In the hello4 sample, the original version of 
+the resource file is in the Visual Age portable resource file format, with the 
+<b>.rcx</b> extension.&nbsp; It must be converted to the Windows NT form of a 
+resource file.&nbsp; This illustrates how new processors and file types can be 
+added to ODE. 
+<p>The only line needed in the <b>makefile.ode</b> is also similar to the one 
+    for <tt>.</tt><b>ico</b> files. 
+  <blockquote><samp>RC_TARGETS += ahellow4${RC_SUFF} </samp>
+    <p><samp># include the ODE rules <br>
+      .include &lt;${RULES_MK}></samp> 
+  </blockquote>
+The rules for converting <tt>.</tt><b>rcx </b>to <tt>.</tt><b>rc</b> files are 
+  very similar to the rules for converting from <tt>.</tt><b>icx</b> to <tt>.</tt><b>ico</b> 
+  files.&nbsp; These are also added to <b>myproj.rules.mk</b>. 
+  <blockquote><samp>#<tt> </tt>resource file extensions for WinNT, Win95, and 
+    OS/2 </samp><br>
+    <samp>RC_SUFF/=.rc <br>
+    RCX_SUFF/=.rcx </samp> 
+    <p># names of resource conversion tool <br>
+      <samp>_RCCNV_=irccnv </samp>
+    <p><samp># rule to convert from .rcx to .rc file <br>
+      ${RCX_SUFF}${RC_SUFF}: <br>
+      <tt>&nbsp;&nbsp;&nbsp; </tt>${_RCCNV_} ${_RCCNVFLAGS_} ${.IMPSRC} ${.TARGET} 
+      </samp>
+    <p><samp># Add new targets to EXPINC BUILD<b> </b>pass <br>
+      _BUILD_EXPINC_TARGETS_ += ${RC_TARGETS}</samp>
+  </blockquote>
+
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ff6600">Caution: </td>
+    <td width="92%"> This section is an illustration of how <b>.rc</b> files are 
+      used as intermediate files which are converted from another file type <b>.rcx</b>.&nbsp; 
+      This is not the general practice with <b>.rc</b> files.&nbsp; See <a href="#Actual Processing of Resources in ODE">Actual 
+      Processing of Resources in ODE</a> for information on how ODE handles resource 
+      files. </td>
+  </tr>
+</table>
+<p><br>
+<hr width="100%">
+<h3> <a NAME="Processing .rc files"></a>Processing .rc files in the OBJECTS pass</h3>
+
+The lines in the original makefile that are relevant to conversion 
+  of <b>.rc</b> files to <b>.res</b> files are shown 
+  below: 
+  <blockquote><samp>GRC=IRC <br>
+    GRCFLAGS=-DIC_WIN <br>
+    ahellow4.res:&nbsp; ahellow4.rc ahellow4.h ahellow4.ico <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $(GRC) $(GRCFLAGS) ahellow4.rc</samp></blockquote>
+In this case, we want the IRC program to run in the <i>OBJECTS</i><b> </b>pass.&nbsp;
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ffff00">Note: </td>
+    <td width="92%"> There are dependencies on three source files, but in fact 
+      only one source file is referenced on the command line.&nbsp; The <b>ahellow4.rc</b> 
+      file refers to both the <b>ahellow4<tt>.</tt>h</b> and <b>ahellow4.ico</b> 
+      files, and causes them to be made part of the <b>ahellow4.res</b> file.&nbsp; 
+      The assumption in the original makefile was that all these files were in 
+      the same directory.&nbsp; We referred to the <b>.irc </b>command to see 
+      what could be done.&nbsp; It turned out that the *.h files were searched 
+      for very much as they are for a C/C++ compiler.&nbsp; A -I command line 
+      flag was available, and experimentation shows that it behaves the same as 
+      for the compiler.&nbsp; Experimentation showed that we could use the <i>INCARGS, 
+      INCENV</i>, and <i>INCFLAGS</i> variables in the same way as they are used 
+      for the compiler. </td>
+  </tr>
+</table>
+<p>The lines relevant to producing the <b>ahellow4.res </b>file in <b>makefile.ode</b> 
+    are: 
+  <blockquote><samp>OBJECTS += ahellow4${RES_SUFF} </samp>
+    <p><samp># irc can take flags using RCFLAGS (makefile) and RCENV (shell vars). 
+      <br>
+      RCFLAGS += -DIC_WIN </samp>
+    <p><samp># irc takes includes like the compiler, using INCFLAGS, INCENV, or 
+      INCARGS. <br>
+      INCFLAGS += -I${MAKETOP}include </samp>
+    <p><samp># ahellow4.res depends on ahellow4.rc, ahellow4.ico, and ahellow4.h 
+      <br>
+      ahellow4${RES_SUFF}: ${RC_TARGETS} ${ICO_TARGETS} \ <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>${MAKETOP}include/ahellow4.h 
+      </samp>
+    <p><samp># include the ODE rules <br>
+      .include &lt;${RULES_MK}></samp> 
+  </blockquote>
+A number of lines were added to <b>myproj<tt>.</tt>rules<tt>.</tt>mk</b> for building 
+  <tt>.</tt><b>res</b> files. 
+  <blockquote><samp># resource files, for WinNT, Win95, and OS/2 <br>
+    RES_SUFF?=.res </samp>
+    <p><samp># names of resource tools <br>
+      _RC_=irc </samp>
+    <p><samp># _RCFLAGS_ definitions <br>
+      _RCFLAGS_=\ <br>
+      <tt>&nbsp;&nbsp;&nbsp; </tt>${${.TARGET}_RCENV:U${RCENV}} \ <br>
+      <tt>&nbsp;&nbsp;&nbsp; </tt>${${.TARGET}_RCFLAGS:U${RCFLAGS}} \ <br>
+      <tt>&nbsp;&nbsp;&nbsp; </tt>${${.TARGET}_RCARGS:U${RCARGS}} </samp>
+    <p><samp># mklinks copies the ico file to the current directory if we are 
+      in a <br>
+      # sandbox, and it has not been built here. <br>
+      ${RC_SUFF}${RES_SUFF}: <br>
+      <tt>&nbsp;&nbsp;&nbsp; </tt>-@mklinks -quiet -auto -norefresh ${ICO_TARGETS} 
+      <br>
+      <tt>&nbsp;&nbsp;&nbsp; </tt>${_RC_} ${_RCFLAGS_} ${_GENINC_} ${.IMPSRC}</samp>
+  </blockquote>
+<p>The <tt>_</tt>RCFLAGS<tt>_</tt> line allows resource compiler flags to be 
+    set in the makefile, on the build command line, or in environment variables. 
+    By convention, the users can use RCFLAGS for makefiles, RCENV for setting 
+    the flags from environment variables, and RCARGS for setting the flags from 
+    the build/mk command line.&nbsp; This is the same convention that the C/C++ 
+    compiler uses for its flags, using its <i>CFLAGS, CENV,</i> and <i>CARGS</i> 
+    variables. 
+  
+<p>The <tt>_</tt>RCFLAGS<tt>_</tt> line also provides a way of having target-specific 
+  flag setting for the<b> </b>irc program.&nbsp; For example, if we has several 
+  <tt>.</tt><b>res</b> targets, for example<b> filea.res</b> and<b> fileb.res</b>, 
+  in the directory, then <b>makefile.ode</b> might have different flags for the 
+  two targets: 
+<blockquote>filea.res_RCFLAGS += -DIC_WIN
+<br>fileb.res_RCFLAGS += -v -x</blockquote>
+The <tt>_</tt>GENINC<tt>_</tt> variable is an internal ODE variable that will 
+  contain all the -<b>I</b> specified directories to search for headers.&nbsp; 
+  ODE insures that all the appropriate directories for the backing chain are included. 
+  
+<p>The <tt>-</tt>@mklinks line is needed because of sandboxes.&nbsp; In the hello4 
+  example, there is an ICON statement in the <b>ahellow4.rcx </b>file: 
+<blockquote>ICON WND_MAIN ahellow4.ico</blockquote>
+This statement is copied to the <b>ahellow4.rc</b> file in the <b>EXPINC</b> pass, 
+but is otherwise uninterpreted.&nbsp; The irc program will use the ICON statement 
+to include the <b>ahellow4.ico</b> file in the <b>ahellow4<tt>.</tt>res</b> file.&nbsp; 
+No path searching is done to find the <b>ahellow4</b><tt>.</tt><b>ico</b> file.&nbsp; 
+It must be located where the ICON statement specifies.&nbsp; If the file is specified 
+with a relative path, it must be located relative to the <b>obj\x86_nt_4</b> directory 
+where <b>ahellow4.res</b> is being built.&nbsp; This works for the backing build, 
+but not for a sandbox, if the <b>ahellow4.ico</b> file was not built in the sandbox.&nbsp; 
+The<b> mklinks</b> command searches along the backing chain until it finds the 
+<b>ico</b> file and copies it to the current directory. 
+<p>The use of <b>mklinks</b> works for the example project.&nbsp; However, the 
+  rules might not work in other projects.&nbsp; For example, an executable could 
+  be built including a resource file, but not including an icon.&nbsp; Other files 
+  can also be specified optionally in a resource file, including cursors, fonts, 
+  and bitmaps.&nbsp; The mklinks technique would work with them too, but with 
+  the same limitations as for icons. 
+<hr width="100%">
+<h2> <a NAME="Building the executable in the STANDARD"></a>Building the executable 
+  in the STANDARD pass</h2>
+
+The lines from the original makefile that specify the building
+of the executable are:
+  <blockquote><samp>GLINK=ICC <br>
+    ICLCPPOPTS=/Gm+ /Gd+ /Gh+ /Ti+ /Fb+ /Q+ <br>
+    GCPPFLAGS=$(LOCALOPTS) $(ICLCPPOPTS) <br>
+    GCPPLFLAGS=/Tdp /B"/pmtype:pm /debug /browse" <br>
+    GPERFOBJ=cppwpa3.obj </samp>
+    <p><samp>hello4.exe:&nbsp; ahellow4.obj adialog4.obj ahellow4.res <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>$(GLINK) $(GCPPLFLAGS) $(GCPPFLAGS) 
+      /Fe"hello4.exe" \ <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>ahellow4.obj adialog4.obj $(GPERFOBJ) 
+      ahellow4.res</samp>
+  </blockquote>
+In <b>nls\en_us\makefile.ode</b> the relevant lines from the ODE version are: 
+
+  <blockquote><samp>PROGRAMS += hello4${PROG_SUFF} </samp>
+    <p><samp>OFILES =&nbsp; ../../bin/ahellow4${OBJ_SUFF} \ <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt>&nbsp; ../../bin/adialog4${OBJ_SUFF} 
+      \ <br>
+      <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt>&nbsp; ahellow4${RES_SUFF} 
+      </samp>
+    <p><samp>hello4${PROG_SUFF}: ${OFILES} </samp>
+    <p><samp># include the ODE rules <br>
+      .include &lt;${RULES_MK}></samp> 
+  </blockquote>
+No lines were added to <b>myproj.rules.mk</b> for building the executable, because 
+the rules for doing so are provided by ODE files. 
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ffff00">Note: </td>
+    <td width="92%"> The ODE link step is not equivalent to the original link 
+      step.&nbsp; For ODE we chose to not use the /debug and similar options, 
+      but simply took the default link flags that ODE uses.&nbsp; The original 
+      <b>hello4.exe</b> and the ODE built <b>hello4.exe</b> behave identically.&nbsp; 
+      The results would be different when examining the two programs with the 
+      interactive debugger.&nbsp; If the user wants to use the extra flags for 
+      debugging, they can be specified on the build command line, in environment 
+      variables, or in <b>makefile.ode</b>.&nbsp; See <a href="ODECommonMakefiles.htm#SettingLinkerFlags">Setting 
+      Linker Flags</a> and <a href="ODECommonMakefiles.htm#SettingCCPPOptDbgFlags">Setting 
+      C/C++ Optimization and Debugging Flags</a> for more information. </td>
+  </tr>
+</table>
+<p>&nbsp; 
+<hr WIDTH="100%">
+<h2> <a NAME="Adding rules for the clean_all target"></a>Adding rules for cleaning 
+  the new types of files</h2>
+
+The <b>clean_all</b> target is used in ODE to delete all files that 
+  are built from the source.&nbsp; The clean_all targets are processed in the 
+  <i>STANDARD </i>pass.&nbsp; By default ODE provides rules for cleaning files 
+  specified by certain variables.&nbsp; See <a href="ODECommonMakefiles.htm#PredefinedPasses">Predefined 
+  Passes</a> in for more information on the <b>clean_all</b> main target.&nbsp; 
+  You will see that files specified in the <i>OBJECTS</i> and<i> PROGRAMS</i> 
+  variables will be automatically cleaned.&nbsp; However, files of the new file 
+  types <b>.ico </b>and <b>.rc</b> are not included in the predefine variables.&nbsp; 
+  There is an ODE variable called <i>GARBAGE</i> that can be used for this purpose.&nbsp; 
+  Although <b>.res</b> is also a new file type, files of the .res type are put 
+  in the <i>OBJECTS </i>variable and will be cleaned out properly. 
+  <p>In <b>nls\en_us\makefile.ode</b> there is a line 
+  <blockquote><samp>GARBAGE += ${RC_TARGETS} ${ICO_TARGETS}</samp></blockquote>
+In the <b>src</b> directory, run
+  <blockquote>build clean_all</blockquote>
+to remove all these files. 
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ff6600">Caution: </td>
+    <td width="92%"> This section is an illustration of how to use clean_all to 
+      erase new types of intermediate files.&nbsp; In general it is not a good 
+      idea to do this for <b>.ico</b> or <b>.rc</b> files.&nbsp; See <a href="#Actual Processing of Resources in ODE">Actual 
+      Processing of Resources in ODE</a> on how ODE handles resource files. </td>
+  </tr>
+</table>
+<p>&nbsp;
+<hr WIDTH="100%">
+<h2> <a NAME="NLS Structuring of Files"></a>NLS structuring of files</h2>
+
+We have seen how the resource files and the final program are built in <b>src\nls\en_us</b>.&nbsp; 
+To add another language, for example Texan, we can create <b>src\nls\tx_tx</b>.&nbsp; 
+Then we copy the original files from <b>en_us</b> to <b>tx_tx</b>.&nbsp; Then 
+we change the <b>ahellow4.icx</b> file if we want to create a different icon, 
+such as the Texas State flag.&nbsp; Then we modify the <b>ahellow4.rcx</b> file 
+to translate to the Texan way of saying things, for example, "howdy world" instead 
+of "hello world".&nbsp; The point is that the <b>makefile.ode</b> is unchanged.&nbsp; 
+Only text is changed, if the program was organized correctly.&nbsp; The only files 
+that need changing are those we wish to translate.&nbsp; Finally, the language-specific 
+<b>hello4.exe</b> is built in the <b>obj\x86_nt_4\nls\tx_tx</b>&nbsp; directory 
+independently of the en_us version.&nbsp; The only other change is to insure that 
+<b>nls\tx_tx</b> is added in appropriate variables in <b>src\makefile.ode</b>. 
+<p>It would be possible to move the <b>src\nls\en_us\makefile.ode</b>
+to <b>src\nls</b> after renaming it to <b>nlscom.mk</b>.&nbsp; Then
+<b>nls\en_us\makefile.ode</b>
+and <b>nls\tx_tx\makefile.ode</b> could simply be
+  <blockquote><samp># include shared makefile <br>
+    .include &lt;${MAKETOP}nls/nlscom.mk> </samp>
+    <p><samp># include the ODE rules <br>
+      .include &lt;${RULES_MK}></samp> 
+  </blockquote>
+The advantage would be that makefile maintenance only happens in one place.
+<p>The hello4 example is not really "NLS enabled" since it does not take code 
+  page or character size differences into account.&nbsp; For instance, a more 
+  realistic example of NLS coding might include specification of a code page to 
+  use with the hello4.exe text entry window. If there are language differences 
+  that should be in the <b>makefile.ode</b>, they could be specified before or 
+  after the include of the <b>nlsshare.mk</b> file. 
+<p>NLS oriented facilities are available in ODE.&nbsp; The example here does not 
+  use any of the real <a href="ODECommonMakefiles.htm#NLSRules">ODE NLS facilities</a>. 
+<hr WIDTH="100%">
+<h2> <a NAME="Actual Processing of Resources in ODE"></a>Actual processing of 
+  resources in ODE</h2>
+
+See <a href="ODECommonMakefiles.htm#ResourceRules">resource rules</a> 
+  for information on processing <b>.rc, .ico, </b>and <b>.res</b> files.&nbsp; 
+  They will not be in <b>myproj.rules.mk</b>, which is reserved for user specified 
+  rules.&nbsp; They are shown here as a concrete example of how a user can add 
+  processing of new file types to ODE using the <b>myproj.rules.mk</b> file. 
+  
+<p>The original hello4 sample had <b>.icx</b> and <b>.rcx</b> files.&nbsp; These 
+  file types are Visual Age conventions for portable icon and resource files.&nbsp; 
+  They may be omitted from the resource rules in ODE.&nbsp; It is more typical 
+  to work directly with <b>.ico</b> and <b>.rc</b> files, even when using the 
+  VisualAge Resources Workshop editing tools. 
+<table width="84%" border="1">
+  <tr> 
+    <td width="8%" bgcolor="ff6600">Caution: </td>
+    <td width="92%"> As an example, this document shows how to make the <b>.ico</b> 
+      and <b>.rc</b> files be erased when using the <b>clean_all</b> target.&nbsp; 
+      In the general case this should not be done, since it could wipe out original 
+      work!&nbsp; These files are not necessarily intermediate steps in the build 
+      process. </td>
+  </tr>
+</table>
+<p>To some extent, the form of the rules in <b>myproj.rules.mk</b> followed the 
+  form used in other ODE rules files in the <b>src\rules_mk</b> directory.&nbsp; 
+  This was done to lessen the work needed to make sandboxes work for this project. 
+<hr WIDTH="100%">
+<h2> <a NAME="AppendixACompleteMakefiles"></a>Appendix A - The complete makefiles</h2>
+
+In most of the examples only portions of the <b>makefile.ode</b> files were shown.&nbsp; 
+For reference the complete <a href="#The complete myproj.rules.mk file">myproj.rules.mk</a> 
+file and the complete <a href="#The complete makefile.ode for en_us">nls\en_us\makefile.ode</a> 
+are below. The <a href="#The Original Makefile">original project makefile</a>, 
+the new <a href="#New makefile.ode in src">src\makefile.ode</a> file, and the 
+new <a href="#new makefile for c++">src\bin\makefile.ode</a> file are in previous 
+sections. 
+<hr WIDTH="100%">
+<h3>
+<a NAME="The complete myproj.rules.mk file"></a>The complete myproj.rules.mk
+file</h3>
+
+<blockquote><tt><samp>#</samp></tt><samp> Add rules that are specific to the "myproj" 
+  project here<tt>.</tt> </samp>
+  <p><samp># resource files, for WinNT, Win95, and OS/2 <br>
+    RC_SUFF?=.rc <br>
+    RCX_SUFF?=.rcx <br>
+    RES_SUFF?=.res </samp>
+  <p><samp># icon files, for WinNT, Win95, and OS/2 <br>
+    ICO_SUFF?=.ico <br>
+    ICX_SUFF?=.icx </samp>
+  <p><samp># names of resource tools <br>
+    _RC_=irc <br>
+    _RCCNV_=irccnv </samp>
+  <p><samp># name of tool to convert icx to ico (icon) <br>
+    _IBMPCNV_=ibmpcnv </samp>
+  <p><samp># The following are variables the user should use to set optional <br>
+    # flags for the three tools. <br>
+    # _RCFLAGS_= <br>
+    # _RCCNVFLAGS_= <br>
+    # _IBMPCNVFLAGS_= </samp>
+  <p><samp># new suffixes for various kinds of resource files <br>
+    .SUFFIXES: ${RC_SUFF} ${RCX_SUFF} ${RES_SUFF} ${ICO_SUFF} ${ICX_SUFF} </samp>
+  <p><samp># _RCFLAGS_ definitions <br>
+    <tt>#</tt> <br>
+    _RCFLAGS_=\ <br>
+    <tt>&nbsp;&nbsp;&nbsp;</tt> ${${.TARGET}_RCENV:U${RCENV}} \ <br>
+    <tt>&nbsp;&nbsp;&nbsp; </tt>${$(.TARGET}_RCFLAGS:U${RCFLAGS}} <tt>\</tt> <br>
+    <tt>&nbsp;&nbsp;&nbsp; </tt>${${.TARGET}_RCARGS:U${RCARGS}} </samp>
+  <p><samp># The mklinks below sure feels like a hack!&nbsp; But it works anyway. 
+    <br>
+    # What if no icon is specified for the program? <br>
+    # We are copying the ico file to the current directory if we are in a <br>
+    # sandbox, and it has not been built here. <br>
+    ${RC_SUFF}${RES_SUFF}: <br>
+    <tt>&nbsp;&nbsp;&nbsp; </tt>-@mklinks -quiet -auto -norefresh ${ICO_TARGETS} 
+    <br>
+    <tt>&nbsp;&nbsp;&nbsp; </tt>${_RC_} ${_RCFLAGS_} ${_GENINC_} ${.IMPSRC} </samp>
+  <p><samp>${RCX_SUFF}${RC_SUFF}: <br>
+    <tt>&nbsp;&nbsp;&nbsp; </tt>${_RCCNV_} ${_RCCNVFLAGS_} ${.IMPSRC} ${.TARGET} 
+    </samp>
+  <p><samp>${ICX_SUFF}${ICO_SUFF}: <br>
+    <tt>&nbsp;&nbsp;&nbsp; </tt>${_IBMPCNV_} -I ${_IBMPCNVFLAGS_} ${.IMPSRC} ${.TARGET} 
+    </samp>
+  <p><samp># Add new targets to EXPINC BUILD pass <br>
+    _BUILD_EXPINC_TARGETS_ += ${ICO_TARGETS} <br>
+    _BUILD_EXPINC_TARGETS_ += ${RC_TARGETS}</samp>
+</blockquote>
+
+<hr WIDTH="100%">
+<h3>
+<a NAME="The complete makefile.ode for en_us"></a>The complete makefile.ode
+for en_us</h3>
+
+<blockquote><samp>RC_TARGETS += ahellow4${RC_SUFF} <br>
+  ICO_TARGETS += ahellow4${ICO_SUFF} </samp>
+  <p><samp>OBJECTS += ahellow4${RES_SUFF} </samp>
+  <p><samp>PROGRAMS += hello4${PROG_SUFF} </samp>
+  <p><samp>GARBAGE += ${RC_TARGETS} ${ICO_TARGETS} </samp>
+  <p><samp># irc takes flags using RCFLAGS (makefile) and RCENV (shell vars). 
+    <br>
+    RCFLAGS += -DIC_WIN </samp>
+  <p><samp># irc takes includes like the compiler, using INCFLAGS, INCENV, or 
+    INCARGS. <br>
+    INCFLAGS += -I${MAKETOP}include </samp>
+  <p><samp>OFILES =&nbsp; ../../bin/ahellow4${OBJ_SUFF} \ <br>
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>../../bin/adialog4${OBJ_SUFF} 
+    \ <br>
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>ahellow4${RES_SUFF} 
+    </samp>
+  <p><samp># include the ODE rules before the local dependency rules! <br>
+    .include &lt;${RULES_MK}> </samp> 
+  <p><samp>ahellow4${RES_SUFF}: ${RC_TARGETS} ${ICO_TARGETS} \ <br>
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt>${MAKETOP}include/ahellow4.h 
+    </samp>
+  <p><samp>hello4${PROG_SUFF}: ${OFILES} </samp><br>
+    &nbsp;</blockquote>
+
+<hr WIDTH="100%">
+<h2> <a NAME="AppendixBSources"></a>Appendix B - Sources for the example</h2>
+
+This example was developed in Visual Age for Windows NT.&nbsp; It 
+  probably would work for Visual Age for Windows 95 although it has not been tested.&nbsp; 
+  It will not work for Visual Age for OS/2 due to differences in the support for 
+  resources. 
+  
+<p>Sources for the sample project are available in two zip files, which are found 
+  in <a href="#Installing ODE and the Backing Build Example">bbexample</a> from 
+  the <i><a href="ODETutorial.htm">ODE Tutorial</a></i>.&nbsp; After expanding bbexample 
+  using jar or unzip, look in <b>bbexample\src\cnv2ode</b> for the two zip files. 
+<p>The original hello4 files are available in <b>hello4.zip</b>.&nbsp; Use the 
+  <b>jar</b> command or the Infozip version of <b>unzip</b> to extract the files.&nbsp; 
+  Change directory to <b>bbexample\src\cnv2ode</b> and run one of the following 
+  commands to create the hello4<samp> </samp>directory with the original hello4 
+  sample code. 
+<blockquote><samp><b>jar xvf hello4.zip <br>
+  unzip hello4.zip</b></samp></blockquote>
+The final results of porting hello4 to ODE are in <b>convert.zip</b>.&nbsp; You 
+can create a backing build and expand the sources for it with the following commands: 
+<blockquote><samp><b>mkbb -dir . convert <br>
+  cd convert\src <br>
+  jar xvf convert.zip</b></samp></blockquote>
+The executables are <b>convert\obj\x86_nt_4\nls\en_us\hello4.exe</b> and <b>convert\obj\x86_nt_4\nls\tx_tx\hello4.exe</b>. 
+The rules files in <b>convert.zip</b> are from an earlier version of ODE that 
+did not have rules for resources. They should not be used for development. 
+<p>When you are done with the example, you can delete the sandbox by running
+<blockquote><samp><b>mkbb -undo convert</b></samp></blockquote>
+<hr WIDTH="100%">
+<h2> <a NAME="AppendixCCompilingResources"></a>Appendix C - Compiling resources 
+  using the ODE rules</h2>
+
+As mentioned previously, ODE now has rules for handling resources.&nbsp; 
+  They grew out of the development of this document.&nbsp; In this section we 
+  will describe the <b>nls\en_us\makefile</b> that would work with the new ODE 
+  resource rules.&nbsp; The reader should be aware that the ODE rules do not support 
+  transforms from <b>.icx</b> to <b>.ico</b> or <b>.rcx</b> to <b>.rc</b> files, 
+  since they are rarely used in practice.&nbsp; The makefile below assumes that 
+  the initial sources are the <b>.ico</b> and <b>.rc</b> files.&nbsp; Also if 
+  this file is used, the <b>rules_mk\myproj.rules.mk</b> file should be discarded. 
+  <p><samp>PROGRAMS += hello4${PROG_SUFF} </samp>
+  <p><samp># The files that the program depends upon <br>
+    OFILES =&nbsp; ../../bin/ahellow4${OBJ_SUFF} \ <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ../../bin/adialog4${OBJ_SUFF} 
+    \ <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ahellow4${RES_SUFF} 
+    </samp>
+  <p><samp># specify the resource file as a target for the resource compiler <br>
+    RESOURCES = ahellow4${RES_SUFF} </samp>
+  <p><samp># the files that the resource file depend on <br>
+    RESOURCES_SRCS = ahellow4${ICO_SUFF} ahellow4${RC_SUFF} \ <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${MAKETOP}include/ahellow4.h </samp>
+  <p><samp># the resource compiler only needs the following flags <br>
+    RCFLAGS += -DIC_WIN </samp>
+  <p><samp># the resource compiler uses INCFLAGS, INCENV, or INCARGS just like 
+    <br>
+    ># the C compiler, to find header files <br>
+    INCFLAGS += -I${MAKETOP}include </samp>
+  <p><samp># include the ODE rules <br>
+    .include &lt;${RULES_MK}> </samp> 
+  <p>The resource rules in ODE are mainly in the files <b>rules_mk\res.mk</b>, 
+    with some linker rules added to <b>rules_mk\prog.mk</b> and <b>rules_mk\lib.mk</b>. 
+    They are more complex than the rules in this example.&nbsp; There are several 
+    reasons for this. 
+  <ul>
+<li>
+Two platforms are supported, Visual Age (OS/2 and Windows NT) and MS Visual
+C (Windows NT).</li>
+
+<li>
+There are two versions of Visual Age supported on OS/2.</li>
+
+<li>
+The resource compilers for OS/2 and Windows are somewhat different.</li>
+
+<li>
+The way the resources are linked to an executable are different in OS/2
+and Windows.</li>
+
+<li>
+Resources can be linked to DLLs as well as EXEs.</li>
+
+<li>
+Response file support for linking needed enhancements for including resources.</li>
+</ul>
+</body>
+</html>

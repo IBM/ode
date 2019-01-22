@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<title>Prerequisites for building a project</title>
+<!-- All rights reserved. Licensed Materials Property of IBM -->
+<!-- US Government Users Restricted Rights                   -->
+<!-- Use, duplication or disclosure restricted by            -->
+<!-- GSA ADP Schedule Contract with IBM Corp.                -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="dc.date" scheme="iso8601" content="2003-09-23" />
+<meta name="copyright" content="(C) Copyright IBM Corporation 2003" />
+<meta name="security" content="" />
+<meta name="dc.language" scheme="rfc1766" content="en-us" />
+<meta name="Robots" content="index,follow"/>
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<link rel="stylesheet" type="text/css" href="ibmidwb.css" />
+<link rel="stylesheet" type="text/css" href="help.css" />
+</head>
+<body>
+<a id="Top_Of_Page" name="Top_Of_Page"></a>
+<a name="preparingodeplugin"></a>
+<h3 id="preparingodeplugin">Prerequisites for building a project</h3>
+<p>These preconditions should be satisfied in order to successfully build
+a project with ODE:</p>
+<ul>
+<li>Make sure the ODE Build Feature is installed and configured properly, as
+described in <a href="ODEBuildFeatureGuide17.html#installing">Installing the ODE Build Feature</a>.</li>
+<li>Generate makefiles for the project, or use existing makefiles (such as
+a backing build).</li>
+<li>Ensure that all paths and names in the General section of the ODE properties
+window are correct. See <a href="ODEBuildFeatureGuide31.html#gphead4">ODE Build Feature properties</a> for more information.</li></ul>
+<p>Before building a project or generating a project's sandbox file listing
+for the first time, review and modify, if necessary, the sandbox data in the
+General section of the ODE Properties window. When you click <span class="bold">OK</span> or <span class="bold">Apply</span> in the Properties window, the sandbox
+and/or backing build is created. A backing build is created at the specified
+location if you do not already have one. This ensures that the required ODE
+configuration files and common makefile rules are available. If you clear
+the <span class="bold">Backing build path</span> field, your project/sandbox will
+effectively be the backing build itself, and the files will be extracted to
+the project directory.</p>
+<a id="Bot_Of_Page" name="Bot_Of_Page"></a>
+</body>
+</html>

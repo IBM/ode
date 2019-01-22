@@ -1,0 +1,1591 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Harriet Johnson">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>ODE 390 Service User's Guide</title>
+</head>
+<body>
+<img SRC="bannerx.gif" ALT="IBM Books" BORDER=0 height=92 width=490>
+<h1>
+<a NAME="Top_Of_Page"></a></h1>
+
+<h1>
+ODE 390 Service User's Guide</h1>
+Open Development Environment
+<br>ODE 390 Service User's Guide
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<p>
+<hr>
+<h2>
+Table of Contents</h2>
+
+<h3>
+<a href="#intro">Introduction</a></h3>
+
+<h3>
+<a href="#setup">Setup</a></h3>
+
+<ul>
+<li>
+<a href="#createsetup_all">createsetup_all</a></li>
+</ul>
+
+<h3>
+<a href="#apars">Working with APARs</a></h3>
+
+<ul>
+<li>
+<a href="#openapar">Open an APAR</a></li>
+
+<li>
+<a href="#buildfix">Building a Fix</a></li>
+
+<li>
+<a href="#buildapar">Building the APAR delta driver</a></li>
+
+<li>
+<a href="#usermod">Building a ++USERMOD</a></li>
+
+<li>
+<a href="#++apar">Building a ++APAR</a></li>
+
+<li>
+<a href="#aparcomplete">Completion Steps</a></li>
+</ul>
+
+<h3>
+<a href="#ptfs">Building PTFs</a></h3>
+
+<ul>
+<li>
+<a href="#ptfsetup">Initial Setup</a></li>
+
+<li>
+<a href="#ptfnumbers">Obtain PTF Numbers</a></li>
+
+<li>
+<a href="#ptfvpl">Generate VPL</a></li>
+
+<li>
+<a href="#ptfprep">Prepare for PTF building</a></li>
+
+<li>
+<a href="#buildptf">Build the ++PTF</a></li>
+
+<li>
+<a href="#ptfcomplete">Completion Steps</a></li>
+</ul>
+
+<h3>
+<a href="#othertopics">Other topics</a></h3>
+
+<ul>
+<li>
+<a href="#addfile">Adding a file</a></li>
+
+<li>
+<a href="#delfile">Deleting a file</a></li>
+
+<li>
+<a href="#jclin">Adding or modifying JCLIN</a></li>
+
+<li>
+<a href="#retrieval">Retrieving a ++APAR, ++USERMOD or ++PTF</a></li>
+</ul>
+
+<h3>
+<a href="#makefile">Makefile Variables</a></h3>
+
+<h3>
+<a href="#appendix">Appendix</a></h3>
+
+<ul>
+<li>
+<font color="#000000"><a href="#B390cmds">Build/390 Packaging Commands</a></font></li>
+
+<ul>
+<li>
+<font color="#000000"><a href="#deletedriver">Delete an existing APAR Delta
+Driver (DELETEDRIVER)</a></font></li>
+
+<li>
+<font color="#000000"><a href="#cleanup">Cleanup an existing APAR Delta
+Driver (CLEANUP)</a></font></li>
+
+<li>
+<font color="#000000"><a href="#createdriver">Create an APAR Delta Driver
+(CREATEDRIVER)</a></font></li>
+
+<li>
+<font color="#000000"><a href="#driverbuild">Build an APAR Delta Driver
+(DRIVERBUILD)</a></font></li>
+
+<li>
+<font color="#000000"><a href="#aparcheck">Obtain APAR build information&nbsp;
+(APARCHECK)</a></font></li>
+
+<li>
+<font color="#000000"><a href="#aparbuild">Build a ++APAR or ++USERMOD
+(APARBUILD)</a></font></li>
+
+<li>
+<a href="#ptfdefine">Obtain PTF Numbers (PTFDEFINE)</a></li>
+
+<li>
+<a href="#ptfbuild">Build the PTF set (PTFBUILD)</a></li>
+</ul>
+
+<li>
+<a href="#retrieval">Retrieving a ++APAR, ++USERMOD or ++PTF</a></li>
+
+<li>
+<a href="#securityfile">Java security file</a></li>
+
+<li>
+<a href="#links">Useful links</a></li>
+</ul>
+
+<p><br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="intro"></a>Introduction</h2>
+This document is intended to give the reader the necessary information
+to build and package APARs and PTFs in the USS environment using ODE and
+Build/390.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="setup"></a>Setup</h2>
+The environment and file requirements can be found in the <a href="ode390_service_config.htm">ODE
+390 Service Packaging Configuration Guide</a>
+<br>Each user should have access to the following:
+<ul>
+<li>
+ODE binaries and packaging tools jar file</li>
+
+<li>
+product backing build for basing sandboxes</li>
+
+<li>
+BPS Service GUI to work with APARs</li>
+
+<li>
+Build/390 USS client for service package creation</li>
+
+<li>
+CMVC95 GUI to work with defects and code fixes in the SDWB library</li>
+
+<li>
+Optionally, the Build/390 GUI can be used to view APAR and PTF related
+objects</li>
+</ul>
+The user's environment should also include:
+<ul>
+<li>
+valid <a href="ode390_service_config.htm#CLASSPATH">CLASSPATH</a></li>
+
+<li>
+Build/390 <a href="ode390_service_config.htm#PARMFILE">parmfile</a> to
+establish settings for the Build/390 USS client.&nbsp; Each user should
+have their own parmfile.</li>
+
+<li>
+The<b> B390_PARM_FILE </b>makefile variable should be defined to reference
+the location of the Build/390 parmfile.&nbsp; For convenience, this variable
+may be specified as environment variable in the user's .profile file on
+USS, which will prevent the need from continually defining it in a makefile
+or from the command line when running the packaging commands.</li>
+
+<li>
+The <b>B390_PATH</b> file makefile variable should be defined to reference
+the location of a directory where Build/390 can create and read output
+files.&nbsp; For convenience, this variable may be specified as environment
+variable in the user's .profile file on USS, which will prevent the need
+from continually defining it in a makefile or from the command line when
+running the packaging commands.</li>
+
+<li>
+ODE <a href="ode390_service_config.htm#MAKEFILE">Makefile</a> with required
+service variables</li>
+
+<li>
+client.ser file used by Build/390 client to communicate with Build/390
+server.</li>
+
+<li>
+<a href="http://w3.ode.raleigh.ibm.com/4.0/doc/pubs/ode390_service_config.htm#CMF">service
+transfer attributes</a> in the ODE CMF file</li>
+
+<li>
+appropriate RACF access to the Build/390 datasets</li>
+</ul>
+
+<h3>
+<a NAME="createsetup_all"></a>createsetup_all</h3>
+<font color="#000000">Run the <b>mk createsetup_all</b> command to create
+the <b>client.ser</b> file in the <b>${B390_PATH}</b>/misc directory. The
+client.ser file is used by the Build/390 USS client to communicate with
+Build/390 server. To run this command certain makefile variables need to
+be defined and the parmfile needs to exist. <b>B390_PARM_FILE</b> and <b>B390_PATH</b>
+makefile variables can be defined in the user's profile or environment.</font>
+<p><font color="#000000">After creating the parmfile and defining the <b>B390_PARM_FILE</b>
+and <b>B390_PATH</b> makefile variables, execute the following from the
+top-level src directory of the sandbox:</font>
+<blockquote><tt><font color="#000000">mk createsetup_all</font></tt></blockquote>
+
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="apars"></a>Working with APARs</h2>
+This section describes the steps to build and package an individual customer
+fix.
+<h3>
+<a NAME="openapar"></a>Open an APAR</h3>
+
+<ul>
+<li>
+Level 1 support opens the problem report in RETAIN</li>
+
+<li>
+BPS auto-creates a defect in CMVC</li>
+</ul>
+
+<h3>
+<a NAME="buildfix"></a>Building a Fix</h3>
+The following steps are taken by the developer to build the necessary fixes
+for the problem specified by the APAR.
+<ul>
+<li>
+accept the defect in CMVC, which triggers BPS to move the APAR from INTRAN
+to OPEN</li>
+
+<li>
+create a track for the defect against the desired release</li>
+
+<li>
+create a sandbox backed by the backing build containing the latest current
+level of the product.&nbsp; A recommended approach to naming the sandbox
+is to use the APAR name.</li>
+
+<ul>
+<li>
+<tt>mksb -back &lt;<i>path to product backing build</i>> &lt;<i>apar_name</i>></tt></li>
+</ul>
+
+<li>
+check out the necessary files from CMVC into the sandbox</li>
+
+<li>
+workon the sandbox, using the ODE workon command</li>
+
+<ul>
+<li>
+<tt>workon &lt;<i>apar_name</i>></tt></li>
+</ul>
+
+<li>
+edit the files as necessary to correct the problem</li>
+
+<li>
+build the code changes with ODE</li>
+
+<ul>
+<li>
+<tt>mk build_all</tt></li>
+</ul>
+
+<li>
+unit test the changes to ensure the problem has been corrected</li>
+
+<li>
+check in the files to CMVC</li>
+
+<li>
+enter ++HOLD data (optional) and APAR closing text in BPS via the BPS Service
+GUI</li>
+</ul>
+
+<h3>
+<a NAME="buildapar"></a>Building the APAR delta driver</h3>
+The first step to packaging the fix is creating the APAR delta driver,
+which is the Build/390 object that can later be packaged into a shippable
+object.&nbsp; Creating an APAR delta driver is <b>required</b> for every
+fix that is to be included in either a ++APAR, ++USERMOD, or a ++PTF.
+<ul>
+<li>
+the same sandbox that contains the built fixes should be used to create
+the APAR delta driver</li>
+
+<li>
+run the ODE <b>instdep_all</b> target, which will populate the ship tree
+in the developer sandbox with only the changed shippable files</li>
+
+<ul>
+<li>
+<tt>mk instdep_all</tt></li>
+</ul>
+
+<li>
+run the ODE <b>parse_all</b> target, which will generate the packaging
+control files required for building the APAR delta driver.&nbsp; These
+files will be generated in the directory specified by the <b>PKG_CONTROL_DIR</b>
+makefile variable.&nbsp; The makefile variable <b>PKG_TYPE</b> must be
+set to 'APAR'.</li>
+
+<ul>
+<li>
+<tt>mk parse_all PKG_TYPE=APAR</tt></li>
+</ul>
+
+<li>
+run the ODE <b>runpkgtool_all </b>target, providing the APAR name as input.&nbsp;
+This target will invoke the Build/390 command to create and build the APAR
+delta driver.&nbsp; The makefile variable <b>PKG_TYPE </b>must be set to
+'APAR'.</li>
+
+<ul>
+<li>
+<tt>mk runpkgtool_all APAR=&lt;<i>apar_name</i>> PKG_TYPE=APAR</tt></li>
+</ul>
+
+<li>
+optionally, the ODE <b>package_all</b> target can be used, which will in
+turn invoke each of the three previous targets, instdep_all, parse_all,
+and runpkgtool_all, in that order.</li>
+
+<ul>
+<li>
+<tt>mk package_all APAR=&lt;<i>apar_name</i>> PKG_TYPE=APAR</tt></li>
+</ul>
+
+<li>
+To backout of the previous command(s)</li>
+
+<ul>
+<li>
+<tt>See the <a href="http://w3.ode.raleigh.ibm.com/5.0/doc/pubs/RecoveryGuide.htm#instdep">RecoveryGuide</a></tt></li>
+</ul>
+</ul>
+
+<h3>
+<a NAME="usermod"></a><tt>Building a ++USERMOD</tt></h3>
+<tt>An optional step in the packaging process is to create a ++USERMOD
+from the APAR delta driver.&nbsp; This can be used as a temporary customer
+fix that can be shipped without having an actual APAR opened against the
+problem, or can be used as a temporary fix used to validate the problem
+has been fixed prior to including the fix in a PTF.</tt>
+<ul>
+<li>
+<tt>using the same sandbox from which the APAR delta driver was built,
+run the ODE runpkgtool_all target, which the PKG_TYPE variable set to '++USERMOD',
+and providing the name of the USERMOD as input.&nbsp; This target will
+invoke the Build/390 command to build the ++USERMOD.</tt></li>
+
+<ul>
+<li>
+<tt>mk runpkgtool_all PKG_TYPE=++USERMOD USERMOD=&lt;<i>usermod name</i>></tt></li>
+</ul>
+</ul>
+
+<h3>
+<a NAME="++apar"></a><tt>Building a ++APAR</tt></h3>
+<tt>Another optional step in the packaging process is to create a ++APAR
+from the APAR delta driver.&nbsp; This can be used as a means to deliver
+a fix to a customer prior to its inclusion in a PTF.</tt>
+<ul>
+<li>
+<tt>using the same sandbox from which the APAR delta driver was built,
+run the ODE runpkgtool_all target, which the PKG_TYPE variable set to '++APAR',
+and providing the name of the APAR as input.&nbsp; This target will invoke
+the Build/390 command to build the ++APAR&nbsp; Note that the Build/390
+commands will request the ++HOLD data from BPS, so it should be entered
+before creating the ++APAR, if desired.</tt></li>
+
+<ul>
+<li>
+<tt>mk runpkgtool_all PKG_TYPE=++APAR APAR=&lt;<i>apar name</i>></tt></li>
+</ul>
+
+<li>
+<tt>If an existing ++APAR needs to be <a href="http://w3.ode.raleigh.ibm.com/5.0/doc/pubs/RecoveryGuide.htm#plusaparinfo">rebuilt,
+</a>the
+makefile variable <b>B390_APAR_REBUILD </b>must be set to 'YES'.</tt></li>
+</ul>
+
+<h3>
+<a NAME="aparcomplete"></a><tt>Completion steps</tt></h3>
+<tt>After building the fix, creating the APAR delta driver, and optionally
+building a ++USERMOD or ++APAR, the developer must finalize working on
+the problem by completing the following steps:</tt>
+<ul>
+<li>
+<tt>add APAR ++HOLD data via the BPS Service GUI, if desired and completed
+previously</tt></li>
+
+<li>
+<tt>add APAR closing text via the BPS Service GUI, if not complete previously</tt></li>
+
+<li>
+<tt>move the track to the Review state in CMVC.&nbsp; This step, assuming
+the requisite closing text has already been entered, will make the APAR
+reviewable in BPS, via the BPS track-review user exit.</tt></li>
+
+<li>
+<tt>review the APAR in BPS.&nbsp; This will initiate the APAR closing process,
+which will result in the completion of three tasks:</tt></li>
+
+<ul>
+<li>
+<tt>the APAR will be closed in RETAIN</tt></li>
+
+<li>
+<tt>the track will be moved to the Integrate state in CMVC, via the BPS
+track-integrate user exit.</tt></li>
+
+<li>
+<tt>the APAR will be defined to the Build/390 PDT, via the Build/390 track-integrate
+user exit.</tt></li>
+</ul>
+
+<li>
+<tt>To backout of these steps</tt></li>
+
+<ul>
+<li>
+<tt>See the <a href="http://w3.ode.raleigh.ibm.com/5.0/doc/pubs/RecoveryGuide.htm#reviewinfo">RecoveryGuide</a></tt></li>
+</ul>
+</ul>
+<tt>Once the APAR has a corresponding APAR delta driver, and has been correctly
+defined to the Build/390 PDT, it can now be included in a PTF.</tt>
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="ptfs"></a><tt>Building PTFs</tt></h2>
+<tt>This section describes the necessary steps to package the built fixes
+into a shippable ++PTF.</tt>
+<h3>
+<a NAME="ptfsetup"></a><tt>Initial Setup</tt></h3>
+<tt>The following steps are taken by the developer to prepare for building
+a PTF.&nbsp; Note that PTFs for APARs that span multiple CMVC releases
+must be built simultaneously.&nbsp; The initial setup steps should be executed
+once for each CMVC release being processed in the PTF set.</tt>
+<ul>
+<li>
+<tt>create a level in CMVC to represent all the fixes to be included in
+the new PTF.</tt></li>
+
+<li>
+<tt>add all the tracks in the integrate state to each level as level members.&nbsp;
+Each track should correspond to a previously built APAR with a delta driver,
+and that has been defined to the Build/390 PDT.</tt></li>
+
+<li>
+<tt>create a sandbox for each CMVC release, and extract the level into
+the sandbox to represent the set of code which contains all the fixes for
+the PTF.</tt></li>
+</ul>
+
+<h3>
+<a NAME="ptfnumbers"></a><tt>Obtain PTF Numbers</tt></h3>
+<tt>The next step in the PTF process is to request a set of PTF numbers
+from RETAIN for the PTFs being created.&nbsp; This is done through Build/390,
+which in turns communicates with BPS, and indirectly RETAIN, to obtain
+and establish the set of PTF numbers.&nbsp; This step should only be executed
+<b>one
+time</b> for all CMVC releases being processed in the PTF set.</tt>
+<ul>
+<li>
+<tt>run the ODE <b>getptfnums_all</b> target, which will invoke the call
+to Build/390 to request the set of PTF numbers.&nbsp; These numbers will
+be then stored by ODE in the BPS database, and used during the later PTF
+creating steps.&nbsp; Additional makefile variables are required for executing
+this target: <b>CMVC_FAMILY</b>, <b>CMVC_RELEASE</b>, and <b>CMVC_LEVEL</b>.&nbsp;
+This command should be executed once and only once for all the sandboxes
+representing PTF levels, and can be executed in any of these sandboxes.</tt></li>
+
+<ul>
+<li>
+<tt>mk getptfnums_all CMVC_RELEASE=&lt;cmvc release name> CMVC_FAMILY=&lt;cmvc
+family name> CMVC_LEVEL=&lt;cmvc level name></tt></li>
+</ul>
+
+<li>
+<tt>note that the makefile variables <b>CMVC_LEVEL</b> and <b>CMVC_RELEASE
+</b>can
+be any of the releases or levels established during the initial setup.</tt></li>
+
+<li>
+<tt>variables that are not likely to be changing can optionally be stored
+in an ODE makefile or Makeconf file.&nbsp; Candidates for this would include
+<b>CMVC_RELEASE</b>
+and <b>CMVC_FAMILY</b>.</tt></li>
+
+<li>
+<tt>To backout of the previous command</tt></li>
+
+<ul>
+<li>
+<tt>See the <a href="http://w3.ode.raleigh.ibm.com/5.0/doc/pubs/RecoveryGuide.htm#ptfnumsinfo">RecoveryGuide</a></tt></li>
+</ul>
+</ul>
+
+<h3>
+<a NAME="ptfvpl"></a><tt>Generate VPL (Virtual Private Listing)</tt></h3>
+<tt>This is an <b>OPTIONAL</b> step in the PTF process. This step is used
+to generate VPL for the modified files that will be shipped as part of
+this PTF. A VPL is generated for each of the modified files that have shipType
+attribute set to 'vpl' in the CMF.&nbsp; A JCL job is created and submitted
+for each modified FMID that has modified parts of type VPL. The submitted
+JCL job generates VPL. The <b>getptfnums_all</b> target&nbsp; must be executed
+before running this step. The Build/390 Packaging commands are not used
+during this step.</tt>
+<ul>
+<li>
+<tt>Run the ODE <b>runpkgtool_all </b>target. ODE will communicate with
+BPS to get the PTF number. The makefile variable <b><font size=-1>PKG_TYPE</font></b>must
+be set to 'ptfvpl'. To create VPL issue mk runpkgtool_all PKG_TYPE=ptfvpl
+command in a sandbox.</tt></li>
+
+<li>
+<tt>The makefile variables <b>JAVA_SECURITY_POLICY_FILE</b>, <b>PKG_API_URL</b>,
+<b>CMVC_FAMILY</b>,
+<b>CMVC_RELEASE</b>,
+and <b>CMVC_LEVEL</b> are required to access PTF numbers that are stored
+in BPS.</tt></li>
+
+<li>
+<tt>The makefile variables <b>PKG_MVS_JOBCARD</b>, <b>PKG_MVS_USERID</b>,
+<b>PKG_MVS_PASSWORD</b>,
+<b>PKG_MVS_EXEC_DATASET</b>,
+<b>PKG_MVS_TERSE_LOAD_DATASET</b>/<b>PKG_MVS_TERSE_CLIST_DATASET
+</b>which
+are described in the
+<a href="http://w3.ode.raleigh.ibm.com/5.0/doc/pubs/ODEPackagingReference.htm#runpkgtool_all">Packaging
+Reference</a> are required for submitting JCL job.</tt></li>
+
+<li>
+<tt>Additional makefile variables that are required are <b>TOSTAGE</b>
+and <b>PKG_CONTROL_DIR</b></tt></li>
+</ul>
+<tt>The name of the datasets that contain VPL would be of form &lt;HLQ>.&lt;FUNCTION>.&lt;PTF
+NUMBER>.&lt;PART NAME>.LISTING. The name of the dataset that contain the
+list of VPLs would be of form &lt;HLQ>.&lt;FUNCTION>.&lt;PTF NUMBER>.VPL.FILES</tt>
+<h3>
+<a NAME="ptfprep"></a><tt>Prepare for PTF building</tt></h3>
+<tt>The next step in the PTF process is to build the PTF sandboxes, and
+execute some preliminary packaging tasks.&nbsp; These steps should be executed
+in each sandbox representing a PTF level.</tt>
+<ul>
+<li>
+<tt>build the code changes with ODE</tt></li>
+
+<ul>
+<li>
+<tt>mk build_all</tt></li>
+</ul>
+
+<li>
+<tt>run the ODE <b>instdep_all</b> target, which will populate the ship
+tree in each PTF sandbox with only the changed shippable files</tt></li>
+
+<ul>
+<li>
+<tt>mk instdep_all</tt></li>
+</ul>
+
+<li>
+<tt>run the ODE <b>parse_all</b> target, which will generate the packaging
+control files required for building the PTF.&nbsp; These files will be
+generated in the directory specified by the <b>PKG_CONTROL_DIR</b> makefile
+variable.&nbsp; The makefile variable <b>PKG_TYPE</b> must be set to 'PTF'.</tt></li>
+
+<ul>
+<li>
+<tt>mk parse_all PKG_TYPE=PTF</tt></li>
+</ul>
+
+<li>
+<tt>run the ODE <b>runpkgtool_all </b>target.&nbsp; ODE will communicate
+with BPS to create and/or rename CMVC levels for each PTF number assigned
+to this level.&nbsp; This is required by the Build/390 PTF process.&nbsp;
+The makefile variable <b>PKG_TYPE</b> must be set to 'PTF'.&nbsp; Additional
+makefile variables are required for executing this target: <b>CMVC_FAMILY</b>,
+<b>CMVC_RELEASE</b>,
+and <b>CMVC_LEVEL</b>.</tt></li>
+
+<ul>
+<li>
+<tt>mk runpkgtool_all PKG_TYPE=PTF CMVC_RELEASE=&lt;cmvc release name>
+CMVC_FAMILY=&lt;cmvc family name> CMVC_LEVEL=&lt;cmvc level name></tt></li>
+</ul>
+
+<li>
+<tt>optionally, the ODE <b>package_all</b> target can be used, which will
+in turn invoke each of the three previous targets, instdep_all, parse_all,
+and runpkgtool_all, in that order.</tt></li>
+
+<ul>
+<li>
+<tt>mk package_all PKG_TYPE=PTF CMVC_RELEASE=&lt;cmvc release name> CMVC_FAMILY=&lt;cmvc
+family name> CMVC_LEVEL=&lt;cmvc level name></tt></li>
+</ul>
+
+<li>
+<tt>To backout of the previous command(s)</tt></li>
+
+<ul>
+<li>
+<tt>See the <a href="http://w3.ode.raleigh.ibm.com/5.0/doc/pubs/RecoveryGuide.htm#ptfinfo">RecoveryGuide</a></tt></li>
+</ul>
+</ul>
+
+<h3>
+<a NAME="buildptf"></a><tt>Build the ++PTF</tt></h3>
+<tt>The next step in the PTF process is to build the ++PTFs.&nbsp; This
+step is done once per each CMVC release being processed in the PTF set.&nbsp;
+Build/390 will handle simultaneously building multiple PTFs, when necessary.</tt>
+<ul>
+<li>
+<tt>run the ODE <b>runpkgtool_all </b>target.&nbsp; This target will invoke
+the necessary Build/390 tool to build the ++PTFs.&nbsp; The makefile variable
+<b>PKG_TYPE</b>
+must be set to '++PTF'.&nbsp; Additional makefile variables are required
+for executing this target: <b>CMVC_FAMILY</b>, <b>CMVC_RELEASE</b>, and
+<b>CMVC_LEVEL</b>.</tt></li>
+
+<ul>
+<li>
+<tt>mk runpkgtool_all PKG_TYPE=++PTF CMVC_RELEASE=&lt;cmvc release name>
+CMVC_FAMILY=&lt;cmvc family name> CMVC_LEVEL=&lt;cmvc level name></tt></li>
+</ul>
+
+<li>
+<tt>note that the CMVC level used in this step is the original level name,
+and not the renamed level name.&nbsp; Although the original level no longer
+exists in CMVC at this point (it has been renamed to a PTF number), the
+PTF numbers were stored in BPS using the original level name, and must
+be retrieved accordingly.</tt></li>
+
+<li>
+<tt>an optional makefile variable, <b>SUPERSEDE_PTFS</b>, can be specified
+to this target to denote list of PTFs that are to be superseded by this
+PTF set when the Build/390 PDT does not automatically indicate the supersede.</tt></li>
+
+<li>
+<tt>To backout of the previous command(s)</tt></li>
+
+<ul>
+<li>
+<tt>See the <a href="http://w3.ode.raleigh.ibm.com/5.0/doc/pubs/RecoveryGuide.htm#plusptfinfo">RecoveryGuide</a></tt></li>
+</ul>
+</ul>
+
+<h3>
+<a NAME="ptfcomplete"></a><tt>Completion steps</tt></h3>
+<tt>After building the ++PTF, the builder must finalize working on the
+PTF by completing the following steps:</tt>
+<ul>
+<li>
+<tt>move each CMVC level to the Build state</tt></li>
+
+<li>
+<tt>move each CMVC level to the Ready state</tt></li>
+
+<li>
+<tt>move each CMVC level to the Certify state</tt></li>
+
+<li>
+<tt>accept all the test records in CMVC.&nbsp; This will trigger the Build/390
+level-commit process, which will commit the CMVC level, mark the PTF as
+COPYSENT in RETAIN, and transmit the PTF to PTF Control.</tt></li>
+</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="othertopics"></a><tt>Other Topics</tt></h2>
+<tt>There may be cases where additional makefile variable need to be defined
+to fully specify to ODE the nature of the changes, such that the Build/390
+APAR delta driver or PTF set is created properly.&nbsp; These cases apply
+to both the building of an APAR delta driver or a PTF set, and the values
+used during the creation of the APAR delta driver must match the values
+when building the PTF.&nbsp; For example, if a file was marked as new during
+the APAR delta driver build phase, it must also be listed as new when the
+PTF including that APAR is built.&nbsp; The PTF build process will fail
+if this is not the case.</tt>
+<h3>
+<a NAME="addfile"></a><b><tt>Adding a file</tt></b></h3>
+<tt>When adding a file in the current fix that was not shipped in the original
+IPP package, the new file must be explicity specified in the makefile variable
+<b>B390_NEW_FILES</b>,
+in addition to having its entry created in the ODE CMF.&nbsp; This variable
+should be a space-seperated list of files (with their corresponding distribution
+libraries), in the format &lt;<i>distlib>.&lt;file></i>.&nbsp; For example,</tt>
+<blockquote><tt>B390_NEW_FILES = ADSTLIB.NEWFILE1 ADSTLIB.NEWFILE2</tt></blockquote>
+<tt>where:</tt>
+<ul>
+<li>
+<tt>ADSTLIB is the distribution library (as specified by the <b>targetDir</b>
+or <b>distLib</b> attribute in the CMF)</tt></li>
+
+<li>
+<tt>NEWFILE1 and NEWFILE2 are the names of the new parts (as specified
+by the
+<b>targetFile</b> attribute in the CMF).</tt></li>
+</ul>
+
+<h3>
+<a NAME="delfile"></a><b><tt>Deleting a file</tt></b></h3>
+<tt>Similarly, when removing a file in the current fix that was shipped
+in the original IPP package, the deleted file must be explicitly specified
+in the makefile variable <b>B390_DELETED_FILES</b>, in addition to having
+its entry removed from the ODE CMF.&nbsp; This variable should be a space-seperated
+list of files (with their corresponding distribution libraries, FMIDs,
+and parttypes), in the format &lt;<i>fmid>.&lt;distlib>.&lt;file>.&lt;partype>.</i>&nbsp;
+For example,</tt>
+<blockquote><tt>B390_DELETED_FILES = HXXX111.ADSTLIB.DELFILE1.MOD HXXX111.ADSTLIB.DELFILE2.HFS</tt></blockquote>
+<tt>where:</tt>
+<ul>
+<li>
+<tt>HXXX111 is the FMID to which the parts belong, as specified by the
+<b>entityName</b>
+attribute in the CMF.</tt></li>
+
+<li>
+<tt>ADSTLIB is the distribution library, as specified by the <b>targetDir</b>
+or <b>distLib</b> attribute in the CMF.</tt></li>
+
+<li>
+<tt>DELFILE1 and DELFILE2 are the names of the deleted parts, as specified
+by the <b>targetFile</b> attribute in the CMF.</tt></li>
+
+<li>
+<tt>MOD and HFS are the parttypes of the two files to be deleted, as specified
+by the <b>fileType</b> attribute in the CMF.</tt></li>
+</ul>
+
+<h3>
+<a NAME="jclin"></a><b><tt>Adding or modifying JCLIN</tt></b></h3>
+<tt>When making a change in the current fix that requires new JCLIN to
+be generated and shipped with the fix, the files for which JCLIN must be
+processed must be explicity specified in the makefile variable <b>B390_JCLIN_FILES</b>,
+in addition to having any JCLIN attributes in the CMF updated.&nbsp; ODE
+will automatically generate JCLIN to be shipped with the fix for all parts
+listed in B390_JCLIN_FILES.&nbsp; This variable should be a space-seperated
+list of files (with their corresponding distribution libraries), in the
+format &lt;<i>distlib>.&lt;file></i>.&nbsp; For example,</tt>
+<blockquote><tt>B390_JCLIN_FILES = ADSTLIB.FILE1 ADSTLIB.FILE2</tt></blockquote>
+<tt>where:</tt>
+<ul>
+<li>
+<tt>ADSTLIB is the distribution library (as specified by the <b>targetDir</b>
+or <b>distLib</b> attribute in the CMF).</tt></li>
+
+<br><tt>FILE1 and FILE2 are the names of the parts for which JCLIN should
+be created (as specified by the <b>targetFile</b> attribute in the CMF).</tt></ul>
+
+<h3>
+<a NAME="retrieval"></a><tt>Retrieving a ++APAR, ++USERMOD or ++PTF</tt></h3>
+<tt>To retrieve a ++APAR or ++USERMOD run <i>mk runpkgtool_all PKG_TYPE=retrieveApar</i>
+command in a sandbox. The makefile variables that are required are <b>B390_++APAR_NAME</b>,
+<b>B390_FUNCTION</b>,
+<b>APAR</b>.
+Optional makefile variables are <b>B390_COPYTO</b> and <b>B390_SHIPTO</b>.</tt>
+<p><tt>To retrieve a ++PTF run <i>mk runpktool_all PKG_TYPE=retrievePtf
+</i>command
+in a sandbox. The makefile variables that are required are
+<b>B390_FUNCTION</b>.
+Optional makefile variables are <b>B390_COPYTO</b> and <b>B390_SHIPTO</b>.</tt>
+<p><tt>The following are the definitions of these makefile variables:</tt>
+<ul>
+<li>
+<tt><b>B390_++APAR_NAME</b> - a valid ++APAR/++USERMOD name</tt></li>
+
+<li>
+<tt><b>APAR</b> - a valid APAR/USERMOD driver name</tt></li>
+
+<li>
+<tt>B<b>390_FUNCTION - </b>a valid function name that is affected by the
+changes made by the above specified APAR/USERMOD.</tt></li>
+
+<li>
+<tt><b>B390_COPYTO</b> - a pre allocated PDS where the retrieved ++APAR/++USERMOD/++PTF
+is copied.</tt></li>
+
+<li>
+<tt><b>B390_SHIPTO</b> - a valid VM ID where the retrieved ++APAR/++USERMOD/++PTF
+is mailed.</tt></li>
+</ul>
+<tt>A ++APAR / ++USERMOD can also be retrieved as part of ++APAR/++USERMOD
+create command. If <b>B390_RETRIEVE_APAR</b> is set to YES / Y and when
+<i>mk
+runpkgtool_all PKG_TYPE=++APAR/++USERMOD </i>is run<i> </i>then the ++APAR/++USERMOD
+will be retrieved and copied to the PDS specified by the makefile variable
+<b>B390_COPYTO</b>.
+If the <b>B390_COPYTO</b> makefile variable is not defined then the retrieved
+++APAR/++USERMOD will be copied in to a new PDS. The name of this new PDS
+will be of form <i>&lt;HLQ>.&lt;FUNCTION>.&lt;APAR/USERMOD driver name>.APAR.&lt;++APAR/++USERMOD
+name></i>.</tt>
+<p><tt>Similarly, a ++PTF can also be retrieved as part of ++PTF create
+command. If <b>B390_RETRIEVE_PTF</b> is set to YES / Y and when <i>mk runpkgtool_all
+PKG_TYPE=++PTF </i>then the ++PTF will be retrieved and copied to the PDS
+specified by the makefile variable <b>B390_COPYTO</b>. If the <b>B390_COPYTO</b>
+makefile variable is not defined then the retrieved ++PTF will be copied
+in to a new PDS. The name of this new PDS will be of form <i>&lt;HLQ>.&lt;FUNCTION>.&lt;PTF
+name>.PTF</i>.</tt>
+<br>
+<hr ALIGN=LEFT WIDTH="100%">
+<h2>
+<a NAME="makefile"></a><tt>Makefile Variables</tt></h2>
+<tt>The following table lists all the ODE makefile variables used in the
+390 packaging process to create APAR and PTF packages.&nbsp; Additional
+makefile variables used in the service transfer process are documented
+in the <a href="ode390_service_config.htm">ODE 390 Service Packaging Configuration
+Guide</a></tt>
+<br>&nbsp;
+<table BORDER CELLSPACING=0 CELLPADDING=0 WIDTH="100%" >
+<tr BGCOLOR="#999999">
+<td><b>Variable</b></td>
+
+<td><b>Description</b></td>
+
+<td><b>Example</b></td>
+</tr>
+
+<tr>
+<td><b><font size=-1>CMVC_RELEASE</font></b></td>
+
+<td>CMVC release containing the code to be built for service</td>
+
+<td>CMVC_RELEASE=X210</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>CMVC_FAMILY</font></b></td>
+
+<td>CMVC family containing the code to be built for service</td>
+
+<td>CMVC_FAMILY=myfam</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>CMVC_LEVEL</font></b></td>
+
+<td>CMVC level to be processed for the current PTF</td>
+
+<td>CMVC_LEVEL=tmplevel1</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>PKG_TYPE</font></b></td>
+
+<td>type of package being created</td>
+
+<td>PKG_TYPE=APAR
+<br>PKG_TYPE=USERMOD
+<br>PKG_TYPE=++APAR
+<br>PKG_TYPE=++USERMOD
+<br>PKG_TYPE=PTF
+<br>PKG_TYPE=PTFVPL
+<br>PKG_TYPE=++PTF</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>PKG_CLASS</font></b></td>
+
+<td>class of package being created - defaults to 'SP' for all service PKG_TYPEs</td>
+
+<td>PKG_CLASS=SP</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>PKG_CONTROL_DIR</font></b></td>
+
+<td>directory where ODE will create the packaging control files</td>
+
+<td>PKG_CONTROL_DIR = ${PACKAGEBASE}/mdata</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>TOSTAGE</font></b></td>
+
+<td>The top level of the ship tree where all shippable files will be copied
+during the instdep_all pass.</td>
+
+<td>TOSTAGE=${SANDBOXBASE}/inst.images/mvs390_oe_2/shipdata</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>IDIR</font></b></td>
+
+<td>The directory relative to TOSTAGE where all shippable files will be
+copied during the instdep_all pass.</td>
+
+<td>IDIR=/usr/lpp/odehello/bin</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>ILIST</font></b></td>
+
+<td>A list of shippable files to be copied to the ship tree during the
+instdep_all pass.</td>
+
+<td>ILIST = file1 file2 file3</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>APAR</font></b></td>
+
+<td>Name of the APAR being built</td>
+
+<td>APAR=AI23456</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>USERMOD</font></b></td>
+
+<td>Name of the USERMOD being built</td>
+
+<td>USERMOD=UM12345</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>PKG_API_URL</font></b></td>
+
+<td>URL of the remote BPS service packaging API used by ODE to communicate
+with BPS.</td>
+
+<td>PKG_API_URL=sdwbtr8.raleigh.ibm.com/ServicePackagingServer</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>JAVA_SECURITY_POLICY_FILE</font></b></td>
+
+<td>set to fully qualified name of the java security policy file.&nbsp;
+required when BPS is started using JAVA 2 (JDK 1.2 or higher) to grant
+RMI authority to ODE to access the BPS server.&nbsp; See <a href="#securityfile">appendix</a>
+for an example.</td>
+
+<td>JAVA_SECURITY_POLICY_FILE=/u/ODETEST/test241/clientPolicy</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>PKG_MVS_DISPLAY_OUTPUT</font></b></td>
+
+<td>used to turn off/on the Build/390 output. If this variable is not set,
+then Build/390 output is displayed by default.</td>
+
+<td>PKG_MVS_DISPLAY_OUTPUT=YES</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_PATH</font></b></td>
+
+<td>directory for Build/390 to create and locate output files. The user
+must have write permission to this directory.</td>
+
+<td>B390_PATH = /u/ODETEST/test241/b390</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_PARM_FILE</font></b></td>
+
+<td>the fully-qualified path to the user's Build/390 parmfile</td>
+
+<td>B390_PARM_FILE = /u/ODETEST/test241/parmfile</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_TRACE_ONLY</font></b></td>
+
+<td>only display, without executing, the Build/390 commands (yes) or execute
+and show the Build/390 commands (no) Specify yes or no. Default is no.</td>
+
+<td>B390_TRACE_ONLY=no</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_DEBUG_ON</font></b></td>
+
+<td>specify yes to activate the <tt>/DEBUG1</tt> flag for all Build/390
+commands to receive additional output and log information.&nbsp; Default
+is no.</td>
+
+<td>B390_DEBUG_ON=yes</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_AUTO_DELETE_DRIVER</font></b></td>
+
+<td>specify no to disable the automatic deletion of the APAR delta driver
+prior to its creation when PKG_TYPE=APAR or USERMOD.&nbsp; Default is no.</td>
+
+<td>B390_AUTO_DELETE_DRIVER=NO</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_NEW_FILES</font></b></td>
+
+<td>list of new files being added in this APAR or PTF build</td>
+
+<td>B390_NEW_FILES = ADSTLIB.NEWFILE1 ADSTLIB.NEWFILE2</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_DELETED_FILES</font></b></td>
+
+<td>list of files being deleted in this APAR or PTF build</td>
+
+<td>B390_DELETED_FILES = HXXX111.ADSTLIB.DELFILE1.MOD HXXX111.ADSTLIB.DELFILE2.HFS</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_JCLIN_FILES</font></b></td>
+
+<td>list of files for which new JCLIN should be created in this APAR or
+PTF build</td>
+
+<td>B390_JCLIN_FILES = ADSTLIB.FILE1 ADSTLIB.FILE2</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>SUPERSEDE_PTFS</font></b></td>
+
+<td>list of PTFs that are to be superseded by this PTF set when PDT does
+not indicate the supersede</td>
+
+<td>SUPERSEDE_PTFS = PQ01234,PQ34567</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_RETRIEVE_APAR</font></b></td>
+
+<td>tells the command <i><tt>mk runpkgtool_all PKG_TYPE=++APAR/++USERMOD</tt></i>whether
+to retrieve the ++APAR/++USERMOD to a PDS or not. If the value is set to
+YES/yes or Y/y then the ++APAR/++USERMOD is retrieved otherwise it is not.
+If this makefile variable is not set then the ++APAR/++USERMOD will not
+be retrieved from its driver.</td>
+
+<td>B390_RETRIEVE_APAR=YES</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_RETRIEVE_PTF</font></b></td>
+
+<td>tells the command <i><tt>mk runpkgtool_all PKG_TYPE=++PTF</tt></i>
+whether to retrieve the ++PTF to a PDS or not. If the value is set to YES/yes
+or Y/y then the ++PTF is retrieved otherwise it is not. If this makefile
+variable is not set then the ++PTF will not be retrieved from its driver.</td>
+
+<td>B390_RETRIEVE_PTF=Y</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_COPYTO</font></b></td>
+
+<td>name of a preallocated PDS where the retrieved ++APAR/++USERMOD/++PTF
+is copied.</td>
+
+<td>B390_COPYTO=AAMBATI.HBPS112.AI29319</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_SHIPTO</font></b></td>
+
+<td>a valid VM ID where a ++PTF/++APAR/++USERMOD is mailed.</td>
+
+<td>B390_SHIPTO=ODETEST</td>
+</tr>
+
+<tr>
+<td><b><font size=-1>B390_APAR_REBUILD</font></b></td>
+
+<td>tells the command <i><tt>mk runpkgtool_all PKG_TYPE=++APAR</tt></i>
+whether to rebuild the ++APAR or not. If the value is set to YES/yes or
+Y/y then the ++APAR is rebuilt otherwise it is not. If this makefile variable
+is not set, then the B390 default is REBUILD=NO.</td>
+
+<td>B390_APAR_REBUILD=YES</td>
+</tr>
+</table>
+
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="appendix"></a><tt>Appendix</tt></h2>
+
+<h3>
+<a NAME="B390cmds"></a><tt>Build/390 Packaging Commands</tt></h3>
+<tt>The above ODE service packaging targets will run several Build/390
+commands.&nbsp; Note: these commands do not have to be manually run to
+create the service packages, as this is handled internally by ODE.&nbsp;
+The following section describes the Build/390 commands that are run during
+the service packaging tasks, and are listed here for informational purposes
+only.</tt>
+<h4>
+<a NAME="deletedriver"></a><tt><font color="#000000">Delete an existing
+APAR Delta Driver (DELETEDRIVER)</font></tt></h4>
+<tt>Delete an APAR delta driver <font color="#000000">for the Build/390
+release.</font></tt>
+<p><tt>This command is run during the ODE command: mk PKG_TYPE=APAR APAR=&lt;apar
+name> runpkgtool_all</tt>
+<p><tt>ODE will invoke the Build/390 command: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ClientUsersGuide50.html#hdrdrad">DELETEDRIVER</a></tt>
+<h5>
+<tt>Description</tt></h5>
+<tt>This command will delete any existing APAR delta drivers for the specified
+APAR.&nbsp; This is necessary to ensure that the ensuing CREATEDRIVER command
+does not fail.&nbsp; If no driver exists, DELETEDRIVER returns a return
+code of 50, which is a benign error condition and is ignored by ODE.</tt>
+<h5>
+<tt>Sample execution</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DELETEDRIVER LIBRELEASE=HRAT112
+MVSRELEASE=HRAT112 DRIVER=AI28450 PARMFILE=/u/ODETEST/bld390/parmfile /odebuild</tt>
+<h5>
+<tt>Screen output</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp; Processing command DELETEDRIVER...</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting driver status report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Checking client compatibility</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Requesting a driver report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Process Wrapper (Driver Report)&nbsp; did not
+complete successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Driver is locked by Build F409293C</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Run Reports - Driver Reports - Builds for more
+information.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RC=1</tt>
+<br><tt></tt>&nbsp;
+<h4>
+<a NAME="cleanup"></a><tt><font color="#000000">Cleanup an existing APAR
+Delta Driver (CLEANUP)</font></tt></h4>
+<tt>Cleanup an APAR delta driver <font color="#000000">for the Build/390
+release.</font></tt>
+<p><tt>This command is run during the ODE command: mk PKG_TYPE=APAR APAR=&lt;apar
+name> runpkgtool_all</tt>
+<p><tt>ODE will invoke the Build/390 command: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ProcessRef50.html#h1xctacc">CLEANUP</a></tt>
+<h5>
+<tt>Description</tt></h5>
+<tt>This command will unlock any locked APAR delta drivers.&nbsp; This
+is necessary when a driver build has failed for some reason, and remains
+locked by the host system, preventing its deletion.&nbsp; If the DELETEDRIVER
+command returns any return code besides 0 or 50, ODE will automatically
+call the CLEANUP command, and then call DELETEDRIVER again.</tt>
+<h5>
+<tt>Sample execution</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CLEANUP BUILD1=F409293C
+/HOSTDS /JOBS /UNLOCK /EXTRACT /LOCAL PARMFILE=/u/ODETEST/bld390/parmfile</tt>
+<h5>
+<tt>Screen output</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp; Processing command CLEANUP...</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Running cleanup for buildid F409293C</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Setting driver status to FREE</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Checking client compatibility</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Unlocking the driver AI28450, buildid(F409293C).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Deleting build(F409293C) from MVS</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Deleting local files</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Clean Process Artifacts completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RC=0</tt>
+<br><tt></tt>&nbsp;
+<h4>
+<a NAME="createdriver"></a><tt><font color="#000000">Create an APAR Delta
+Driver (CREATEDRIVER)</font></tt></h4>
+<tt><a href="http://w3.sdwb.ibm.com/b390doc50/B390ClientUsersGuide50.html#hdrcad">CREATEDRIVER</a>
+command is used to create an APAR delta driver <font color="#000000">for
+the Build/390 release. T</font>his command is run during the ODE command:
+mk runpkgtool_all PKG_TYPE=APAR APAR=&lt;apar name></tt>
+<p><tt><b>NOTE: </b>The values of the makefile variables <b>B390_DRV_UBKP</b>,
+<b>B390_DRV_BLKP</b>,
+<b>B390_DRV_BLKS</b>,
+<b>B390_DRV_MAXCYL</b>,
+<b>B390_DRV_MAXEXT
+</b>are
+passed to this command to specify the driver sizes. Of these variables,
+if any of
+<b>B390_DRV_UBKP</b>,
+<b>B390_DRV_BLKP</b>,
+<b>B390_DRV_BLKS</b>
+is not specified, then values of these three variables will not be passed
+to this command. Instead, the number of shippable files that are being
+shipped as part of the APAR will be counted and passed to the command using
+the parameter NUMPARTS.</tt>
+<h5>
+<tt>Description</tt></h5>
+<tt>This command will create an APAR delta driver for the specified APAR.&nbsp;
+This is a precondition to the actual building of the driver.</tt>
+<h5>
+<tt>Sample execution</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CREATEDRIVER CHILVL=ODETEST
+MVSRELEASE=HRAT112 NEWDRIVER=AI28450 BASEDRIVER=COPYSENT CDRVRTYP=DELTA
+CDVRSIZE=SMALL PARMFILE=/u/ODETEST/bld390/parmfile /odebuild</tt>
+<h5>
+<tt>Screen output</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp; Processing command CREATEDRIVER...</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Checking client compatibility</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting defaults from host</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Creating driver AI28450</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Create MVS Driver completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RC=0</tt>
+<br>&nbsp;
+<h4>
+<a NAME="driverbuild"></a><tt><font color="#000000">Build an APAR Delta
+Driver (DRIVERBUILD)</font></tt></h4>
+<tt>Build an APAR delta driver <font color="#000000">for the Build/390
+release.</font></tt>
+<p><tt>This command is run during the ODE command: mk runpkgtool_all PKG_TYPE=APAR
+APAR=&lt;apar name></tt>
+<p><tt>ODE will invoke the Build/390 command: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ClientUsersGuide50.html#hdrdb">DRIVERBUILD</a></tt>
+<h5>
+<tt>Description</tt></h5>
+<tt>This command will build a previously-created APAR delta drivers for
+the specified APAR.&nbsp; The control files (UPD and LST) generated by
+ODE are read as input to this command by Build/390.</tt>
+<h5>
+<tt>Sample execution</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRIVERBUILD&nbsp;
+LIBRELEASE=HRAT112 DRIVER=AI28450 BUILDTYPE=ODE DESCRIPTION="BUILD AI28450"
+DELTABUILD=YES RUNSCAN=NO /odebuild PARMFILE=/u/ODETEST/bld390/parmfile</tt>
+<h5>
+<tt>Screen output</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp; Processing command DRIVERBUILD...</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting driver status report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Checking client compatibility</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Requesting a driver report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Requesting release and driver list</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; MVS Release And Drivers List completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Running build F4099106</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Setting driver status to INUSE</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Locking the driver AI28450, buildid(F4099106).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Phase 1</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Phase 1: Submitting Build command</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Phase 1: processing results</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting driver status report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Requesting a driver report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; MVS Phase 1 - XODE - XODE completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Verifying defect AI28450 exists in BPS</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Loading Build object to the CMVC family server,
+jixaaix3.raleigh.ibm.com</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Load of A4099107 to rmi server&nbsp; Successful</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Setting driver status to FREE</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Unlocking the driver AI28450, buildid(F4099106).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ODE Driver Build Process completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RC=0</tt>
+<br>&nbsp;
+<h4>
+<a NAME="aparcheck"></a><tt>Obtain APAR build information (APARCHECK)</tt></h4>
+<tt><font color="#000000">Request APAR build information from Build/390
+for building a ++APAR or ++USERMOD</font></tt>
+<p><tt>This command is run during the ODE command: mk PKG_TYPE=++APAR/++USERMOD
+runpkgtool_all</tt>
+<p><tt>ODE will invoke the Build/390 command: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ClientUsersGuide50.html#header_158">APARCHECK</a></tt>
+<h5>
+<tt>Description</tt></h5>
+<tt>This command will query the Build/390 server for build information
+on an APAR and specifies to Build/390 if the usermod process is</tt>
+<br><tt>involved.</tt>
+<h5>
+<tt>Sample execution</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; APARCHECK LIBRELEASE=HRAT112
+APARNAME=AI28450 PARMFILE=/u/ODETEST/bld390/parmfile /odebuild</tt>
+<h5>
+<tt>Screen output</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp; Processing command APARCHECK...</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Running build A409910B</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Checking client compatibility</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Requesting a driver report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Requesting PDT report for APAR build</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; PDT Recommended Logics:</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; END</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; APAR Number:AI28450</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Check APAR completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; *****************************************************</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; * BUILDID=A409910B, run aparbuild as follows.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+*</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; * APARBUILD BUILD=A409910B &lt;other options>
+/odebuild*</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; *****************************************************</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RC=0</tt>
+<br>&nbsp;
+<h4>
+<a NAME="aparbuild"></a><tt>Build a ++APAR or ++USERMOD (APARBUILD)</tt></h4>
+<tt><font color="#000000">Build a ++APAR or ++USERMOD</font></tt>
+<p><tt>This command is run during the ODE command: mk PKG_TYPE=++APAR/++USERMOD
+runpkgtool_all</tt>
+<p><tt>ODE will invoke the Build/390 command: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ClientUsersGuide50.html#header_158">APARBUILD</a></tt>
+<h5>
+<tt>Description</tt></h5>
+<tt>The APARBUILD command builds an ++APAR or ++USERMOD, and must be preceded
+by a call to APARCHECK command to request the buildid.</tt>
+<h5>
+<tt>Sample execution</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; APARBUILD BUILDID=A409910B
+INTEGRITY=NO REBUILD=NO PARMFILE=/u/ODETEST/bld390/parmfile /odebuild</tt>
+<h5>
+<tt>Screen output</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp; Processing command APARBUILD...</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Running aparbuild buildid[A409910B]</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Get hold data from bps for apar AI28450 execution
+started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting hold data from bps for apar AI28450
+started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting hold data from bps for apar AI28450
+successful.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting partholds for&nbsp; cmvcRelease HRAT112</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Process Wrapper (Get part holds for cmvc release
+HRAT112 from bps)&nbsp; completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Get hold data from bps for apar AI28450 execution
+ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Remove Holds from PDT AI28450, ALL execution
+started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Remove Holds from PDT AI28450, HRAT112 execution
+started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Remove Holds from PDT AI28450, ALL execution
+started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Checking client compatibility</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Synching hold data from BPS with PDT for APAR&nbsp;
+AI28450</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Remove Holds from PDT AI28450, HRAT112 execution
+ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Remove Holds from PDT AI28450, ALL execution
+ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Remove Holds from PDT AI28450, HRAT112 execution
+ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Define Hold Text From BPS To PDT completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Upload And Define Hold Text From To PDT completed
+successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Building APAR package</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+*INFO* ++APAR BI28450 40990011 successfully&nbsp; built</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+*INFO* ++APAR BI28450 40990011 successfully&nbsp; built</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ++APAR BI28450 40990011 successfully&nbsp; built</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Verifying defect AI28450 exists in BPS</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Loading Build object to the CMVC family server,
+jixaaix3.raleigh.ibm.com</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Load of A409910B to rmi server&nbsp; Successful</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Apar Build completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RC=0</tt>
+<br>&nbsp;
+<h4>
+<a NAME="ptfdefine"></a><tt>Obtain PTF numbers (PTFDEFINE)</tt></h4>
+<tt><font color="#000000">Request PTF numbers from Build/390.</font></tt>
+<p><tt>This command is run during the ODE command: mk getptfnums_all</tt>
+<p><tt>ODE will invoke the Build/390 command: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ClientUsersGuide50.html#header_164">PTFDEFINE</a></tt>
+<h5>
+<tt>Description</tt></h5>
+<tt>This command will request a set of PTF numbers for the specifed APARs
+from Build/390.&nbsp; Build/390 will initially assign temporary PTF numbers
+to its PDT, then obtain the real PTF numbers from RETAIN (via BPS), and
+replace the temporary PTF numbers with the real PTF numbers in the PDT.&nbsp;
+One PTF number will be generated for each affected FMID.</tt>
+<h5>
+<tt>Sample execution</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PTFDEFINE APAR1=AI28450
+/odebuild PARMFILE=/u/ODETEST/bld390/parmfile</tt>
+<h5>
+<tt>Screen output</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp; Processing command PTFDEFINE...</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Running ptfdefine buildid[MULTIPTF4099229]</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Checking client compatibility</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting PDT UNPTFED Report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Formulating dependecy map for ODE starts.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Get library name for RETAIN APAR=AI28450 execution
+started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Get library name for RETAIN APAR=AI28450 execution
+ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Apar Closing Text define execution started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Uploading the APAR closing text to the host
+system.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Defining APAR Closing Text</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Apar Closing Text define completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Apar Closing Text define execution ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; isODEActive = true pBuild =HRAT112</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Define Hold Text From BPS To PDT execution started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Get hold data from bps for apar AI28450 execution
+started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting hold data from bps for apar AI28450
+started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting hold data from bps for apar AI28450
+successful.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting partholds for&nbsp; cmvcRelease HRAT112</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Process Wrapper (Get part holds for cmvc release
+HRAT112 from bps)&nbsp; completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Get hold data from bps for apar AI28450 execution
+ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Remove Holds from PDT AI28450, ALL execution
+started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Remove Holds from PDT AI28450, HRAT112 execution
+started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Synching hold data from BPS with PDT for APAR&nbsp;
+AI28450</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Remove Holds from PDT AI28450, HRAT112 execution
+ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Remove Holds from PDT AI28450, ALL execution
+ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Remove Holds from PDT AI28450, HRAT112 execution
+ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Define Hold Text From BPS To PDT completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Define Hold Text From BPS To PDT execution ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Upload And Define Hold Text From To PDT execution
+started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Upload And Define Hold Text From To PDT completed
+successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Upload And Define Hold Text From To PDT execution
+ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Define one PTF execution started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Running build MULTIPTF4099229</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Defining PTF</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Define one PTF execution started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Define one PTF execution started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting library release information</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting library release information</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting FMID information for library release
+HRAT112</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Get Real PTF name for apar AI28450 RETREL=G01</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Define one PTF completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Define one PTF execution ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Redefining PTF</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Define one PTF completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Define one PTF execution ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; big total set [MBPBuild Object</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; buildid = P4099229</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; libraryRelease = HRAT112</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; MVSRelease = null</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; driver = null</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; buildtype = null</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; controlled = false</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; haltOnShadCheckWarnings = false</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; locked = null</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; description = null</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; dateHolder = Thu Apr 08 21:31:30 EDT 2004</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; hlq = null</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; xmitTo = null</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; xmitType = null</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; status = null</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partInfoHash = {}</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partMetadataHash = {}</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; buildSettings = {}</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ptfSet0 =UI05777</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ptfSet1 =UI05778</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; definingApar ={Name=AI28450, Description=null,
+Supercedes=[]}</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; selected Apars0 =AI28450</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; pdt Name =B390TOOL.PDT2TST</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; PreqPTFS = []</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ]</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ODE Define PTF completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; *************************************************************</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; *&nbsp; BUILDID=MULTIPTF4099229, run ptfbuild
+as follows.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; *&nbsp; PTFBUILD BUILD=MULTIPTF4099229 &lt;other
+options> /odebuild *</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; *************************************************************</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RC=0</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Reading PTF set file: /u/wmathis/build390_50/ptf/MULTIPTF4099229/ptfSet.lst</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Storing PTF/FMID pairs in BPS</tt>
+<br>&nbsp;
+<h4>
+<a NAME="ptfbuild"></a><tt>Build the PTF set (PTFBUILD)</tt></h4>
+<tt><font color="#000000">Build the ++PTF set.</font></tt>
+<p><tt>This command is run during the ODE command: mk PKG_TYPE=++PTF runpkgtool_all</tt>
+<p><tt>ODE will invoke the Build/390 command: <a href="http://w3.sdwb.ibm.com/b390doc50/B390ClientUsersGuide50.html#header_164">PTFBUILD</a></tt>
+<h5>
+<tt>Description</tt></h5>
+<tt>This command will build the PTF set as initialized by the PTFDEFINE
+command.&nbsp; The control files (UPD and LST) generated by ODE are read
+as input to this command by Build/390.&nbsp; Note that this command is
+executed once per PTF set, i.e. all PTFs in the PTF set must be built simultaneously
+by one call to PTFBUILD.</tt>
+<h5>
+<tt>Sample execution</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PTFBUILD BUILDID=MULTIPTF4099229
+PARMFILE=/u/ODETEST/bld390/parmfile /odebuild</tt>
+<h5>
+<tt>Screen output</tt></h5>
+<tt>&nbsp;&nbsp;&nbsp; Processing command PTFBUILD...</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ODE Build PTF Set execution started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting driver status report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Checking client compatibility</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Requesting a driver report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Single ODE PTF Build execution started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Single ODE PTF Build execution started.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Creating PTF Delta driver</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Creating PTF Delta driver</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting driver status report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Requesting a driver report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Running build D4099234</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Setting driver status to INUSE</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Locking the driver UI05778, buildid(D4099234).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Phase 1</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Phase 1: Submitting Build command</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Phase 1: processing results</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting driver status report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Requesting a driver report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; MVS Phase 1 - XODE - XODE completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Verifying defect UI05778 exists in BPS</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Defect UI05778 does not exist in BPS, Loading
+Build obj. skipped(to cmvc family server)</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Setting driver status to FREE</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Unlocking the driver UI05778, buildid(D4099234).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting driver status report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Requesting a driver report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Running build D4099235</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Setting driver status to INUSE</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Locking the driver UI05777, buildid(D4099235).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ODE Driver Build Process completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ODE PTF UI05778 driver built</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Building a PTF package</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Phase 1</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Phase 1: Submitting Build command</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Construct SHIPPTF</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Single ODE PTF Build completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Single ODE PTF Build execution ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Phase 1: processing results</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Getting driver status report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Requesting a driver report</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; MVS Phase 1 - XODE - XODE completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Verifying defect UI05777 exists in BPS</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Defect UI05777 does not exist in BPS, Loading
+Build obj. skipped(to cmvc family server)</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Setting driver status to FREE</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Unlocking the driver UI05777, buildid(D4099235).</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ODE Driver Build Process completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ODE PTF UI05777 driver built</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Building a PTF package</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Construct SHIPPTF</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Single ODE PTF Build completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Single ODE PTF Build execution ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ODE Build PTF Set completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ODE Build PTF Set execution ended.</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; Build PTF Set completed successfully</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RC=0</tt>
+<p>
+<hr ALIGN=LEFT WIDTH="100%">
+<h3>
+<a NAME="securityfile"></a><tt>Java security file</tt></h3>
+<tt>The following is an example of the Java security policy file required
+by BPS to communicate with ODE via RMI.&nbsp; The contents of this file
+can be copied as-is, and populated in a user file referenced by the <b>JAVA_SECURITY_POLICY_FILE</b>
+makefile variable.</tt>
+<blockquote><tt>grant {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; permission java.security.AllPermission;</tt>
+<br><tt>};</tt></blockquote>
+
+<hr ALIGN=LEFT WIDTH="100%">
+<h3>
+<a NAME="links"></a><tt>Useful links</tt></h3>
+<tt><a href="http://w3.sdwb.raleigh.ibm.com/ode/">ODE Home Page</a></tt>
+<br><tt><a href="ode390_service_config.htm">ODE 390 Service Configuration
+Guide</a></tt>
+<br><tt><a href="ode390_service_scenario.htm">ODE 390 Service Scenario
+(Argo)</a></tt>
+<br><tt><a href="ODEPackagingReference.htm">ODE Packaging Reference</a></tt>
+<br><tt><a href="ODEServicePackagingReference.htm">ODE Service Packaging
+Reference</a></tt>
+<br><tt><a href="RecoveryGuide.htm">Recovery Guide for MVS Service Packaging</a></tt>
+<br><tt><a href="http://w3.sdwb.ibm.com/build390/">Build/390 Home Page</a></tt>
+<br><tt><a href="http://w3.sdwb.ibm.com/b390doc50/B390ProcessRef50.html">Build/390
+Process Reference</a></tt>
+<br><tt><a href="http://w3.sdwb.raleigh.ibm.com/bps">BPS Home Page</a></tt>
+</body>
+</html>

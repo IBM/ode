@@ -1,0 +1,1931 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 3.0//EN">
+<HTML><HEAD>
+<TITLE>OSF Development Environment User's Guide</TITLE>
+<!-- Begin Header Records  ========================================== -->
+<!-- ODE0CNTL SCRIPT A converted by B2H R2.3 (255a) (CMS-OS2) by      -->
+<!-- BCARR at RALVM13 on 6 May 1997 at 11:33:50                       -->
+<META HTTP-EQUIV="updated"  CONTENT="Wed, 30 Apr 1997 17:47:34">
+<META HTTP-EQUIV="review"  CONTENT="Thu, 30 Apr 1998 17:47:34">
+<META HTTP-EQUIV="expires"  CONTENT="Fri, 30 Apr 1999 17:47:34">
+</HEAD><BODY>
+<!-- End Header Records  ============================================ -->
+<A NAME=Top_Of_Page>&nbsp;</A>
+<H1>OSF Development Environment User's Guide</H1>
+<B>OSF Development Environment</B><BR>
+<B>User's Guide</B><BR>
+<P>Bill Carr<BR>
+<P><ADDRESS>
+Network Management Definition<BR>
+E40D/500<BR>
+Research Triangle Park, NC<BR>
+TL 8-444-8832<BR>
+<BR>
+Last change date - May 6, 1997<BR>
+</ADDRESS>
+Print Date - 6 May 1997
+<P>XXXX-XXXX<P>
+<HR><H2><A NAME=ToC>Table of Contents</A></H2>
+<P><B><A NAME=ToC_1 HREF="#HDRFIGLIST_START" >Figures</A></B><BR>
+<P><B><A NAME=ToC_2 HREF="#Header_2" >Chapter 1. Introduction</A></B><BR>
+<P><B><A NAME=ToC_3 HREF="#Header_3" >Chapter 2. ODE Requirements</A></B><BR>
+<P><B><A NAME=ToC_4 HREF="#Header_4" >Chapter 3. Installing ODE</A></B><BR>
+<P><B><A NAME=ToC_5 HREF="#HDRSANDB" >Chapter 4. Sandboxes</A></B><BR>
+<MENU><MENU>
+<LI><A NAME=ToC_6 HREF="#Header_6" >Relationship of Sandboxes to Backing Builds</A>
+<LI><A NAME=ToC_7 HREF="#Header_7" >Components of a Sandbox</A>
+<LI><A NAME=ToC_8 HREF="#HDRPOPCON" >Population Considerations</A>
+<LI><A NAME=ToC_9 HREF="#Header_9" >Chaining Sandboxes and Backing Builds</A>
+<LI><A NAME=ToC_10 HREF="#Header_10" >Information on Sandboxes - the .sandboxrc File</A>
+</MENU>
+<LI><A NAME=ToC_11 HREF="#Header_11" >Creating a Sandbox</A>
+<LI><A NAME=ToC_14 HREF="#Header_14" >Operations Within Sandboxes</A>
+<MENU>
+<LI><A NAME=ToC_15 HREF="#Header_15" >Working On a Sandbox</A>
+<LI><A NAME=ToC_17 HREF="#Header_17" >Populating a Sandbox</A>
+<LI><A NAME=ToC_19 HREF="#Header_19" >Retargeting a Sandbox</A>
+<LI><A NAME=ToC_21 HREF="#Header_21" >Removing a Sandbox</A>
+</MENU></MENU>
+<P><B><A NAME=ToC_23 HREF="#HDRBUILDS" >Chapter 5. Builds</A></B><BR>
+<MENU>
+<LI><A NAME=ToC_24 HREF="#Header_24" >Performing Builds</A>
+<MENU>
+<LI><A NAME=ToC_25 HREF="#Header_25" >Single-Pass Builds</A>
+<LI><A NAME=ToC_27 HREF="#Header_27" >Multiple-Pass Builds</A>
+</MENU></MENU>
+<P><B><A NAME=ToC_32 HREF="#HDRCOMMAND" >Chapter 6. ODE Commands</A></B><BR>
+<MENU>
+<LI><A NAME=ToC_33 HREF="#HDRBUILD" >BUILD - Perform a Build</A>
+<MENU>
+<LI><A NAME=ToC_34 HREF="#Header_34" >Syntax</A>
+<LI><A NAME=ToC_35 HREF="#Header_35" >Parameters</A>
+<LI><A NAME=ToC_36 HREF="#Header_36" >Examples</A>
+</MENU>
+<LI><A NAME=ToC_37 HREF="#HDRCURRSB" >CURRENTSB - List the Current Sandbox</A>
+<MENU>
+<LI><A NAME=ToC_38 HREF="#Header_38" >Syntax</A>
+<LI><A NAME=ToC_39 HREF="#Header_39" >Parameters</A>
+<LI><A NAME=ToC_40 HREF="#Header_40" >Examples</A>
+</MENU>
+<LI><A NAME=ToC_41 HREF="#HDRMKDEP" >MKDEP - Convert Dependency Information</A>
+<MENU>
+<LI><A NAME=ToC_42 HREF="#Header_42" >Syntax</A>
+<LI><A NAME=ToC_43 HREF="#Header_43" >Parameters</A>
+<LI><A NAME=ToC_44 HREF="#Header_44" >Examples</A>
+</MENU>
+<LI><A NAME=ToC_48 HREF="#HDRMKLINKS" >MKLINKS - Create Symbolic Links</A>
+<MENU>
+<LI><A NAME=ToC_49 HREF="#Header_49" >Syntax</A>
+<LI><A NAME=ToC_50 HREF="#Header_50" >Parameters</A>
+<LI><A NAME=ToC_51 HREF="#Header_51" >Examples</A>
+</MENU>
+<LI><A NAME=ToC_52 HREF="#HDRMKSB" >MKSB - Make a New Sandbox</A>
+<MENU>
+<LI><A NAME=ToC_53 HREF="#Header_53" >Syntax</A>
+<LI><A NAME=ToC_54 HREF="#Header_54" >Parameters</A>
+<LI><A NAME=ToC_55 HREF="#Header_55" >Examples</A>
+</MENU>
+<LI><A NAME=ToC_56 HREF="#HDRRESB" >RESB - Retarget a Sandbox</A>
+<MENU>
+<LI><A NAME=ToC_57 HREF="#Header_57" >Syntax</A>
+<LI><A NAME=ToC_58 HREF="#Header_58" >Parameters</A>
+<LI><A NAME=ToC_59 HREF="#Header_59" >Examples</A>
+</MENU>
+<LI><A NAME=ToC_60 HREF="#HDRSBINFO" >SBINFO - Show Information Derived from the Sandbox RC File</A>
+<MENU>
+<LI><A NAME=ToC_61 HREF="#Header_61" >Syntax</A>
+<LI><A NAME=ToC_62 HREF="#Header_62" >Parameters</A>
+<LI><A NAME=ToC_63 HREF="#Header_63" >Examples</A>
+</MENU>
+<LI><A NAME=ToC_64 HREF="#HDRWORKON" >WORKON - Work in a Sandbox</A>
+<MENU>
+<LI><A NAME=ToC_65 HREF="#Header_65" >Syntax</A>
+<LI><A NAME=ToC_66 HREF="#Header_66" >Parameters</A>
+<LI><A NAME=ToC_67 HREF="#Header_67" >Examples</A>
+</MENU></MENU>
+<P><B><A NAME=ToC_68 HREF="#Header_68" >Chapter 7. Messages</A></B><BR>
+<P><B><A NAME=ToC_69 HREF="#HDRINDEX_START" >Index</A></B><BR>
+<HR><P>
+<P>
+<H1><A NAME="HDRFIGLIST_START" HREF="#ToC_1">Figures</A></H1>
+<OL>
+<LI><A HREF="#FIGODEOV" >Components of ODE and their Relationship to CMVC.</A></LI>
+<LI><A HREF="#FIGODESB" >Independent Use of Sandboxes under ODE.</A></LI>
+<LI><A HREF="#FIGODESBS1" >Source, Object, and Export Areas within a Sample Sandbox.</A></LI>
+<LI><A HREF="#FIGODESBBD" >Structure of a Sample Sandbox.</A></LI>
+<LI><A HREF="#FIGODESSB" >Sample Chained and Unchained Sandboxes.</A></LI>
+<LI><A HREF="#FIGODESBRC" >Sample .sandboxrc File.</A></LI>
+<LI><A HREF="#FIGODEBLD" >Sample Tree Structure within SRC Area within a Sandbox.</A></LI>
+</OL>
+<HR>
+<H1><A NAME="Header_2" HREF="#ToC_2">Chapter 1. Introduction</A></H1>
+<P>The IBM OSF Development Environment (ODE), V1.0,
+provides a method for
+developers to simultaneously and independently create code for
+various releases of a program.  This development process works in
+conjunction with, and does not interfere with, established releases
+controlled by release administrators.  Developers can perform builds
+to test the functioning of their code against established program
+levels (called backing builds).  Release administrators can use
+ODE to create new backing builds and, ultimately, new releases of
+code for completely different hardware environments.
+<P>ODE V1.0 supports the following systems:
+<UL>
+<P><LI>IBM Advanced Interactive Executive (AIX), V4.1.5
+<P><LI>IBM OS/2, V4.0
+<P><LI>Hewlett Packard HP-UX V.?.?
+<P><LI>Sun Microsystems Solaris V.?.?
+<P><LI>Microsoft Windows NT V.?.?
+</UL>
+<P>The Open Software Foundation (OSF) is the standards group that
+created the original OSF development environment.  IBM's implementation
+of this environment for developers includes support for:
+<UL>
+<P><LI><B>Sandboxes</B>, which provide developers with an environment
+isolated from other developers concurrently changing different modules.
+<P><LI><B>Builds</B>, which enable the developer to compile code
+based on established backing builds within an ODE sandbox.
+</UL>
+<P>This manual describes the use of sandboxes and the performing
+of builds.
+<P>IBM's implementation of the OSF development environment
+also provides release administrators with support for:
+<UL>
+<P><LI><B>Backing builds</B>, which enable an administrator to compile
+code created by various developers in different sandboxes.
+</UL>
+<P>The manual, <CITE>OSF Development Environment, Administrator's
+Guide</CITE>, XXXX-XXXX, describes how to maintain backing builds.
+<P>ODE does not include or support the following components originally
+provided by the Open Software Foundation:  Source Control,
+which maintains a record of revisions to a program,
+and of changes made to each of the release levels: and Submission
+Control, which controls the updating of default builds with code
+developed in sandboxes.  Support for these functions is provided at IBM
+through the Configuration Management Version Control (CMVC) system.
+<P><A HREF="#FIGODEOV">Figure 1</A> shows the components of the ODE
+system and their relation to the CMVC system.
+<P><B><A NAME="FIGODEOV">Figure 1. Components of ODE and their Relationship to CMVC.</A></B><BR>
+<P><B><BR><CENTER><IMG SRC="odeov.gif" ALT="* Figure odeov not displayed."></CENTER><BR></B><BR>
+<P>
+<HR>
+<H1><A NAME="Header_3" HREF="#ToC_3">Chapter 2. ODE Requirements</A></H1>
+<TABLE BORDER WIDTH=100%><TR><TH ALIGN=LEFT>Need requirements</TH><TR><TD>
+<P>Need the requirements for an ODE system.
+</TD></TR></TABLE>
+<HR>
+<H1><A NAME="Header_4" HREF="#ToC_4">Chapter 3. Installing ODE</A></H1>
+<HR>
+<H1><A NAME="HDRSANDB" HREF="#ToC_5">Chapter 4. Sandboxes</A></H1>
+<P>A sandbox is a private working area for a developer.
+Sandboxes are isolated from one another:  the work Developer A
+does in his/her sandbox does not affect the work done by Developer
+B in another sandbox.
+<P>ODE provides an environment conducive to the ongoing development
+of an entire project, including revisions.  As part of this
+environment, ODE creates sandboxes with:  separate subdirectories
+for source, object, and header/library files; access to tools; and
+access to stable code levels, or backing builds.  A benefit of this
+environment is that developers can test their modifications
+against stable code without reliance on build specialists.
+<P>ODE associates each sandbox with a backing
+build.  Backing builds consist of a complete set of source files,
+compilation tools, header files, and libraries for a particular
+project.
+<P>For example, a developer fixing a defect can:
+<UL>
+<P><LI>Copy the affected source files from the backing build into
+the private sandbox
+<P><LI>Make the necessary corrections
+<P><LI>Rebuild the code in the sandbox
+<P><LI>Test the executable code in the sandbox to verify that the defect
+has been corrected.
+</UL>
+<P>The administrator can then incorporate the corrected code into
+the backing build.
+<P><A HREF="#FIGODESB">Figure 2</A> illustrates how developers can
+work independently on the same or different levels of code.
+<P><B><A NAME="FIGODESB">Figure 2. Independent Use of Sandboxes under ODE.</A></B><BR>
+<P><B><BR><CENTER><IMG SRC="odesb.gif" ALT="* Figure odesb not displayed."></CENTER><BR></B><BR>
+<P>
+<P>In this example, Developer A is working in a sandbox on a code
+change relative to backing build PROJ10.  In another sandbox,
+Developer A is working on a code change relative to backing
+build PROJ11.  Independent of Developer A, Developer B is also
+working in a sandbox on a code change for PROJ11.  The changes
+A and B make with respect to PROJ11 do not affect each other.
+<P>
+<H3><A NAME="Header_6" HREF="#ToC_6">Relationship of Sandboxes to Backing Builds</A></H3>
+<P>To create a sandbox, you issue a <B>mksb</B> command
+(see <A HREF="#HDRMKSB">"MKSB - Make a New Sandbox"</A>).  Within that command, you specify
+a parameter that identifies the backing build associated with
+the sandbox.
+<P>Sandboxes initially contain no source files.  You copy those
+source files you wish to change into your sandbox.  During a build,
+source files from the backing build are used except in those cases
+where a source file also exists in your sandbox.  In this way,
+you can make changes to a source tree without having the entire
+tree in your sandbox.
+<P>There are two general categories of builds:  <I>static</I>
+and <I>dynamic</I>.  The source trees of <I>static</I> builds do
+not change during the development process.  They represent a
+stable set of code:  all or most of the bugs and conflicts have been
+resolved.  <I>Dynamic</I> builds represent an interim step during the
+development process.  A <I>dynamic</I>and usually contain the most recent source files.  Changes made in
+a <I>dynamic</I> build immediately affect all sandboxes backed
+by that build.  <I>Dynamic</I> builds may contain bugs and
+unresolved conflicts between various source files.
+<P>The combination of a sandbox and backing build enable a programmer
+to develop and test a single or small set of source files against
+a variety of complete development environments.  Although at a
+given time a sandbox must be backed by only one specific backing
+build, you can change this association to another build as often
+as you like.  This process of switching from one backing build to
+another is called <I>retargeting</I> (see <A HREF="#HDRRESB">"RESB - Retarget a Sandbox"</A>).
+This allows you to change the version or environment of the
+software product for which you are developing and testing as
+often as you like.
+<P>When source-file changes in a developer's sandbox become stable
+against a backing build, they can be made available to other
+developers for further testing and development.  These changes
+become part of a default build.  A default build is a build that
+contains the latest revisions to various source files.  Default
+builds are dynamic because conflicts between source files may
+not yet be resolved.  The process of integrating a developer's
+changes into a default build is called <I>submission</I>.
+<P>Most <I>static</I>, or stable builds, have a default, or
+<I>dynamic</I> build associated with them.  When you submit
+changes to a <I>static</I>build with an associated default
+build, the changes are actually integrated into the default build.
+<P>
+<H3><A NAME="Header_7" HREF="#ToC_7">Components of a Sandbox</A></H3>
+<P>There are three major components of an ODE sandbox:
+<UL>
+<P><LI>A source area for source files being changed (<B>src</B>
+directory).
+<P><LI>An area for building object modules (<B>obj</B> directory).
+<P><LI>An area for headers and libraries (<B>export</B> directory).
+</UL>
+<A HREF="#FIGODESBS1">Figure 3</A> shows the source, object, and export
+areas within a sample sandbox.
+<P><B><A NAME="FIGODESBS1">Figure 3. Source, Object, and Export Areas within a Sample Sandbox.</A></B><BR>
+<P><B><BR><CENTER><IMG SRC="odesbs1.gif" ALT="* Figure odesbs1 not displayed."></CENTER><BR></B><BR>
+<P>
+<P>Within the <B>sbox</B> subdirectory, the user has created
+three sandboxes:  <B>sb1</B>, <B>sb2</B>, and <B>sb3</B>.
+Within sandbox <B>sb1</B> are the subdirectories created by
+ODE, including <B>src</B>, <B>obj</B>, and <B>export</B>.
+<P>It is not necessary for the user to specify these subdirectories;
+these are automatically determined by the systems, or tools, that build
+the machine-dependent directories in the sandbox.
+For example, all operations on the <B>obj</B> tree
+by the tools are done from the <B>src.</B> tree.
+<P>For most projects, before any libraries can be built, the header
+files must exist in an area known to the compiler.  Similarly,
+before commands can be built, the libraries must be created and copied
+into an area known to the linker.  In ODE, these headers and libraries
+are resident in the <B>export</B> subdirectory.
+The <B>export</B> area of a backing build contains all the headers
+and libraries necessary to build the product.  Any headers or
+libraries being developed or modified must be in the <B>export</B>
+subdirectory of a sandbox.
+<A HREF="#FIGODESBBD">Figure 4</A> depicts the structure of the sample sandbox shown
+in <A HREF="#FIGODESBS1">Figure 3</A>.  The shaded areas contain elements related
+to the ODE build environment.
+<P><B><A NAME="FIGODESBBD">Figure 4. Structure of a Sample Sandbox.</A></B><BR>
+<P><B><BR><CENTER><IMG SRC="odesbbd.gif" ALT="* Figure odesbbd not displayed."></CENTER><BR></B><BR>
+<P>
+<P>In <A HREF="#FIGODESBBD">Figure 4</A>, names shown in italics indicate that
+the user provides this name.
+The <B>tools</B> subdirectory contains a structure for
+each system (<I>machine 1, machine 2</I>)
+used to build the machine-dependent directories.
+Under <B>src</B> is the <B>Makeconf</B> file, containing
+configuration for the <B>make</B> command, and one or subdirectory
+for each project (<I>project</I>).  The names of these subdirectories
+are the names of the projects.  <B>rc_files</B>
+contains  a <B>projects</B> file, which is a list of all projects,
+and a subdirectory for each project (<I>project</I>).  The
+latter contains a file called <B>sb.conf</B>, which indicates
+the name of the project, the logical path to the backing
+build, whether ODE source control is being used (normally
+<B>false</B>), and whether the ODE build environment is being
+used (normally <B>true</B>).  Like the <B>tools</B>
+subdirectory, <B>obj</B> and <B>export</B> contain
+structures for each system used to build machine-dependent
+directories.  The <B>link</B> subdirectory is a link to the
+backing build.
+<P>
+<H3><A NAME="HDRPOPCON" HREF="#ToC_8">Population Considerations</A></H3>
+<P>Within the ODE environment, population essentially deals with the
+way files are accessed.  The method of access is significant because
+ODE does not require that all sources be in a sandbox in order to
+perform a build.  There are three basic ways of accessing files:
+<UL>
+<P><LI><B>copying</B> - this method involves physically copying
+a file from one directory to another (for example, from the backing
+build to the <B>src</B> subdirectory of a sandbox).
+<P><LI><B>linking</B> - this method involves gaining access to a
+file for viewing or editing purposes, but not physically copying
+the file (for example, viewing a file in the backing build).
+<P><LI><B>using the backed file</B> - this method functions as a
+default if ODE does not find a copied or linked file in the local
+sandbox (for example, backing-build files not changed by a developer).
+</UL>
+<P>Within a sandbox, you determine the mix of copied, linked,
+and backed-only files.  Files copied from the backing build into the
+sandbox can consume large amounts of file space.  In addition,
+if the backing build is dynamic, source files copied can quickly
+become out of date.  Symbolic linking to backing-build files
+takes up less space; since absolute path names are used for the link,
+moving the sandbox in the file system requires recreation of these
+links.  Normally, source files that you are actively changing should
+be copied; source files frequently browsed should be linked; and
+source files that you require only for the build should remain in
+backed-only state.
+<P>
+<H3><A NAME="Header_9" HREF="#ToC_9">Chaining Sandboxes and Backing Builds</A></H3>
+<P>Sandboxes can be chained together.  You can back a sandbox with
+another sandbox, which in turn can be backed by another sandbox.
+You can chain sandboxes together to any depth as long as the last
+link in the chain is a full backing build.
+<P>During a build, if ODE does not find a file in the local sandbox,
+it searches other sandboxes in the backing chain.  If the file
+is still not found, ODE gets the file from the backing build.
+<P>From a developer's local sandbox, to the backing build, each level
+in a sandbox chain can represent a wider user group.  The smallest
+set is the developer and his/her private sandbox.  The largest
+set is the backing build available to everyone.
+<A HREF="#FIGODESSB">Figure 5</A> shows some sample chained and unchained
+sandboxes.
+<P><B><A NAME="FIGODESSB">Figure 5. Sample Chained and Unchained Sandboxes.</A></B><BR>
+<P><B><BR><CENTER><IMG SRC="odessb.gif" ALT="* Figure odessb not displayed."></CENTER><BR></B><BR>
+<P>
+<P>
+<H3><A NAME="Header_10" HREF="#ToC_10">Information on Sandboxes - the .sandboxrc File</A></H3>
+<P>Each ODE user has a file containing information about that user's
+sandboxes.  The name of this file is <B>.sandboxrc.</B>  Normally
+the file exists in the <B>${HOME</B>
+directory; however, it can exist in a different directory.
+<P>The information includes:
+<UL>
+<P><LI>the user's default sandbox
+<P><LI>the base directory for each sandbox
+<P><LI>a list of the user's sandbox
+<P><LI>the defaults used for the <B>mksb</B> command
+</UL>
+<A HREF="#FIGODESBRC">Figure 6</A> shows sample contents of the <B>sandboxrc.</B>
+file.
+<P><B><A NAME="FIGODESBRC">Figure 6. Sample .sandboxrc File.</A></B><BR>
+<P><B><BR><CENTER><IMG SRC="odesbrc.gif" ALT="* Figure odesbrc not displayed."></CENTER><BR></B><BR>
+<P>
+<P>In this example, the default sandbox is <B>sb1</I>.  The
+base directory is <B>/home/bcarr/sbox</B>.  There are currently
+three sandboxes:  <B>sb1, sb2</B>, and <B>sb3</B>.
+<P>The bottom part of <A HREF="#FIGODESBRC">Figure 6</A> shows the defaults
+used for the Make a New Sandbox (<B>mksb</B>) command
+<B>/home/bcarr/sbox</B> is the base directory, <B>rios_aix4</B>
+is the machine, and the <B>tools, obj</B>, and <B>src</B>
+areas access
+code in a backed-only mode.  This slash (/) in the last two defaults
+indicates that the access can be from any directory.
+<P>You can place the <B>sandboxrc</B> file in a
+directory other than <B>${HOME}</B> (using the <B>mksb</B>)
+command). However, if you
+use this option, you must specify the new path each time you use
+any of the ODE tools to access the <B>.sandboxrc</B> file.
+<HR>
+<H2><A NAME="Header_11" HREF="#ToC_11">Creating a Sandbox</A></H2>
+<P>The <B>mksb</B> command creates a sandbox.  Executing this
+command is the first step in setting up a development environment
+under ODE.  Directories created by <B>mksb</B> include:
+<B>src</B>, <B>obj</B>, and <B>export</B>, for
+source code, object code, and headers/libraries, respectively;
+<B>rc_files</B>, for maintaining data files relating to
+a backing build or shared sandbox; <B>tools</B>, for maintaining
+a structure for each system used to build the machine-dependent
+directories; and <B>link</B>, which contains a symbolic link
+to the backing build.
+<P>The following restrictions apply to creating sandboxes:
+<UL>
+<P><LI>Sandbox names cannot contain dashes (-), periods (.), or slashes (/).
+<P><LI>Each execution of <B>mksb</B> creates only one sandbox.
+<P><LI>Each sandbox must be backed by an existing backing build or a
+chained sandbox; the last link in the chain must be a backing build.
+<P><LI>Each sandbox must have a unique name
+<P><LI>Moving a sandbox to a different directory requires: 1. recreation
+to the symbolic links created to populate the sanbox; and 2.
+updating the <B>.sandboxrc</B> to reflect the new sandbox base.
+</UL>
+<P>
+<H5><A NAME="Header_12">Example</A></H5>
+<P>The following command creates the sandbox <B>dune1</B>
+in the current working directory.  <B>/hfs/den/sonnet/latest</B>is the backing build, and the machine types supported are
+<B>rios_aix4</B> and <B>playa_os2</B>
+<P>
+<B>mksb -back /hfs/den/sonnet/latest -m rios_aix4
+:playa_os2 dune1.
+</B>
+<P>
+<P>See <A HREF="#HDRMKSB">"MKSB - Make a New Sandbox"</A> for a complete description of the
+<B>mksb</B> command.
+<P>
+<H4><A NAME="Header_13">Defining Sets with MKSB</A></H4>
+<P>Defining sets of files is a technique used to group files for
+a specific development function.  For example, if you wish to
+make changes to a group of source file, defining them as one set
+enables you to check them out at once under a source control system
+rather than checking them out individually.
+<P><B>mksb</B> enables you to define a set of files.  However,
+since source control is not supported within the ODE system
+itself (other systems like CMVC will be used), the set definition
+capability within ODE is mainly for compatibility with these
+other systems.
+<HR>
+<H2><A NAME="Header_14" HREF="#ToC_14">Operations Within Sandboxes</A></H2>
+<P>Once you create a sandbox, you can perform the following
+types of functions:
+<UL>
+<P><LI>Work on files within the sandbox
+<P><LI>Populate the sandbox with additional files
+<P><LI>Retarget the sandbox to different backing chains
+<P><LI>Remove the sandbox
+</UL>
+<P>
+<H3><A NAME="Header_15" HREF="#ToC_15">Working On a Sandbox</A></H3>
+<P>The <B>workon</B>command enables you to get into a sandbox
+for functions such as editing, compiling, and linking.
+<B>workon</B> creates a new shell, sets the proper environmental
+variables for working in a sandbox, and places you in the
+<B>src</B> subdirectory of the sandbox.  If no sandbox is
+specified, <B>workon</B> gets you into the default sandbox.
+<B>workon</B> offers the standard set of ODE information options.
+<P>
+<H5><A NAME="Header_16">Example</A></H5>
+<P>
+<B>workon -sb dune2 -verbose</B>
+<P>
+<P>In this example, <B>workon</B> gets you into the <B>dune2</B>
+sandbox and details all the actions (such as which environmental
+variables are being set) it is performing.
+<P>See <A HREF="#HDRWORKON">"WORKON - Work in a Sandbox"</A>for a complete description of the
+<B>workon</B> command.
+<P>
+<H3><A NAME="Header_17" HREF="#ToC_17">Populating a Sandbox</A></H3>
+<P>You can use the <B>mklinks</B> command to create symbolic
+links to code in the backing build or a shared sandbox.
+<B>mklinks</B> can create
+symbolic links to source files, object files,
+tools, and headers.  It can create links to a single file or
+an entire subsystem.  <B>mklinks</B> creates the necessary
+tree structure for any files symbolically linked.
+<P>A parameter in the <B>mklinks</B> command (<B>-copy</B>)
+allows you to alternatively physically copy code from the backing
+build or shared sandbox into your development sandbox.
+<P>You can also create symbolic links when you create a new
+sandbox (see <A HREF="#HDRMKSB">"MKSB - Make a New Sandbox"</A>).  See also <A HREF="#HDRPOPCON">"Population Considerations"</A>)
+for general population considerations with ODE.
+<P>If you do not specify a sandbox name with <B>mklinks</B>,
+ODE uses the default sandbox.  Once you are in the sandbox (e.g.,
+through the <B>workon</B> command, you do not need to specify
+the sandbox name.
+<P>
+<H5><A NAME="Header_18">Example</A></H5>
+<P>Assume you are in the <B>src</B> subdirectory of the
+<B>dune1</B> sandbox.  The command:
+<P>
+<B>mklinks sonnet/lib/libson/interface.c</B>
+<P>
+creates symbolic links to the <B>interface.c</B> code in the
+<B>sonnet/lib/libson</B> tree of the <B>src</B> subdirectory
+of the backing build.  The command also creates the
+<B>sonnet/lib/libson</B> tree structure in the <B>dune1</B>
+sandbox.
+<P>
+<H3><A NAME="Header_19" HREF="#ToC_19">Retargeting a Sandbox</A></H3>
+<P>You can use the <B>resb</B> to switch from the shared sandbox
+or backing build that is currently backing your sandbox to a new
+shared sandbox or backing build.  This
+process of change is called retargeting.
+<P>Retargeting a sandbox is useful during the development process
+when the need arises to switch to a more current backing build.
+<P>
+<H5><A NAME="Header_20">Example</A></H5>
+<P>
+<B>resb /hfs/den/sonnet/proj11 -sb dune2</B>
+<P>
+<P>This command switches the backing build for sandbox <B>dune2</B>
+to <B>/hfs/den/sonnet/proj11</B>.
+<P>
+<H3><A NAME="Header_21" HREF="#ToC_21">Removing a Sandbox</A></H3>
+<P>You can remove a sandbox by using the <B>-undo</B> parameter
+of the <B>mksb</B> command.  Prior to executing the command,
+ODE prompts you to make sure that you really wish to remove
+the specified sandbox.
+<P>
+<H5><A NAME="Header_22">Example</A></H5>
+<P>
+<B>mksb -undo sb2</B>
+<P>
+<P>This command removes the <B>sb2</B> sandbox.
+<P>For more information on <B>mksb</B>, see <A HREF="#HDRMKSB">"MKSB - Make a New Sandbox"</A>.
+<HR>
+<H1><A NAME="HDRBUILDS" HREF="#ToC_23">Chapter 5. Builds</A></H1>
+<P>A build is a process of compiling source code into object code,
+and then linking the object modules to create an executable program.
+ODE uses its own <B>build</B> command and bases its <B>make</B>on a building model found in most UNIX systems:
+the <B>make</B> command and a control file called
+<B>Makefile</B>  <B>Makefile</B> contains the variables
+and specifies the includes needed for the build.
+<P>Backing builds and sandboxes support this building model.  ODE
+uses <B>build</B> as a front-end to the <B>make</B> process.
+Any options not recognized by <B>build</B> are automatically
+passed on to the <B>make</B> command.
+<P>In the ODE environment, developers can test their code
+modifications against a stable version of a program by doing
+their own builds, without having to rely on build specialists.
+<P>Some basic characteristics of building with ODE are:
+<UL>
+<P><LI><B>build</B> and <B>make</B> are used for all builds
+<P><LI><B>build</B> and <B>make</B> obtain much of their
+information from environmental variables defined in sandboxes and
+backing builds.  To customize the build environment, you can change
+these variables.
+<P><LI>Sources and built objects are maintained in separate
+subdirectories.
+<P><LI>Headers and libraries are kept in the <B>export</B>
+subdirectory.
+<P><LI>Common Makefiles contain frequently used build rules.
+<P><LI>The Makefile for each component contains an INCLUDE statement
+for the common Makefiles (<B>.include<${RULES_MK}></B>).  During
+a build, definitions of variables within the Makefile trigger
+execution of rules in the common Makefiles.
+</UL>
+<HR>
+<H2><A NAME="Header_24" HREF="#ToC_24">Performing Builds</A></H2>
+<P>In performing a build, files to be compiled are in subdirectories
+in the <B>src</B> area in a sandbox.  The build places
+object and executable files in the <B>obj</B> area of the
+sandbox.  The sandbox must be backed by either another sandbox
+or a full backing build.
+<P>
+<H3><A NAME="Header_25" HREF="#ToC_25">Single-Pass Builds</A></H3>
+<P>A single-pass build requires only one successful iteration of the
+compile and link process.  For larger systems in which the building
+of components such as libraries is a prerequisite for building of
+other components, multiple passes may be required.
+<P>In its most basic form, a single-pass build requires a
+Makefile and a source file in the <B>src</B> area of a sandbox.
+<A HREF="#FIGODEBLD">Figure 7</A> shows the tree structure of
+<B>sonnet/tutorial/helloworld</B> within the <B>src</B>
+area.
+<P><B><A NAME="FIGODEBLD">Figure 7. Sample Tree Structure within SRC Area within a Sandbox.</A></B><BR>
+<P><B><BR><CENTER><IMG SRC="odebld.gif" ALT="* Figure odebld not displayed."></CENTER><BR></B><BR>
+<P>
+<P>The two files within the <B>helloworld</B> subdirectory
+are <B>Makefile</B> and <B>helloworld.c</B>.
+<P>
+<H4><A NAME="HDRXSPB">Example of a Single-Pass Build</A></H4>
+<P>In this example, there is one Makefile and one
+source file (<B>helloworld.c</B>)
+in the <B>sonnet/tutorial/helloworld</B>
+area of the <B>src</B> subdirectory for
+sandbox <B>sb3</B> (see <A HREF="#FIGODEBLD">Figure 7</A>).  The sandbox
+is backed by a full backing build.
+<P>The contents of Makefile are:
+<P>
+PROGRAMS
+= helloworld
+<BR>
+<P>
+ILIST
+= helloworld
+<BR>
+IDIR
+= /tmp/
+<BR>
+<P>
+&#46;include <${RULES_MK}>
+<P>
+<P>Statements in this Makefile perform the following:
+<P>
+<DL><P><DT><B>PROGRAMS
+</B><DD>A list of all the programs (in this case, only
+<B>helloworld.c</B>) to be compiled and linked
+<P><DT><B>ILIST
+</B><DD>A list of executables or data files to install (again,
+only <B>helloworld</B> in this example)
+<P><DT><B>IDIR
+</B><DD>The directory in which to install executable and data
+files (<B>/TMP/</B>)
+<P><DT><B>&#46;include <${RULES_MK}>
+</B><DD>Include statement for the common makefiles.  These makefiles
+contain frequently-used build rules.
+</DL>
+<P><P>
+<P>The <B>helloworld.c</B> program contains:
+<P>
+#include <stdio.h>
+<P>
+<BR>
+main()  {
+<P>
+<BR>
+printf ("Hello, world\n");
+<P>
+<BR>
+}
+<P>
+<P>This C-language file simply includes an include statement for
+the standard I/O header file, and a main program that prints out,
+"Hello, world."
+<P>Executing a <B>build helloworld</B> command produces the
+following sample set of statements:
+<P>
+relative path: ./sonnet/tutorial/helloworld.
+<BR>
+cd ../../../../obj/rios_aix4/sonnet/tutorial/helloworld
+<BR>
+c89 -c    -O -DSTRRETINT -DINC_TIME -DNO_FLOCK -DNO_PW_STAYOPEN
+-DINC_STATFS -DUSE_BSIZE -DNO_INC_SYSCALL -DUSE_D_INO -D_ALL_SOURCE
+-DNO_GETWD_DECL -DUNIX
+<BR>
+-I/home/test/sbox/sb1/obj/rios_aix4/sonnet/tutorial/helloworld
+<BR>
+-I/hfs/den/sonnet/latest/obj/rios_aix4/sonnet/tutorial/helloworld
+<BR>
+-I/home/test/sbox/sb1/src/sonnet/tutorial/helloworld
+<BR>
+-I/hfs/den/sonnet/latest/scr/sonnet/tutorial/helloworld
+<BR>
+-I/home/test/sbox/sb1/export/rios_aix4/usr/include
+<BR>
+-I/hfs/den/sonnet/latest/export/rios_aix4/usr/include
+<BR>
+<BR>
+c89
+<BR>
+-L/hfs/den/sonnet/latest/export/rios_aix4/usr/lib -o helloworld.X
+helloworld.o    -lbsd
+<BR>
+mv helloworld.X helloworld
+<P>
+<P>Relative to the current directory in the sandbox
+(<B>/home/test/sbox/sb1</B>), the objects were built
+in <B>../../../../obj/rios_aix4/sonnet/tutorial/helloworld</B>.
+<B>c89</B> is the compiler used (see line 3).  Following
+<B>c89</B> are the default options used by the compiler.
+<P>The next two statements show the search by the compiler
+of the <B>obj</B> area of the sandbox and backing build
+for makefiles:
+<P>
+-I/home/test/sbox/sb1/obj/rios_aix4/sonnet/tutorial/helloworld
+<BR>
+-I/hfs/lair/sonnet/latest/obj/rios_aix4/sonnet/tutorial/helloworld
+<P>The next two statements show the search by the compiler of the
+<B>src</B> area of the sandbox and backing build for included
+makefiles:
+<P>
+-I/home/test/sbox/sb1/src/sonnet/tutorial/helloworld
+<BR>
+-I/hfs/lair/sonnet/latest/src/sonnet/tutorial/helloworld
+<P>
+<P>The next two statements search for standard <B>include</B>
+files:
+<P>
+-I/home/test/sbox/sb1/export/rios_aix4/usr/include
+<BR>
+-I/hfs/den/sonnet/latest/export/rios_aix4/usr/include
+<P>
+<P>Compiler <B>c89</B> performs its compile.  The link
+is done by the following statement:
+<P>
+-L/hfs/den/sonnet/latest/export/rios_aix4/usr/lib -o helloworld.X
+helloworld.o   -lbsd
+<P>
+<P>The last statement (<B>mv helloworld.X helloworld</B>)
+renames the resulting executable file, dropping the <B>X</B>
+suffix.
+<P>
+<H3><A NAME="Header_27" HREF="#ToC_27">Multiple-Pass Builds</A></H3>
+<P>Most large systems require multiple passes in order to be built.
+This is because the building of some components is a prerequisite
+to the building of other components.
+<P>One example of this involves libraries.  If some components of
+a system require the use of libraries in order to be built, then
+those libraries must be built first.  Similarly, the system may
+require that header files be built before the building of
+component files that include these headers.
+<P>ODE supports ordering builds into the following functions:
+<UL>
+<P><LI>Setting up header files in the <B>export</B> subdirectory.
+The <B>export</B> subdirectory is the area in a sandbox in which
+files used for subsequent build processes (such as libraries and
+headers) are placed.
+<P><LI>Building libraries and placing them in the<B>export</B>
+subdirectory.
+<P><LI>Building system components that use these headers and libraries.
+<P><LI>Installing the built software for testing.
+<P><LI>Removing unneeded object and executable files from the
+<B>obj</B> subdirectory.
+</UL>
+<P>Each step in the build order to perform these functions is called
+a pass.  ODE applies each pass to the files in the <B>src</B>
+area, and must complete each pass before the next pass begins.
+<P>Passes supported in ODE are:
+<DL><P><DT><B>export
+</B><DD>Places any target file that can be exported in the
+<B>export</B> area.
+<P><DT><B>comp
+</B><DD>Performs compilation without exporting the file.
+<P><DT><B>build
+</B><DD>Performs an export and compilation.
+<P><DT><B>install
+</B><DD>Places files in the directories they will occupy in an installed
+system.
+<P><DT><B>clean
+</B><DD>Removes object (.o) files.
+<P><DT><B>rmtarget
+</B><DD>Removes the target file (usually a program).
+<P><DT><B>clobber
+</B><DD>Performs a <B>clean</B> and a <B>rmtarget</B>.
+<P><DT><B>lint
+</B><DD>Reformats the source files
+<P><DT><B>tags
+</B><DD>Creates a tag file.
+</DL>
+<TABLE BORDER WIDTH=100%><TR><TH ALIGN=LEFT>Need information on tag</TH><TR><TD>
+<P>Need more information on "tag" pass
+</TD></TR></TABLE>
+<P>
+<H4><A NAME="Header_28">Interaction of Passes with Makefiles</A></H4>
+<P>Makefiles contain the variables and specify the includes needed
+for a build.  Within ODE, Makefiles contain INCLUDE statements
+for common rules for a build.
+<P>The type of pass specified (<B>export, comp, build, </B>etc.),
+in conjunction with the variables in the Makefile, determines which
+common rules are triggered.
+<P>To include the common makefiles, you must specify the statement
+<B>.include${RULES_MK}></B> in the Makefile for the source
+code to be compiled.  This statement must follow all variable
+definitions in Makefile (see <A HREF="#HDRXSPB">"Example of a Single-Pass Build"</A>for an example
+of a basic Makefile).
+<P>The <B>comp</B> and <B>build</B> passes, which perform
+compilation, derive much of their information from the following
+makefile variables:
+<P>
+<DL>
+<P><DT><B>PROGRAMS
+</B><DD>A list of programs to compile and link
+<P><DT><B>OFILES
+</B><DD>A list of objects that comprise a program or library
+<P><DT><B>HFILES
+</B><DD>A list of header files on which PROGRAMS and OFILES are dependent
+<P><DT><B>MSGHDRS
+</B><DD>A list of message source files to be processed for the OSF/1
+Message Facility
+<P><DT><B>CATFILES
+</B><DD>A list of message catalogs to be created for the OSF/1 Message
+Facility.
+</DL>
+<P>
+<P>The <B>export</B> pass, which builds and places libraries
+and header files in an export area for use by subsequent passes,
+derives much of its information from the following Makefile
+variables:
+<P>
+<DL><P><DT><B>INCLUDES
+</B><DD>A list of header files to export.
+<P><DT><B>EXPDIR
+</B><DD>The relative directory, if applicable, within the export area.
+<P><DT><B>EXPLINKS
+</B><DD>A list of links to export
+<P><DT><B>EXPINC_SUBDIRS
+</B><DD>A list of subdirectories to cover during the <B>export</B>
+pass.
+<P><DT><B>EXPLIB_TARGETS
+</B><DD>A specific library to export.  The name of the library must
+be prefixed with <B>export_</B>.  For example, to export
+the library <B>libsecurity.a</B>, the statement would be
+<B>EXPLIB_TARGETS=export_Libsecurity.a</B>.
+</DL>
+<P>
+<P>The <B>install</B> pass, which installs executable code or
+datafiles into a release area and establishes access rights, derives
+much of its information from the following makefile variables:
+<DL><P><DT><B>ILIST
+</B><DD>A list of executable or data files to install
+<P><DT><B>IDIR
+</B><DD>The directory in which to install the executable or data files
+<P><DT><B>IMODE
+</B><DD>The permissions to be set on installed executable files.
+<P><DT><B>IGROUP
+</B><DD>The group to be set for installed executable files.
+<P><DT><B>IOWNER
+</B><DD>The owner to be set for installed executable files.
+</DL>
+<P>
+<H4><A NAME="Header_29">Controlling the Scope of Passes</A></H4>
+<P>To control which subdirectories in an an area should be used
+for each pass, you can specify the makefile variables
+<B>SUBDIRS</B> and <I>pass</I>_<B>SUBDIRS</B>
+<P><B>SUBDIRS</B> specifies the subdirectories to be processed
+for all passes.  <I>pass</I>_<B>SUBDIRS</B> specifies
+the subdirectories to be processed for a specific pass.
+Two other useful variables that can be included in a makefile are:
+<P>
+<DL><P><DT><B>EXPINC_SUBDIRS
+</B><DD>The list of subdirectories to be searched for include files to
+place in the <B>export</B> area.
+<P><DT><B>EXPLIB_SUBDIRS
+</B><DD>The list of subdirectories to be searched for libraries to place
+in the <B>export</B> area.
+</DL>
+<P>
+<P>Some examples of these variables as they would appear in the
+makefile are:
+<P>
+<B>SUBDIRS = bin ccs dict doc include lib local sbin</B>
+<BR>
+<B>CLEAN_SUBDIRS = objects</B>
+<BR>
+<B>EXPINC_SUBDIRS = include</B>
+<BR>
+<B>EXPLIB_SUBDIRS = lib</B>
+<P>
+<P>
+<H4><A NAME="Header_30">Syntax for Specifying a Pass for a Build</A></H4>
+<P>You can use the following forms to specify a particular pass
+in a <B>build</B> command:
+<UL>
+<P><LI><B>build</B> <I>pass</I>
+<P><LI><B>build</B> <I>pass_target</I>
+<P><LI><B>build</B> <I>pass</I>_<B>all</B>
+<P><LI><B>build</B> <I>pass</I>_<B>all</B>_<I>tag</I>
+</UL>
+<P>The meanings of the parameters are:
+<P>
+<DL><P><DT><B><I>pass</I>
+</B><DD>The pass to be performed (<B>export, comp, build, install,
+clean, rmtarget, clobber, lint, tags</B>).  If a pass is not
+specified, the default is the <B>build</B> pass.
+<P><DT><B><I>target</I>
+</B><DD>The name of the file on which the pass should be performed.
+If <I>target</I> is not specified, the default target is used.
+<P><DT><B>all
+</B><DD>Indicates that the actions should be performed on all targets
+listed in the makefile.
+<P><DT><B><I>pass</I>_<B>all</B>_<I>tag</I></B><DD>
+</DL>
+<TABLE BORDER WIDTH=100%><TR><TH ALIGN=LEFT>Function of tags</TH><TR><TD>
+<P>Function of tags is unclear
+</TD></TR></TABLE>
+<P>
+<H5><A NAME="Header_31">Examples</A></H5>
+<P>The command to reformat the source code for <B>helloworld.c</B>:
+<P>
+<B>build lint_helloworld</B>
+<P>
+<P>The command to remove all object files for all targets listed in
+the makefile is:
+<P>
+<B>build clean_all</B>
+<P>
+<P>The command to place the header files <B>stdio.h</B> in the
+export area is:
+<P>
+<B>build export_stdio.h</B>
+<P>
+<B>stdio.h</B> must be listed in the Makefile as a target for
+exporting (<B>INCLUDES  =  stdio.h</B>).
+<TABLE BORDER WIDTH=100%><TR><TH ALIGN=LEFT>Is this correct?</TH><TR><TD>
+<P>Is this right?
+</TD></TR></TABLE>
+<P>
+<P>This command places all header files in the <B>export</B>
+area:
+<P>
+<B>build export_all</B>
+<HR>
+<H1><A NAME="HDRCOMMAND" HREF="#ToC_32">Chapter 6. ODE Commands</A></H1>
+<HR>
+<H2><A NAME="HDRBUILD" HREF="#ToC_33">BUILD - Perform a Build</A></H2>
+<P>In ODE, the <B>build</B> command serves as a front end to the
+<B>mk</B> command.  <B>mk</B> is a customized version of
+the UNIX <B>make</B> command.
+ODE bases its <B>mk</B> on a
+building model found in most UNIX systems:  the UNIX <B>make</B>
+command and a control files called
+<B>Makefile</B>.  Options not recognized
+by <B>build</B> are automatically passed on to <B>mk</B>.
+<P>
+<H3><A NAME="Header_34" HREF="#ToC_34">Syntax</A></H3>
+<B>build</B>&nbsp;&#91;<B>export | comp | build | install |
+&nbsp;clean | rmtarget | clobber | lint |</B>
+<BR>
+<B>tags</B>&#93;&nbsp;&#91;<I>pass_target</I>&#93;&nbsp;
+&#91;<I>pass</I><B>_all</B>&#93;&nbsp;
+&#91;<I>pass</I><B>_all</B>_<I>tag</I>&#93;
+&#91;<B>-here&nbsp;-clean&nbsp;-lint</B>&#93;
+<BR>
+&#91;<I>ODE options</I>&#93;
+&nbsp;&#91;<I>make options</I>&#93;
+&nbsp;&#91;<I>targets</I>&#93;
+<P>
+<I>ODE options:</I>&nbsp;&nbsp;&#91;
+<B>-info -quiet -normal -verbose -usage -version</B>&#93;
+<BR>
+&#91;<B>-sb</B>&nbsp;<I>sandbox_name</I>&#93;&nbsp;
+&#91;<B>-rc</B> <I>rcfile</I>&#93;
+<P>
+<I>make options&#58;&nbsp;&nbsp;</I>
+&#91;-* *=*&#93;
+<P>
+<H3><A NAME="Header_35" HREF="#ToC_35">Parameters</A></H3>
+<B>export</B>
+<P>Places any target file that can be exported (generally library
+and header files) in the <B>export</B> area.
+<P>
+<B>comp</B>
+<P>Performs compilation without exporting the file.
+<P>
+<B>build</B>
+<P>Performs an export and compilation.
+<P>
+<B>install</B>
+<P>Places files in the directories they will occupy in an installed
+system.
+<P>
+<B>clean</B>
+<P>Removes object (.o) files.
+<P>
+<B>rmtarget</B>
+<P>Removes the target file (usually a program).
+<P>
+<B>clobber</B>
+<P>Performs a <B>clean</B> and a <B>rmtarget</B>.
+<P>
+<B>lint</B>
+<P>Reformats the source files
+<P>
+<B>tags</B>
+<P>Creates a tag file
+<P>
+<TABLE BORDER WIDTH=100%><TR><TH ALIGN=LEFT>Need info on tag files</TH><TR><TD>
+<P>Need more information on tag files
+</TD></TR></TABLE>
+<P>
+<I>pass_target</I>
+<P>Performs the functions of the pass
+(<B>export, comp, build, install,
+clean, rmtarget, clobber, lint, </B> or <B>tags</B>) on the
+<I>target</I> file specified.  If <I>target</I>
+is not specified, the default target is used.
+<P>
+<I>pass</I>_<B>all</B>
+<P>Performs the functions of the pass
+(see <I>pass</I>_<B>target</B>) on all targets listed
+in the makefile.
+<P>
+<I>pass</I>_<B>all</B>_<I>tag</I>
+<TABLE BORDER WIDTH=100%><TR><TH ALIGN=LEFT>What does this do?</TH><TR><TD>
+<P>Unclear what this does
+</TD></TR></TABLE>
+<P>
+<B>-here</B>
+<P>Builds, cleans, and lints all <I>targets</I> within a
+subtree of the <B>src</B> subdirectory in a sandbox.
+<I>targets</I> is the absolute path to the directory
+serving as the root of the subtree to be built.
+Cleaning removes build objects before creating new ones.  Linting
+reformats target source files.  For example, a <B>build</B>
+with the <B>-here</B> parameter for target
+<B>/home/sample/sbox/dune1/src/sonnet/include</B> would invoke
+a build, clean, and lint for all files in
+<B>/home/sample/sbox/dune1/src/sonnet/include</B>.
+<P>
+<B>-clean</B>
+<P>Removes build objects and performs a build on the target.
+This is an older form for performing this function, and the
+newer form, <B>clean_</B><I>target</I> is preferred.
+The newer form, however, does not automatically build the target.
+<BR>
+<P>
+<B>-lint</B>
+<P>Reformats source files.  This is an older form for performing this
+function, and the newer form, <B>lint_</B><I>target</I> is
+preferred.
+<P>
+<I>ODE Options</I>
+<P>
+<B>-info</B>
+<P>Provides information on what <B>build</B> would do if it were
+executed.  The actual command is not performed.  <B>-info</B>
+works in conjunction with the <B>-quiet</B>, <B>-normal</B>,
+and <B>-verbose</B> options.  <B>-info</B> also works in
+conjunction with the <B>mk</B> command <B>-n</B> option.
+This enables you to get a listing of what <B>build</B> would
+do followed by what <B>mk</B> would do.  The actual functions
+are not performed.
+<P>For example, <B>build -verbose -info myfile</B> displays
+detailed information on the environment <B>build</B> sets up
+and the command that is created to execute <B>mk</B>.
+This <B>build</B> command exits before executing the <B>mk</B>
+command.  The command <B>build -verbose -n myfile</B> displays
+the same information as the previous example; in addition, the
+<B>build</B> command executes the <B>mk</B> command.
+<B>mk</B> then displays what it would do without actually
+performing the functions.
+<P>
+<B>-quiet</B>
+<BR>
+<B>-normal</B>
+<BR>
+<B>-verbose</B>
+<P>Controls the amount of message text you receive.  <B>quiet</B>
+is the most succinct; you receive only essential information,
+including all FATAL ERROR messages.
+<P><B>normal</B> is the default
+level; it causes display of information on the significant steps
+the program is taking, and warnings.  <B>-normal</B> also
+provides all messages displayed by <B>-quiet</B>
+<P><B>-verbose</B> causes display of detailed information on
+the steps the program is taking, and all diagnostic errors.  It
+also provides all messages displayed by <B>-quiet</B> and
+<B>-normal</B>.
+<P>
+<B>-usage</B>
+<P>Displays the correct syntax for this command.
+<P>
+<B>-version</B>
+<P>Displays information on the ODE version level installed.
+<P>
+<B>-sb</B> <I>sandbox_name</I>
+<P>Specifies the name of the sandbox containing the source files to
+be built.  If this parameter is not included, ODE uses the current
+sandbox.  If this parameter is not included, and there is no current
+sandbox, ODE uses the default sandbox as indicated in the
+<B>.sandboxrc</B> file.
+<P>
+<B>-rc</B> <I>rcfile</I>
+<P>Causes <B>build</B> to use the file named <I>rcfile</I>
+to obtain information on what the current sandbox is.  If this
+option is not specified, <B>build</B> uses the
+<B>$HOME/.sandboxrc</B> file to obtain this information.
+<P>
+<I>make options</I>
+Provide information passed directly from <B>build</B> to the
+<B>mk</B> command.  <B>build</B> does not alter the
+options.  The options for <B>mk</B> come in two formats:
+those starting with a dash (-), and those starting with an equals
+sign (=).
+<P>
+<H3><A NAME="Header_36" HREF="#ToC_36">Examples</A></H3>
+<P>Assume you are working in the
+<B>src/sonnet/tutorial/helloworld</B> subdirectory of the
+<B>dune1</B> sandbox.  There is one file, <B>helloworld.c</B>
+in this subdirectory.  The command:
+<P>
+<B>build helloworld</B>
+<P>
+creates an object file called <B>helloworld.o</B> and a binary
+file called <B>helloworld</B> in the
+<B>obj/playa_aix4/sonnet/tutorial/helloworld</B> subdirectory of the
+<B>dune1</B> sandbox.
+<P>Assume you are in the same sandbox and you wish to compile
+the <B>helloworld.c</B> and
+<B>now_hear_this.c</B> source files from the <B>greetings</B>
+subdirectory.  You also wish to receive detailed information on the
+steps of the compile.  The command:
+<P>
+<B>build helloworld now_hear_this -verbose</B>
+<P>
+creates object files called <B>helloworld.o</B> and
+<B>now_hear_this.o</B>, as well as binary files <B>helloworld</B>
+and <B>now_hear_this</B>, in the
+<B>obj/playa_aix4/sonnet/tutorial/greetings</B> subdirectory of
+the <B>dune1</B> sandbox.
+<P>A command to reformat the <B>helloworld.c</B> source file
+is:
+<P>
+<B>build lint_helloworld</B>
+<P>
+<P>A command to remove all object files for all targets listed in
+the makefile is:
+<P>
+<B>build clean_all</B>
+<P>
+<P>A command to place the header file <B>stdio.h</B> in the
+export area is:
+<P>
+<B>build export_stdio.h</B>
+<P><P>
+<HR>
+<H2><A NAME="HDRCURRSB" HREF="#ToC_37">CURRENTSB - List the Current Sandbox</A></H2>
+<P><B>currentsb</B> displays the name of the current sandbox
+and the current set.  Optionally, this command also provides
+environmental data on the current sandbox and set.
+<P>If no sandbox is defined, the command displays
+<B>--EMPTY -- EMPTY</B> if there is no current sandbox,
+and <I>sandbox_name</I> <B>--EMPTY</B> if there is no
+currently-defined set.
+<P>
+<H3><A NAME="Header_38" HREF="#ToC_38">Syntax</A></H3>
+<B>currentsb</B>&nbsp;&#91;<B>-sb</B>&nbsp;
+<B>-set</B>&nbsp;<B>-dir</B>&nbsp;<B>-setdir</B>&nbsp;
+<B>-back</B>&#93;&nbsp;&#91;<B>-all</B>&#93;&nbsp;
+&#91;<I>ODE options</I>&#93;
+<P>
+<I>ODE options:</I>&nbsp;&nbsp;&#91;
+<B>-usage -version</B>&#93;&nbsp;
+&#91;<B>-rc</B> <I>rcfile</I>&#93;
+<P>
+<H3><A NAME="Header_39" HREF="#ToC_39">Parameters</A></H3>
+<B>-sb</B>
+<P>Displays only the name of the current sandbox.
+<P>
+<B>-set</B>
+<P>Displays only the name of the current set.
+<P>
+<B>-dir</B>
+<P>Displays the name of the base directory for the current sandbox.
+<P>
+<B>-setdir</B>
+<P>Displays the name of the default set directory for the current
+sandbox.
+<P>
+<B>-back</B>
+<P>Displays the path for the backing build for the current sandbox.
+<P>
+<B>-all</B>
+<P>Displays the following information:  current sandbox, current set,
+sandbox base directory, default set directory, rcfile name,
+and backing build.
+<P>
+<I>ODE Options</I>
+<P>
+<B>-usage</B>
+<P>Displays the correct syntax for this command.
+<P>
+<B>-version</B>
+<P>Displays information on the ODE version level installed.
+<P>
+<B>-rc</B> <I>rcfile</I>
+<P>Causes <B>currentsb</B> to use the file named <I>rcfile</I>
+to obtain information such as what the current sandbox is.  If this
+option is not specified, <B>resb</B> uses the
+<B>$HOME/.sandboxrc</B> file to obtain this information.
+<P>
+<H3><A NAME="Header_40" HREF="#ToC_40">Examples</A></H3>
+<P>Entering the command:
+<P>
+<B>currentsb</B>
+<P>
+causes display of the current sandbox and current set names.
+If the current sandbox is <B>sb2</B> and there is no current
+set defined, this command would display <B>sb2 --EMPTY</B>.
+<P><P>
+<P>Entering the command:
+<P>
+<B>currentsb -sb -back</B>
+<P>
+causes display of the current sandbox and its backing build.
+If the current sandbox is <B>dune1</B> and the backing build
+is <B>/hfs/den/sonnet/latest</B>, this command would display
+<BR>
+<B>dune1 /hfs/den/sonnet/latest</B>.
+<P><P>
+<HR>
+<H2><A NAME="HDRMKDEP" HREF="#ToC_41">MKDEP - Convert Dependency Information</A></H2>
+<P><B>mkdep</B> converts and combines compiler-generated
+dependency information into a single file.  During a build, this
+serves as the final step on each directory so that the compiler
+dependency files can be converted into the make dependency format.
+<P>
+<H3><A NAME="Header_42" HREF="#ToC_42">Syntax</A></H3>
+<B>mkdep</B>&nbsp;&#91;<B>-I</B><I>include_directory</I>
+&#93;&nbsp;&#91;<B>-K</B><I>include_directory</I>&#93;&nbsp;
+&#91;<B>-top</B>&#93;&nbsp;&#91;<B>-elxdrop</B>&#93;&nbsp;
+&#91;<B>-all</B>&#93;&nbsp;&#91;<B>-all</B>&#93;&nbsp;
+&#91;<I>-file</I>&#93;&nbsp;&#93;<B>-rm</B>&#93;&nbsp;
+&#91;<B>-suff</B>&nbsp;<I>target_suffix</I>:&#93;&nbsp;
+&#91;<B>-debug</B>&#93;&nbsp;
+&#91;<I>ODE options</I>&#93;<I>directory</I>
+<P>
+<I>ODE options:</I>&nbsp;&nbsp;&#91;
+<B>-verbose -usage -version</B>&#93;
+<P>
+<H3><A NAME="Header_43" HREF="#ToC_43">Parameters</A></H3>
+<B>-I</B><I>include_directory</I>
+<P>Removes <I>include_directory</I> from the beginning of all
+dependency paths.
+<P>
+<B>-K</B><I>include_directory</I>
+<P>Keeps the <I>include_directory</I> prefix for dependency
+paths.
+<P>
+<B>-all</B>
+<P>Eliminates extra dependency lines in the <B>depend.mk</B>
+file, and replaces all path strings that match those in
+<B>BACKED_SANDBOXDIR</B> with <B>${MAKETOP}</B> or
+<B>${MAKETOP}.</B>.  Specifying <B>-all</B> is the same
+as specifying <B>-elxdep</B> and <B>-top</B>.
+<P>
+<I>file</I>
+<P>Causes use of <I>file</I>for output rather than the default
+file, <B>depend.mk</B>.
+<P>
+<B>-rm</B>
+<P>Removes compiler dependency files after they have been converted
+and merged with the <B>depend.mk</B> file.
+<P>
+<B>-suff</B> <I>target_suffix</B>
+<P>Causes <B>mkdep</B> to search for a file with
+<I>target_suffix</I> when building the <B>depend.mk</B>.
+If this parameter is not used, <B>mkdep</B> searches only for
+those files with a <B>-u</B> or <B>-d</B> suffix.
+If this parameter is specified, <B>mkdep</B> searches only
+those files with <I>target_suffix</I>, and not those with
+with a 
+:hp2-u:ehp2. or 
+<B>-d</B> suffix.
+<P>
+<B>-top</B>
+<P>Replaces all path strings that match those in
+<B>BACKED_SOURCDIR</B> with those in <B>${MAKETOP}</B>
+or <B>${MAKETOP}.</B>.  Use of this option allows sandboxes
+to resolve the proper file dependency in the backing chain.
+Use of this option is recommended.
+<P>
+<B>-debug</B>
+<P>Display additional debugging information
+<P>
+<I>ODE Options</I>
+<B>-verbose</B>
+<P>Causes display of detailed information on all
+the steps the program is taking, and all diagnostic errors.
+<P>
+<B>-usage</B>
+<P>Displays the correct syntax for this command.
+<P>
+<B>-version</B>
+<P>Displays information on the ODE version level installed.
+<P>
+<P>
+<H3><A NAME="Header_44" HREF="#ToC_44">Examples</A></H3>
+<P>Assume the <B>helloworld.u</B> file contains:
+<P>
+<B>helloworld.o: /proj/src/helloworld.c
+<BR>
+helloworld.o: /proj/inc/salud.h
+<BR>
+helloworld.o: /usr/include/stdio.h</B>
+<P>
+<P>
+<H5><A NAME="Header_45">Case 1</A></H5>
+<P>If <B>BACKED_SANDBOXDIR=/proj</B> and the <B>mkdep</B>
+command is <B>%mkdep helloworld.u</B>, the <B>depend.mk</B>
+file is:
+<P>
+<B>
+#
+<BR>
+# dependents of helloworld.c
+<BR>
+helloworld.o: /proj/inc/helloworld.h
+<BR>
+helloworld.o: /usr/include/stdio.h
+</B>
+<P>
+<P>
+<P>This is the basic or default use of <B>mkdep</B>.  In this case,
+it generates all full-path dependencies.
+<P>
+<P>
+<H5><A NAME="Header_46">Case 2</A></H5>
+<P>If <B>BACKED_SANDBOXDIR</B> is still <B>/proj</B>, but
+the <B>mkdep</B> command is <B>%mkdep -top helloworld.u</B>,
+the <B>depend.mk</B> file is:
+<P>
+<B>
+#
+<BR>
+# dependents of helloworld.c
+<BR>
+helloworld.o: ${MAKETOP}../inc/helloworld.h
+<BR>
+helloworld.o: /usr/include/stdio.h
+</B>
+<P>
+<P>In this case, the <B>-top</B> parameter adds
+<B>${MAKETOP}</B> because <B>/proj</B> in
+<B>BACKED_SANDBOXDIR</B> matches the initial dependency path in
+the first dependency line in <B>helloworld.u</B>.
+<P>If <B>BACKED_SANDBOXDIR</I> were <B>/proj11</B>,
+there would not be a match of the initial dependency path and
+<B>depend.mk</B> would be the same as in Case 1.
+<P>
+<H5><A NAME="Header_47">Case 3</A></H5>
+<P>If <B>BACKED_SANDBOXDIR</B> is still <B>/proj</B>, and
+the <B>mkdep</B> command
+is <B>%mkdep -top -elxdep helloworld.u</B>,
+the <B>depend.mk</B> file is:
+<P>
+<B>
+#
+<BR>
+# dependents of helloworld.c
+<BR>
+helloworld.o: ${MAKETOP}../inc/helloworld.h
+</B>
+<P>
+<P>In this case, the <B>-top</B> parameter adds
+<B>${MAKETOP}</B> because <B>/proj</B> in
+<B>BACKED_SANDBOXDIR</B> matches the initial dependency path in
+the first dependency line in <B>helloworld.u</B>.  However,
+the <B>elxdep</B> option eliminates
+<B>helloworld.o: /usr/include/stdio.h</B> because it does not
+match the path defined in <B>BACKED_SANDBOXDIR</B>.
+<B>mklinks -copy intface.c</B>
+<P>
+physically copies the source file <B>intface.c</B>
+from the <B>src</B> subdirectory of the backing build into
+the <B>src</B> file of the <B>dune2</B> sandbox.
+<P><P>
+<HR>
+<H2><A NAME="HDRMKLINKS" HREF="#ToC_48">MKLINKS - Create Symbolic Links</A></H2>
+<P><B>mklinks</B> enables you to create symbolic links to code in
+a backing build or shared sandbox.  <B>mklinks</B> can create
+links to a single file or an entire subsystem.  The command creates
+the necessary tree structure for any files symbolically linked.
+<P><B>mklinks</B> can also be used as an alternative method
+for physically copying code from a backing build or shared sandbox
+into the development sandbox.
+<P>Before execution of the command,
+<B>mklinks</B> provides a confirmation message proposed "from"
+and "to" linking trees.
+<P>
+<H3><A NAME="Header_49" HREF="#ToC_49">Syntax</A></H3>
+<B>mklinks</B>&nbsp;&#91;<B>-copy</B>&#93;&nbsp;
+&#91;<B>-over</B>&#93;&nbsp;&#91;<B>-norecurse</B></B>&nbsp;
+&#91;<B>-refresh</B>&#93;&nbsp;
+&#91;<I>ODE options</I>&#93;<I>directory</I>
+<P>
+<I>ODE options:</I>&nbsp;&nbsp;&#91;
+<B>-info -auto -noauto -quiet -normal -verbose -usage
+<BR>
+-version</B>&#93;
+&nbsp;&#91;<B>-sb</B> <I>sandbox_name</I>
+&nbsp;&#91;<B>-rc</B> <I>rcfile</I>&#93;
+<P>
+<H3><A NAME="Header_50" HREF="#ToC_50">Parameters</A></H3>
+<B>-copy</B>
+<P>Makes a physical copy rather than establishing a symbolic link.
+If this parameter is omitted, the default sandbox is used.
+<P>
+<B>-over</B>
+<P>Forces the copy to overwrite files with the same name.
+WARNING:  this option can overwrite files that have been checked
+out from a source control system such as CMVC.
+<P>
+<B>-norecurse</B>
+<P>Inhibits linking of files in subdirectories of target specified.
+If this option is used, linking occurs only for files in the
+directory of the target specified.
+<P>
+<B>-refresh</B>
+<P>Causes existing links to be replaced with new links.
+<I>ODE Options</I>
+<P>
+<B>-info</B>
+<P>Provides information on what the command would do if it were
+executed.  The actual command is not performed.  <B>-info</B>
+works in conjunction with the <B>-quiet</B>, <B>-normal</B>,
+and <B>-verbose</B> options.
+<P>
+<B>-auto</B>
+<BR>
+<B>-noauto</B>
+<P><B>-auto</B> eliminates prompting when defaults can be taken,
+<B>-noauto</B> toggles <B>-auto</B> to the OFF state, activating
+prompting.  When used in conjunction with the <B>-undo</B><B>-auto</B> allows removal of a sandbox with the user confirmation
+message.
+<P>
+<B>-quiet</B>
+<BR>
+<B>-normal</B>
+<BR>
+<B>-verbose</B>
+<P>Controls the amount of message text you receive.  <B>quiet</B>
+is the most succinct; you receive only essential information,
+including all FATAL ERROR messages.
+<P><B>normal</B> is the default
+level; it causes display of information on the significant steps
+the program is taking, and warnings.  <B>-normal</B> also
+provides all messages displayed by <B>-quiet</B>
+<P><B>-verbose</B> causes display of detailed information on
+the steps the program is taking, and all diagnostic errors.  It
+also provides all messages displayed by <B>-quiet</B> and
+<B>-normal</B>.
+<P>
+<B>-usage</B>
+<P>Displays the correct syntax for this command.
+<P>
+<B>-version</B>
+<P>Displays information on the ODE version level installed.
+<P>
+<B>-sb</B> <I>sandbox_name</I>
+<P>Specifies the sandbox name.  If you are already working in a
+sandbox (for example, through the <B>workon</B> command), this
+parameter is not necessary
+<P>
+<B>-rc</B> <I>rcfile</I>
+<P>Causes <B>mklinks</B> to use the file named <I>rcfile</I>
+to obtain information such as what the current sandbox is.  If this
+option is not specified, <B>mklinks</B> uses the
+<B>$HOME/.sandboxrc</B> file to obtain this information.
+<P>
+<H3><A NAME="Header_51" HREF="#ToC_51">Examples</A></H3>
+<P>Assume you are in the <B>src</B> subdirectory of of the
+<B>dune2</B> sandbox.  Entering the command:
+<P>
+<B>mklinks sonnet/lib/libson</B>
+<P>
+creates the tree structure <B>sonnet/lib/libson</B> tree structure
+(if it does not already exist) in the <B>src</B> subdirectory
+of the <B>dune2</B> sandbox,
+and creates symbolic links to all files in
+the backing build's <B>libson</B> subdirectory.
+<P>
+<P>Entering the command:
+<P>
+<B>mklinks -copy intface.c</B>
+<P>
+physically copies the source file <B>intface.c</B>
+from the <B>src</B> subdirectory of the backing build into
+the <B>src</B> file of the <B>dune2</B> sandbox.
+<P><P>
+<HR>
+<H2><A NAME="HDRMKSB" HREF="#ToC_52">MKSB - Make a New Sandbox</A></H2>
+<P><B>mksb</B> creates a new sandbox.  It can also be used to
+list all current sandboxes, or to remove a sandbox.
+<P>In creating a new sandbox, <B>mksb</B> builds the directory
+structure, and populates the sandbox in accordance with
+parameters specified and defaults in a control file known as the
+rc file.  If an rc file does not exist, <B>mksb.</B> creates
+the file; if the rc file does exist, <B>mksb</B> updates the
+information that the file contains.
+<P>
+<H3><A NAME="Header_53" HREF="#ToC_53">Syntax</A></H3>
+<B>mksb</B>&nbsp;&#91;<B>-def</B>&#93;&nbsp;
+&#91;<B>-back</B> <I>backing_build</I>&#93;&nbsp;
+&#91;<B>-dir</B> <I>sandbox_dir</I>&#93;
+<BR>
+&#91;<B>-m</B> <I>machine</I>&#91;&#58;
+<I>machine</I>&#93;<I>...</I>&#93;
+&nbsp;&nbsp;&#91;<I>Population options</I>&#93;
+&nbsp;&nbsp;&#91;<I>ODE options</I>&#93;
+<I>sandbox_name</I>
+<P>
+<B>mksb</B>&nbsp;<B>-list</B>
+<P>
+<B>mksb</B>&nbsp;<B>-undo</B> <I>sandbox_name</I>
+<P>
+<I>Population options:</I>&nbsp;&nbsp;&#91;<B>-tools
+</B> <I>mode</I>&#93;
+&nbsp;&#91;<B>-obj</B> <I>mode dir</I>&#93;
+&nbsp;&#91;<B>-src</B> <I>mode dir</I>&#93;
+<P>
+<I>ODE options:</I>&nbsp;&nbsp;&#91;
+<B>-info -auto -noauto -quiet -normal -verbose -usage
+<BR>
+-version</B>&#93;
+&nbsp;&#91;<B>-set</B> <I>setname</I>&#93;
+&nbsp;&#91;<B>-rc</B> <I>rcfile</I>&#93;
+<P>
+<H3><A NAME="Header_54" HREF="#ToC_54">Parameters</A></H3>
+<B>-def</B>
+<P>Establishes the sandbox to be created as the
+default sandbox.  The default sandbox is listed in the
+<B>${HOME}/.sandboxrc</B> file or, if <B>-rc</B> is used,
+in <I>rcfile</I>.  If no rc file exists, a new one is created,
+and the new sandbox is automatically established as the default.
+<P>
+<B>-back</B> <I>backing_build</I>
+<P>Specifies the name of the backing
+build.  <I>backing_build</I> can be in
+the form <I>osc.#</I>, where <I>#</I> is the build number,
+or it can be a full path, starting with /, to another sandbox.
+If this option is not specified, the program
+issues a prompt.  You can enter a build
+or a path to another sandbox.
+<BR>
+<P>
+<B>-dir</B> <I>sandbox_dir</I>
+<P>Creates the new sandbox in the <I>sandbox_dir</I> directory.
+<I>sandbox_dir</I> must already exist.  If this option is not
+used, ODE builds the sandbox in the base directory listed
+in the <B>.sandboxrc</B> file.
+<P>
+<B>-m</B> <I>machine</I>&#91;<I>&#58;machine</I>&#93;...
+<P>Specifies the machines needed to build the machine-dependent
+directories for the new sandbox.  If there is more than one machine,
+the names should be separated by a colon (&#58;), without spaces.
+If this option is not used, the machines listed in the
+<B>config specific</B> section of the <B>sandboxrc.</B>
+file will be used.
+<BR>
+<P>
+<I>sandbox_name</I>
+<P>Is the name of the sandbox to be created.  The sandbox name:
+<UL>
+<P><LI>Cannot contain any dashes (-), periods (.), or slashes (/).
+<P><LI>Must be a single name.  Each execution of <B>mksb</B>
+creates only one sandbox.
+<P><LI>Must be unique within a user's system.  You cannot have two
+sandboxes with the same name.
+<P><LI>Must be backed by an existing backing build or another sandbox.
+</UL>
+<P>
+<B>-list</B>
+<P>Displays a list of sandboxes, the default sandbox, and any
+sandbox bases in the rc file.  If the <B>-rc</B> option is
+specified, <B>-list</B> displays information from the specified
+<I>rcfile</I>.  If <B>-rc</B> is not specified, <B>-list</B>
+displays information from the default rc file (<B>.sandboxrc</B>).
+<P><B>Note: </B><B>-list</B> does not accept the name of a specific sandbox.
+<BR>
+<P>
+<B>-undo</B> <I>sandbox_name</I>
+<P>Removes a sandbox.  Include the <B>-auto</B> option if you
+do not wish to be prompted for a confirmation.
+<BR>
+<P>
+<I>Population options&#58;</I>
+<P>
+<B>-tools</B> <I>mode</I>
+<P>Indicates how to access tools from the backing build, and how to    .
+populate the tools subdirectory of the sandbox with
+these tools.  <I>mode</I> can be:
+<DL><P><DT><B>l
+</B><DD>to link from the local area to the backing build's tools
+<P><DT><B>c
+</B><DD>to copy the backing build's tools into the local area
+<P><DT><B>b
+</B><DD>to neither copy nor link to the backing build's tools
+</DL>
+<P>This parameter deals with space considerations within the
+sandbox.  Copying (<B>c</B>) consumes the most space.  Linking
+consumes some space.  Neither copying nor linking (<B>b</B>)
+consumes no space.  However, with the <B>b</B> option, you have
+to switch to the directory with the backing build in order to access
+a file (for example, to display a source file).
+<P>If <B>l</B> or <B>c</B> is specified, the tools will
+be linked or copied for each machine specified in the
+<B>-m</B> <I>machine</I>&#91;<I>&#58;machine</I>
+&#93;... parameter.
+<P>
+<B>-obj</B> <I>mode</I> <I>dir</I>
+<P>Indicates how to access object code from the backing build, and
+how to populate the obj subdirectory of the sandbox with object
+code.  <I>mode</I> can be:
+<DL><P><DT><B>l
+</B><DD>to link from the local area to the backing build's object code
+<P><DT><B>c
+</B><DD>to copy the backing build's object code into the local area
+<P><DT><B>b
+</B><DD>to neither copy nor link to the backing build's object code.
+</DL>
+<I>dir</I> is the list of directories to which the links should be
+made, or from which the copies should be made.  The directory list
+must begin with a slash (/) and the individual directories must be
+separated by a colon (&#58;).
+For example, <B>/bin&#58;/usr/bin</B>
+specifies two directories: <B>/bin</B> and <B>/usr/bin</B>.
+To copy or link to all objects, specify a slash (/).  A copy or
+link will be established for each of the machines specified in the
+<B>-m</B> <I>machine</I>&#91;<I>&#58;machine</I>
+&#93;... parameter.
+<P>
+<B>-src</B> <I>mode</I> <I>dir</I>
+<P>Indicates how to access source code from the backing build, and
+how to populate the src subdirectory of the sandbox with source
+code.  <I>mode</I> can be:
+<DL><P><DT><B>l
+</B><DD>to link from the local area to the backing build's source code
+<P><DT><B>c
+</B><DD>to copy the backing build's source code into the local area
+<P><DT><B>b
+</B><DD>to neither copy nor link to the backing build's source code.
+</DL>
+<I>dir</I> is the list of directories to which the links should be
+made, or from which the copies should be made.  The directory list
+must begin with a slash (/) and the individual directories must be
+separated by a colon (&#58;).
+For example, <B>/proj&#58;/proj/src</B>
+specifies two directories: <B>/proj</B> and <B>/proj/src</B>.
+To copy or link to all sources, specify a slash (/).
+<P>
+<I>ODE Options</I>
+<P>
+<B>-info</B>
+<P>Provides information on what the command would do if it were
+executed.  The actual command is not performed.  <B>-info</B>
+works in conjunction with the <B>-quiet</B>, <B>-normal</B>,
+and <B>-verbose</B> options.
+<P>
+<B>-auto</B>
+<BR>
+<B>-noauto</B>
+<P><B>-auto</B> eliminates prompting when defaults can be taken,
+<B>-noauto</B> toggles <B>-auto</B> to the OFF state, activating
+prompting.  When used in conjunction with the <B>-undo</B><B>-auto</B> allows removal of a sandbox with the user confirmation
+message.
+<P>
+<B>-quiet</B>
+<BR>
+<B>-normal</B>
+<BR>
+<B>-verbose</B>
+<P>Controls the amount of message text you receive.  <B>quiet</B>
+is the most succinct; you receive only essential information,
+including all FATAL ERROR messages.
+<P><B>normal</B> is the default
+level; it causes display of information on the significant steps
+the program is taking, and warnings.  <B>-normal</B> also
+provides all messages displayed by <B>-quiet</B>
+<P><B>-verbose</B> causes display of detailed information on
+the steps the program is taking, and all diagnostic errors.  It
+also provides all messages displayed by <B>-quiet</B> and
+<B>-normal</B>.
+<P>
+<B>-usage</B>
+<P>Displays the correct syntax for this command.
+<P>
+<B>-version</B>
+<P>Displays information on the ODE version level installed.
+<P>
+<B>-set</B> <I>setname</I>
+<P>Specifies the name of a group of files for source control purposes.
+Since source control is not supported within the ODE system, this
+parameter is included for compatibility with the external system
+providing the source control function.
+<P>
+<B>-rc</B> <I>rcfile</I>
+<P>Causes <B>mksb</B> to use the file named <I>rcfile</I>
+to obtain information such as what the current sandbox is.  If this
+option is not specified, <B>mksb</B> uses the
+<B>$HOME/.sandboxrc</B> file to obtain this information.
+<P>
+<H3><A NAME="Header_55" HREF="#ToC_55">Examples</A></H3>
+<B>mksb -back /hsf/den/sonnet/latest -dir $HOME/sbox
+-m playa1&#58;playa2 sb1</B>
+<P>Creates a new sandbox named <B>sb1</B> in the
+<B>$HOME/sbox</B> directory.  The backup build for <B>sb1</B>is <B>/hsf/den/sonnet/latest</B>.  Machine-dependent
+directories will be created for machines <B>playa1</B> and
+<B>playa2</B>.  The default rc file (<B>.sandboxrc</B>)
+will be used.
+<P>
+<B>mksb -verbose -info -back /afs/lair/nways_admin/admin1 testsb</B>
+<P>Provides detailed information on the steps <B>mksb</B>
+performs in creating a sandbox named <B>testsb</B> that is backed
+by build <B>/afs/lair/nways/nways_admin/admin1</B>.  The actual
+sandbox is not created.
+<P>
+<B>mksb -undo sb5</B>
+<P>Removes sandbox <B>sb5</B>.
+<P><P>
+<HR>
+<H2><A NAME="HDRRESB" HREF="#ToC_56">RESB - Retarget a Sandbox</A></H2>
+<P><B>resb</B> enables you to switch from the the shared sandbox or
+backing build that is currently backing your sandbox to a new
+shared sandbox or backing build.  This process of change is called
+retargeting.
+<P>
+<H3><A NAME="Header_57" HREF="#ToC_57">Syntax</A></H3>
+<B>resb</B>&nbsp;<I>new_backing_build</I>&nbsp;
+&#91;<I>ODE options</I>&#93;
+<P>
+<I>ODE options:</I>&nbsp;&nbsp;&#91;
+<B>-info -quiet -normal -verbose -usage -version</B>&#93;
+<BR>
+&#91;<B>-sb</B> <I>sandbox_name</I>
+&nbsp;&#91;<B>-rc</B> <I>rcfile</I>&#93;
+<P>
+<H3><A NAME="Header_58" HREF="#ToC_58">Parameters</A></H3>
+<I>new_backing_build</I>
+<P>The full path of the new backing build or shared sandbox that
+will now back the development sandbox.
+directory of the target specified.
+<P>
+<I>ODE Options</I>
+<P>
+<B>-info</B>
+<P>Provides information on what the command would do if it were
+executed.  The actual command is not performed.  <B>-info</B>
+works in conjunction with the <B>-quiet</B>, <B>-normal</B>,
+and <B>-verbose</B> options.
+<P>
+<B>-quiet</B>
+<BR>
+<B>-normal</B>
+<BR>
+<B>-verbose</B>
+<P>Controls the amount of message text you receive.  <B>quiet</B>
+is the most succinct; you receive only essential information,
+including all FATAL ERROR messages.
+<P><B>normal</B> is the default
+level; it causes display of information on the significant steps
+the program is taking, and warnings.  <B>-normal</B> also
+provides all messages displayed by <B>-quiet</B>
+<P><B>-verbose</B> causes display of detailed information on
+the steps the program is taking, and all diagnostic errors.  It
+also provides all messages displayed by <B>-quiet</B> and
+<B>-normal</B>.
+<P>
+<B>-usage</B>
+<P>Displays the correct syntax for this command.
+<P>
+<B>-version</B>
+<P>Displays information on the ODE version level installed.
+<P>
+<B>-sb</B> <I>sandbox_name</I>
+<P>Specifies the sandbox name.  If you are already working in a
+sandbox (for example, through the <B>workon</B> command), this
+parameter is not necessary
+<P>
+<B>-rc</B> <I>rcfile</I>
+<P>Causes <B>resb</B> to use the file named <I>rcfile</I>
+to obtain information such as what the current sandbox is.  If this
+option is not specified, <B>resb</B> uses the
+<B>$HOME/.sandboxrc</B> file to obtain this information.
+<P>
+<H3><A NAME="Header_59" HREF="#ToC_59">Examples</A></H3>
+<P>Entering the command:
+<P>
+<B>resb /hfs/den/sonnet/proj11</B>
+<P>
+switches the default sandbox, as indicated in the
+<B>.sandboxrc</B> file, to the
+<B>/hfs/den/sonnet/proj11</B> backing build.
+<P><P>
+<HR>
+<H2><A NAME="HDRSBINFO" HREF="#ToC_60">SBINFO - Show Information Derived from the Sandbox RC File</A></H2>
+<P><B>sbinfo</B> displays information from the rc file for
+the specified sandbox.  If no sandbox is specified, <B>sbinfo</B>
+displays information for the current sandbox.
+<P>You can limit the amount of information displayed by specifying
+one or more variables (for example, <B>MACHINELIST</B>).  In this
+case, <B>sbinfo</B> displays information for only the variables
+specified.
+<P>
+<H3><A NAME="Header_61" HREF="#ToC_61">Syntax</A></H3>
+<B>sbinfo</B>&nbsp;&#91;<I>variables</I>&#93;
+<P>
+<I>ODE options:</I>&nbsp;&nbsp;&#91;
+<B>-quiet -normal -verbose -usage -version</B>&#93;
+<BR>
+&#91;<B>-sb</B> <I>sandbox_name</I>
+&nbsp;&#91;<B>-rc</B> <I>rcfile</I>&#93;
+<P>
+<H3><A NAME="Header_62" HREF="#ToC_62">Parameters</A></H3>
+<I>variables</I>
+<P>Displays the contents of the variables specified (for example,
+MACHINELIST displays the names of the machines that will build
+the machine-dependent directories).
+<P>
+<P>
+<I>ODE Options</I>
+<P>
+<B>-quiet</B>
+<BR>
+<B>-normal</B>
+<BR>
+<B>-verbose</B>
+<P>Controls the amount of message text you receive.  <B>quiet</B>
+is the most succinct; you receive only essential information,
+including all FATAL ERROR messages.
+<P><B>normal</B> is the default
+level; it causes display of information on the significant steps
+the program is taking, and warnings.  <B>-normal</B> also
+provides all messages displayed by <B>-quiet</B>
+<P><B>-verbose</B> causes display of detailed information on
+the steps the program is taking, and all diagnostic errors.  It
+also provides all messages displayed by <B>-quiet</B> and
+<B>-normal</B>.
+<P>
+<B>-usage</B>
+<P>Displays the correct syntax for this command.
+<P>
+<B>-version</B>
+<P>Displays information on the ODE version level installed.
+<P>
+<B>-sb</B> <I>sandbox_name</I>
+<P>Specifies the sandbox name.  If this parameter is not included,
+ODE uses the name of the current sandbox.
+<P>
+<B>-rc</B> <I>rcfile</I>
+<P>Causes <B>sbinfo</B> to obtain its information from the file
+named <I>rcfile</I>.
+<P>
+<H3><A NAME="Header_63" HREF="#ToC_63">Examples</A></H3>
+<P>Entering the command:
+<P>
+<B>sbinfo</B>
+<P>
+causes display of all the variables in the rc file for the
+current sandbox.
+<P>Entering the command:
+<P>
+<B>sbinfo MACHINELIST -sb dune1</B>
+<P>
+causes display of only the MACHINELIST variable from the rc file
+for the <B>dune1</B> sandbox.  The output might look like:
+<B>rios_aix4&#58;sparc_sunos&#58;i386_os2&#58;i386_win32</B>.
+<HR>
+<H2><A NAME="HDRWORKON" HREF="#ToC_64">WORKON - Work in a Sandbox</A></H2>
+<P><B>workon</B> enables you to get into a sandbox for editing,
+compiling, and linking.  <B>workon</B> creates a new shell,
+sets the proper environmental variables for the sandbox, and places
+you in the <B>src</B> subdirectory of the sandbox.
+<P>
+<H3><A NAME="Header_65" HREF="#ToC_65">Syntax</A></H3>
+<B>workon</B>&nbsp;&#91;<B>-sb</B>&nbsp;
+<I>sandbox_name</I>&#93;&nbsp;
+&#91;<I>ODE options</I>&#93;
+<P>
+<B>workon</B> <B>-usage</B> | <B>-version</B>
+<P>
+<I>ODE options:</I>&nbsp;&nbsp;&#91;
+<B>-info -auto -noauto -quiet -normal -verbose -usage
+<BR>
+-version</B>&#93;
+&nbsp;&#91;<B>-rc</B> <I>rcfile</I>&#93;
+<P>
+<H3><A NAME="Header_66" HREF="#ToC_66">Parameters</A></H3>
+<B>-sb</B> <I>sandbox_name</I>
+<P>Specifies the name of the sandbox to be worked on.
+If this parameter is omitted, the default sandbox is used.
+<P>
+<I>ODE Options</I>
+<P>
+<B>-info</B>
+<P>Provides information on what the command would do if it were
+executed.  The actual command is not performed.  <B>-info</B>
+works in conjunction with the <B>-quiet</B>, <B>-normal</B>,
+and <B>-verbose</B> options.
+<P>
+<B>-auto</B>
+<BR>
+<B>-noauto</B>
+<P><B>-auto</B> eliminates prompting when defaults can be taken,
+<B>-noauto</B> toggles <B>-auto</B> to the OFF state, activating
+prompting.  When used in conjunction with the <B>-undo</B><B>-auto</B> allows removal of a sandbox with the user confirmation
+message.
+<P>
+<B>-quiet</B>
+<BR>
+<B>-normal</B>
+<BR>
+<B>-verbose</B>
+<P>Controls the amount of message text you receive.  <B>quiet</B>
+is the most succinct; you receive only essential information,
+including all FATAL ERROR messages.
+<P><B>normal</B> is the default
+level; it causes display of information on the significant steps
+the program is taking, and warnings.  <B>-normal</B> also
+provides all messages displayed by <B>-quiet</B>
+<P><B>-verbose</B> causes display of detailed information on
+the steps the program is taking, and all diagnostic errors.  It
+also provides all messages displayed by <B>-quiet</B> and
+<B>-normal</B>.
+<P>
+<B>-usage</B>
+<P>Displays the correct syntax for this command.
+<P>
+<B>-version</B>
+<P>Displays information on the ODE version level installed.
+<P>
+<B>-rc</B> <I>rcfile</I>
+<P>Causes <B>workon</B> to use the file named <I>rcfile</I>
+to obtain information such as what the current sandbox is.  If this
+option is not specified, <B>workon</B> uses the
+<B>$HOME/.sandboxrc</B> file to obtain this information.
+<P>
+<H3><A NAME="Header_67" HREF="#ToC_67">Examples</A></H3>
+<B>workon</B>
+<P>Places the user in the <B>src</B> subdirectory of the
+default sandbox
+(specified in the <B>.sandboxrc</B> file).
+<P>
+<B>workon -sb dune2</B>
+<P>Places the user in the <B>src</B> subdirectory of the
+<B>dune2</B> sandbox.
+<P><P>
+<HR>
+<H1><A NAME="Header_68" HREF="#ToC_68">Chapter 7. Messages</A></H1>
+<TABLE BORDER WIDTH=100%><TR><TH ALIGN=LEFT></TH><TR><TD><P>Need the ODE status and error messages
+</TD></TR></TABLE>
+<HR>
+<H1><A NAME="HDRINDEX_START" HREF="#ToC_69">Index</A></H1>
+<A NAME=Bot_Of_Page>&nbsp;</A>
+</BODY></HTML>

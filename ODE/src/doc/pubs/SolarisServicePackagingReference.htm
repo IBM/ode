@@ -1,0 +1,815 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="Content-Language" content="en-us">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <meta name="Author" content="default">
+   <title>Sun Solaris Service Packaging User's Guide</title>
+</head>
+<body>
+
+<h1>
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490></h1>
+
+<h1>
+Solaris Service Packaging User's Guide</h1>
+Open Development Environment
+<br>Packaging Reference
+<br>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<hr WIDTH="100%">
+<h2>
+Table of Contents</h2>
+
+<ul>
+<li>
+<a href="#Overview">Overview</a></li>
+
+<li>
+<a href="#The Process">The Process</a></li>
+
+<ul>
+<li>
+<a href="#Creating the Configuration">Creating the Configuration File</a></li>
+
+<li>
+<a href="#Makefile variables">Makefile Variables</a></li>
+
+<li>
+<a href="#Package_all">Package_all Target</a></li>
+</ul>
+
+<li>
+<a href="#Patching Scenarios">Patching Scenarios</a></li>
+
+<li>
+<a href="#Limitations">Limitations</a></li>
+
+<li>
+<a href="#See Also">See Also</a></li>
+</ul>
+
+<h2>
+<a NAME="Overview"></a>Overview</h2>
+This document outlines the procedure involved to create a patch on Solaris
+operating system 7.0 or later versions using ODE. This document assumes
+prior knowledge of ODE and ODE packaging concepts. ODE uses the buildpatch
+tool to create software patches, therefore this tool needs to be installed
+before using ODE to build patches. The name of buildpatch package is <b>SUNWpatch</b>.
+(Please contact Sun Microsystems directly to get this package. This package
+is not shipped with Solaris OS.)
+<h2>
+<a NAME="The Process"></a>The Process</h2>
+The process involved in creating a patch starts with the creation of a
+sandbox that is backed against a backing build, which contains stable code
+of one or more packages. The code that needs to be changed is extracted
+from a version control system into the sandbox. The code is modified and
+compiled. The changed code is tested. The packaging process involves <b>creating
+the configuration file</b>,
+<b>defining makefile variables</b> and<b> running
+the package_all</b> <b>target</b>.
+<br>&nbsp;
+<h3>
+<a NAME="Creating the Configuration"></a>Creating the Configuration File</h3>
+buildpatch is configurable using the configuration file. The ODE user needs
+to create the buildpatch configuration file before running the <b>package_all</b>
+target. It can be created any where and the makefile variable <b>PKGTOOL_CONFIG_FILE</b>&nbsp;
+should be set to the fully qualified path of the configuration file. Recommended
+values for the configuration file entries are listed below.&nbsp; Here
+is an
+<a href="buildpatch_conf.htm">example</a> of the configuration file.
+<h4>
+Recommended values for configuration file entries</h4>
+
+<table BORDER CELLSPACING=0 CELLPADDING=0 COLS=2 WIDTH="100%" >
+<tr BGCOLOR="#999999">
+<td>
+<center><b>Configuration File Entry</b></center>
+</td>
+
+<td>
+<center><b>Recommended Value</b></center>
+</td>
+</tr>
+
+<tr>
+<td>Checklist</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td>Patch_label</td>
+
+<td>PATCHID</td>
+</tr>
+
+<tr>
+<td>Ask_obsoletes</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td>Obsoletes_label</td>
+
+<td>OBSOLETES</td>
+</tr>
+
+<tr>
+<td>Ask_requires</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td>Requires_label</td>
+
+<td>REQUIRES</td>
+</tr>
+
+<tr>
+<td>Ask_incompat</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td>Incompat_label</td>
+
+<td>INCOMPAT</td>
+</tr>
+
+<tr>
+<td>Ask_fmt</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td>Default_fmt</td>
+
+<td>directory</td>
+</tr>
+
+<tr>
+<td>Ask_patch_dir</td>
+
+<td>no</td>
+</tr>
+
+<tr>
+<td>Patch_dir_dflt</td>
+
+<td><font color="#000000">&lt;sandbox root directory>/inst.images/&lt;$(<i><b>CONTEXT</b>)></i>/images</font></td>
+</tr>
+
+<tr>
+<td>Patch_Overwrite</td>
+
+<td>yes</td>
+</tr>
+
+<tr>
+<td>Patchvers_pfx</td>
+
+<td>"-"</td>
+</tr>
+
+<tr>
+<td>Patchstrict_str</td>
+
+<td>"R"</td>
+</tr>
+
+<tr>
+<td><b>PATCHNO_FMT</b></td>
+
+<td>"-r ^[0-9][0-9][0-9][0-9][0-9][0-9]$Patchvers_pfx[0-9][0-9]$"</td>
+</tr>
+
+<tr>
+<td><b>PATCH_UTILITIES_PATH</b></td>
+
+<td>PatchTools</td>
+</tr>
+
+<tr>
+<td><b>PATCH_META_PATH</b></td>
+
+<td><font color="#000000">&lt;sandbox root directory>/inst.images/&lt;$(<b>CONTEXT</b>)<i>></i>/meta</font></td>
+</tr>
+</table>
+
+<h3>
+<a NAME="Makefile variables"></a>Makefile variables</h3>
+The following are the makefile variables used during the packaging process.
+Some of these variables are required and some are optional. These makefile
+variables could be either defined in a makefile or on the command line
+it self;
+<b>Eg.:</b> The makefile variables <b>PKG_CLASS</b> and <b>PATCH_NAME</b>
+could be defined by issuing
+<i>mk parse_all PKG_CLASS=SP PATCH_NAME=xxx</i>
+command.
+<br>&nbsp;
+<table BORDER CELLSPACING=0 CELLPADDING=0 COLS=4 WIDTH="100%" >
+<tr BGCOLOR="#999999">
+<td>
+<center><b>Makefile Variable</b></center>
+</td>
+
+<td><b>Definition</b></td>
+
+<td><b>Required/Optional</b></td>
+
+<td><b>Format</b></td>
+</tr>
+
+<tr>
+<td><a NAME="PATCH_NAME"></a><b>PATCH_NAME</b></td>
+
+<td>This variable represents the patch number of the patch being created.
+Format of the patch number should conform with the format specified in
+the buildpatch configuration file. The value of this variable is used to
+specify <b>-p </b>option of buildpatch.</td>
+
+<td>Required</td>
+
+<td>string</td>
+</tr>
+
+<tr>
+<td><a NAME="PATCH_NEW_LINKS"></a><b>PATCH_NEW_LINKS</b></td>
+
+<td>This variable is used to specify new symbolic links that have been
+added as part of this patch.</td>
+
+<td>Optional</td>
+
+<td>The format of the value is:&nbsp;
+<br><i><b>sourceDir</b>/<b>sourceFile</b></i>,...,..., where sourceDir
+and sourceFile are File Stanza attributes in CMF.&nbsp;</td>
+</tr>
+
+<tr>
+<td><a NAME="PATCH_DELETED_FILES"></a><b>PATCH_DELETED_FILES</b></td>
+
+<td>This variable is used to specify the files to be deleted as part of
+the patch being created. <font color="#000000">The files listed in this
+variable should not be present in the shiptree or proto area.</font></td>
+
+<td>Optional</td>
+
+<td>comma separated list of file names. Example: <b><i>fileName1, fileName2,...,</i></b>
+Each entry should contain paths of the files on the target system either
+that are relative to the BASEDIR variable or absolute paths.&nbsp;</td>
+</tr>
+
+<tr>
+<td><a NAME="PKGTOOL_CONFIG_FILE"></a><b>PKGTOOL_CONFIG_FILE</b></td>
+
+<td>This variable represents the full path of the configuration file. The
+value of this variable is used to specify <b>-c</b> option of buildpatch.
+If this variable is not defined then default configuration file that ships
+with buildpatch will be used.</td>
+
+<td>Optional</td>
+
+<td>string</td>
+</tr>
+
+<tr>
+<td><a NAME="PATCH_FORMAT"></a><b>PATCH_FORMAT</b></td>
+
+<td>This variable represents the format of the patch. Valid values are
+<b>directory</b>
+and <b>package</b>. The default value is <b>directory</b>. The value of
+this variable is used to specify <b>-f </b>option of buildpatch.</td>
+
+<td>Optional</td>
+
+<td>string</td>
+</tr>
+
+<tr>
+<td><a NAME="PATCH_OBSOLETES_LIST"></a><b>PATCH_OBSOLETES_LIST</b></td>
+
+<td>This variable represents the list of patches that the patch being created
+obsoletes. The value of this variable is used to specify <b>-o</b> option
+of buildpatch.</td>
+
+<td>Optional</td>
+
+<td>space separated string of patch numbers</td>
+</tr>
+
+<tr>
+<td><a NAME="PATCH_REQUIRES_LIST"></a><b>PATCH_REQUIRES_LIST&nbsp;</b></td>
+
+<td>This variable represents the list of patches that the patch being created
+requires. The value of this variable is used to specify <b>-r</b> option
+of buildpatch.</td>
+
+<td>Optional</td>
+
+<td>space separated string of patch numbers</td>
+</tr>
+
+<tr>
+<td><a NAME="PATCH_INCOMPATIBLES_LIST"></a><b>PATCH_INCOMPATIBLES_LIST&nbsp;</b></td>
+
+<td>This variable represents the list of patches that the patch being created
+is incompatible with. The value of this variable is used to specify <b>-i</b>
+option of buildpatch.</td>
+
+<td>Optional</td>
+
+<td>space separated string of patch numbers</td>
+</tr>
+
+<tr>
+<td><a NAME="BUILD_ONE_PATCH"></a><b>BUILD_ONE_PATCH</b></td>
+
+<td>This variable represents a boolean that indicates whether to build
+one patch containing fixes for two or more packages or one patch for each
+package. Valid values are <b>yes</b> and <b>no</b>. The default value is
+<b>no</b>.</td>
+
+<td>Optional</td>
+
+<td>string</td>
+</tr>
+
+<tr>
+<td><a NAME="PKG_CONTROL_DIR"></a><b><font color="#000000">PKG_CONTROL_DIR</font></b></td>
+
+<td>This variable represents the location of the control files (Utility
+directory). An utility directory contains either control files (pkginfo,
+prototype, deletes) or directories that contain control files. The names
+of these directories should match package names.</td>
+
+<td>Required</td>
+
+<td>valid path to a directory</td>
+</tr>
+
+<tr>
+<td><a NAME="TOSTAGE"></a><b><font color="#000000">TOSTAGE</font></b></td>
+
+<td>This variable represents the directory that contains the shippable
+files (proto area).</td>
+
+<td>Required</td>
+
+<td>valid path to a directory</td>
+</tr>
+
+<tr>
+<td><a NAME="PKG_OUTPUT_DIR"></a><b>PKG_OUTPUT_DIR</b></td>
+
+<td>This variable represents the directory where the patch is created.
+The value of this variable is used to specify <b>-d </b>option of buildpatch.</td>
+
+<td>Required</td>
+
+<td>valid path to a directory</td>
+</tr>
+
+<tr>
+<td><a NAME="PKG_TOOL_FLAGS"></a><b>PKG_TOOL_FLAGS</b></td>
+
+<td>This variable is used to specify extra options to buildpatch like <b>-w
+-v</b>.&nbsp;</td>
+
+<td>Required</td>
+
+<td>"\"option1 option2 ...\"". For example: option1 could be <b>-w</b>
+and option2 could be <b>-v</b></td>
+</tr>
+</table>
+
+<p><b>Notes:</b>
+<ol>
+<li>
+If more than one package is being patched, <b>-U </b>option to buildpatch
+will be used. Otherwise, the <b>-P </b>option will be used.</li>
+
+<li>
+If the makefile variable <b>BUILD_ONE_PATCH </b>is set to 'yes' then <b>-U</b>
+option is used.</li>
+
+<li>
+When more than one package is patched, it is assumed that an utility directory
+is created for each package under a directory and the name of each utility
+directory is same as the name of the package that is being patched.</li>
+
+<li>
+The makefile variable <b>PKG_CLASS</b> needs to be set to <i>sp</i>.</li>
+</ol>
+
+<h3>
+<a NAME="Package_all"></a>package_all Target</h3>
+The package_all target is run by issuing <i>mk package_all </i>inside a
+sandbox. It runs the <b>gather_all</b>, <b>parse_all</b> and <b>runpkgtool_all</b>
+targets in that order. Each target is responsible for a task. Each of these
+targets could be run separately. Here is the explanation of each target:
+<p><b>gather_all: </b>It runs the <b>instdep_all</b> target. This target
+populates the shiptree with the changed/modified files.
+<br><b>Note: </b>The shiptree can be populated with the modified files
+either by issuing <i>mk gather_all PKG_CLASS=sp</i> or
+<br><i>mk instdep_all </i>command.
+<p><b>parse_all:</b> This target creates the control files (<i>pkginfo</i>,
+<i>prototype</i>,
+<i>deletes</i>,
+<i>copyright</i>
+) using the information from the <b>CMF</b> and makefile variables (<a href="#PATCH_NAME">PATCH_NAME</a>,
+<a href="#PATCH_NEW_LINKS">PATCH_NEW_LINKS</a>,
+<a href="#PATCH_DELETED_FILES">PATCH_DELETED_FILES</a>).
+The CMF need not be modified to create a patch. It needs to be modified
+only when files are created or deleted. These control files will be used
+by the buildpatch to create a patch. This target can be run by issuing
+<i>mk
+parse_all PKG_CLASS=SP</i> command.
+<p><b>runpkgtool_all: </b>This target runs buildpatch command to create
+a patch using the information from makefile variables : <a href="#PATCH_NAME">PATCH_NAME</a>,
+<a href="#PKGTOOL_CONFIG_FILE">PKGTOOL_CONFIG_FILE</a>,
+<a href="#PATCH_FORMAT">PATCH_FORMAT</a>,
+<a href="#PATCH_OBSOLETES_LIST">PATCH_OBSOLETES_LIST</a>,
+<a href="#PATCH_REQUIRES_LIST">PATCH_REQUIRES_LIST</a>,
+<a href="#PATCH_INCOMPATIBLES_LIST">PATCH_INCOMPATIBLES_LIST</a>,
+<a href="#BUILD_ONE_PATCH">BUILD_ONE_PATCH</a>,
+<a href="#PKG_CONTROL_DIR">PKG_CONTROL_DIR</a>,
+<a href="#TOSTAGE">TOSTAGE</a>,
+<a href="#PKG_TOOL_FLAGS">PKG_TOOL_FLAGS</a>
+and <a href="#PKG_OUTPUT_DIR">PKG_OUTPUT_DIR</a>.
+<p><b>NOTE:</b> If packager needs to add package specific metafiles and/or
+patch metafiles that are not generated by ODE to appropriate directories,
+then i<i>nstdep_all, parse_all</i> and <i>runpkgtool_all</i> targets should
+be run separately, instead of running <i>package_all</i> target. These
+files should be created in appropriate directories after running parse_all
+and before running package_all target. Please refer to the Patch <a href="http://w3.ode.raleigh.ibm.com/dev/3.0/buildpatch_README.htm">Construction
+Checklist and Manual </a>document for more details on where different files
+should reside before running buildpatch to create a patch.
+<h2>
+<a NAME="Patching Scenarios"></a>Patching Scenarios</h2>
+
+<h3>
+Patching one package</h3>
+<b>Pre Conditions:</b>
+<ul>
+<li>
+backing build contains stable code of last release and the CMF is up to
+date</li>
+
+<li>
+buildpatch is installed and it is in the PATH</li>
+</ul>
+<b>Actions:</b>
+<ul>
+<li>
+A sandbox is created and it is backed against the backing build.</li>
+
+<li>
+Code is extracted from a version control system.</li>
+
+<li>
+Code is modified and compiled issuing the <i>mk</i> command. It is assumed
+that it will only compile changed files.</li>
+
+<li>
+If a new file is created, the CMF is checked out from the version control
+system in to the sandbox and modified by adding a file stanza for each
+new shippable file.</li>
+
+<li>
+If a new symbolic link needs to be added then <a href="#PATCH_NEW_LINKS">PATCH_NEW_LINKS</a>
+makefile variable is defined. The CMF is also modified by adding a file
+stanza for each new symbolic link.</li>
+
+<li>
+If files are deleted then <a href="#PATCH_DELETED_FILES">PATCH_DELETED_FILES</a>
+makefile variable is defined. The CMF is also modified by deleting a file
+stanza for each deleted shippable file.</li>
+
+<li>
+Modified CMF is checked into the version control system.</li>
+
+<li>
+The configuration file is created in a directory and all the necessary
+entries are added to it. <b>PKGTOOL_CONFIG_FILE</b> makefile variable is
+created and its value is set to the fully qualified path of configuration
+file.</li>
+
+<li>
+All the necessary makefile variables are defined. (i.e. <b>PATCH_NAME</b>,
+<b>TOSTAGE</b>,
+<b>PKG_CONTROL_DIR</b>, <b>PATCH_FORMAT</b>, <b>PATCH_OBSOLETES_LIST</b>,
+<b>PATCH_REQUIRES_LIST</b>,
+<b>PATCH_INCOMPATIBLES_LIST</b>, <b>PKG_TOOL_FLAGS</b>)</li>
+
+<li>
+<i>package_all target </i>is run</li>
+
+<ul>
+<li>
+<i>instdep_all</i> target is run, which will populate the shiptree with
+modified files</li>
+
+<li>
+<i>parse_all </i>target is run, which will create required controls files</li>
+
+<li>
+<i>runpkgtool_all </i>target<i> </i>is run which will invoke buildpatch
+to create the patch</li>
+</ul>
+</ul>
+<b>Post Conditions:</b>
+<ul>
+<li>
+A patch is created under the <b>PKG_OUTPUT_DIR</b> directory.</li>
+</ul>
+
+<h3>
+Patching more than one package</h3>
+<b>Pre Conditions:</b>
+<ul>
+<li>
+backing build contains stable code of last release and the CMF is up to
+date</li>
+
+<li>
+Source code pertaining to each package is under a sub directory of the
+src directory.</li>
+
+<li>
+buildpatch is installed and it is in the PATH</li>
+</ul>
+<b>Actions:</b>
+<ul>
+<li>
+A sandbox is created and it is backed against the backing build.</li>
+
+<li>
+Code is extracted from a version control system.</li>
+
+<li>
+Code is modified and compiled issuing the <i>mk</i> command. It is assumed
+that it will only compile changed files.</li>
+
+<li>
+If a new file is created, the CMF is checked out from the version control
+system in to the sandbox and modified by adding a file stanza for each
+new shippable file.</li>
+
+<li>
+If a new symbolic link needs to be added then <a href="#PATCH_NEW_LINKS">PATCH_NEW_LINKS</a>
+makefile variable is defined. The CMF is also modified by adding a file
+stanza for each new symbolic link.</li>
+
+<li>
+If files are deleted then <a href="#PATCH_DELETED_FILES">PATCH_DELETED_FILES</a>
+makefile variable is defined. The CMF is also modified by deleting a file
+stanza for each deleted shippable file.</li>
+
+<li>
+Modified CMF is checked into the version control system.</li>
+
+<li>
+The configuration file is created in a directory and all the necessary
+entries are added to it. <b>PKGTOOL_CONFIG_FILE </b>makefile variable is
+created and its value is set to the fully qualified path of configuration
+file.</li>
+
+<li>
+In the <b>src</b> directory:</li>
+
+<ul>
+<li>
+All the necessary patch related makefile variables are defined. (i.e. <b>PATCH_NAME</b>,
+<b>TOSTAGE</b>,
+<b>PKG_CONTROL_DIR</b>, <b>PATCH_FORMAT</b>, <b>PATCH_OBSOLETES_LIST</b>,
+<b>PATCH_REQUIRES_LIST</b>,
+<b>PATCH_INCOMPATIBLES_LIST</b>, <b>PKG_TOOL_FLAGS</b>)</li>
+
+<li>
+The makefile variable <b>CMFPARSE_SUBDIRS</b> is set to the directories
+that contain code related to different packages</li>
+
+<li>
+The makefile variable <b>RUNPKGTOOL</b> is defined</li>
+
+<li>
+The makefile variable <b>PARSE</b> is undefined</li>
+
+<li>
+The makefile variable <b>RUN_PKGTOOL_SUBDIRS</b> is undefined</li>
+</ul>
+
+<li>
+The makefile in each of the sub directory (that contains code for different
+packages) of the src directory defines/undefines the following makefile
+variables:</li>
+
+<ul>
+<li>
+<b>PKG_CONTROL_DIR</b>=${<b>PKG_CONTROL_DIR</b>}/&lt;Name of the Package>/</li>
+
+<li>
+<b>RUNPKGTOOL</b> is undefined</li>
+
+<li>
+<b>PARSE</b> is defined</li>
+</ul>
+
+<li>
+<i>package_all BUILD_ONE_PATCH=yes</i> is run</li>
+
+<ul>
+<li>
+<i>instdep_all</i> target is run, which will populate the shiptree with
+modified files</li>
+
+<li>
+<i>parse_all</i> target<i> </i>is run, which will create required controls
+files</li>
+
+<li>
+<i>runpkgtool_all </i>target<i> </i>is run which will invoke buildpatch
+to create the patch</li>
+</ul>
+</ul>
+<b>Post Conditions:</b>
+<ul>
+<li>
+A patch is created under the <b>PKG_OUTPUT_DIR</b> directory</li>
+</ul>
+
+<h3>
+Patching multiple fixes</h3>
+<b>Pre Conditions:</b>
+<ul>
+<li>
+backing build contains stable code of last release and the CMF is up to
+date</li>
+
+<li>
+buildpatch is installed and its location is specified in the user's PATH
+environment variable</li>
+</ul>
+<b>Actions:</b>
+<ol>
+<li>
+A sandbox&nbsp; is created and it is backed against the backing build.</li>
+
+<li>
+Code is extracted from a version control system.</li>
+
+<li>
+Code is modified and compiled issuing the <i>mk</i> command. It is assumed
+that it will only compile changed files.</li>
+
+<li>
+If a new file is created, the CMF is checked out from the version control
+system into the sandbox and modified by adding a file stanza for each new
+shippable file.</li>
+
+<li>
+If a new symbolic link needs to be added then the makefile variable <b>PATCH_NEW_LINKS</b>
+is defined. The CMF is also modified by adding a file stanza for each new
+symbolic link.</li>
+
+<li>
+If files are deleted then the makefile variable <b>PATCH_DELETED_FILES</b>
+is defined. The CMF is also modified by deleting a file stanza for each
+deleted shippable file.</li>
+
+<li>
+Modified CMF is checked into the version control system.</li>
+
+<li>
+<b>TOSTAGE</b> is set to the common shiptree. A common shiptree is a directory
+that contains code pertaining to different patches.</li>
+
+<li>
+<i>mk instdep_all</i> is run, this will populate the common shiptree</li>
+
+<li>
+Steps 1 - 8 are repeated for another patch</li>
+
+<li>
+Now we have two sandboxes that contain changes corresponding to the two
+patches. To create a patch that contains changes from previous two patches,
+create another sandbox back it against the backing build</li>
+
+<li>
+Define the makefile variable <b>PATCH_DELETED_FILES</b> and assign the
+appended value of <b>PATCH_DELETED_FILES</b> from previous two sandboxes</li>
+
+<li>
+<b>TOSTAGE</b> is set to the common shiptree</li>
+
+<li>
+CMF is checked out from the version control system.</li>
+
+<li>
+The configuration file is created in a directory and all the necessary
+entries are added to it. <b>PKGTOOL_CONFIG_FILE</b> makefile variable is
+created and its value is set to the fully qualified path of configuration
+file.</li>
+
+<li>
+All the necessary makefile variables are defined. (i.e. <b>PATCH_NAME</b>,
+<b>TOSTAGE</b>,
+<b>PKG_CONTROL_DIR</b>, <b>PATCH_FORMAT</b>, <b>PATCH_OBSOLETES_LIST</b>,
+<b>PATCH_REQUIRES_LIST</b>,
+<b>PATCH_INCOMPATIBLES_LIST</b>, <b>PKG_TOOL_FLAGS</b>)</li>
+
+<li>
+<i>mk parse_all PKG_CLASS=SP</i>&nbsp;<i> </i>is run, which will create
+required controls files</li>
+
+<li>
+<i>mk runpkgtool_all&nbsp; </i>is run which will invoke buildpatch to create
+the patch</li>
+</ol>
+<b>Post Conditions:</b>
+<ul>
+<li>
+A patch is created under the <b>PKG_OUTPUT_DIR</b> directory.</li>
+</ul>
+
+<h2>
+<a NAME="Limitations"></a>Limitations</h2>
+
+<ul>
+<li>
+Every time the <i>parse_all</i> target is run, the package control directory
+might have to be cleaned up before generating a new set of control files.
+This might be the case when you run <i>mk parse_all PKG_CLASS=SP</i> with
+the makefile variable <b>PATCH_DELETED_FILES</b> defined and then run <i>mk
+parse_all PKG_CLASS=SP</i> with the makefile variable <b>PATCH_DELETED_FILES</b>
+undefined.
+<i>deletes</i> file that is generated by first <i>mk parse_all
+PKG_CLASS=SP</i> command will remain in the utilities (mdata) directory
+even though it may not be required.</li>
+
+<li>
+Patch creation using ODE is supported on Solaris 7.0 or later versions
+only. Only direct instance patching is supported at this point.</li>
+</ul>
+
+<dl>
+<h2>
+<a NAME="See Also"></a>See Also</h2>
+
+<dl>&nbsp;
+<table BORDER WIDTH="100%" >
+<caption><TBODY>For more information about installing and removing patches</TBODY></caption>
+
+<tr>
+<td WIDTH="33%">
+<center><b>Solaris 2.6</b></center>
+</td>
+
+<td WIDTH="33%">
+<center><b>Solaris 7</b></center>
+</td>
+
+<td WIDTH="34%">
+<center><b>Solaris 8</b></center>
+</td>
+</tr>
+
+<tr>
+<td WIDTH="33%"><a href="http://docs.sun.com/db?q=packaging&p=/doc/802-5892">Application
+Packaging Developers Guide 2.6</a></td>
+
+<td WIDTH="33%"><a href="http://docs.sun.com/db?q=packaging&p=/doc/805-3908">Application
+Packaging Developers Guide 7</a></td>
+
+<td WIDTH="34%"><a href="http://docs.sun.com/db?q=packaging&p=/doc/805-6338">Application
+Packaging Developers Guide 8</a></td>
+</tr>
+
+<tr>
+<td WIDTH="33%"><a href="http://docs.sun.com/?p=/doc/802-5892/6i9kbjk8l&a=view">pkginfo(4)</a>
+man page</td>
+
+<td WIDTH="33%"><a href="http://docs.sun.com/?q=pkginfo&p=/doc/805-3908/6j3n9o38h&a=view">pkginfo(4)</a>
+man page</td>
+
+<td WIDTH="34%"><a href="http://docs.sun.com/?q=pkginfo&p=/doc/805-6338/6j5vn5q4i&a=view">pkginfo(4)</a>
+man page</td>
+</tr>
+</table>
+
+<p><a href="buildpatch_README.htm">Patch Construction Checklist &amp; Manual</a>
+<br><a href="buildSolarisPatch.ps">Building a Solaris Patch</a>
+<br>
+<hr WIDTH="100%">
+<br>Last Modified :&nbsp;<script language="Javascript">document.write( document.lastModified )</script>
+</dl>
+</dl>
+
+</body>
+</html>

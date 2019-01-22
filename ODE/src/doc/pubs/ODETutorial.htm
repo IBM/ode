@@ -1,0 +1,1576 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Steve Speicher">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>ODE Tutorial</title>
+</head>
+<body bgcolor="#FFFFFF">
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+ODE Tutorial</h1>
+Open Development Environment
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<center>
+<p>
+<hr SIZE=6></center>
+
+<h2>
+Contents</h2>
+
+<ul>
+<h3>
+<a href="#What is ODE">What is ODE?</a></h3>
+
+<h3>
+<a href="#About this Tutorial">About this tutorial</a></h3>
+
+<h3>
+<a href="#Basics">Basics</a></h3>
+</ul>
+
+<ul>
+<ul>
+<li>
+<a href="#Installing ODE and the Backing Build Example">Installing ODE
+and the backing build example</a></li>
+
+<li>
+<a href="#Building the Backing Build">Building the backing build</a></li>
+
+<li>
+<a href="#Verifying the Backing Build">Verifying the backing build</a></li>
+
+<li>
+<a href="#Making and Working on Sandboxes">Working with sandboxes</a></li>
+
+<li>
+<a href="#Retargeting Sandboxes">Retargeting sandboxes</a></li>
+
+<li>
+<a href="#Deleting Sandboxes">Deleting sandboxes</a></li>
+
+<li>
+<a href="#Building Java">Building Java</a></li>
+
+<li>
+<a href="#Building and Using MakeMake">Building and using MakeMake</a></li>
+</ul>
+
+<h3>
+<a href="#Advanced">Advanced</a></h3>
+
+<ul>
+<li>
+<a href="#Creating and Building Another Backing Build">Creating and building
+another backing build</a></li>
+
+<li>
+<a href="#User-Defined Rules">User-Defined rules</a></li>
+
+<li>
+<a href="#Dependency Generation">Dependency generation</a></li>
+
+<li>
+<a href="#Choosing Another Compiler">Choosing another C/C++ compiler</a></li>
+
+<li>
+<a href="#Adding Another Compiler">Adding another C/C++ compiler</a></li>
+
+<li>
+<a href="#Adding Another Target">Adding another target</a></li>
+
+<li>
+<a href="#Adding Another Pass">Adding another pass</a></li>
+
+<li>
+<a href="#Choosing Another Platform">Choosing another platform</a></li>
+
+<li>
+<a href="#Adding Another Platform">Adding another platform</a></li>
+</ul>
+</ul>
+
+<h2>
+
+<hr WIDTH="100%"><a NAME="What is ODE"></a>What is ODE?</h2>
+Open Development Environment (ODE) is a product that lets you simultaneously,
+yet independently, create code for various releases of a program.&nbsp;
+This process works in conjunction with established releases controlled
+by the release administrator without interfering with the established releases.&nbsp;
+Developers can perform builds, create packages (installable images), and
+test the function of their code against established program levels called
+backing builds.&nbsp; Release administrators can use ODE to create new
+backing builds and ultimately, new releases of code for completely different
+hardware environments.
+<p>ODE uses its own build command to compile source code into object code
+and link the object modules to create an executable program. The ODE build
+command is based on the <b>mk</b> command and a control file called makefile.
+Makefile contains the variables and specifies the include statements needed
+for the build. Backing builds and sandboxes support this building model.
+ODE uses the build command as a front-end to the mk process. Any options
+not recognized by build are automatically passed on to the mk command.
+<p>Once a build is done, one or more ODE passes can be used to create a
+package.&nbsp; More information about packaging can be found in the <i><a href="ODEPackagingReference.htm">ODE
+Packaging Reference</a></i>, as well as the<i> <a href="ODEPkgTutorial.htm">ODE
+Packaging Tutorial</a></i>.
+<p>The introductory chapters of the <i><a href="ODEAdminsGuide.htm">ODE
+Installation and Administration Guide</a></i> and the <i><a href="ODEConcepts.htm">ODE
+Concepts Document</a></i> provide more product information that will be
+helpful when following the tutorial steps.&nbsp; You will find several
+links in the tutorial to these two guides.&nbsp; See the <i><a href="index.htm">ODE
+Documentation Index</a> </i>for the complete set of ODE documentation.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="About this Tutorial"></a>About this tutorial</h2>
+The purpose of this tutorial is to take you through some of the steps necessary
+to use ODE.&nbsp; There is a <a href="#Basics">Basics</a> section which
+includes information on the Backing Build, Sandboxes, Building Java, and
+Building and Using MakeMake. There is an <a href="#Advanced">Advanced</a>
+section which includes information such as Creating and Building Another
+Backing Build, Rules, Dependencies, C/C++ Compilers, Targets, Passes, and
+Platforms.
+<p>Operating systems included in this tutorial are listed in the following
+table:
+<dl>&nbsp;
+<table BORDER CELLPADDING=3 WIDTH="75%" >
+<tr>
+<td WIDTH="24%"><b><font size=+0>Operating Systems</font></b>
+<br>(Click on the icon for more information.)</td>
+
+<td WIDTH="22%"><a NAME="Machine Name"></a><b><font size=+0>Machine Names</font></b></td>
+</tr>
+
+<tr>
+<td ROWSPAN="2" WIDTH="24%"><a href="http://www.sun.com/solaris/"><img SRC="solaris.gif" ALT="Solaris" BORDER=0 height=16 width=45></a></td>
+
+<td WIDTH="22%">sparc_solaris_2
+<br>sparc_solaris_7
+<br>sparc_solaris_8
+<br>sparc_solaris_9</td>
+</tr>
+
+<tr>
+<td>x86_solaris_2
+<br>x86_solaris_7
+<br>x86_solaris_8
+<br>x86_solaris_9</td>
+</tr>
+
+<tr>
+<td ROWSPAN="7" WIDTH="24%"><a href="http://www.linux.com/"><img SRC="linux.gif" ALT="Linux" BORDER=0 height=16 width=37></a></td>
+
+<td WIDTH="22%">x86_linux_2</td>
+</tr>
+
+<tr>
+<td>ppc_linux_2</td>
+</tr>
+
+<tr>
+<td>sparc_linux_2</td>
+</tr>
+
+<tr>
+<td>s390_linux_2</td>
+</tr>
+
+<tr>
+<td>ia64_linux_2</td>
+</tr>
+
+<tr>
+<td>alpha_linux_2</td>
+</tr>
+
+<tr>
+<td>zseries_linux_2</td>
+</tr>
+
+<tr>
+<td WIDTH="24%"><a href="http://docs.hp.com/hpux/os/10.x/index.html"><img SRC="hpux.gif" ALT="HP-UX" BORDER=0 height=16 width=39></a></td>
+
+<td WIDTH="22%">hp9000_ux_10
+<br>hp9000_ux_11</td>
+</tr>
+
+<tr>
+<td><a href="http://www.sgi.com/software/irix6.5/"><img SRC="irix.gif" ALT="IRIX" BORDER=0 height=16 width=27></a></td>
+
+<td>mips_irix_6</td>
+</tr>
+
+<tr>
+<td><a href="http://www.tru64unix.compaq.com/"><img SRC="tru64.gif" ALT="Tru64" BORDER=0 height=16 width=39></a></td>
+
+<td>alpha_tru64_5</td>
+</tr>
+
+<tr>
+<td WIDTH="24%"><a href="http://www-4.ibm.com/software/os/warp/index.html"><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31></a></td>
+
+<td WIDTH="22%">x86_os2_4</td>
+</tr>
+
+<tr>
+<td><a href="http://www.as400.ibm.com/"><img SRC="os400.gif" ALT="OS/400" BORDER=0 height=16 width=43></a></td>
+
+<td>as400_os400_4</td>
+</tr>
+
+<tr>
+<td ROWSPAN="2" WIDTH="24%"><a href="http://www.ibm.com/servers/aix/"><img SRC="aix.gif" ALT="AIX" BORDER=0 height=16 width=25></a></td>
+
+<td WIDTH="22%">rios_aix_4</td>
+</tr>
+
+<tr>
+<td>rios_aix_5</td>
+</tr>
+
+<tr>
+<td WIDTH="24%"><a href="http://www.s390.ibm.com/oe/"><img SRC="mvsuss.gif" ALT="MVS/USS" BORDER=0 height=16 width=56></a></td>
+
+<td WIDTH="22%">mvs390_oe_2</td>
+</tr>
+
+<tr>
+<td ROWSPAN="2" WIDTH="24%"><a href="http://www.microsoft.com/windows/"><img SRC="windows.gif" ALT="Windows" BORDER=0 height=16 width=58></a></td>
+
+<td WIDTH="22%">x86_95_4</td>
+</tr>
+
+<tr>
+<td WIDTH="22%">x86_nt_4
+<br>x86_nt_5</td>
+</tr>
+</table>
+
+<p>The above operating system labels are used throughout this document
+to identify platform-specific behaviors.&nbsp;<img SRC="windows.gif" ALT="Windows" height=16 width=58>
+refers to Windows 95/98/NT/2000 unless specified otherwise.&nbsp;<img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+is used to represent all operating systems <i>except</i> Windows 95/98/NT/2000
+and OS/2. There are a number of simple examples in this document where
+the only difference between UNIX and&nbsp; Windows or OS/2 would be the
+type of slash used in a file path. Sometimes only one of the two cases
+is shown, often without indication of the platform it is for. Also be aware
+that ODE commands can take filepaths with forward slashes even though the
+platform is OS/2 or Windows.</dl>
+<i><a href="#Machine Name">Machine name</a></i> is used as a variable in
+many places in this document. The appropriate machine name(s) from this
+list should be substituted for the variable.
+<p>See the <i><a href="ODEAdminsGuide.htm">ODE Installation and Administration
+Guide</a></i> for more information on operating systems and current requirements.
+<br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Basics"></a>Basics</h2>
+This section includes information on basic ODE tasks such as installing
+ODE and installing, building, and verifying the backing build. Also included
+is information on working with sandboxes, Java, and MakeMake.
+<p>
+<hr WIDTH="100%">
+<h3>
+<a NAME="Installing ODE and the Backing Build Example"></a>Installing ODE
+and the backing build example</h3>
+This section tells you how to install the backing build example.&nbsp;
+Make sure you have already downloaded the appropriate ODE bbexample and
+rules archives (see below) and installed the ODE tools; see the <a href="ODEAdminsGuide.htm#Obtaining_ODE">ODE
+Installation and Administration Guide</a> for more details on obtaining
+these files.
+<p>The bbexample archive filename is <b>%release_name%_b<i>num</i>_bbexample.zip
+</b>(or
+<b>%release_name%_b<i>num</i>_bbexample_ebcdic.zip</b>
+file for MVS/USS).&nbsp; The rules archive filename is <b>%release_name%_b<i>num</i>_rules.zip
+</b>(or
+<b>%release_name%_b<i>num</i>_rules_ebcdic.zip</b>
+file for MVS/USS).&nbsp; In all cases, <i>num</i> refers to the current
+build number.
+<p><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>
+This tutorial assumes that the <b>%release_name%_b<i>num</i>_bbexample.zip</b>
+and <b>%release_name%_b<i>num</i>_rules.zip</b> files have been saved in
+<b>c:\</b>
+and that <b>c:\</b> is where all of the work will take place.
+<p><img SRC="unix.gif" ALT="UNIX" height=16 width=31> This tutorial assumes
+that the
+<b>%release_name%_b<i>num</i>_bbexample.zip</b> and <b>%release_name%_b<i>num</i>_rules.zip
+</b>files
+have been saved in /<b>home</b>/<b><i>username</i></b> and that is where
+all of the work will take place.
+<ul>&nbsp;1.<img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>
+From a CMD Window, go to the directory where the<b> %release_name%_b<i>num</i>_bbexample.zip</b>
+file was saved and create a backing build. The command to build a backing
+build base is <b><a href="ODEBuildReference.htm#HDRMKBB">mkbb</a></b>.(
+<b>mkbb</b>
+creates the structure, it does not populate.) In this example
+<b>bbexample/.sandboxrc</b>
+is a resource or rc file.
+<ul><b>mkbb -rc bbexample\.sandboxrc -dir c:\ -m <i><a href="#Machine Name">machine
+name</a></i> bbexample</b></ul>
+This command will create a directory <b>bbexample</b>, with several subdirectories
+such as <b>src</b>, <b>obj</b>, and <b>export</b> under the <b>c:\</b>
+directory..
+<p><img SRC="unix.gif" ALT="UNIX" height=16 width=31> From a CMD Window,
+go to the directory where the <b>%release_name%_b<i>num</i>_bbexample.zip</b>
+file was saved and create a backing build. The command to build a backing
+build base is <b><a href="ODEBuildReference.htm#HDRMKBB">mkbb</a></b>.
+( <b>mkbb</b> creates the structure, it does not populate it with source
+files.) In this example, a resource, or rc file (bbexample/.sandboxrc),
+the location of the backing build (".", or the current directory), the
+platforms for this backing build, and the backing build name (bbexample)
+are all specified.
+<ul><b><nobr>mkbb -rc bbexample/.sandboxrc -dir . -m <i><a href="#Machine Name">machine
+name</a></i> bbexample</nobr></b></ul>
+This command will create a directory <b>bbexample</b>, with several subdirectories
+such as <b>src</b>, <b>obj</b>, and <b>export</b> under the /<b>home</b>/<b><i>username</i></b>
+directory.
+<p>2.&nbsp; Extract the example backing build source into the new backing
+build <b>bbexample</b> by "unjaring" the <b>%release_name%_b<i>num</i>_bbexample.zip</b>
+file or by using an unzip utility.
+<ul><b>jar -xvf %release_name%_b<i>num</i>_bbexample.zip</b></ul>
+
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">In most real-world projects a backing build would be populated
+with source code by extracting the source from a version control system
+such as CMVC.</td>
+</tr>
+</table>
+</ul>
+
+<ul>3.&nbsp; Change to the <b>bbexample/src</b> directory, copy or move
+the <b>%release_name%_b<i>num</i>_rules.zip</b> archive there, and then
+extract the archive:
+<ul><b>cd bbexample\src</b>
+<br><b>copy c:\%release_name%_b<i>num</i>_rules.zip .</b>
+<br><b>jar -xvf %release_name%_b<i>num</i>_rules.zip</b></ul>
+4.&nbsp;<img SRC="windows.gif" ALT="Windows" height=16 width=58> From a
+CMD Window, go to the bbexample\inst.images\<i>PLATFORM</i>\mdata directory
+(where <i>PLATFORM</i> is either x86_nt_4 or x86_95_4), and "unjar" the
+<b>OdeHello.zip</b>
+file using the command:
+<ul><b>jar -xvf OdeHello.zip</b></ul>
+
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">In this tutorial any references to "x86_nt_4" should be
+appropriately substituted with "x86_95_4" if Windows 95 or Windows 98 is
+the current platform .&nbsp;</td>
+</tr>
+</table>
+</ul>
+
+<hr WIDTH="100%">
+<h3>
+<a NAME="Building the Backing Build"></a>Building the backing build</h3>
+Building a backing build consists of copying header files into a predefined
+<b>include</b>
+directory, building and exporting libraries, and finally compiling all
+programs.
+<p><img SRC="windows.gif" ALT="Windows" height=16 width=58> In this WindowsNT
+example (other executables would use a different <i><a href="#Machine Name">machine
+name</a></i>),
+<b>inc\server.h</b> is copied to the <b>export</b> directory.
+The library, lib\exa.lib<b>,
+</b>is built and copied from the <b>obj</b>
+directory to the <b>export</b> directory,
+<b>obj\x86_nt_4\bin\server\server.exe</b>
+as well as several other executables are located in the <b>obj\x86_nt_4\bin</b>
+directory.&nbsp; From the root of the source directory, for example, <b>c:\bbexample\src</b>,
+you can execute the following command to build a backing build:
+<br><b>build -rc ..\.sandboxrc</b>
+<p>You may get a message stating that the environment variable <b><i>USER</i></b>
+needs to be defined.&nbsp; Define it, then continue.&nbsp; If you still
+receive error messages, check the compiler family. ODE does not detect
+the compiler family or version that is installed on your system.&nbsp;
+If the defaults do not match what is installed, you must set the <i>CCFAMILY</i>,
+<i>CCTYPE,</i>
+and <i>CCVERSION</i> variables as described in the section
+<a href="#Choosing Another Compiler">Choosing
+Another C/C++ Compiler</a>.
+<p>The <a href="ODEBuildReference.htm#HDRBUILD">build</a> command builds
+the default target, which is <b>build_all</b>. The <b>build_all</b> target
+then triggers the targets <b>export_all</b> and <b>comp_all</b>, which
+first does the export then does the compilation of programs.&nbsp; You
+can run the export target by itself to do the export only by using the
+command:
+<br><b>build -rc ..\.sandboxrc export_all</b>
+<br>&nbsp;
+<p>
+<hr WIDTH="100%">
+<h3>
+<a NAME="Verifying the Backing Build"></a>Verifying the backing build</h3>
+You can verify that the example program has built successfully by executing
+it. <b>server.exe</b> is one executable that was created by the previous
+build. To execute the backing build enter:
+<p><img SRC="windows.gif" ALT="Windows" height=16 width=58> (Other executables
+would use different
+<i><a href="#Machine Name">machine name</a></i>s.):
+<b>c:\bbexample\obj\x86_nt_4\bin\server\server.exe</b>
+<p>Expected output:
+<ul><font face="Courier New, Courier, mono">Example for simple ODE backing
+build.</font></ul>
+
+<hr WIDTH="100%">
+<h3>
+<a NAME="Making and Working on Sandboxes"></a>Working with sandboxes</h3>
+A sandbox is a user build environment comprised of a set of files "backed"
+by a backing build or another sandbox. A sandbox allows a developer to
+modify source and rebuild programs without affecting other developers.&nbsp;
+Commands are provided for accessing and building a sandbox. This section
+demonstrates how to create a sandbox, work on a sandbox, copy source files
+into the sandbox, create a local build, build changes made to the source
+file, use the gather pass to copy installable images, verify your new program
+and exit.
+<h4>
+Creating a sandbox.</h4>
+In this example you will create a sandbox named <b>sb1.</b>
+<ol>
+<li>
+To create a sandbox using the make sandbox command <b>mksb,</b> enter:</li>
+
+<ul><b>mksb sb1</b></ul>
+
+<li>
+By default mksb will write sandbox information to the resource file (".sandboxrc")
+in the directory specified by the environment variable <i>HOME</i>, or
+a combination of the environment variables <i>HOMEDRIVE</i> and <i>HOMEPATH</i>.
+If this .sandboxrc file does not exist, <b>mksb</b> will create it.</li>
+
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>
+<ul>
+<li>
+It is assumed in this example that the <i>HOME</i> variable is assigned
+to <b>c:</b>\</li>
+
+<li>
+If there is no .<b>sandboxc</b> file, then mksb will print:</li>
+
+<ul>
+<li>
+User rc file, <b>c:\.sandboxrc</b>, does not exist; will create it.</li>
+</ul>
+</ul>
+<img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+<ul>
+<li>
+It is assumed in this example that the <i>HOME</i> variable is assigned
+to /home/username</li>
+
+<li>
+If there is no .<b>sandboxc</b> file, then mksb will print:</li>
+
+<ul>
+<li>
+User rc file,<b> /home/username.sandboxrc</b>, does not exist; will create
+it.</li>
+</ul>
+</ul>
+</ul>
+
+<li>
+You are prompted for the full directory path for the location of the sandbox.
+Enter the top level directory that the sandbox will reside in (<b>c:\</b>
+in this example).</li>
+
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>
+<ul>Enter full path to the sandbox base:<b> c:\</b></ul>
+<img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+<ul>Enter full path to the sandbox base:<b> /home/username</b></ul>
+</ul>
+
+<li>
+You are prompted for the full path to a backing build.&nbsp; Use the backing
+build configured and built in this tutorial.</li>
+
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>
+<ul>Enter full path to backing build: <b>c:\bbexample</b></ul>
+<img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+<ul>Enter full path to backing build: <b>/home/username/bbexample</b></ul>
+</ul>
+
+<li>
+The available platforms are the ones with which the backing build was created.
+If you are given a list of platforms, enter the desired platform indicators,
+separating all platforms with a colon (:).</li>
+
+<ul>Enter colon-separated list of machines from the list, press [enter]
+for all. For example,
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><b>x86_nt_4:x86_95_4:x86_os2_4</b>
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31><b>rios_aix_4:hp9000_ux_10:x86_linux_2:sparc_solaris_2:mvs390_oe_2</b></ul>
+</ul>
+
+<p><br>Expected output:
+<ul><font face="Courier New, Courier, mono">Creating sandbox..</font></ul>
+After the <a href="ODEBuildReference.htm#HDRMKSB">mksb</a><b> </b>command
+has completed you will have a directory,&nbsp;<img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><b>c:\sb1</b>
+or&nbsp;<img SRC="unix.gif" ALT="UNIX" height=16 width=31><b>/home/username/sb1
+</b>with
+all the appropriate subdirectories.&nbsp; You can verify this by examining
+the <b>rc_files</b>, <b>obj</b> and other subdirectories. There will also
+be a file called <b>sb.conf</b> in the <b>rc_files</b> directory, which
+establishes some settings for the sandbox.</ol>
+
+<h4>
+Working on a sandbox</h4>
+Working on a sandbox sets the appropriate environment variables for ODE
+commands in a new shell to operate on the sandbox.&nbsp; To work on the
+sandbox you have created, enter:
+<br><b>workon sb1</b>
+<p>Expected output:
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58>
+<br><font face="Courier New, Courier, mono">Changing directory to: c:\sb1\src</font>
+<br><font face="Courier New, Courier, mono">Spawning new shell (CMD.EXE)</font>
+<br><font face="Courier New, Courier, mono">Microsoft(R) Windows NT(TM)</font>
+<br><font face="Courier New, Courier, mono">(C) Copyright 1985-1996 Microsoft
+Corp.</font></ul>
+
+<ul><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>
+<br><font face="Courier New, Courier, mono">Changing directory to: c:\sb1\src</font>
+<br><font face="Courier New, Courier, mono">Spawning new shell (c:\CMD\OS2.EXE)...</font>
+<br><font face="Courier New, Courier, mono">OS/2 Command Interpreter version
+4</font></ul>
+
+<ul><img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+<br><font face="Courier New, Courier, mono">Changing directory to: /home/username/sb1/src</font>
+<br><font face="Courier New, Courier, mono">Spawning new shell (/bin/ksh)...</font></ul>
+<a href="ODEBuildReference.htm#HDRWORKON">Workon</a> will automatically
+change to the <b>src</b> directory of the sandbox being worked on. Use
+<b>exit</b>
+to stop working on the sandbox.
+<h4>
+Copying source files into the sandbox</h4>
+Originally, a sandbox is empty and contains no source files. In order to
+modify and compile source files in a sandbox, they must be copied into
+the sandbox. Typically, this is done by using the <b>mklinks</b> command,
+which copies a specified file or directory from the <b>src</b> directory
+of the backing build to the src directory of the specified sandbox. When
+in a <b>workon</b> session, the default sandbox is the current sandbox
+that is being "worked" on. To copy the source file <b>server.h</b> into
+your sandbox, enter:
+<br><b>mklinks -auto -copy inc\server.h</b>
+<p><b><a href="ODEBuildReference.htm#HDRMKLINKS">mklinks</a></b> will create
+any necessary paths to store the file, <b>inc</b> in this case, and then
+copy the file itself.
+<h4>
+Creating local builds</h4>
+To see how a sandbox environment can be used to create local builds, modify
+the <b>inc\server.h </b>file that was just copied into the sandbox.
+<p>Change:
+<ul><b>#define DEFAULTMSG "Example file for simple ODE backing build."</b>
+<p>to:</ul>
+
+<ul><b>#define DEFAULTMSG "Example file for simple ODE sandbox."</b></ul>
+
+<h4>
+Building changes made to the source file</h4>
+To build the changes made to the source file, the command <b><a href="ODEBuildReference.htm#HDRMK">mk</a></b>
+is run. <b>mk</b> will initially search for all of the necessary source
+files in the sandbox. If the required source files do not exist in the
+sandbox, they are accessed from the backing build. New executables and
+object files are then generated in the sandbox <b>obj</b> directory. In
+this example, the only file resident locally in the sandbox is <b>server.h</b>,
+so all other source files that include server.h will be obtained from the
+backing build.
+<br>To build the changes made to the source files, mk must now be run.
+<p><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>From
+the directory <b>c:\sb1\src</b>, enter: <b>mk</b>
+<p><img SRC="unix.gif" ALT="UNIX" height=16 width=31>From the directory
+<b>/home/username/sb1/src</b>,
+enter:
+<b>mk</b>
+<p>A new <b>server</b> executable program will be generated since it includes
+the now-modified <b>server.h</b> and is now considered out of date.
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%"><a href="#Dependency Generation">Dependency information</a>
+is generated by <b>mk</b> using either the compiler dependency-generation
+tool, or the <b><a href="ODEBuildReference.htm#HDRGENDEP">gendep</a></b>
+tool. This output is reformatted by <b><a href="ODEBuildReference.htm#HDRMKDEP">mkdep</a></b>
+to a format that is then included into a makefile. All platforms provided
+with this example will by default generate dependencies, and the tool that
+is used is determined by the default rules specified in the ODE-supplied
+rules files.&nbsp;</td>
+</tr>
+</table>
+
+<br>&nbsp;
+<h4>
+Using the gather pass to copy installable images</h4>
+The gather pass will copy all of the installable images to a specified
+directory, usually the <b>inst.images</b> directory. The location to install
+to is specified by the environment variable <b>TOSTAGE</b>, as well as
+the variable <b>IDIR</b> in individual makefiles, which dictates where
+to install certain programs under the <b>TOSTAGE</b> directory.
+<p><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><b>TOSTAGE</b>
+is set by the makefiles to <b>c:\sb1\inst.images\<i><a href="#Machine Name">machine
+name</a></i>\mdata\OdeHello</b>, and <b>IDIR</b> for <b>server.exe</b>
+is set to <b>usr\lpp\odehello\bin</b>. To gather the new
+<b>server.exe</b>
+program in sandbox <b>sb1</b>'s <b>inst.images</b> directory, from <b>c:\sb1\src</b>
+enter:
+<br><b>mk gather_all</b>
+<p><img SRC="unix.gif" ALT="UNIX" height=16 width=31><b>TOSTAGE</b> is
+set by the makefiles to <b>home/<i>username</i>/sb1/inst.images/<i><a href="#Machine Name">machine
+name</a></i>/shipdata/opt/odehello/bin/server</b>, and <b>IDIR</b> for
+<b>server</b>
+is set to <b>usr/lpp/odehello/bin</b>. To gather the new
+<b>server</b>
+program in sandbox <b>sb1</b>'s <b>inst.images</b> directory, from <b>home/<i>username</i>/sb1/src</b>
+enter:
+<br><b>mk gather_all</b>
+<h4>
+Verifying your new server program</h4>
+To verify your new <b>server</b> program enter:
+<p><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><b>c:\sb1\inst.images\<i><a href="#Machine Name">machine
+name</a></i>\mdata\OdeHello\usr\lpp\odehello\bin\server.exe</b>
+<p><img SRC="unix.gif" ALT="UNIX" height=16 width=31><b>home</b>/<b><i>username</i>/sb1/inst.images/<i><a href="#Machine Name">machine
+name</a></i>/shipdata/usr/lpp/bpshello/bin/server</b>
+<p>The <b>server</b> program should output "Example for simple ODE sandbox."
+<p>To exit the <b>workon</b> shell enter:
+<p><b>exit</b>
+<br>
+<hr WIDTH="100%">
+<h3>
+<a NAME="Retargeting Sandboxes"></a><b>Retargeting sandboxes</b></h3>
+This section shows you how to create another sandbox and how to retarget
+the sandbox to another build.&nbsp;&nbsp; Creating multiple sandboxes is
+often done to fix and test different code defects.&nbsp; Retargeting is
+valuable to change the backing build of a sandbox to a new backing build.
+A sandbox can be backed by either a backing build or another sandbox.
+<h4>
+Creating another sandbox</h4>
+In this example you will create another sandbox named <b>sb2</b> for retargeting
+the build.
+<ol>
+<li>
+To create another sandbox using the make sandbox command mksb<b>,</b> enter:</li>
+
+<ul><b>mksb sb2</b></ul>
+
+<li>
+You are prompted for the full path to a backing build.</li>
+
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>Enter
+full path to backing build: <b>c:\bbexample</b></ul>
+
+<ul><img SRC="unix.gif" ALT="UNIX" height=16 width=31>Enter full path to
+backing build:
+<b>/home/<i>username</i>/bbexample</b>
+<p>Expected output:
+<ul><font face="Courier New, Courier, mono">Creating sandbox...</font></ul>
+</ul>
+
+<li>
+You can verify that the sandbox is created by viewing the directory<b>
+c:\sb2</b> or <b>/home/<i>username</i>/sb2 </b>and all of its subdirectories.&nbsp;
+The difference between this creation of a sandbox and the first is that
+less information is required to be entered. <b>mksb</b> stores default
+values for sandbox location and platforms in the <b>c:\.sandboxrc</b> or
+<b>/home/<i>username</i>/.sandboxrc</b>
+file and uses this information on all subsequent invocations.</li>
+
+<li>
+To work on the new sandbox, enter:</li>
+
+<ul><b>workon sb2</b>
+<p>Expected output:
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58>
+<br><font face="Courier New, Courier, mono">Changing directory to: c:\sb2\src</font>
+<br><font face="Courier New, Courier, mono">Spawning new shell (CMD.EXE)...</font>
+<br><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>
+<br><font face="Courier New, Courier, mono">Changing directory to: c:\sb1\src</font>
+<br><font face="Courier New, Courier, mono">Spawning new shell (c:\OS2\CMD.EXE)...</font>
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+<br><font face="Courier New, Courier, mono">Changing directory to: /home/<i>username</i>/sb2/src</font>
+<br><font face="Courier New, Courier, mono">Spawning new shell (/bin/ksh)...</font></ul>
+</ul>
+
+<li>
+The command <b>currentsb</b> can be used to determine information about
+a sandbox. To find out what build the current sandbox is backed by, enter:</li>
+
+<ul><b>currentsb -back</b>
+<p>Expected output:
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><font face="Courier New, Courier, mono">c:\bbexample</font>
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31><font face="Courier New, Courier, mono">/home/<i>username</i>/bbexample</font></ul>
+</ul>
+
+<li>
+<a href="ODEBuildReference.htm#HDRCURRSB">Click here</a> for more details
+on the <b>currentsb</b> command.</li>
+
+<li>
+Now that the sandbox <b>sb2</b> has been created you will retarget this
+sandbox to be backed by sandbox <b>sb1</b> using the command<b> resb</b>,
+enter:</li>
+
+<ul>
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><b>resb
+c:\sb1</b>
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31><b>resb /home/<i>username</i>/sb1</b></ul>
+</ul>
+
+<li>
+<a href="ODEBuildReference.htm#HDRRESB">Click here</a> for more details
+on the <b>resb</b> command.</li>
+
+<li>
+Exit the current workon session since environment variables established
+by workon may now be invalid since <b>sb2</b> is no longer backed by the
+backing build <b>bbexample</b>, but is now backed by the sandbox <b>sb1</b>.</li>
+
+<ul><b>exit</b></ul>
+
+<li>
+Work on sandbox <b>sb2</b> again:</li>
+
+<ul><b>workon sb2</b>
+<p>Expected output:
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58>
+<br><font face="Courier New, Courier, mono">Changing directory to: c:\sb2\src</font>
+<br><font face="Courier New, Courier, mono">Spawning new shell (CMD.EXE)...</font>
+<br><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>
+<br><font face="Courier New, Courier, mono">Changing directory to: c:\sb1\src</font>
+<br><font face="Courier New, Courier, mono">Spawning new shell (c:\OS2\CMD.EXE)...</font>
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+<br><font face="Courier New, Courier, mono">Changing directory to: /home/<i>username</i>/sb2/src</font>
+<br><font face="Courier New, Courier, mono">Spawning new shell (/bin/ksh)...</font></ul>
+</ul>
+
+<li>
+Verify that the current sandbox <b>sb2</b> is now backed by the sandbox
+<b>sb1,
+</b>enter:</li>
+
+<ul><b>currentsb -chain</b>
+<p>Expected output:
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>
+<br><font face="Courier New, Courier, mono">c:\sb2</font>
+<br><font face="Courier New, Courier, mono">c:\sb1</font>
+<br><font face="Courier New, Courier, mono">c:\bbexample</font>
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+<br><font face="Courier New, Courier, mono">/home/<i>username</i>/sb2</font>
+<br><font face="Courier New, Courier, mono">/home/<i>username</i>/sb1</font>
+<br><font face="Courier New, Courier, mono">/home/<i>username</i>/bbexample</font></ul>
+</ul>
+
+<li>
+To exit the <b>workon</b> shell enter:</li>
+
+<ul><b>exit</b></ul>
+</ol>
+
+<hr WIDTH="100%">
+<h3>
+<a NAME="Deleting Sandboxes"></a><b>Deleting sandboxes</b></h3>
+Once work is complete in a sandbox it is often desirable to remove a sandbox
+and all of its contents. This section shows you how to delete a sandbox.
+<ol>
+<li>
+Removing a sandbox is accomplished by using the <b>mksb -undo</b> command.
+This will remove any entries in the <b>.sandboxrc</b> file referring to
+the sandbox, as well as delete the sandbox sub directory and all its contents.
+To remove sandbox <b>sb2</b>, from the <b>c:\</b> or <b>/home/<i>username
+</i></b>directory,
+enter:</li>
+
+<ul><b>mksb -undo sb2</b>
+<br>When prompted, answer "y".</ul>
+
+<ul><b>Delete sandbox &lt;sb2>? {y/[n]}: y</b>
+<p>Expected output:
+<br><font face="Courier New, Courier, mono">None</font></ul>
+
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">If you intend to complete the Advanced section of the Tutorial,
+stop here and do NOT continue with the remaining steps 2 and 3. Sandbox
+<b>sb1</b>
+will be used in the remaining sections of the Tutorial.&nbsp;</td>
+</tr>
+</table>
+
+<li>
+Similarly, remove sandbox <b>sb1</b>.</li>
+
+<ul><b>mksb -undo sb1</b>
+<br><b>&nbsp;</b>When prompted, answer "y".</ul>
+
+<ul><b>Delete sandbox &lt;sb1>? {y/[n]}: y</b>
+<p>Expected output:
+<br><font face="Courier New, Courier, mono">None</font></ul>
+
+<li>
+Remove the old <b>.sandboxrc </b>file to remove all the defaults set by
+this tutorial.</li>
+
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><b>del
+c:\.sandboxrc</b>
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31><b>rm /home/<i>username</i>/.sandboxrc</b></ul>
+
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">If no other sandboxes existed in the file <b>.sandboxrc</b>,
+removal of the last sandbox in the file would automatically cause the file
+to be deleted. Therefore, Step 3 would not be necessary if <b>sb1</b> and
+<b>sb2</b>
+were the only sandboxes in <b>.sandboxrc</b> and both had been deleted.&nbsp;</td>
+</tr>
+</table>
+</ol>
+
+<hr width="100%">
+<h3>
+<a NAME="Building Java"></a>Building Java</h3>
+There is little difference between building C/C++ objects and building
+Java objects, except that the variable names controlling the Java processes
+are unique.&nbsp; For details on all of the Java-related variables, an
+example makefile, and other details, consult the Java section in the <i><a href="ODECommonMakefiles.htm#JavaRules">ODE
+Common Makefiles</a></i> document.&nbsp;
+<hr WIDTH="100%">
+<h3>
+<a NAME="Building and Using MakeMake"></a>Building and using MakeMake</h3>
+A makefile is a file used by the mk command to specify target and dependencies
+as well as actions to perform to create the target. MakeMake provides ODE
+users with a way to auto-generate basic ODE makefiles for a project. One
+of the major challenges for new ODE users is creating local makefiles,
+since these particular makefiles typically only contain variable assignments
+and therefore require some knowledge of the various ODE variables. MakeMake
+is <i>not</i> a makefile maintenance tool; it is a makefile creation tool
+and it does not read or edit existing makefiles, nor does it debug makefile
+problems. It is designed to get users up and running faster with ODE makefiles,
+so that they are able to see what sort of content these files should contain.
+<p>For more information on building and using MakeMake, see the <i><a href="ODEMakeMake.htm">ODE
+MakeMake</a></i> document.
+<br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Advanced"></a>Advanced</h2>
+Developers who use ODE for sandbox development only and don't have the
+need to learn the following advanced topics may stop here. Included in
+this section is information on creating and building another backing build,
+user-defined rules, dependency generation, C/C++ compiler, adding another
+target, adding another pass, and choosing and adding another platform.&nbsp;
+<hr WIDTH="100%">
+<h3>
+<a NAME="Creating and Building Another Backing Build"></a><b>Creating and
+building another backing build</b></h3>
+This section shows you how to take the modifications of source completed
+in a sandbox and create a new backing build containing the newer source
+files.
+<ol>
+<li>
+First you need to create the directory backing build "shell."&nbsp; An
+easy way to create a new backing build is to use the <b>mkbb</b> command.
+Go to the directory where bbexample is located (<b>c:\</b> or <b>/home/<i>username</i></b>)
+and run the following command.</li>
+
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><b>
+mkbb -rc bb1\.sandboxrc -dir . -m <i><a href="#Machine Name">machine name
+</a></i>bb1</b></ul>
+
+<ul><img SRC="unix.gif" ALT="UNIX" height=16 width=31><b>mkbb -rc bb1/.sandboxrc
+-dir . -m <i><a href="#Machine Name">machine name</a></i> bb1</b></ul>
+
+<li>
+Next, copy in the source files. First, copy the source from the backing
+build <b>bbexample</b>, which will provide a complete set of original source.
+Second, copy the source files from the sandbox <b>sb1</b>, which will override
+the source from the backing build with newer source from the sandbox, where
+applicable. This assumes that a sandbox <b>sb1</b> exists similar to the
+one created previously. If it has been deleted, it may be recreated by
+following the steps outlined in <a href="#Making and Working on Sandboxes">Working
+with Sandboxes</a>.</li>
+
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><b>cd
+c:\bb1\src</b>
+<br><b>xcopy /s c:\bbexample\src .</b>
+<br><b>xcopy /s c:\sb1\src .</b>
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31><b>cd /home/<i>username</i>/bb1/src</b>
+<br><b>cp -r /home/<i>username</i>/bbexample/src/* .</b>
+<br><b>cp -r /home/<i>username</i>/sb1/src/* .</b></ul>
+
+<li>
+Finally build the new backing build with the newer versions of source code.</li>
+
+<ul><b>build -rc ../.sandboxrc</b></ul>
+</ol>
+
+<hr width="100%">
+<h3>
+<a NAME="User-Defined Rules"></a>User-Defined rules</h3>
+This section describes how to override and/or enhance rules established
+in the ODE rules files. The files in <b>src\rules_mk</b> establish all
+of the rules that ODE incorporates. However, if it is intended to override
+one of the rules or variable settings specified in these files, it can
+be accomplished by creating user-defined rules files <b>myproj.rules.mk</b>
+and (sometimes) <b>myproj.passes.mk</b>.
+<ol>
+<li>
+In the <b>src/Makeconf</b> file, a variable <b><i>PROJECT_NAME</i></b>
+is defined to be <b>myproj</b>. This variable can be specified by editing
+<b>Makeconf</b>
+and modifying the value of <b><i>PROJECT_NAME</i></b>. Assume for this
+example that</li>
+
+<ul><b><i>PROJECT_NAME </i></b>= <b>myproj</b></ul>
+
+<li>
+In the <b>src/rules_mk</b> directory, create a file <b>myproj.rules.mk</b>.</li>
+
+<li>
+Add any rules or variable definitions to <b>myproj.rules.mk</b>. This file
+will be processed <b>last</b> by ODE, allowing rules to be redefined and
+variables to be overridden or appended to, without changing any of the
+ODE-delivered rules files.</li>
+
+<li>
+If new passes or actions are created by the user, some rules also have
+to be put in the <b>myproj.passes.mk</b> file.&nbsp; This file is processed
+just after ODE defines the predefined actions and passes.</li>
+</ol>
+See the <a href="#Adding Another Pass">Adding Another Pass</a> section
+for an example of modifying the <b>myproj.rules.mk</b> and <b>myproj.passes.mk</b>
+files.&nbsp; The <i><a href="ODECommonMakefiles.htm#AddingAnotherPass">ODE
+Common Makefiles</a> </i>document also has information about adding passes.
+<br>
+<hr WIDTH="100%">
+<h3>
+&nbsp;<a NAME="Dependency Generation"></a>Dependency generation</h3>
+This section describes further examples of dependency generation. Dependencies
+are automatically created when <b>mk</b> is called if the variable <b><i>DEPENDENCIES</i></b>
+is defined. In the <b>Makeconf</b> file supplied with this example, <b><i>DEPENDENCIES</i></b>
+is defined for all platforms. The tool used to generate dependencies is
+determined by what platform and compiler are being used.
+<ol>
+<li>
+Returning to the original example, if you are not in a <b>workon</b> for
+<b>sb1</b>,
+do the <b>workon</b>. Then the first step is to create a new file that
+will be conditionally included into the program. From the <b>src\inc</b>
+directory of <b>sb1</b>, copy <b>server.h</b> to a new file
+<b>server_new.h</b>.
+If <b>server.h</b> has been modified by a previous example, delete it and
+re-copy it using <b>mklinks -auto -copy inc\server.h</b> from the <b>src</b>
+directory of <b>sb1</b>.</li>
+
+<ul><b>copy server.h server_new.h</b></ul>
+
+<li>
+Edit the contents of <b>server_new.h</b>.</li>
+
+<ul>Change:
+<ul><b>#define DEFAULTMSG "Example for simple ODE backing build."</b></ul>
+to:
+<ul><b>#define DEFAULTMSG "Example for simple ODE sandbox."</b></ul>
+</ul>
+
+<li>
+There are now two separate header files. The makefile must be edited to
+specify that both header files should be exported to the export directory.</li>
+
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><b>
+cd c:\sb1\src</b>
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31> <b>cd /home/<i>username</i>/sb1/src</b>
+<p><b>mklinks -auto -copy inc/makefile</b> - if makefile is not in <b>sb1</b></ul>
+
+<ul>In <b>makefile</b> change:
+<ul><b>INCLUDES = server.h</b></ul>
+to:
+<ul><b>INCLUDES = server.h server_new.h</b></ul>
+</ul>
+
+<li>
+A statement needs to be added to the source code to conditionally include
+<b>server.h</b>
+or <b>server_new.h</b>. In this case, the variable <b>SBOX</b> will be
+used to evaluate the conditional.</li>
+
+<ul><b>mklinks -auto -copy lib/printmsg.c</b> - if <b>printmsg.c</b> is
+not in
+<b>sb1</b></ul>
+
+<ul>In <b>printmsg.c</b> change:
+<ul><b>#include "server.h"</b></ul>
+</ul>
+
+<ul>to:
+<ul><b>#ifdef SBOX</b></ul>
+
+<ul><b>#include "server_new.h"</b></ul>
+
+<ul><b>#else</b></ul>
+
+<ul><b>#include "server.h"</b></ul>
+
+<ul><b>#endif</b></ul>
+</ul>
+
+<li>
+All necessary modifications have been made to the files. Now re-make the<b>
+server</b> executable and execute it. From the <b>src</b> directory:</li>
+
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>
+<ul><b>mk</b></ul>
+
+<ul><b>..\obj\<i><a href="#Machine Name">machine name</a></i>\bin\server\server.exe</b></ul>
+Expected output of <b>server.exe</b>:
+<br><font face="Courier New, Courier, mono">Example for simple ODE backing
+build</font>
+<br>To verify that the dependencies were generated properly, examine the
+contents of <b>obj\<i><a href="#Machine Name">machine name</a></i>\lib\depend.mk</b>
+and verify that <b>printmsg.o</b> is dependent on <b>server.h</b>.
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+<ul><b>mk</b>
+<br><b>../obj/<i><a href="#Machine Name">machine name</a></i>/bin/server/server</b></ul>
+Expected output of <b>server</b>:
+<ul><font face="Courier New, Courier, mono">Example for simple ODE backing
+build</font></ul>
+To verify that the dependencies were generated properly, examine the contents
+of <b>obj/<i><a href="#Machine Name">machine name</a></i>/lib/depend.mk</b>
+and verify that <b>printmsg.o</b> is dependent on <b>server.h</b>.</ul>
+
+<li>
+The new header file <b>server_new.h</b> was not used in Step 5 since a
+definition of the variable <b>SBOX</b> has not been defined to the compiler.
+This can be done by using the <b>CDEFS</b> variable. This variable gets
+supplied to the compiler, as well as the <b>gendep</b> tool, so regardless
+of what dependency generation tool is being used, variables defined with
+<b>CDEFS</b>
+need only be defined once. Again re-make the <b>server</b> executable and
+execute it, this time specifying the <b>CDEFS</b> variable to be <b>-DSBOX</b>.&nbsp;
+From the <b>src</b> directory:</li>
+
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31>
+<ul><b>mk -a CDEFS=-DSBOX</b>
+<br><b>..\obj\<i><a href="#Machine Name">machine name</a></i>\bin\server\server.exe</b></ul>
+Expected output of <b>server.exe</b>:
+<ul><font face="Courier New, Courier, mono">Example for simple ODE sandbox</font></ul>
+To verify that the dependencies were generated properly, examine the contents
+of <b>obj\<i><a href="#Machine Name">machine name</a></i>\lib\depend.mk</b>
+and verify that <b>printmsg.o</b> is now dependent on <b>server_new.h</b>.
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+<ul><b>mk -a CDEFS=-DSBOX</b>
+<br><b>../obj/<i><a href="#Machine Name">machine name</a></i>/bin/server/server</b></ul>
+Expected output of <b>server</b>:
+<ul><font face="Courier New, Courier, mono">Example for simple ODE sandbox</font></ul>
+To verify that the dependencies were generated properly, examine the contents
+of <b>obj/<i><a href="#Machine Name">machine name</a></i>/lib/depend.mk</b>
+and verify that <b>printmsg.o</b> is now dependent on <b>server_new.h</b>.</ul>
+
+<li>
+We can also generate only the dependencies for our program. To accomplish
+this, make the <b>depend_all</b> target, which uses the <b>gendep</b> tool.
+Since <b>gendep</b> is a stand-alone tool with no inherent knowledge of
+the compiler, options must be given to <b>gendep</b> for things such as
+the location of system include files. To make the <b>depend_all</b> target,
+from the <b>src</b> directory:</li>
+
+<ul><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><b>mk
+GENDEPARGS=-Ic:\ibmcppw\include CDEFS=-DSBOX depend_all</b>
+<br>where <b>c:\ibmcppw\include</b> is the location of the system include
+files.
+<br><img SRC="unix.gif" ALT="UNIX" height=16 width=31><b>mk GENDEPARGS=-I/usr/include
+CDEFS=-DSBOX depend_all</b>
+<br>where <b>/usr/include</b> is the location of the system include files.</ul>
+</ol>
+
+<hr WIDTH="100%">
+<h3>
+<a NAME="Choosing Another Compiler"></a>Choosing another C/C++ compiler</h3>
+This section gives you information about how to select a different compiler.&nbsp;
+The <i><a href="ODECommonMakefiles.htm#SelectingCCompiler">ODE Common Makefiles</a></i>
+document contains a full list of available values for CCFAMILY and CCTYPE
+based on platform.
+<br>&nbsp;
+<ol>
+<li>
+To change the compiler from the command line, you can set the variables
+CCFAMILY and CCTYPE. <b><i><a href="#Machine Name">machine name</a></i></b>.mk
+is where compiler choice changes for a specific "<b><i><a href="#Machine Name">machine
+name</a></i></b>" occur. For example, to use the Visual Age compiler instead
+of the default Visual C++ compiler specified in the <b><i><a href="#Machine Name">machine
+name</a></i></b>.mk, enter:</li>
+
+<ul>&nbsp;<b>mk CCFAMILY=vage CCTYPE=cpp</b></ul>
+
+<li>
+To make a more permanent change to use a different compiler, you can change
+the values of CCFAMILY<b> </b>and CCTYPE in the <b><i><a href="#Machine Name">machine
+name</a></i></b>.mk for the desired platform.&nbsp; For example (using
+the "<b>?=</b>" assignment syntax so that the values can still be overridden
+from the command line):</li>
+
+<br>&nbsp;
+<ul><b>CCFAMILY ?= vage</b>
+<br><b>CCTYPE&nbsp;&nbsp; ?= cpp</b></ul>
+
+<li>
+There may also be a need to select different compilers for just one source
+directory.&nbsp; You can add the following lines to the makefile in the
+desired source directory before the <b>.include &lt;${RULES_MK}></b> statement
+to localize the change:</li>
+
+<br>&nbsp;
+<ul><b>CCFAMILY ?= vage</b>
+<br><b>CCTYPE&nbsp;&nbsp; ?= cpp</b></ul>
+
+<li>
+ODE supports multiple versions of compilers on some platforms.&nbsp; You
+may need to specify the version using the CCVERSION variable, if your version
+is not compatible with the ODE default.&nbsp; See the Suppported Tools
+and Compilers in <i><a href="ODECommonMakefiles.htm#SupportedToolsCompilers">ODE
+Common Makefiles</a></i> for the versions that are supported.&nbsp; For
+example, if you run version 3.6 of OS/2 Visual Age, you will need to set
+CCVERSION=3.6 since the rules default to 3.0.</li>
+</ol>
+
+<hr width="100%">
+<h3>
+<a NAME="Adding Another Compiler"></a>Adding another C/C++ compiler</h3>
+This section gives you information about adding the variables to support
+another compiler.
+<ol>
+<li>
+To add the support for another compiler, several variables must be added
+to <b>src/rules_mk/myproj.rules.mk</b> file. <a href="#User-Defined Rules">Click
+here</a> for more information on the User-Defined Rules file.</li>
+
+<li>
+These variables must be specified with the following format:</li>
+
+<ul><b>_<i>newcompiler</i>_<i>type</i>_<i>action</i>_ ?= <i>command</i></b>
+<br>or
+<br><b><i>newcompiler</i>_<i>action</i>_ ?= <i>command</i></b></ul>
+Where:
+<ul><i>newcompiler</i> = <b>CCFAMILY</b>
+<br><i>type</i> = <b>CCTYPE</b>
+<br><i>action</i> = Action to be executed: see below
+<br><i>command</i> = Command to execute the action</ul>
+
+<li>
+The values for <i>action</i> should be one of the following:</li>
+
+<ul><b>CC</b> to specify a C/C++ Compiler
+<br><b>CFLAGS</b> to specify the C/C++ Compiler Flags
+<br><b>LD</b> to specify a Linker/Loader
+<br><b>LDFLAGS</b> to specify the Linker/Loader Flags
+<br><b>SHLD</b> to specify a Shared Library
+<br><b>SHLDFLAGS</b> to specify Shared Library Flags
+<br><b>AR</b> to specify an Archiver
+<br><b>ARFLAGS</b> to specify Archiver Flags</ul>
+
+<li>
+<img SRC="windows.gif" ALT="Windows" height=16 width=58> Here are the variable
+settings necessary to add support for the Microsoft Visual C++ compiler</li>
+
+<ul>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">The Microsoft Visual C++ compiler is already supported
+and is used by specifying <b>CCFAMILY</b>=visual; this example adds the
+compiler again but this time with <b>CCFAMILY</b>=msvc.</td>
+</tr>
+</table>
+_msvc_cpp_CC_ ?= cl
+<br>_msvc_cpp_CFLAGS_ ?= /NOLOGO
+<br>_msvc_cpp_LD_ ?= link
+<br>_msvc_cpp_LDFLAGS_ ?= /NOLOGO
+<br>_msvc_cpp_SHLD_ ?= link
+<br>_msvc_cpp_SHLDFLAGS_ ?= /DLL
+<br>_msvc_AR_ ?= lib
+<br>_msvc_ARFLAGS_ ?= /NOLOGO
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">It is not necessary to add these settings for Visual C++
+to the <b>myproj.rules.mk</b> file, since ODE already contains support
+for Visual C++. View <b>src/rules_mk/std.mk</b> for more examples of adding
+support for different compilers. However, it is <b>highly recommended</b>
+that any changes be made in the <b>myproj.rules.mk</b> file, and not in
+<b>src/rules_mk/std.mk</b>.&nbsp;</td>
+</tr>
+</table>
+</ul>
+
+<p><br><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+Here are the variable settings necessary to add support for the GNU C++
+compiler, in this example we'll use <b>CCFAMILY</b>=gcomp:
+<ul>_gcomp_cpp_CC_ ?= gcc
+<br>_gcomp_cpp_CFLAGS_ ?= -MD
+<br>_gcomp_cpp_LD_ ?= gcc
+<br>_gcomp_cpp_LDFLAGS_ ?=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+# none at this time, none needed
+<br>_gcomp_cpp_SHLD_ ?= gcc
+<br>_gcomp_cpp_SHLDFLAGS_ ?=&nbsp; -dy -G
+<br>_gcomp_AR_ ?= ar
+<br>_gcomp_ARFLAGS_ ?= crl</ul>
+
+<ul>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">It is not necessary to add these settings for the GNU C++
+compiler to the <b>myproj.rules.mk</b> file, since ODE already contains
+support for GNU C++. View <b>src/rules_mk/std.mk</b> for more examples
+of adding support for different compilers. However, it is <b>highly recommended</b>
+that any changes be made in the <b>myproj.rules.mk</b> file, <i>not</i>
+in
+<b>src/rules_mk/std.mk</b>.&nbsp;</td>
+</tr>
+</table>
+</ul>
+</ol>
+
+<hr WIDTH="100%">
+<h3>
+<a NAME="Adding Another Target"></a>Adding another target</h3>
+This section provides information about modifying the rules; specifically
+adding a target.&nbsp; This section will show you how to add the target
+<b>listobjdir
+</b>to
+list the contents of the corresponding <b>obj </b>directory.
+<ol>
+<li>
+Copy the file <b>src\rules_mk\myproj.rules.mk</b> to a sandbox (using the
+<b>mklinks</b>
+command, for example) and add the following lines to the end of the file:</li>
+
+<br>&nbsp;
+<p>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p>listobjdir:
+<br>&nbsp;&nbsp;&nbsp; @echo "Listing the contents of the obj dir corresponding
+to ${.CURDIR}"
+<br>&nbsp;&nbsp;&nbsp; @sbls -p
+<br>&nbsp;
+<li>
+To execute the new target, establish a workon session for the sandbox,
+and from the <b>src\lib </b>directory, enter:</li>
+
+<br>&nbsp;
+<p>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p><b>mk listobjdir</b>
+<p>Expected result:
+<br>The command should list the contents of the sandbox's (and backing
+build's)
+<b>obj\<i><a href="#Machine Name">machine name</a></i>\lib</b>
+directory.</ol>
+
+<hr WIDTH="100%">
+<h3>
+<a NAME="Adding Another Pass"></a>Adding another pass</h3>
+This section provides information about modifying the rules; specifically
+adding a pass, an action for that pass, and targets to be generated by
+that action.&nbsp; The following example will create a pass and action
+to preprocess all C and C++ files. Both user-defined files will be used,
+<b>myproj.passes.mk</b>
+and <b>myproj.rules.mk</b>.&nbsp;&nbsp; <a href="#User-Defined Rules">Click
+here</a> for more information on the User-Defined Rules files. The example
+below defines both a new action and a new pass.&nbsp; An example of adding
+a new pass associated with a current action can be found in the <i><a href="ODECommonMakefiles.htm#AddingAnotherPass">ODE
+Common Makefiles</a></i> document.
+<ol>
+<li>
+A top-level target is a target that is implemented by passes.&nbsp; To
+add the top-level target <b>myaction_all</b>, you must add to the <b>sb1\src\rules_mk\
+myproj.rules.mk </b>file as follows:</li>
+
+<br>&nbsp;
+<p>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p><i>myaction_all:$${_all_targets_};@</i>
+<p>This defines the target <b>myaction_all</b> to be dependent on <b>${_all_targets_}</b>
+followed by no commands, indicated by "<b>;@</b>".
+<li>
+The next change will be to the <b>myproj.passes.mk</b> file. The following
+changes to the <b>sb1\src\rules_mk\myproj.passes.mk</b> file can be added
+to the end of the file. Define the environment variable <b>EXTRA_ACTIONS</b>
+to include the extra action.</li>
+
+<br>&nbsp;
+<p>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p><i>EXTRA_ACTIONS = MYACTION</i>
+<br>&nbsp;
+<li>
+Add a new pass that you want to the <b>myproj.passes.mk</b> file, by first
+adding the sub directories that the pass will traverse.&nbsp;&nbsp; The
+sub directories that are traversed by a pass are in the format of <b>_</b><i>pass</i><b>_SUBDIRS_</b>.</li>
+
+<br>&nbsp;
+<p>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p><i>_MYPASS_SUBDIRS_=${_STANDARD_SUBDIRS_}</i>
+<br>&nbsp;
+<li>
+The next step is to define the actions and what actions occur for what
+passes.&nbsp; This is in the format of <b>_</b><i>action</i><b>_PASSES_=</b><i>passes.
+</i>Add
+the following statements to the end of the <b>myproj.passes.mk</b> file.</li>
+
+<br>&nbsp;
+<p>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p><i>.if defined (MAKEFILE_PASS)</i>
+<br><i>_MYACTION_PASSES_=${MAKEFILE_PASS}</i>
+<br><i>.else</i>
+<br><i>_MYACTION_PASSES_=MYPASS</i>
+<br><i>.endif</i>
+<br>&nbsp;
+<li>
+Action variables need to be added to the <b>myproj.passes.mk</b> file:</li>
+
+<br>&nbsp;
+<p>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p><i>_MYACTION_ACTION_=myaction</i>
+<br><i>_myaction_action_=MYACTION</i>
+<br>&nbsp;
+<li>
+Targets for the action with the new pass need to be defined.&nbsp; This
+is in the format <b>_</b><i>action</i><b>_</b><i>pass</i><b>_TARGETS=</b><i>targets.</i>&nbsp;
+The rules already know how to create .pp files from .c files, so we will
+simply define the targets without having to create the suffix transformation
+and commands. Add the following line to the <b>myproj.rules.mk</b> file
+to define the targets for the MYACTION action and the MYPASS pass:</li>
+
+<br>&nbsp;
+<p>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p><i>_MYACTION_MYPASS_TARGETS_=${_ALL_OFILES_:S/${OBJ_SUFF}$/${PP_SUFF}/g}</i>
+<br>&nbsp;
+<li>
+To execute the new pass, issue the make as follows:</li>
+
+<br>&nbsp;
+<p>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p><b>workon sb1</b>
+<br><b>mk myaction_all</b></ol>
+
+<hr WIDTH="100%">
+<h3>
+<a NAME="Choosing Another Platform"></a>Choosing another platform</h3>
+This section provides information about choosing another platform.&nbsp;
+You can choose a different platform if you wish to build for other platforms
+than the one you are currently running on.&nbsp; This is often done to
+build device drivers.&nbsp; You must have the appropriate tools such as
+cross-compilers to accomplish this.
+<ol>
+<li>
+To a build a backing build for another platform, specify the <b>-m</b>
+flag to the <b>build </b>command.</li>
+
+<ul><b>build -rc ../.sandboxrc -m sparc_solaris_2</b></ul>
+
+<li>
+To workon a sandbox for another platform, specify the <b>-m</b> flag to
+the <b>workon</b> command.</li>
+
+<ul><b>workon -sb sb1 -m sparc_solaris_2</b>
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">In the examples, the backing build or sandbox must have
+been originally created with the desired platform.</td>
+</tr>
+</table>
+</ul>
+For example, a backing build created with <b>mkbb -m x86_nt_4:rios_aix_4
+bbexample</b> would not allow the command <b>build -rc ../.sandboxrc -m
+sparc_solaris_2</b>, since <b>sparc_solaris_2</b> is not a valid machine
+for this backing build.</ol>
+
+<hr WIDTH="100%">
+<h3>
+<a NAME="Adding Another Platform"></a>Adding another platform</h3>
+When adding another platform to the rules file, you must modify the <b>Buildconf,<i>
+new_platform</i>.mk,</b> and <b>sb.conf</b> files. You will see the steps
+necessary to add a platform called <b><i>new_platform</i></b>.&nbsp; There
+may be additional steps needed in the rules files to define proper compilers
+or compiler variables.
+<ol>
+<li>
+In the <b>Buildconf</b> file, add platform-specific lines as desired, as
+in the following example:</li>
+
+<ul>for <i>new_platform</i> replace setenv INCDIRS -I/include/<i>new_platform</i></ul>
+
+<li>
+In the <b>rc_files/sb.conf</b> file add <i>:new_platform</i> to machine_list
+line.</li>
+
+<li>
+Create the file <b>src/rules_mk/<i>new_platform</i>.mk</b> and add the
+following lines.</li>
+</ol>
+
+<ul>###############################################################################
+<br># <font face="Courier New, Courier, mono">New Platform specific variables</font>
+<br><font face="Courier New, Courier, mono">#</font>
+<br><font face="Courier New, Courier, mono">TARGET_MACHINE = <i>new_platform</i></font>
+<br><font face="Courier New, Courier, mono">CCFAMILY ?= <i>CCFAMILY</i></font>
+<br><font face="Courier New, Courier, mono">CCTYPE ?= <i>CCTYPE</i></font></ul>
+
+<ul>&nbsp;</ul>
+
+</body>
+</html>

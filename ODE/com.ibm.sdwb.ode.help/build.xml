@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<project name="MakeTheDocZip" default="default">
+    <target name="default">
+        <zip destfile="doc.zip" basedir="src/html" filesonly="true"/>
+    </target>
+</project>
+

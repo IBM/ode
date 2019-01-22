@@ -1,0 +1,2717 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./buildpatch_README_files/filelist.xml">
+<title>PATCH</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Vincent D. Guidera Sr.</o:Author>
+  <o:Template>Normal</o:Template>
+  <o:LastAuthor>Vincent D. Guidera Sr.</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>469</o:TotalTime>
+  <o:LastPrinted>2001-05-08T20:19:00Z</o:LastPrinted>
+  <o:Created>2001-05-18T15:03:00Z</o:Created>
+  <o:LastSaved>2001-05-18T15:03:00Z</o:LastSaved>
+  <o:Pages>22</o:Pages>
+  <o:Words>4918</o:Words>
+  <o:Characters>28035</o:Characters>
+  <o:Company>IBM</o:Company>
+  <o:Lines>233</o:Lines>
+  <o:Paragraphs>56</o:Paragraphs>
+  <o:CharactersWithSpaces>34428</o:CharactersWithSpaces>
+  <o:Version>9.4402</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:ActiveWritingStyle Lang="EN-US" VendorID="64" DLLVersion="131077"
+   NLCheck="1">3</w:ActiveWritingStyle>
+  <w:Compatibility>
+   <w:SwapBordersFacingPages/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Helv;
+	panose-1:0 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-format:other;
+	mso-font-pitch:variable;
+	mso-font-signature:3 0 0 0 1 0;}
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+@font-face
+	{font-family:"Arial Unicode MS";
+	panose-1:2 11 6 4 2 2 2 2 2 4;
+	mso-font-charset:128;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-1 -369098753 63 0 4129023 0;}
+@font-face
+	{font-family:"\@Arial Unicode MS";
+	mso-font-charset:128;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-1 -369098753 63 0 4129023 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:16.0pt;
+	font-family:Arial;
+	mso-font-kerning:16.0pt;}
+h2
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:14.0pt;
+	font-family:Arial;
+	font-style:italic;}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	font-size:13.0pt;
+	font-family:Arial;}
+h4
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h5
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:5;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	text-decoration:underline;
+	text-underline:single;}
+h6
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:6;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	font-weight:normal;
+	font-style:italic;
+	text-decoration:underline;
+	text-underline:single;}
+p.MsoHeading7, li.MsoHeading7, div.MsoHeading7
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:7;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	text-decoration:underline;
+	text-underline:single;}
+p.MsoToc1, li.MsoToc1, div.MsoToc1
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.25in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoToc2, li.MsoToc2, div.MsoToc2
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:12.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoToc3, li.MsoToc3, div.MsoToc3
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:24.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoToc4, li.MsoToc4, div.MsoToc4
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoToc5, li.MsoToc5, div.MsoToc5
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:48.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoToc6, li.MsoToc6, div.MsoToc6
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:60.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoToc7, li.MsoToc7, div.MsoToc7
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:1.0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoToc8, li.MsoToc8, div.MsoToc8
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:84.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoToc9, li.MsoToc9, div.MsoToc9
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:96.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:center 3.0in right 6.0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:center 3.0in right 6.0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoBodyTextIndent, li.MsoBodyTextIndent, div.MsoBodyTextIndent
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoBodyTextIndent2, li.MsoBodyTextIndent2, div.MsoBodyTextIndent2
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.25in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoBodyTextIndent3, li.MsoBodyTextIndent3, div.MsoBodyTextIndent3
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:Helv;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	color:black;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+tt
+	{mso-ascii-font-family:"Arial Unicode MS";
+	mso-fareast-font-family:"Arial Unicode MS";
+	mso-hansi-font-family:"Arial Unicode MS";
+	mso-bidi-font-family:"Arial Unicode MS";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-page-numbers:1;
+	mso-title-page:yes;
+	mso-even-header:url("./buildpatch_README_files/header.htm") eh1;
+	mso-header:url("./buildpatch_README_files/header.htm") h1;
+	mso-even-footer:url("./buildpatch_README_files/header.htm") ef1;
+	mso-footer:url("./buildpatch_README_files/header.htm") f1;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:480736885;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1991849422 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l0:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l1
+	{mso-list-id:521749943;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1908510990 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l1:level1
+	{mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l2
+	{mso-list-id:569116132;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1876135004 67698689 -909595430 67698689 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l2:level2
+	{mso-level-start-at:3;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+@list l2:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l3
+	{mso-list-id:586689639;
+	mso-list-type:hybrid;
+	mso-list-template-ids:816850214 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l3:level1
+	{mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l4
+	{mso-list-id:828713520;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1123830172 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l4:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l5
+	{mso-list-id:996615200;
+	mso-list-type:hybrid;
+	mso-list-template-ids:715324406 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l5:level1
+	{mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l6
+	{mso-list-id:1072970908;
+	mso-list-type:hybrid;
+	mso-list-template-ids:527842516 -735680886 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l6:level1
+	{mso-level-number-format:alpha-lower;
+	mso-level-text:"%1\)";
+	mso-level-tab-stop:42.0pt;
+	mso-level-number-position:left;
+	margin-left:42.0pt;
+	text-indent:-.25in;}
+@list l7
+	{mso-list-id:1168326353;
+	mso-list-type:hybrid;
+	mso-list-template-ids:816476372 67698703 67698703 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l7:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l7:level2
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l8
+	{mso-list-id:1442606608;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1851299330 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l8:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l9
+	{mso-list-id:1539464601;
+	mso-list-type:hybrid;
+	mso-list-template-ids:523532200 67698689 67698703 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l9:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l9:level2
+	{mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l10
+	{mso-list-id:1644240521;
+	mso-list-type:hybrid;
+	mso-list-template-ids:852768132 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l10:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l11
+	{mso-list-id:1655260617;
+	mso-list-type:hybrid;
+	mso-list-template-ids:367426242 -109575032 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l11:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:42.0pt;
+	mso-level-number-position:left;
+	margin-left:42.0pt;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";}
+@list l12
+	{mso-list-id:1733501638;
+	mso-list-type:hybrid;
+	mso-list-template-ids:2006490118 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l12:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l13
+	{mso-list-id:1743604087;
+	mso-list-type:hybrid;
+	mso-list-template-ids:806144192 67698703 -735680886 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l13:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l13:level2
+	{mso-level-number-format:alpha-lower;
+	mso-level-text:"%2\)";
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.75in;
+	text-indent:-.25in;}
+@list l14
+	{mso-list-id:1779333286;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1659062172 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l14:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l15
+	{mso-list-id:1970430582;
+	mso-list-type:hybrid;
+	mso-list-template-ids:592061032 67698689 67698713 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l15:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l16
+	{mso-list-id:2013146999;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1716023770 -735680886 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l16:level1
+	{mso-level-number-format:alpha-lower;
+	mso-level-text:"%1\)";
+	mso-level-tab-stop:42.0pt;
+	mso-level-number-position:left;
+	margin-left:42.0pt;
+	text-indent:-.25in;}
+@list l17
+	{mso-list-id:2038651181;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-629235918 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l17:level1
+	{mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:24.0pt;mso-bidi-font-size:12.0pt'>PATCH CONSTRUCTION<o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:24.0pt;mso-bidi-font-size:12.0pt'>CHECKLIST &amp; MANUAL<o:p></o:p></span></b></p>
+
+<b><span style='font-size:24.0pt;mso-bidi-font-size:12.0pt;font-family:"Times New Roman";
+mso-fareast-font-family:"Times New Roman";mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA'><br clear=all style='page-break-before:always'>
+</span></b>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:24.0pt;mso-bidi-font-size:12.0pt;display:none;
+mso-hide:all'>PLACEHOLDER, DO NOT DELETE</span><span style='display:none;
+mso-hide:all'><o:p></o:p></span></b></p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";mso-fareast-font-family:
+"Times New Roman";mso-ansi-language:EN-US;mso-fareast-language:EN-US;
+mso-bidi-language:AR-SA'><br clear=all style='mso-special-character:line-break;
+page-break-before:always'>
+</span>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoToc1 style='tab-stops:right dotted 431.5pt'><!--[if supportFields]><span
+style='mso-element:field-begin'></span><span style="mso-spacerun:
+yes"> </span>TOC \o &quot;1-5&quot; \h \z <span style='mso-element:field-separator'></span><![endif]--><span
+class=MsoHyperlink><a href="#_Toc513966234">CHECKLIST<span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966234 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>5</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200330034000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc1 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966235">MANUAL<span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966235 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>6</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200330035000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc3 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966236">NAME<span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966236 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>6</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200330036000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc3 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966237">SYNOPSIS<span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966237 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>6</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200330037000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc3 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966238">AVAILABILITY<span style='color:
+windowtext;display:none;mso-hide:screen;text-decoration:none;text-underline:
+none'><span style='mso-tab-count:1 dotted'>.. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966238 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>6</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200330038000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc3 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966239">DESCRIPTION<span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-tab-count:1 dotted'>.. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966239 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>6</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200330039000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc3 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966240">OPTIONS<span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966240 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>7</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200340030000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc3 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966241">EXAMPLES<span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966241 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>9</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200340031000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc1 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966242">Definitions<span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966242 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>9</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200340032000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc1 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966243">Requirements<span style='color:
+windowtext;display:none;mso-hide:screen;text-decoration:none;text-underline:
+none'><span style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966243 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>11</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200340033000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc4 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966244">Directory Structure of this Utility<span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966244 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>12</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200340034000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc4 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966245">Procedure Scripts<span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966245 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>13</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200340035000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc4 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966246">Class Action Scripts<span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966246 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>14</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200340036000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc4 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966247">Backout Scripts<span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966247 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>16</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200340037000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc1 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966248">SEE ALSO<span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-tab-count:1 dotted'>.. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966248 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>18</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200340038000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc1 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966249">DIAGNOSTICS<span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966249 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>19</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200340039000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoToc1 style='tab-stops:right dotted 431.5pt'><span
+class=MsoHyperlink><a href="#_Toc513966250">NOTES<span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'> PAGEREF _Toc513966250 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
+text-underline:none'>21</span><span style='color:windowtext;display:none;
+mso-hide:screen;text-decoration:none;text-underline:none'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003500310033003900360036003200350030000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen;text-decoration:none;text-underline:none'><span
+style='mso-element:field-end'></span></span><![endif]--></a></span><o:p></o:p></p>
+
+<p class=MsoNormal><!--[if supportFields]><span style='mso-element:field-end'></span><![endif]--><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";mso-fareast-font-family:
+"Times New Roman";mso-ansi-language:EN-US;mso-fareast-language:EN-US;
+mso-bidi-language:AR-SA'><br clear=all style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:24.0pt;mso-bidi-font-size:12.0pt;display:none;
+mso-hide:all'>PLACEHOLDER, DO NOT DELETE<o:p></o:p></span></b></p>
+
+<b><span style='font-size:16.0pt;font-family:Arial;mso-fareast-font-family:
+"Times New Roman";mso-font-kerning:16.0pt;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA'><br clear=all style='page-break-before:always'>
+</span></b>
+
+<h1><a name="_Toc513966234">CHECKLIST</a></h1>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l13 level1 lfo7;
+tab-stops:list .25in'><![if !supportLists]>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>Be sure you know</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l9 level1 lfo1;tab-stops:list .5in'>What
+     is being fixed</li>
+</ul>
+
+<p class=MsoNormal style='margin-left:.25in'>Or</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l9 level1 lfo1;tab-stops:list .5in'>What
+     feature is being added (special permission needed)?</li>
+ <li class=MsoNormal style='mso-list:l9 level1 lfo1;tab-stops:list .5in'>The
+     patch is not invalidating any public interfaces</li>
+ <li class=MsoNormal style='mso-list:l9 level1 lfo1;tab-stops:list .5in'>The
+     patch is not changing objects owned by other packages</li>
+ <li class=MsoNormal style='mso-list:l9 level1 lfo1;tab-stops:list .5in'>The
+     patch is not installing entirely new packages</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l13 level1 lfo7;
+tab-stops:list .25in'><![if !supportLists]>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>All files to be added are ready to ship</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l15 level1 lfo3;tab-stops:list .5in'>The
+     binaries are compiled, optimized and stripped.</li>
+ <li class=MsoNormal style='mso-list:l15 level1 lfo3;tab-stops:list .5in'>The
+     source files are sccs delta'd.</li>
+ <li class=MsoNormal style='mso-list:l15 level1 lfo3;tab-stops:list .5in'>If
+     you are replacing a file, which is the source or target of a hard link,
+     you are also replacing all files on that inode.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l13 level1 lfo7;
+tab-stops:list .25in'><![if !supportLists]>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>You know the correct patch id number.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l13 level1 lfo7;
+tab-stops:list .25in'><![if !supportLists]>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>You know what packages are to be included in the patch.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l13 level1 lfo7;
+tab-stops:list .25in'><![if !supportLists]>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>You have selected the format appropriate to this patch.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l13 level1 lfo7;
+tab-stops:list .25in'><![if !supportLists]>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>If directory format, you have constructed the README file and
+all necessary patch scripts such as prepatch or postpatch</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l13 level1 lfo7;
+tab-stops:list .25in'><![if !supportLists]>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>You know what patches (with different base numbers) are
+obsoleted by, required by or incompatible with this patch.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l13 level1 lfo7;
+tab-stops:list .25in'><![if !supportLists]>8.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>You have constructed all non-standard class action scripts
+including old style install class action scripts if the patch may be applied to
+a 2.4 or earlier system. For patches delivered to a 2.5 or greater system the
+generic class action script needs to be modified to ensure that the backout
+package is created correctly.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l13 level1 lfo7;
+tab-stops:list .25in'><![if !supportLists]>9.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>For each package, you need to make sure you have all of the
+required objects</p>
+
+<p class=MsoNormal style='margin-left:42.0pt;text-indent:-.25in;mso-list:l6 level1 lfo5;
+tab-stops:list 42.0pt'><![if !supportLists]>a)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>The proto area (either fully populated or sparse)</p>
+
+<p class=MsoNormal style='margin-left:42.0pt;text-indent:-.25in;mso-list:l6 level1 lfo5;
+tab-stops:list 42.0pt'><![if !supportLists]>b)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>A prototype file defining each of the objects to be replaced
+(no ftype &quot;i&quot; objects) buildpatch incorporates ftype &quot;i&quot;
+files automatically. Or if using this utility interactively, you can provide an
+object list indicating what objects in the proto area to be included and add
+symlinks and devices manually</p>
+
+<p class=MsoNormal style='margin-left:42.0pt;text-indent:-.25in;mso-list:l6 level1 lfo5;
+tab-stops:list 42.0pt'><![if !supportLists]>c)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>A deletes list if required. This file goes into the
+utils_directory, described below, along with the pkginfo and the prototype
+file.<span style="mso-spacerun: yes">  </span>The objects listed in the deletes
+file should contain paths that are relative to the BASEDIR variable defined in
+the pkginfo file.</p>
+
+<p class=MsoNormal style='margin-left:42.0pt;text-indent:-.25in;mso-list:l6 level1 lfo5;
+tab-stops:list 42.0pt'><![if !supportLists]>d)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>All necessary special scripts</p>
+
+<p class=MsoNormal style='margin-left:42.0pt;text-indent:-.25in;mso-list:l6 level1 lfo5;
+tab-stops:list 42.0pt'><![if !supportLists]>e)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>If a copyright file is used (for Sun specific patches it is
+required) place this in the a directory named &quot;install&quot; in the
+proto_area, described below, and buildpatch will incorporate into the patch
+package</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1><a name="_Toc513966235">MANUAL</a></h1>
+
+<h3><a name="_Toc513966236">NAME</a></h3>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>buildpatch - a utility to construct a Solaris(TM) patch</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h3><a name="_Toc513966237">SYNOPSIS</a></h3>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>buildpatch [ -f directory -p patch_number ] [ -7 ] [ -c
+config_file ] [ -o &quot;obsoletes_list&quot; ] [ -r &quot;requires_list&quot;
+] [ -i &quot;incompatibles_list&quot; ] [ -w ] [ -v ] [ -M
+patch_metafiles_directory ] [ -d target_dir ] [ -U proto_area utils_directory ]
+[ -P pkgname proto_area utility_directory ... ]</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>buildpatch [ -f directory -p patch_number ] [ -c config_file
+] [ -o &quot;obsoletes_list&quot; ] [ -r &quot;requires_list&quot; ] [ -i
+&quot;incompatibles_list&quot; ] [ -w ] [ -v ] [ -M patch_metafiles_directory ]
+[ -d target_dir ] [ -O patch_level pkgname proto_area utility_directory ... ]</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>buildpatch [ -f directory -p patch_number ] [ -c config_file
+] [ -o &quot;obsoletes_list&quot; ] [ -w ] [ -v ] [ -M
+patch_metafiles_directory ] [ -d target_dir ] [ -I patch_level pkgname
+proto_area utility_directory ... ]</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>buildpatch [ -f package -p patch_number ] [ -7 ] [ -c
+config_file] [ -o &quot;obsoletes_list&quot; ] [ -r &quot;requires_list&quot; ]
+[ -i &quot;incompatibles_list&quot; ] [ -w ] [ -v ] [ -S ] [ -d target_dir ] [
+-U proto_area utils_directory ] [ -P pkgname proto_area utility_directory ... ]</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h3><a name="_Toc513966238">AVAILABILITY</a></h3>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>pkgadd the package SUNWpatch from benet.eng.</p>
+
+<p class=MsoNormal>i.e. pkgadd -d /net/benet.eng/benet/Sustaining/PatchTools/SUNWpatch
+all</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h3><a name="_Toc513966239">DESCRIPTION</a></h3>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This utility provides a mechanism for the purpose of
+modifying an installed software product. The &quot;patch&quot; repairs a design
+flaw in an installed software product or, under certain circumstances, installs
+a carefully controlled new feature. Since the unit Sun delivers as a software
+product is the System V package, all patches are performed on and with
+reference to a package or packages.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The old patch architecture (used prior to Solaris 2.5)
+required the patch builder to construct the patch by hand, building the
+individual sparse packages and then inserting them into a patch directory. In
+that architecture, the installpatch utility was responsible for all of the
+analysis and most of the actual work associated with installing the patch
+packages. The new architecture, supported by buildpatch, places most of the
+smarts into the individual patch packages. In support of this task, buildpatch
+constructs the patch packages so you don't have to.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Buildpatch needs to do this because it inserts special
+scripts into each package so that the package will ellicit correct behavior
+upon installation. Since buildpatch inserts a preinstall script into each
+package, if the patch requires some other preinstall script, it will need to be
+merged with the preinstall script buildpatch inserts. The same goes for any
+package script that may be special to this particular patch. The method for
+merging these scripts is shown below under Procedure Scripts. This takes
+advantage of the features provided in the System V package, specifically,
+making use of the update mechanism.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Once a package is installed onto a host it is possible to
+later repair design faults in that installation through a package update.<span
+style="mso-spacerun: yes">  </span>When a package is updated, a package of the
+same name, primary version and architecture is marked with some identifier like
+a patch ID and installed using the pkgadd utility. It really is that simple,
+but of course that doesn't mean we intend to leave it that simple.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Here's what makes it complicated. There are specific
+desirable features we have come to expect from a patch. In order to incorporate
+these features, this tool inserts package scripts, which provide the following
+capabilities:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l0 level1 lfo9;
+tab-stops:list .25in'><![if !supportLists]>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>The ability to backout the patch</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l0 level1 lfo9;
+tab-stops:list .25in'><![if !supportLists]>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>The ability to establish contingencies based upon obsolescence
+or incompatibility</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l0 level1 lfo9;
+tab-stops:list .25in'><![if !supportLists]>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>The ability to automatically resolve dependencies (later)</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l0 level1 lfo9;
+tab-stops:list .25in'><![if !supportLists]>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>The ability to patch all applicable clients on a server
+(later)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>While these scripts are easy enough to understand (they're
+explained in Appendix 2 of Sun Specification 950-2686-01, Solaris Patch
+Architecture) there are several of them; and, some care is required if the
+producer of the patch needs to implement a special feature in addition to those
+provided automatically by this utility.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Buildpatch version 1.6 and beyond supports the building of a
+Progressive Instance Patch. A PIP patch installs only to a 2.4 system and
+previous releases. It creates a patch pkg that adheres to the old style of
+patch installation. It builds a patch that will create a seperate instance of
+the sparse patch pkg once installed on the target host.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h3><span style="mso-spacerun: yes"> </span><a name="_Toc513966240">OPTIONS</a></h3>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<table border=1 cellspacing=0 cellpadding=0 width="100%" style='width:100.0%;
+ border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;
+ mso-padding-alt:0in 5.4pt 0in 5.4pt'>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-7<span style="mso-spacerun: yes">  </span></p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-left:none;mso-border-left-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Builds a Solaris 7 or later direct instance patch.
+  Installpatch, backoutpatch, and Install.info files are omitted.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-c config_file<span style="mso-spacerun: yes">  </span></p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Designate an alternate configuration file (default is
+  buildpatch.conf).</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-f patch_format </p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Designate the patch format as patch_format (directory or
+  package)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-p patch_number </p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Designate the patch id number</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-o &quot;obsoletes_list&quot; </p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>List of patches that this one obsoletes</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-r &quot;requires_list&quot;</p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>List of patches that this one requires</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-i &quot;incompatibles_list&quot;</p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>List of patches with which this one is incompatible</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-w</p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>During construction of this patch, write over any old
+  patch of the same name in the build area</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-S<span style="mso-spacerun: yes">  </span></p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Provide package format patch in stream format (this is the
+  default for any package format patch containing more than one package)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-M patch_metafiles_directory </p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Designate a directory containing the patch metafiles such
+  as README, prepatch and/or postpatch. (Only applies to directory format
+  patches)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-d target_dir<span style="mso-spacerun: yes">   </span></p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Construct the patch in directory target_dir.<span
+  style="mso-spacerun: yes">  </span>If no entry is provided, the default
+  specified n buildpatch.conf as Patch_dir_dflt is used.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-P pkgname proto_area utility_directory</p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Use pkgname as the name of the package to be constructed,
+  proto_area as the root of the proto area and use utility_directory as the
+  path to the utility directory.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-U proto_area utils_directory</p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>This is shorthand for the &quot;-P&quot; option above. It
+  instructs buildpatch to construct a package for each utility directory found
+  in utils_directory using the proto area provided. Each utility directory in
+  utils_directory must be named according to the package to be built (eg:
+  SUNWcar.m)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-O patch_level pkgname proto_area utility_directory</p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Same as &quot;-P&quot; except that the patch is constructed
+  so as to allow installation to Solaris 2.4 and earlier systems as well as 2.5
+  and later. The patch_level parameter is the value to be assigned the
+  &quot;PATCH=&quot; field in the old-style VERSION. (Only applies to directory
+  format patches)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="50%" valign=top style='width:50.0%;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>-I patch_level pkgname proto_area utility_directory</p>
+  </td>
+  <td width="50%" valign=top style='width:50.0%;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><span style="mso-spacerun: yes"> </span>Same as
+  &quot;-O&quot; except that the patch is constructed so as to allow
+  installation only to Solaris 2.4 and earlier systems. The patch_level
+  parameter is the value to be assigned the &quot;PATCH=&quot; field in the old
+  style VERSION. (Only applies to directory format patches)</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h3><a name="_Toc513966241">EXAMPLES</a></h3>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The Simple Case</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>If the patch meets the following requirements, then
+buildpatch provides all special services.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l12 level1 lfo11;
+tab-stops:list .25in'><![if !supportLists]>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>All files are being changed by replacement, not editting. This
+means there are no files of ftype &quot;e&quot; or &quot;v&quot; and all
+classes can be treated as though they were class &quot;none&quot;.</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l12 level1 lfo11;
+tab-stops:list .25in'><![if !supportLists]>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>No installed files are being deleted by the patch, only
+replaced.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For a patch of this sort, only a workspace containing the
+modified deliverables, an object list (or prototype file) and the original
+pkginfo file are needed to fully define each package in the patch.<span
+style="mso-spacerun: yes">  </span>No class action scripts and no deletes file
+need to be provided. No commands text needs to be added to the package scripts
+found in the files directory and no special provisions need to be made for
+testing.<span style="mso-spacerun: yes">  </span>Most patches may be provided
+using the simple case.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>A prototype file is required instead of an object list if</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l14 level1 lfo13;
+tab-stops:list .25in'><![if !supportLists]>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>An object is being delivered which is not represented in the
+proto area</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l14 level1 lfo13;
+tab-stops:list .25in'><![if !supportLists]>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>Files belonging to classes other than &quot;none&quot; are
+being delivered</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l14 level1 lfo13;
+tab-stops:list .25in'><![if !supportLists]>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>Package scripts not found in the install directory are being
+delivered</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>REMEMBER</b>: The patch may not change the class of
+installed objects.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>In the case of special classes, they don't require a special
+class action script but they do need to be named so that the correct removal
+scripts can be used if the package is later removed. It is also crucial that if
+new classes are introduced, the reference pkginfo file CLASSES entry must be
+updated appropriately. Any classes currently installed on the target host will
+be inherited from the installed package (although it never hurts to set the
+CLASSES parameter correctly to start with).</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1><a name="_Toc513966242">Definitions</a></h1>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>We will begin with a definition of terms.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>proto area<span style="mso-spacerun: yes">  </span><o:p></o:p></b></p>
+
+<p class=MsoNormal>This is a directory containing the binaries or source files
+to be delivered. It could be a fully populated workspace having only a few
+objects modified or it could be a sparse tree containing only the modified
+objects intended for delivery.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>utility directory</b> </p>
+
+<p class=MsoNormal>A directory containing all required metafiles in support of
+the proto area.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>install directory</b> </p>
+
+<p class=MsoNormal>A directory in the utility directory called
+&quot;install&quot;. This is where the package-specific files are placed
+including depend, Copyright and special merged procedure scripts.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>reference <b>pkginfo</b> </p>
+
+<p class=MsoNormal>A pkginfo file which is at least the pkginfo file originally
+delivered with the installed package but which may include all required patch
+package entries.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>prototype</b><span style="mso-spacerun: yes">   </span></p>
+
+<p class=MsoNormal>An optionally complete prototype file as defined in
+prototype(4). This prototype file contains entries representing all package
+objects to be delivered.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>object list</b> </p>
+
+<p class=MsoNormal>The list of objects in the proto area which are intended to
+be delivered as part of the patch. If the proto area is sparse then no object
+list is required.<span style="mso-spacerun: yes">  </span>In interactive mode,
+the</p>
+
+<p class=MsoNormal>object list will be converted to a package prototype file
+and presented to the user for editing since the object list does not contain
+enough information to guarantee completeness.</p>
+
+<p class=MsoNormal><b>NOTE</b> : it is not practical to provide absolute paths
+in the object list.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>deletes file<o:p></o:p></b></p>
+
+<p class=MsoNormal>The list of package objects to be deleted and not replaced.
+It is constructed in the same format as the object list except that absolute
+paths (beginning with &quot;/&quot;) are handled correctly (like in the
+prototype file).</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>There are three ways to organize all of the required files
+for each package.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l7 level1 lfo14;
+tab-stops:list .25in'><![if !supportLists]>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>explicitly - answer each of the<span style="mso-spacerun:
+yes">  </span>questions as they are asked with the pathname to the required
+object</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l7 level1 lfo14;
+tab-stops:list .25in'><![if !supportLists]>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>implicitly - provide the following two directories</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo16;tab-stops:list .5in'>The
+     proto area</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo16;tab-stops:list .5in'>A
+     utility directory which contains the following objects</li>
+</ul>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;mso-list:l2 level2 lfo16;
+tab-stops:list 1.0in'><![if !supportLists]>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>pkginfo : reference pkginfo file</p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;mso-list:l2 level2 lfo16;
+tab-stops:list 1.0in'><![if !supportLists]>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>prototype: optional prototype file</p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;mso-list:l2 level2 lfo16;
+tab-stops:list 1.0in'><![if !supportLists]>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>objlist : optional object list</p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;mso-list:l2 level2 lfo16;
+tab-stops:list 1.0in'><![if !supportLists]>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>deletes : list of files to delete</p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;mso-list:l2 level2 lfo16;
+tab-stops:list 1.0in'><![if !supportLists]>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>install : a directory containing package-specific files and
+merged scripts</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l7 level1 lfo14;
+tab-stops:list .25in'><![if !supportLists]>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><![endif]>implicit shorthand (&quot;-U&quot; option) - provide the
+following two directories</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l10 level1 lfo17;tab-stops:list .5in'>The
+     proto area</li>
+ <li class=MsoNormal style='mso-list:l10 level1 lfo17;tab-stops:list .5in'>A
+     directory containing a utility directory (as above) for each package to be
+     included which is named after the included package</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoHeading7>Notes</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The buildpatch utility is a highly configurable utility that
+will construct a patch compatible with the Sun patch architecture for Solaris
+2.5. Take a look at buildpatch.conf for an idea of the level of configuration
+that is possible. It can be run interactively or from a command line. It is
+recomended that you run interactively for the first pass. Just type
+&quot;buildpatch&quot;.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The command line may look something like this.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>buildpatch -p 103344-02 -o
+&quot;105467-02 107456-06&quot; -i &quot;107999-02&quot; -f \</p>
+
+<p class=MsoNormal style='margin-left:.5in'>directory -w -P SUNWstuf trees/p3n4
+utilitys/p3 -P SUNWjunk \</p>
+
+<p class=MsoNormal style='margin-left:.5in'>trees/p9n10 utilitys/p10</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This command means the following:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoBodyTextIndent>Make a directory-format patch called 103344-02.
+Overwrite any existing patches of the same ID in the build area. It obsoletes
+patches 105467-02 and 107456-06. It is incompatible with patch number
+107999-02. The patch consists of two sparse packages - SUNWstuf whose workspace
+is at trees/p3n4 and whose metafiles are found in utilitys/p3 (Yes, I know how
+to spell the plural of &quot;utility&quot;) and SUNWjunk whose workspace is
+found in trees/p9n10 and whose metafiles are found in utilitys/p10.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1><a name="_Toc513966243">Requirements</a></h1>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Certain parameters must be defined in each patch package
+pkginfo file. They may be supplied by the user or they may be inserted by this
+utility as desired.<span style="mso-spacerun: yes">  </span>(NOTE: Label
+substitution is provided for all scripts except class action scripts).<span
+style="mso-spacerun: yes">  </span>These parameters are all configurable and
+therefore only the general parameter is used here.<span style="mso-spacerun:
+yes">  </span>For example, if this is a patch from Bob's Software company and
+the parameter Patch_label is configured in buildpatch.conf as</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoToc4>Patch_label=BOBS_PATCHID</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>then the Bob's engineer could insert the following entry
+into the checkinstall script :</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoToc4>if [ $Patch_label = &quot;11476-56&quot; ]; then</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The resulting entry after executing buildpatch on the
+package will be</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoToc4>if [ $BOBS_PATCHID = &quot;11476-56&quot; ]; then</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Since these files would only be for Bob's use, this doesn't
+look like a very important function, but it is a collateral feature which some
+user may seek to exploit. In the interest of general application, this text
+will use the general-purpose label name instead of some company-centric term
+like SUNW_OBSOLETES.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The following parameter is required :</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoToc4>Patch_label</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The following parameter is required under certain
+circumstances</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoBodyTextIndent>Obsoletes_label<span style="mso-spacerun: yes">  
+</span>a space separated list of patches and/or supplements which are made
+obsolete by this patch</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The following parameter is required under certain
+circumstances</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoBodyTextIndent>Obsoletes_label<span style="mso-spacerun: yes">  
+</span>a space separated list of patches and/or supplements which are made
+obsolete by this patch</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The following parameters are reserved and may not be used in
+any pkginfo file delivered as a patch.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoToc4>PATCHLIST, PATCH_OBSOLETES</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h4><a name="_Toc513966244">Directory Structure of this Utility</a></h4>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This utility is provided as a directory containing all
+required files. In the included &quot;files&quot; directory are the scripts
+that are used in the construction of each patch package. Specialized
+functionality may be merged into these scripts or new scripts may be written as
+shown below. These scripts must ellicit patch behavior as defined in Sun Spec
+950-2686-01. Any special or merged scripts are inserted into the install
+directory for inclusion in the patch instead of the default scripts.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The minimal buildpatch looks like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>buildpatch<span
+style="mso-spacerun: yes">    </span>buildpatch.conf<span style="mso-spacerun:
+yes">    </span>checklist<span style="mso-spacerun: yes">    </span>files</p>
+
+<p class=MsoToc4><span style="mso-spacerun:
+yes">                                               </span><span
+style="mso-spacerun: yes">                       </span>/\</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun:
+yes">                                                      
+</span>directory<span style="mso-spacerun: yes">    </span>package</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The directory under the files directory called
+&quot;directory&quot; is for the scripts that will be used in construction of a
+directory format patch. The scripts in the &quot;package&quot; directory are
+used in construction of the package format patch. The directory to use is
+selected with the &quot;-f&quot; argument to buildpatch.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For a few weeks it was thought that the patch designer could
+provide script fragments that would be automatically merged into the default
+scripts. This may be permitted in some future release, but the restrictions
+required for such scripts would be complicated. For now, it's probably better
+to require the patch designer to look over the whole default script in the
+&quot;files&quot; directory and assess how specific modifications effect the
+overall functionality with his/her own eyes.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h4><a name="_Toc513966245">Procedure Scripts</a></h4>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>All of the scripts provided in the &quot;files/patch&quot;
+directory which may be used by the old architecture contain a section that
+looks like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>if [ &quot;$PATCH_PROGRESSIVE&quot;
+= &quot;true&quot; ]; then</p>
+
+<p class=MsoNormal style='margin-left:.5in'># If this is being used in an
+old-style patch, insert</p>
+
+<p class=MsoNormal style='margin-left:.5in'># the old-style script commands
+here.</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>#XXXOld_ScriptXXX#</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>exit 0</p>
+
+<p class=MsoNormal style='margin-left:.5in'>fi</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Any special behavior required for a patch which may be
+installed to a Solaris 2.4 or older system should be manually inserted into
+this section. If a 2.4 patch requires a special preinstall script, copy the
+default preinstall script from the appropriate &quot;files&quot; directory into
+the &quot;install&quot; directory for the package requiring the script.<span
+style="mso-spacerun: yes">  </span>Put the special commands that would be part
+of the old-style preinstall script into the marked section of the copied
+preinstall script. By inserting the special script into the install directory,
+you inform buildpatch that this special preinstall script is to be used instead
+of the default.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>When installing to a Solaris 2.5 or newer system, if
+additional operations are required beyond those normally provided, the
+recommended place for these package-specific commands is marked in this way:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'># If additional operations are
+required for this package, place</p>
+
+<p class=MsoNormal style='margin-left:.5in'># those package-specific commands
+here.</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoToc4>#XXXSpecial_CommandsXXX#</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Based upon these markers, modify any script that needs
+modifying and place the special script into the appropriate install directory.
+As with the old-style section above, a &quot;postinstall&quot; script in the
+install directory overwrites the default postinstall script; an i.none script
+in the install directory overwrites the default install class action script for
+the &quot;none&quot; class. Only those scripts that need to be different from
+the default scripts need be stored in the install directory. As a company
+develops some experience with this method, a central repository could be
+constructed of standard variations on these scripts for automatic inclusion as
+the need arises.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h4><a name="_Toc513966246">Class Action Scripts</a></h4>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Since class action scripts are a little more complicated, up
+to three different versions may be required in order to correctly patch an
+installed package. If the package is just delivering regular files, the default
+class action script (i.script) will do the whole job, but if the file has to be
+installed in a special way, you will need to write these scripts.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The number of files is unfortunate, but the scripts
+themselves don't need to be very complicated. Here's what the scripts may look
+like for the class &quot;drvlst&quot;.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>i.drvlst</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This is the install class action script required to add a
+line to an editable file which may or may not exist at patch time (perhaps it
+may have been created by a prior patch).</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><i>EXAMPLE</i>:</p>
+
+<p class=MsoNormal style='margin-left:.5in'># i.drvlst</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoToc4>pn=$$</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>if [ -n
+&quot;$PATCH_BUILD_DIR&quot; -a -d &quot;$PATCH_BUILD_DIR&quot; ]; then</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>BUILD_DIR=&quot;$PATCH_BUILD_DIR/$PKGINST.$PATCH_PID&quot;</p>
+
+<p class=MsoNormal style='margin-left:.5in'>else</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>BUILD_DIR=&quot;$PKG_INSTALL_ROOT/var/tmp/$PKGINST.$PATCH_PID&quot;</p>
+
+<p class=MsoNormal style='margin-left:.5in'>fi</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>FILE_DIR=$BUILD_DIR/files</p>
+
+<p class=MsoNormal style='margin-left:.5in'>RELOC_DIR=$FILE_DIR/reloc</p>
+
+<p class=MsoNormal style='margin-left:.5in'>ROOT_DIR=$FILE_DIR/root</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>BD=${BASEDIR:-/}</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>cd $BD</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>while read src dst; do</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>#</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span># If we have to undo the edits to this file later, store</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span># the source line we inserted for the undo script.</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>#</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun:
+yes">        </span>if [ &quot;${PATCH_NO_UNDO}&quot; != &quot;true&quot; ];
+then</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun:
+yes">            </span>if [ &quot;$BD&quot; = &quot;/&quot; ]; then</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun:
+yes">                </span>FS_Path=`echo $dst | sed s@&quot;$BD&quot;@@`</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun:
+yes">            </span>else</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun:
+yes">                </span>FS_Path=`echo $dst | sed s@&quot;$BD/&quot;@@`</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun:
+yes">            </span>fi</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun:
+yes">        </span>Build_Path=&quot;$RELOC_DIR/$FS_Path&quot;</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun:
+yes">        </span>cd $FILE_DIR</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>#</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">  
+</span><span style="mso-spacerun: yes"> </span># Construct the prototype file
+entry. We don't care</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span># if we are actually going to add a line or not</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span># because the undo script is idempotent. (It isn't</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span># always this easy)</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>#</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>echo &quot;e drvlst $FS_Path=$Build_Path 0644 bin bin&quot; \</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span>&gt;&gt; $BUILD_DIR/prototype</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span># Now copy over the file</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>DirName=`dirname $Build_Path`</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>mkdir -p $DirName</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>cp -p $src $Build_Path</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>cd $BD</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span>fi</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span>if [ -f $dst ]; then</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>#</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span># If the file is already there, then add this line</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span># only if it isn't already there</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>#</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>line=`cat $src`</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>nawk -v test=$line '</p>
+
+<p class=MsoNormal style='margin-left:.5in'>BEGIN { found = 0 }</p>
+
+<p class=MsoNormal style='margin-left:.5in'>{</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span>if ($0 == test) { found = 1 }</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span>{ print }</p>
+
+<p class=MsoNormal style='margin-left:.5in'>}</p>
+
+<p class=MsoNormal style='margin-left:.5in'>END {</p>
+
+<p class=MsoNormal style='margin-left:.5in'>if (found == 0) { print test }</p>
+
+<p class=MsoNormal style='margin-left:.5in'>} ' &lt;$dst &gt; $dst.$pn</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>mv $dst.$pn $dst</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span>else<span style="mso-spacerun: yes">    </span># otherwise, initialize
+it to this line</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>cat $src &gt; $dst</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span>fi</p>
+
+<p class=MsoNormal style='margin-left:.5in'>done</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>exit 0</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>u.drvlst (required if i.drvlst edits files rather than
+replacing them)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This is also an install class action script; but, this is
+responsible for restoring the editable file to the state it was in prior to
+installing the patch. It will recieve a source/destination pair like any
+install class action script and the source will be the original file that
+i.drvlst modified and the destination will be the patched file. In short,
+source and destination functions are reversed for u.drvlst with respect to
+i.drvlst</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><i>EXAMPLE</i>:</p>
+
+<p class=MsoNormal style='margin-left:.5in'># u.drvlst</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>pn=$$</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>while read src dst; do</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span># If the file is there, delete this line</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span>if [ -f $dst ]; then</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>line=`cat $src`</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>nawk -v test=$line '</p>
+
+<p class=MsoNormal style='margin-left:.5in'>{</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span>if ($0 == test) { next }</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span>{ print }</p>
+
+<p class=MsoNormal style='margin-left:.5in'>} ' &lt;$dst &gt; $dst.$pn</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes">   
+</span>mv $dst.$pn $dst</p>
+
+<p class=MsoNormal style='margin-left:.5in'><span style="mso-spacerun: yes"> 
+</span>fi</p>
+
+<p class=MsoNormal style='margin-left:.5in'>done</p>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>exit 0</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>r.drvlst (optional - not recommended)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This is a remove class action script intended to replace the
+installed remove class action script. If the patch is backed out, this script
+will not be restored to its original form! This means that if it is necessary
+to replace this script, the replacement MUST be backward compatible with the
+original.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h4><a name="_Toc513966247">Backout Scripts</a></h4>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Various scripts may be provided for the purpose of backing
+out the patch. The default scripts are all identified in the &quot;files&quot;
+directory by the &quot;patch_&quot; prefix.<span style="mso-spacerun: yes"> 
+</span>These scripts combined with any &quot;u.&quot; class action scripts are
+used to construct the backout package.<span style="mso-spacerun: yes"> 
+</span>It is not recommended that the &quot;patch_&quot; scripts be modified by
+the patch builder since the person who wrote them barely understands how they
+work.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h6>Utility Configuration</h6>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The buildpatch utility can be configured to operate in
+specific ways and to default to specific values using a configuration file in
+the directory containing the buildpatch utility. Set the values in
+buildpatch.conf to make sure the configuration agrees with your intended
+configuration. Here are the meanings of the configuration parameters.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Checklist</b>=[&quot;<i>yes</i>&quot;, &quot;<i>no</i>&quot;,
+&quot;<i>ask</i>&quot;] (default: &quot;ask&quot;)</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>yes</i>&quot;<span
+style="mso-spacerun: yes">   </span>- display this checklist whenever
+buildpatch is called</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>no</i>&quot;<span
+style="mso-spacerun: yes">    </span>- do not display the checklist</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>ask</i>&quot;<span
+style="mso-spacerun: yes">   </span>- offer the checklist</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Patch_label</b>=[&quot;<i>string_value</i>&quot;]
+(default: &quot;PATCHID&quot;)</p>
+
+<p class=MsoToc1><span style="mso-spacerun: yes"> </span>&quot;<i>string_value</i>&quot;<span
+style="mso-spacerun: yes">  </span>- string to use for the patch number (eg:
+SUNW_PATCHID)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Ask_obsoletes</b>=[&quot;yes&quot;, &quot;no&quot;]
+(default: &quot;yes&quot;)</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;yes&quot;<span
+style="mso-spacerun: yes">   </span>- ask for a list of obsoleted patches</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;no&quot;<span
+style="mso-spacerun: yes">    </span>- assume only implied obsoletion</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Obsoletes_label</b>=[&quot;<i>string_value</i>&quot;]
+(default: &quot;OBSOLETES&quot;)</p>
+
+<p class=MsoBodyTextIndent2>&quot;<i>string_value</i>&quot;<span
+style="mso-spacerun: yes">  </span>- string to use as parameter representing
+the list of patches which this obsoletes (eg: &quot;SUNW_OBSOLETES&quot;)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Ask_requires</b>=[&quot;<i>yes</i>&quot;, &quot;<i>no</i>&quot;]
+(default: &quot;yes&quot;)</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>yes</i>&quot;<span
+style="mso-spacerun: yes">   </span>- ask for a list of required patches</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>no</i>&quot;<span
+style="mso-spacerun: yes">    </span>- assume no required patches</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Requires_label</b>=[&quot;<i>string_value</i>&quot;]
+(default: &quot;REQUIRES&quot;)</p>
+
+<p class=MsoBodyTextIndent2>&quot;<i>string_value</i>&quot;<span
+style="mso-spacerun: yes">  </span>- string to use as parameter representing
+the list of patches which this requires (eg: &quot;SUNW_REQUIRES&quot;)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Ask_incompat</b>=[&quot;<i>yes</i>&quot;, &quot;<i>no</i>&quot;]
+(default: &quot;yes&quot;)</p>
+
+<p class=MsoNormal style='margin-left:.25in'><span style="mso-spacerun:
+yes"> </span>&quot;<i>yes</i>&quot;<span style="mso-spacerun: yes">   </span>-
+ask for a list of incompatible patches</p>
+
+<p class=MsoNormal style='margin-left:.25in'><span style="mso-spacerun:
+yes"> </span>&quot;<i>no</i>&quot;<span style="mso-spacerun: yes">    </span>-
+assume no incompatible patches</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Incompat_label</b>=[&quot;<i>string_value</i>&quot;]
+(default: &quot;INCOMPAT&quot;)</p>
+
+<p class=MsoBodyTextIndent2>&quot;<i>string_value</i>&quot;<span
+style="mso-spacerun: yes">  </span>- string to use as parameter representing
+the list of patches with which this is incompatible (eg:
+&quot;SUNW_INCOMPAT&quot;)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Ask_fmt</b>=[&quot;<i>yes</i>&quot;, &quot;<i>no</i>&quot;]
+(default: &quot;yes&quot;)</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>yes</i>&quot;<span
+style="mso-spacerun: yes">   </span>- ask for the patch format</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>no</i>&quot;<span
+style="mso-spacerun: yes">    </span>- use the default patch format</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Default_fmt</b>=[&quot;<i>directory</i>&quot;,
+&quot;<i>package</i>&quot;] (default: &quot;directory&quot;)</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>directory</i>&quot;-
+containing one or more packages</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>package</i>&quot; -
+patching only one package</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Ask_patch_dir</b>=[&quot;<i>yes</i>&quot;, &quot;<i>no</i>&quot;]
+(default: &quot;yes&quot;)</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>yes</i>&quot;<span
+style="mso-spacerun: yes">   </span>- ask for the path to the patch
+construction directory</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>no</i>&quot;<span
+style="mso-spacerun: yes">    </span>- use the default construction directory</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Patch_dir_dflt</b>=[&quot;<i>string_value</i>&quot;]
+(default: &quot;/var/spool/patch&quot;)</p>
+
+<p class=MsoToc1>&quot;<i>string_value</i>&quot;<span style="mso-spacerun:
+yes">  </span>- path to the directory in which patches will be constructed</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Patch_Overwrite</b>=[&quot;<i>yes</i>&quot;, &quot;<i>no</i>&quot;,
+&quot;<i>ask</i>&quot;] (default: &quot;no&quot;)</p>
+
+<p class=MsoNormal style='margin-left:.25in'><span style="mso-spacerun:
+yes"> </span>&quot;<i>yes</i>&quot;<span style="mso-spacerun: yes">   </span>-
+if this patch is already present, overwrite it</p>
+
+<p class=MsoNormal style='margin-left:.25in'><span style="mso-spacerun:
+yes"> </span>&quot;<i>no</i>&quot;<span style="mso-spacerun: yes">    </span>-
+if this patch is already present, quit</p>
+
+<p class=MsoNormal style='margin-left:.25in'><span style="mso-spacerun:
+yes"> </span>&quot;<i>ask</i>&quot;<span style="mso-spacerun: yes">   </span>-
+if this patch is already present, ask</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Patchvers_pfx</b>=[&quot;<i>string_value</i>&quot;]
+(default: &quot;-&quot;)</p>
+
+<p class=MsoBodyTextIndent2>&quot;<i>string_value</i>&quot;<span
+style="mso-spacerun: yes">  </span>- the ASCII string separating the patch base
+number from the version (eg: &quot;-&quot; in 101345-02; the second version of
+patch base code 101345)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>Patchstrict_str</b>=[&quot;<i>string_value</i>&quot;]
+(default: &quot;R&quot;)</p>
+
+<p class=MsoBodyTextIndent2>&quot;<i>string_value</i>&quot;<span
+style="mso-spacerun: yes">  </span>- the ASCII string which indicates patch
+number to be a restricted patch. (eg: the &quot;R&quot; in R101345-02; the
+trial release of patch 101345-02)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>PATCHNO_FMT</b>=[&quot;-r <i>string_value</i> [-r
+string_value...]&quot;] </p>
+
+<p class=MsoNormal style='margin-left:.25in'>(default: &quot;-r
+^[0-9][0-9][0-9][0-9][0-9][0-9]$Patchvers_pfx\</p>
+
+<p class=MsoNormal style='margin-left:.25in'><span style="mso-spacerun:
+yes"> </span>[0-9][0-9]$ -r ^$Patchtemp_str[0-9][0-9][0-9][0-9][0-9]\</p>
+
+<p class=MsoNormal style='margin-left:.25in'><span style="mso-spacerun:
+yes"> </span>[0-9]$Patchvers_pfx[0-9][0-9]$&quot;)</p>
+
+<p class=MsoNormal style='margin-left:.25in'>&quot;<i>string_value</i>&quot;<span
+style="mso-spacerun: yes">  </span>- a<span style="mso-spacerun: yes"> 
+</span>sequence of regular expressions representing the acceptable formats for
+the patch number. The parameters Patchvers_pfx and Patchtemp_str may be
+included in the expression. Each regular expression will begin with the string
+&quot;-r &quot;.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>PATCH_UTILITIES_PATH</b>=[&quot;<i>path</i>&quot;]
+(default: &quot;PatchTools&quot;)</p>
+
+<p class=MsoBodyTextIndent2>&quot;<i>path</i>&quot;<span style="mso-spacerun:
+yes">  </span>- this is the path to the directory containing installpatch and
+backoutpatch. If relative, the directory containing the buildpatch utility is
+used as the starting point.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l4 level1 lfo18;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><b>PATCH_META_PATH</b>=[&quot;<i>path</i>&quot;]
+(default: &quot;none&quot;)</p>
+
+<p class=MsoBodyTextIndent style='margin-left:.25in'>&quot;<i>path</i>&quot;<span
+style="mso-spacerun: yes">  </span>- this is the path to the directory
+containing patch-specific metafiles such as prepatch and README. If relative,
+the current directory is used as the starting point. This may include the
+arameter $PatchNum to allow automatic selection based upon patch number.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1><a name="_Toc513966248">SEE ALSO</a></h1>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>installpatch(1), backoutpatch(1), 950-2686-01 (Solaris Patch
+Architecture)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1><a name="_Toc513966249">DIAGNOSTICS</a></h1>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b> : Cannot create directory
+&lt;directory_name&gt;.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>For some reason, buildpatch cannot create the indicated
+directory. Remember the restrictions NFS places on a root user creating
+filesystem objects in a home directory. That is often the cause of this
+message.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: Cannot write to &lt;filename&gt;.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>Buildpatch did not have permission to write to the target
+file.<span style="mso-spacerun: yes">  </span>See explanation above.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: Cannot find &lt;filename&gt;.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>The indicated file was not found in the designated
+directory.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: Conflict between prototype file and deletes
+list - they install &lt;filename&gt; and then delete the same file.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>An identical entry, &lt;filename&gt;, was found in the
+prototype file and in the deletes list. This indicates an error in the
+construction of one of these files since anything which exists in both will not
+be laid down on the filesystem.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: &lt;patchnum&gt; is an invalid patch number.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>The patch number, &lt;patchnum&gt;, does not comply with the
+regular expression syntax specified by default or in the configuration file.
+Check the regular expressions used to define PATCHNO_FMT.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b> : The sed, awk and build class are not permitted
+in this version of buildpatch because the undo process is not yet figured out.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>At this time, no sed, awk or build classes are permitted in
+a patch.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b> : All editable files must be installed, removed
+and undone using specialized class action scripts. No script has been detected
+for editable files in the &lt;classname&gt; class.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>There are editable files (ftype e) of class
+&lt;classname&gt; in the patch for which no associated class action script has
+been provided in the install directory.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b> : An editable file is included in the class
+which contains ordinary files.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>Some class has been provided which includes both editable
+and ordinary files. The ordinary files need to be separated into the none class
+or a class with a different class action script.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: patch number tokens are not all specified.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>Both Patchvers_pfx and Patchstrict_str must be specified as
+non-null values</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: No packages have been provided to patch.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>At least one package must be provided to the buildpatch
+utility.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: A progressive instance patch must include
+patch levels.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>The &quot;-O&quot; argument was formatted like a
+&quot;-P&quot; argument.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: Only directory format patches support
+progressiveinstance patching.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>A &quot;package&quot; format patch was requested with a
+&quot;-O&quot; argument.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: Cannot construct object list from the contents
+of&lt;proto_area&gt;.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>In executing a find on the directory &lt;proto_area&gt; an
+error was returned preventing construction of a useable object list.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: Prototype entry &lt;entry&gt; collides with a
+differing entry in the specified prototype file.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>A prototype file has been provided which contains an entry
+usually constructed by buildpatch (eg: the pkginfo entry). The entry constructed
+by buildpatch does not match that provided in the indicated prototype file.
+Remember, buildpatch constructs all ftype &quot;i&quot; entries in the
+prototype file.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: Environment entry &lt;entry&gt; collides with
+a differing entry in the specified pkginfo file.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>The buildpatch utility has found an entry in the pkginfo
+file which incorrectly defines a parameter which is usually constructed by
+buildpatch (eg: OBSOLETES). Remember that buildpatch constructs all
+patch-unique entries for the pkginfo files.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: Could not find installpatch and backoutpatch
+in &lt;directory_name&gt;.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>The PATCH_UTILITIES_PATH does not indicate a directory which
+contains installpatch or backoutpatch.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: &lt;pkgname&gt; : invalid package name.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>The indicated package name does not comply with the package
+naming conventions specified in the SVID ABI.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: Cannot construct package &lt;pkgname&gt;. </p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>The pkgmk utility returned an error while trying to
+construct the patch package &lt;pkgname&gt;. The nature of the error is
+indicated by the displayed error message.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: Cannot construct package &lt;pkgname&gt;. Run
+it again with the &quot;-v&quot; option to see details.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>The pkgmk utility returned an error while trying to
+construct the patch package &lt;pkgname&gt;. The nature of the error has not
+been displayed, however, because buildpatch was not run with the &quot;-v&quot;
+(verbose) argument.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>ERROR</b>: Couldn't construct stream-format package in
+&lt;directory_name&gt;.</p>
+
+<p class=MsoNormal><b>Explanation</b>:</p>
+
+<p class=MsoNormal>The pkgtrans utility returned an error while trying to
+process the patch packages into stream format.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1><a name="_Toc513966250">NOTES</a></h1>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Since the patch number format is established using a regular
+expression which is read directly into the environment. Appropriate escaping is
+necessary in order to prevent buildpatch from matching entries in the local
+directory that match the expression. The problem would if buildpatch.conf
+contained the entry:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoToc4>PATCHNO_FMT=&quot;-r [0-9][0-9][0-9]-[0-9]&quot;</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>and there were directory entries in the buildpatch directory
+that look like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:.5in'>102-2</p>
+
+<p class=MsoNormal style='margin-left:.5in'>103-4</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>As buildpatch read in the environment, the shell would
+evaluate the regular expression and hand buildpatch the following:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoToc4>PATCHNO_FMT=&quot;-r 102-2 103-4&quot;</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For this reason, the regular expression must be bounded on
+both ends correctly.<span style="mso-spacerun: yes">  </span>This inhibits
+interpretation by the shell during the initial read. The correct version of the
+above assignment is:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoToc4>PATCHNO_FMT=&quot;-r ^[0-9][0-9][0-9]-[0-9]$&quot;</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

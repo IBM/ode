@@ -1,0 +1,919 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Ernest Crvich">
+   <meta name="GENERATOR" content="Mozilla/4.75 [en] (WinNT; U) [Netscape]">
+   <title>ODE MakeMake</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<h1>
+ODE MakeMake</h1>
+Open Development Environment
+<br>MakeMake
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<center>
+<p>
+<hr SIZE=6></center>
+
+<h2>
+Contents</h2>
+
+<ul>
+<h3>
+<a href="#What is MakeMake">What is MakeMake?</a></h3>
+
+<h3>
+<font size=+1><a href="#Requirements">Software Requirements</a></font></h3>
+
+<h3>
+<a href="#Building MMDemo">Building the MakeMake demo</a></h3>
+
+<ul><a href="#Building">Building</a>
+<br><a href="#Setup">Setup</a>
+<br><a href="#Running">Running</a></ul>
+
+<h3>
+<a href="#Using MMDemo">Using the MakeMake demo</a></h3>
+
+<ul><a href="#DemoSyntax">Syntax</a>
+<br><a href="#DemoParameters">Parameters</a>
+<br><a href="#DemoExample">Example</a></ul>
+
+<h3>
+<a href="#Using MakeMake">Using MakeMake</a></h3>
+
+<ul><a href="#Syntax">Syntax</a>
+<br><a href="#Parameters">Parameters</a>
+<br><a href="#Config File">Config file</a>
+<br><a href="#GUI Usage">GUI usage</a>
+<ul><a href="#Control Window">Control window</a>
+<ul><a href="#Menu Items">Menu items</a>
+<br><a href="#Start Directory">Start directory</a>
+<br><a href="#Start Button">Start button</a>
+<br><a href="#Status">Status indicator</a></ul>
+<a href="#Verification Window">Verification window</a>
+<ul><a href="#Current Makefile">Current makefile</a>
+<br><a href="#Previewer">Previewer</a>
+<br><a href="#ODE Variables">ODE variable controls</a>
+<br><a href="#Advanced Button">Advanced button</a>
+<br><a href="#Completion Buttons">Completion buttons</a></ul>
+<a href="#Advanced Verification Window">Advanced verification window</a>
+<ul><a href="#Target Variable Controls">Target-specific variable controls</a>
+<br><a href="#Custom Variable Controls">Custom variable controls</a>
+<br><a href="#Makefile Creation Effects">Effects on makefile creation</a></ul>
+</ul>
+</ul>
+</ul>
+
+<p><br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="What is MakeMake"></a>What is MakeMake?</h2>
+MakeMake exists in two forms: as a user-buildable Java example in the bbexample
+tutorial (MakeMake demo), and as a fully supported ODE tool (MakeMake).
+<p>The MakeMake demo<b> </b>only offers a command line interface, and requires
+the user to alter Java source code to add more features.&nbsp; MakeMake
+is the complete version (source code is not provided), equipped with a
+GUI, a number of additional features and significantly more control.&nbsp;
+Both forms were written to provide new ODE users with a way to auto-generate
+basic ODE makefiles for their project.&nbsp; One of the major hurdles for
+new ODE users is creating the local makefiles since these particular makefiles
+typically only contain variable assignments and therefore require some
+knowledge of the various ODE variables.
+<br>&nbsp;
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">MakeMake is not a makefile maintenance tool; it is a makefile
+creation tool.&nbsp; It does not read or edit existing makefiles, nor does
+it debug makefile problems.&nbsp; Its sole purpose is to get users up and
+running faster with ODE makefiles, so they are able to see what sort of
+content these files should contain.&nbsp;</td>
+</tr>
+</table>
+
+<p>What is now referred to as the demo was the original MakeMake, which
+was designed to be, and still is, command line driven.&nbsp; It fulfilled
+both the need for a non-trivial bbexample Java project and for a simple
+tool to create initial ODE makefiles in customers' non-ODE source trees.&nbsp;
+As more user interest in this tool developed, the need to extend the features
+and add a graphical interface became unavoidable.&nbsp; However, since
+the original MakeMake code still provides a fairly realistic Java example
+for the tutorial, it was left in the bbexample while the enhanced MakeMake
+was developed separately.
+<p>The <a href="#Building MMDemo">Building the MakeMake Demo</a> section
+of this document describes how to build and execute the MakeMake demo in
+the bbexample, while the <a href="#Using MMDemo">Using the MakeMake Demo</a>
+section explains how to use both the MakeMake demo and the full version
+MakeMake.
+<br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Requirements"></a>Software Requirements</h2>
+
+<ul>
+<li>
+JDK 1.1 or later must be installed in order to build and run the MakeMake
+demo, and either JRE 1.1 or JDK 1.1 or later to run MakeMake. (for simplicity,
+the JDK is assumed to be used to run MakeMake for the remainder of this
+document).</li>
+
+<li>
+For MakeMake (but not the demo), the ODE tools jar file (<b>%release_name%_b<i>num</i>_tools.jar</b>,
+where <i>num</i> is the build number) is required and must be added to
+the CLASSPATH environment variable.</li>
+
+<li>
+The Java Swing library <b>swing.jar</b> is necessary for one small piece
+of optional functionality in MakeMake; it is not required, and simply makes
+choosing the initial directory easier.&nbsp; The Swing class library is
+available both as part of Java 1.2 or as part of the JFC class library
+distribution (see <a href="http://www.javasoft.com:80/products/">http://www.javasoft.com:80/products/</a>).</li>
+</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="Building MMDemo"></a>Building the MakeMake demo</h2>
+This section describes how to create the MakeMake demo, how to set up your
+environment to use it, and how to execute the demo from the command line.
+<h3>
+<a NAME="Building"></a>Building</h3>
+The COM subdirectory of the bbexample src tree contains all of the Java
+source code for the MakeMake demo.&nbsp; Note, however, that the MakeMake.jar
+file is created in the src directory itself during the EXPLIB pass.&nbsp;
+Since Makeconf defines BUILDJAVA for all platforms, building the bbexample
+will automatically cause the MakeMake demo to be built.&nbsp; So, simply
+execute build, or <b>mk</b> if using workon, from the src tree to generate
+the <b>MakeMake.jar</b> file; it will be created in the <b>export/classes</b>
+directory of the bbexample.
+<h3>
+<a NAME="Setup"></a>Setup</h3>
+The only setup required is that the <b>MakeMake.jar</b> file must be added
+to your <i>CLASSPATH </i>environment variable before the MakeMake demo
+can be run.&nbsp; You can do this with the command:
+<p><img SRC="unix.gif" ALT="UNIX" height=16 width=31><b><tt> export CLASSPATH=$CLASSPATH:/<i>base</i>/bbexample/export/classes/MakeMake.jar</tt></b>
+<br>where <i>base</i> is the path to the bbexample (the above syntax assumes
+the Korn shell is being used).
+<p><img SRC="windows.gif" ALT="Windows" height=16 width=58><img SRC="os2.gif" ALT="OS/2" BORDER=0 height=16 width=31><b><tt>set
+CLASSPATH=%CLASSPATH%;/<i>base</i>/bbexample/export/classes/MakeMake.jar</tt></b>
+<h3>
+<a NAME="Running"></a>Running</h3>
+To run the MakeMake demo, use the command:
+<p><b><tt>java COM.ibm.makemake.bin.MakeMake <i>parameters</i></tt></b>
+<p>where parameters are zero or more of MakeMake's list of valid <a href="#Parameters">parameters</a>.
+<p>You may want to create a script file as a front end to MakeMake if you
+expect to use it often.&nbsp; An example of such a script for the Korn
+shell would be:
+<p><tt>#!/bin/ksh</tt>
+<br><tt>#</tt>
+<br><tt># Name this script "mkmk", make it executable (chmod +x),</tt>
+<br><tt># and install somewhere in your PATH.</tt>
+<br><tt>#</tt>
+<br><tt># Syntax: mkmk <i>args</i></tt>
+<br><i><tt>#</tt></i>
+<br><tt>java COM.ibm.makemake.bin.MakeMake $*</tt>
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Using MMDemo"></a>Using the MakeMake demo</h2>
+The MakeMake demo is used to generate skeleton ODE makefiles for compiling
+C/C++ and/or Java source code.&nbsp; It produces empty <i>PROGRAMS</i>
+and <i>LIBRARIES</i> variables, and puts all source files found in the
+specified directory into the <i>OBJECTS</i> and/or <i>JAVA_CLASSES</i>
+variables (with the appropriate suffix specification).&nbsp; The MakeMake
+demo assumes the default behavior of most directories in your build tree
+is to only produce object files or classes.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">The user must edit the makefiles created in order to specify
+which ones will create executables and libraries; for these directories,
+the <i>OBJECTS</i> variable name should be changed to OFILES.&nbsp;</td>
+</tr>
+</table>
+
+<p>The file types that the MakeMake demo<b> </b>recognizes by default are
+.c, .C, .cc, and .cpp for C/C++ source code and .java for Java source code.&nbsp;
+You may wish to edit <b>src/COM/ibm/makemake/bin/MakeMake.java</b> and
+add more file types to the processFiles() function if your build tree contains
+a lot of alternate types of source code.&nbsp; This function also contains
+the <i>OBJECTS</i> variable specification mentioned above, so you could
+optionally change that to OFILES if most of your directories produce executables
+or libraries.
+<h3>
+<a NAME="DemoSyntax"></a>Syntax</h3>
+<b>java COM.ibm.makemake.bin.MakeMake</b> [<b>-mfname</b> <i>makefile_name</i>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<b>-sub</b>] [<b>-clobber</b>]
+[<i>ODE options</i>] <i>path</i>
+<p>ODE options: [<b>-info</b>] [<b>-usage | -version | -rev</b>]
+<h3>
+<a NAME="DemoParameters"></a>Parameters</h3>
+
+<dl>
+<dt>
+<b>-mfname </b><i>makefile_name</i></dt>
+
+<dd>
+Specifies an alternate name for the makefiles that the MakeMake demogenerates.&nbsp;
+The default name is makefile.</dd>
+
+<dt>
+<b>-sub</b></dt>
+
+<dd>
+Specifies that the MakeMake demo should process (for example., create makefiles
+within) all subdirectories of <b>path</b>.&nbsp; By default, the MakeMake
+demo<b> </b>only generates a makefile for the <b>path</b> directory.</dd>
+
+<dt>
+<b>-clobber</b></dt>
+
+<dd>
+Specifies that the MakeMake demo should overwrite makefiles if they already
+exist.&nbsp; The default behavior is to append the generated information
+to the end of existing makefiles.</dd>
+
+<dt>
+<b>-path</b></dt>
+
+<dd>
+Specifies the directory in which to create a makefile.</dd>
+</dl>
+
+<h3>
+<a NAME="DemoExample"></a>Example</h3>
+Assume the current directory contains the following files:
+<p><b><tt>foo1.c</tt></b>
+<br><b><tt>foo2.cpp</tt></b>
+<br><b><tt>foo3.bas</tt></b>
+<br><b><tt>foo4.java</tt></b>
+<br><b><tt>foo5.class</tt></b>
+<br><b><tt>foo6.p</tt></b>
+<p>Running the following command:
+<p><b><tt>java COM.ibm.makemake.bin.MakeMake .</tt></b>
+<p>Would produce the following makefile:
+<p><tt>PROGRAMS =</tt>
+<br><tt>LIBRARIES =</tt>
+<p><tt>OBJECTS = foo1${OBJ_SUFF} foo2${OBJ_SUFF}</tt>
+<p><tt>JAVA_CLASSES = foo4${CLASS_SUFF}</tt>
+<p><tt>.include &lt;${RULES_MK}></tt>
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">The .bas and .p files are not included since they are not
+recognized file types. The .class file is not included since it is not
+a source file.&nbsp; It is left to the user to add them if necessary (or,
+optimally, add the ability to recognize them to the Java source code).&nbsp;</td>
+</tr>
+</table>
+
+<p>The <i>PROGRAMS</i> and/or <i>LIBRARIES</i> variables, if used, should
+be defined by the user.&nbsp; If one or both is defined to some target(s),
+then the <i>OBJECTS</i> variable above should be renamed to <i>OFILES</i>.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Using MakeMake"></a>Using MakeMake</h2>
+MakeMake<b> </b>is used to generate ODE makefiles which can export header
+files, compile C/C++ and/or Java source code, and produce executables and
+archive or shared libraries.&nbsp; It can be run in batch (command line)
+mode, but full control over makefile output can only be achieved by using
+the GUI.
+<p>MakeMake starts by obtaining a list of all files in the specified directory
+and filtering out filetypes it doesn't know about.&nbsp; Of the files it
+keeps, their names are placed into the appropriate ODE variables.&nbsp;
+Further customization to the variables that are placed into the makefile
+can be controlled via the GUI.
+<p>The file types that MakeMake<b> </b>recognizes are .h and .hpp for header
+files (which are added to INCLUDES), .c, .C, .cc, and .cpp for C/C++ source
+code (put either in <i>OBJECTS</i> or <i>OFILES</i>) and .java for Java
+source code (stored in JAVA_CLASSES).&nbsp; To add the ability to recognize
+other file types as part of one of these three categories, use the <b>-isuffs</b>,
+<b>-osuffs</b>,
+and <b>-jsuffs</b> flags.&nbsp; All remaining files which aren't recognized
+are stored in a variable called <i>UNKNOWN_FILES</i>.
+<p>To use the GUI, simply do not specify the path argument on the command
+line.
+<h3>
+<a NAME="Syntax"></a>Syntax</h3>
+<b>java com.ibm.ode.MakeMake</b> [<b>-mfname</b> <i>makefile_name</i>]
+[<b>-sub</b>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<b>-nobackup</b>] [<b>-noverify</b>]
+[<b>-guilevel</b> 0|1|2] [<b>-ofiles</b>] [<b>-autoskip</b>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<b>-osuffs </b><i>suffix</i>[,<i>suffix</i>...]]
+[<b>-jsuffs </b><i>suffix</i>[,<i>suffix</i>...]] [<b>-isuffs </b><i>suffix</i>[,<i>suffix</i>...]]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<i>ODE options</i>] [<i>path</i>]
+<p>ODE options<i>:</i> [<b>-info</b>] [<b>-usage | -version | -rev</b>]
+<h3>
+<a NAME="Parameters"></a>Parameters</h3>
+
+<dl>
+<dt>
+<b>-mfname </b><i>makefile_name</i></dt>
+
+<dd>
+Specifies an alternate name for the makefiles that MakeMake<b> </b>generates.&nbsp;
+The default name is <b>makefile.ode</b>.</dd>
+
+<dt>
+<b>-sub</b></dt>
+
+<dd>
+Specifies that MakeMake<b> </b>should process (create makefiles within)
+all subdirectories of path.&nbsp; By default, MakeMake<b> </b>only generates
+a makefile for the path directory.</dd>
+
+<dt>
+<b>-nobackup</b></dt>
+
+<dd>
+Specifies that MakeMake<b> </b>should not backup makefiles if they already
+exist.&nbsp; MakeMake will always overwrite existing makefiles with the
+specified name (see <b>-mfname</b>), so this option controls whether or
+not backups should be made prior to overwriting.&nbsp; The backup filename
+is composed of the makefile name with ".bak" appended.&nbsp; The default
+behavior is to create a backup makefile in directories where a makefile
+already exists.&nbsp; Backup makefiles are silently overwritten.</dd>
+
+<dt>
+<b>-noverify</b></dt>
+
+<dd>
+Specifies that the GUI interface should silently create all makefiles without
+allowing the user to view and/or modify each makefile's contents. This
+parameter is used to allow MakeMake to be run in batch-mode for certain
+directories. This produces behavior that is almost identical to the command
+line interface, so it is rarely used. When MakeMake is run in command line
+mode, this option has no effect.&nbsp; The default GUI behavior is to provide
+interactive control over every makefile's contents.</dd>
+
+<dt>
+<b>-guilevel </b>0|1|2</dt>
+
+<dd>
+Specifies the GUI expertise level.&nbsp; This controls the complexity and
+flexibility of the makefile verification windows. (this option has no effect
+if -noverify is given).&nbsp; If 0 (zero) is given, the level is set to
+novice, which provides control over the most commonly used ODE variables.&nbsp;
+If 1 (one) is given, the level is set to "intermediate", which adds access
+to several more ODE variables and provides the ability to assign custom
+values to the variables.&nbsp; If 2 (two) is given, the level is set to
+"advanced", which adds access to even more ODE variables than the intermediate
+level, provides the same custom value feature, and gives access to a target-specific
+variable list which also allows custom values. If 2 (two) is given, the
+level is set to also provide a mechanism through which custom variables
+(along with their values and comments) can be added.&nbsp; It is assumed
+that users who require (and are capable of) control beyond the advanced
+level will be editing makefiles directly.&nbsp; The default level is 0
+(zero).</dd>
+
+<dt>
+<b>-ofiles</b></dt>
+
+<dd>
+Directs MakeMake to store potential objects (C/C++ source files) in the
+<i>OFILES</i>
+variable rather than the <i>OBJECTS</i> variable.&nbsp; The use of <i>OFILES</i>
+(or target-specific variants) is required in directories where PROGRAMS,
+LIBRARIES, or SHARED_LIBRARIES are built.&nbsp; However, since it is often
+preferable to perform compilation of objects in a separate pass, the default
+behavior is to place all potential objects into the OBJECTS variable.&nbsp;
+The verification GUI provides access to both variables so that reversal
+of the specified behavior can be done on a per-makefile basis.</dd>
+
+<dt>
+<b>-autoskip</b></dt>
+
+<dd>
+If this parameter is given, MakeMake will automatically skip directories
+that already contain makefiles which have the name given to <b>-mfname</b>
+(or the default name if <b>-mfname</b> isn't specified).&nbsp; The default
+is not to skip any directories.</dd>
+
+<dt>
+<b>-osuffs </b><i>suffix[,suffix...]</i></dt>
+
+<dd>
+Adds a list of suffixes to MakeMake's list of known file types (for example,
+.c).&nbsp; The files with the specified suffix(es) are considered to be
+members of the <i>OFILES</i> or OBJECTS variables.&nbsp; More than one
+suffix can be specified by using a comma-separated list; however, do not
+use spaces before or after each comma.</dd>
+
+<dt>
+<b>-jsuffs </b><i>suffix[,suffix...]</i></dt>
+
+<dd>
+Adds a list of suffixes to MakeMake's list of known file types (for example,
+".java").&nbsp; The files with the specified suffix(es) are considered
+to be members of the JAVA_CLASSES variable.&nbsp; More than one suffix
+can be specified by using a comma-separated list; however, do not use spaces
+before or after each comma.</dd>
+
+<dt>
+<b>-isuffs </b><i>suffix[,suffix...]</i></dt>
+
+<dd>
+Adds a list of suffixes to MakeMake's list of known file types (for example,
+".h").&nbsp; The files with the specified suffix(es) are considered to
+be members of the INCLUDES variable.&nbsp; More than one suffix can be
+specified by using a comma-separated list; however, do not use spaces before
+or after each comma.</dd>
+
+<dt>
+<b><i>path</i></b></dt>
+
+<dd>
+Specifies the directory in which to create a makefile.&nbsp; If this parameter
+is not given, the GUI is employed (which uses the current directory as
+the start directory).</dd>
+</dl>
+
+<h3>
+<a NAME="Config File"></a>Config file</h3>
+The options and custom variables may be saved to a configuration file so
+that subsequent invocations of MakeMake will begin in an almost identical
+state.&nbsp; This file is named <b>makemake.cfg</b> and is stored in the
+user's home directory (platform-dependent, but usually derived from the
+environment variable HOME).&nbsp; This file is only created and/or updated
+when the user explicitly selects the "Save settings" item from the File
+menu so it can only be created in GUI mode, but it is read automatically
+every time MakeMake is started, and therefore will be utilized, in batch
+mode.&nbsp; Options given on the command line will override config file
+settings.
+<h3>
+<a NAME="GUI Usage"></a>GUI usage</h3>
+The GUI is employed when no path argument is given on the command line.&nbsp;
+It consists primarily of a control window and a verification window.&nbsp;
+The control window appears when MakeMake begins, and is used both to set
+options and to begin the makefile creation process.&nbsp; The verification
+window appears during the makefile creation process (assuming the "Verify
+contents" option on the control menu is selected) and is used to view and/or
+change each makefile's contents before creation.&nbsp; The verification
+window also provides access to a simple makefile preview window, which
+shows the actual makefile about to be created (exactly as it will appear).&nbsp;
+Finally, if the GUI level is set to Advanced, an additional window is accessible;
+the advanced verification window.&nbsp; This window is used to view/modify
+the target-specific variables as well as add/modify/remove custom variables.
+<p>All example figures shown in this document were taken from the Windows
+NT version.&nbsp; The GUI appearance on other platforms will look more
+like typical windows on that platform.&nbsp; Colors used for most components
+are derived from the user's desktop preferences, although some aspects
+of the GUI use custom color schemes, such as the status message indicator.
+<h4>
+<a NAME="Control Window"></a>Control window</h4>
+The control window consists of a menu, a text box in which the start directory
+is entered, a button to start the makefile creation process, and a status
+message indicator.
+<p><img SRC="mkmk_main.jpg" height=253 width=481>
+<p>Closing the window is equivalent to selecting Exit from the File menu.&nbsp;
+However, if the verification window is up, trying to close the window will
+bring up a confirmation dialog to ensure that pending work isn't lost accidentally.
+<p>The control window will change slightly when the makefile creation process
+is underway.&nbsp; Specifically, the buttons, many of the menu items, and
+the start directory field will become disabled.&nbsp; Several of the menu
+items, however, are still effective while the verification process is taking
+place.&nbsp; Some of them will cause immediate changes, while others will
+not take full effect until the next directory is entered.&nbsp; See the
+individual menu item descriptions below for full details.
+<h4>
+<a NAME="Menu Items"></a>Menu items</h4>
+The File menu consists of the following items:
+<ul>
+<li>
+<b>Start</b> - This starts the makefile creation process, beginning in
+the directory specified in the Start directory text box.&nbsp; If the Verify
+contents option is selected in the Options menu, this causes the verification
+window to appear; otherwise, the makefile(s) are silently created.&nbsp;
+This item is disabled while verification is in progress.&nbsp; The key
+sequence <b>Ctrl-R</b> is equivalent to selecting this menu item.</li>
+
+<li>
+<b>Save settings</b> - This will save all of the current options and custom
+variable settings to the MakeMake config file.&nbsp; This item is enabled
+during the verification process, and takes immediate effect.&nbsp; The
+key sequence <b>Ctrl-S</b> is equivalent to selecting this menu item.</li>
+
+<li>
+<b>Exit</b> - This terminates the MakeMake program.&nbsp; This item is
+enabled during the verification process, and takes immediate effect after
+the user confirms the action.&nbsp; The key sequence <b>Ctrl-Q</b> is equivalent
+to selecting this menu item.</li>
+</ul>
+The Options menu consists of the following items:
+<ul>
+<li>
+<b>Info only</b> - This option is analogous to the command line option
+<b>-info</b>,
+which if selected prevents MakeMake from actually creating any files.&nbsp;
+However, because of the Skip button in the verification window, this option
+is of limited usefulness.&nbsp; This item is disabled while verification
+is in progress.&nbsp; This option is unselected by default.</li>
+
+<li>
+<b>Process subdirectories</b> - This option is analogous to the command
+line option <b>-sub</b>, which if selected tells MakeMak<b>e </b>to traverse
+all subdirectories of the start directory.&nbsp; This item is disabled
+while verification is in progress.&nbsp; This option is unselected by default.</li>
+
+<li>
+<b>Backup makefiles</b> - This option is analogous to the reverse of the
+command line option <b>-nobackup</b>, which if selected will create backups
+for makefiles if they exist during creation; otherwise the old makefile's
+information will not be saved.&nbsp; This item is enabled during the verification
+process, and takes immediate effect.&nbsp; This option is selected by default.</li>
+
+<li>
+<b>Use OFILES</b> - This option is analogous to the command line option
+<b>-ofiles</b>,
+which if selected will store objects in the <i>OFILES</i> variable rather
+than the <i>OBJECTS</i> variable.&nbsp; This item is enabled during the
+verification process, but does not affect the variables for the current
+makefile being verified.&nbsp; This option is unselected by default.</li>
+
+<li>
+<b>Verify contents</b> - This option is analogous to the reverse of the
+command line option <b>-noverify</b>, which if selected will cause the
+verification window to be used during the makefile creation process.&nbsp;
+This item is disabled while verification is in progress.&nbsp; This option
+is selected by default.</li>
+
+<li>
+<b>Autoskip</b> - This option is analogous to the command line option <b>-autoskip</b>,
+which if selected will automatically skip directories that already contain
+ODE makefiles.&nbsp; This item is enabled during the verification process,
+but does not cause the current directory to be skipped automatically.&nbsp;
+This option is unselected by default.</li>
+
+<li>
+<b>GUI level</b> - This submenu is analogous to the command line option
+<b>-guilevel</b>,
+which provides a list of GUI expertise levels (Novice, Intermediate, or
+Advanced) to choose from.&nbsp; This item is enabled during the verification
+process, and takes immediate effect.&nbsp; The default level is Novice.</li>
+
+<li>
+<b>Makefile name...</b> - This option is analogous to the command line
+option <b>-mfname</b>, which brings up a small dialog box in which the
+makefile name can be entered.&nbsp; This item is enabled during the verification
+process, and takes immediate effect.&nbsp; The default name is <b>makefile.ode</b>.</li>
+
+<li>
+<b>Object suffixes...</b> - This option is analogous to the command line
+option <b>-osuffs</b>, which brings up a small dialog box in which the
+suffixes associated with the OFILES and OBJECTS variables can be modified.&nbsp;
+Suffixes should be separated by spaces and/or commas.&nbsp; This item is
+enabled during the verification process, but does not affect the variables
+for the current makefile being verified.</li>
+
+<li>
+<b>Java suffixes...</b> - This option is analogous to the command line
+option <b>-jsuffs</b>, which brings up a small dialog box in which the
+suffixes associated with the JAVA_CLASSES variable can be modified.&nbsp;
+Suffixes should be separated by spaces and/or commas.&nbsp; This item is
+enabled during the verification process, but does not affect the variables
+for the current makefile being verified.</li>
+
+<li>
+<b>Header suffixes...</b> - This option is analogous to the command line
+option <b>-isuffs</b>, which brings up a small dialog box in which the
+suffixes associated with the INCLUDES variable can be modified.&nbsp; Suffixes
+should be separated by spaces and/or commas.&nbsp; This item is enabled
+during the verification process, but does not affect the variables for
+the current makefile being verified.</li>
+</ul>
+The Help menu consists of the following items:
+<ul>
+<li>
+<b>About</b> - This brings up a small dialog with version and copyright
+information.&nbsp; This item is enabled during the verification process,
+and takes immediate effect.&nbsp; The key sequence <b>Ctrl-A</b> is equivalent
+to selecting this menu item.</li>
+</ul>
+
+<h4>
+<a NAME="Start Directory"></a>Start directory</h4>
+The directory where MakeMake begins processing can be specified in two
+ways:
+<ol>
+<li>
+By typing the full path directly into the text dialog.</li>
+
+<li>
+By clicking the Browse button and selecting the desired directory from
+a file dialog.</li>
+</ol>
+
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">To be able to utilize the file dialog, the Java Swing class
+library (swing.jar) must be in the CLASSPATH environment variable when
+MakeMake<b> </b>is invoked.&nbsp; If this library isn't installed and the
+"Browse..." button is pressed, the status message indicator will declare
+that this library needs to be installed.&nbsp; See the <a href="#Requirements">requirements</a>
+section for more information on the Swing library.&nbsp;</td>
+</tr>
+</table>
+
+<h4>
+<a NAME="Start Button"></a>Start button</h4>
+Once the start directory has been chosen, the button labeled START can
+be pressed to initiate the makefile creation process.&nbsp; This is identical
+to choosing Start from the File menu.&nbsp; Note that if the start directory
+cannot be written to, an error message will be issued and processing will
+not start.
+<h4>
+<a NAME="Status"></a>Status indicator</h4>
+At the bottom of the control window, the most recent status message is
+displayed in an appropriate color: green if everything is OK, yellow if
+something is in progress, or red if an error occurred.
+<h3>
+<a NAME="Verification Window"></a>Verification window</h3>
+The verification window consists of a label showing the current makefile
+being verified, the last modified date/time of the makefile (or N/A if
+the makefile doesn't yet exist), a choice box populated with various ODE
+variables, a description of the ODE variable currently selected, a button
+to access the preview window, a set of available and current values for
+the selected ODE variable along with buttons to manipulate the current
+value list, and a set of buttons to finish processing the current makefile.&nbsp;
+If the GUI level is set to Intermediate or Advanced, a text box will be
+available to enter customized values for the selected ODE variable.&nbsp;
+If the GUI level is set to Advanced, an additional button labeled Advanced
+will be visible, which will bring up the advanced verification window.&nbsp;
+Below is an example of the verification window with GUI level set to Advanced:
+<p><img SRC="mkmk_ver1.jpg" height=450 width=400>
+<p>Closing the window is equivalent to pressing the ABORT button.
+<h4>
+<a NAME="Current Makefile"></a>Current makefile</h4>
+The top of the verification window shows which makefile is currently being
+processed.&nbsp; This value will change when the SKIP or SAVE buttons are
+pressed unless there are no more directories to process.
+<h4>
+<a NAME="Previewer"></a>Previewer</h4>
+When the PREVIEW button is pressed, a separate window is displayed which
+shows an exact replica of what the generated makefile will look like if
+the SAVE button is pressed.&nbsp; If further changes are made to the variable
+contents while the preview window is open, the PREVIEW button may be pressed
+again to refresh the preview window's contents.&nbsp; If SKIP or SAVE is
+pressed while the preview window is open, its contents are automatically
+refreshed with the initial results of the next directory's files.&nbsp;
+Below is an example preview window:
+<p><img SRC="mkmk_pre.jpg" height=692 width=589>
+<h4>
+<a NAME="ODE Variables"></a>ODE variable controls</h4>
+The ODE variable control mechanism consists of the variable name choice
+box and the value list boxes.&nbsp; These are used to set the desired values
+of the primary ODE variables typically used in makefiles.
+<h4>
+Variable name choice box</h4>
+In the variable name choice box, a list of preset ODE variables are available
+to choose from.&nbsp; This choice box's available variable list depends
+on the GUI level selected.&nbsp; The Novice level will show only the most
+commonly used variables, and all will have at least one available/suggested
+value to use.&nbsp; The Intermediate and Advanced levels will each add
+several more lesser-used variables to the choice box, many of which have
+no suggested values (hence the need for the custom value entry field).
+<p>When a variable is chosen, many other components in the verification
+window change to reflect the information represented by that variable.&nbsp;
+The variable's description, which appears between the variable choice box
+and the PREVIEW button, is updated to briefly define that variable's purpose;
+these descriptions are included in the resulting makefile as comments that
+precede their respective variable's assignment.&nbsp; Also, the list of
+available values is updated to show suggested values for that variable,
+and the current value list is refreshed with the selected variable's contents.&nbsp;
+Finally, if the advanced verification window is open, and the selected
+variable has available target-specific variations (for example, OFILES),
+that window's target-specific variable choice box, available value list,
+and current value list are also updated.
+<h4>
+Value lists</h4>
+The values assigned to each variable are controlled by both the available/current
+list boxes by using the buttons between them and, if the GUI level is Intermediate
+or Advanced, a custom value entry field.
+<p>Values shown in the available values list can be added to the variable's
+contents by either the ADD or ADD ALL buttons.&nbsp; To add one or more
+values from the available list, simply select the desired values and then
+press the ADD button; the current values list will be updated with the
+new values.&nbsp; To add every value in the available list, regardless
+of what is currently selected, press the ADD ALL button.
+<p>Similarly, values shown in the "Current values" list can be removed
+by using the "REMOVE" and "REMOVE ALL" buttons.&nbsp; To remove one or
+more values from the current list, simply select the desired values and
+press the "REMOVE" button.&nbsp; To remove every value in the current list,
+regardless of what is selected, press the "REMOVE ALL" button.
+<p>If the GUI level is set to Intermediate or Advanced, user-defined values
+may be added to the current list by entering the information in the custom
+value entry box and either pressing the Enter key or the ADD button.&nbsp;
+Note that if values in the available list are selected and the custom value
+box contains data at the time the ADD button is pressed, all values, both
+available and custom, will be added at once.&nbsp; If the Enter key is
+pressed in the custom value box, only the custom value is added.&nbsp;
+Several custom values can be added at once by simply separating each value
+by a space.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" HEIGHT="46" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%" HEIGHT="46">To include spaces in a single value, the value
+must be enclosed in double quotes.</td>
+</tr>
+</table>
+
+<p>When items in the available/current list boxes are selected, those values
+are automatically placed in the custom value box only one value at a time.
+This facilitates adding new values that are slight variations of existing
+values.
+<h4>
+<a NAME="Advanced Button"></a>Advanced button</h4>
+The Advanced button, visible only when the GUI level is Advanced, is used
+to access the advanced verification window, which is described <a href="#Advanced Verification Window">below</a>.
+<h4>
+<a NAME="Completion Buttons"></a>Completion buttons</h4>
+There are three buttons at the bottom of the verification window which
+are used to finish working on the current makefile.&nbsp; These are ABORT,
+SKIP, and SAVE.
+<p>The ABORT button cancels all further makefile creation and closes all
+verification-related windows (the verification, advanced verification,
+and preview windows), returning back to the main control window.&nbsp;
+It does not create the makefile currently being verified.&nbsp; It is not
+a destructive abort; it does not remove makefiles that had already been
+saved earlier in the session.&nbsp; A confirmation dialog will appear to
+verify that the user really wishes to abort processing.
+<p>The SKIP button simply moves on to the next directory's makefile without
+creating the current makefile being verified.&nbsp; If the Ctrl key is
+held down when SKIP is pressed, the current directory plus all of its subdirectories
+will be skipped.
+<p>The SAVE button creates the current makefile using the current values
+of all variables and then moves on to the verification of the next directory's
+makefile.&nbsp; If the Ctrl key is held down when SAVE is pressed, the
+current directory's makefile is created with the current settings and all
+of the subdirectories' makefiles are created in batch mode using default
+information.
+<p>When the last makefile is processed, all verification-related windows
+are closed automatically at which time the main control window should either
+show a status message of READY or an error description if a problem was
+encountered.
+<h4>
+<a NAME="Advanced Verification Window"></a>Advanced verification window</h4>
+The advanced verification window is only available when the GUI level is
+set to Advanced.&nbsp; This window is used to manipulate target-specific
+variables as well as create customized variables.&nbsp; It contains controls
+that are virtually identical to the <a href="#ODE Variables">ODE variable
+controls</a>, as well as a set of controls to add, remove, and view custom
+variables.&nbsp; Below is a an example of this window:
+<p><img SRC="mkmk_ver2.jpg" height=499 width=456>
+<br>&nbsp;
+<h4>
+<a NAME="Target Variable Controls"></a>Target-specific variable controls</h4>
+The manner in which the target-specific variables are manipulated is identical
+to that for the <a href="#ODE Variables">ODE variables</a> in the main
+verification window.&nbsp; The only difference is the type of variables
+being manipulated.&nbsp; In this case, the variable names are composed
+of two parts: the target name and the plain variable name joined with a
+single underscore.&nbsp; These variables are used to more finely control
+certain ODE variables.&nbsp; For example, in the original example for the
+main verification window, there are two values set in the <i>PROGRAMS</i>
+variable: x${PROG_SUFF} and custom.exe.&nbsp; Each of these targets will
+likely be built from different object files.&nbsp; So, it is not possible
+to simply store all object names in the OFILES variable.&nbsp; Instead,
+target-specific versions of OFILES can be used to set which objects are
+used to build each target.&nbsp; In the above example, the x${PROG_SUFF}_OFILES
+variable is currently selected, and two of the objects have been assigned
+to it (y${OBJ_SUFF} and z${OBJ_SUFF}).&nbsp; Presumably, the x${OBJ_SUFF}
+object would be added to this target as well.&nbsp; As for the other target
+(not shown), custom.exe_OFILES might contain, for example, foo${OBJ_SUFF}.
+<p>These variables are accessible only when appropriate.&nbsp; For example,
+in the scenario described above, if the <i>PROGRAMS</i> variable didn't
+contain any values yet, there would be no target-specific <i>OFILES</i>
+variables available.&nbsp; As new values are added to the main variables,
+the available target-specific list will change to reflect these.
+<p>Below is a table showing some examples of variables that allow target-specific
+versions, and the variables used to obtain the target half of the variable's
+full name.( In the above example the variable used to create the first
+half of the x${PROG_SUFF}_OFILES variable was PROGRAMS.)
+<br>&nbsp;
+<table BORDER WIDTH="100%" >
+<tr>
+<td><b>Target-specific variable</b></td>
+
+<td><b>Variables used to obtain the target names</b></td>
+</tr>
+
+<tr>
+<td>OFILES
+<br>EXTRA_LIBS
+<br>EXTRA_OFILES</td>
+
+<td>PROGRAMS, LIBRARIES, SHARED_LIBRARIES</td>
+</tr>
+
+<tr>
+<td>CFLAGS</td>
+
+<td>OFILES, OBJECTS</td>
+</tr>
+
+<tr>
+<td>LDFLAGS</td>
+
+<td>PROGRAMS</td>
+</tr>
+
+<tr>
+<td>SHLDFLAGS</td>
+
+<td>SHARED_LIBRARIES</td>
+</tr>
+
+<tr>
+<td>LIBS</td>
+
+<td>PROGRAMS, SHARED_LIBRARIES</td>
+</tr>
+</table>
+
+<h4>
+<a NAME="Custom Variable Controls"></a>Custom variable controls</h4>
+The custom variable section of the advanced verification window is used
+when the ODE variable and target-specific variable lists do not provide
+access to a variable that needs to be set in a makefile.&nbsp; Once added,
+a custom variable name will be remembered until MakeMake is exited or the
+variable is manually removed with the REMOVE button; this facilitates using
+the same variable in multiple makefiles in a source tree.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" HEIGHT="46" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%" HEIGHT="46">Makefile variables are case-sensitive, so be
+sure to enter the custom variable name in the appropriate case.</td>
+</tr>
+</table>
+
+<p>To add a new variable, enter the variable name in the field labeled
+<b>Name</b>,
+its value in the field labeled <b>Value</b>, an optional comment string
+in the field labeled <b>Comment</b>, select the <a href="ODEMakeReference.htm#VariableAssignment">type
+of assignment</a>, select if it should be included in the current makefile,
+and finally press the ADD/REPLACE button.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" HEIGHT="46" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%" HEIGHT="46">Variables with an empty value are perfectly
+valid.&nbsp; If the variable name entered already exists in the custom
+variable list, its previous information will be replaced with the new settings.&nbsp;</td>
+</tr>
+</table>
+
+<p>To remove a custom variable, there are two options.&nbsp; The first
+is to type the variable name in the <b>Name</b> field, then press the REMOVE
+button.&nbsp; Another way is to select the variable from the custom variable
+choice box.&nbsp; This action will populate the <b>Name</b>, <b>Value</b>,
+and <b>Comment</b> fields with the current settings for that variable.&nbsp;
+The REMOVE button can then be pressed to delete the variable.
+<p>The CLEAR button will simply clear the Name, Value, and Comment fields.&nbsp;
+It does not alter any of the existing variables.
+<p>To change a variable's settings, select the variable name from the custom
+variable choice box.&nbsp; This action populates the various fields with
+the current settings for that variable, which may then be edited as desired.&nbsp;
+When finished, the ADD/REPLACE button must be pressed to update the variable's
+information; otherwise the changes will be lost/ignored.
+<p>When a makefile is saved or skipped (with the SAVE and SKIP buttons
+in the main verification window), the custom variable names, values, comments,
+and assignment types are preserved.&nbsp; However, the makefile inclusion
+checkbox is automatically turned off for all variables.&nbsp; This prevents
+the silent/accidental setting of the same variables in the entire source
+tree.&nbsp; Users who wish to have variable settings apply to the entire
+project should set the variables in Makeconf, not in local makefiles.
+<h4>
+<a NAME="Makefile Creation Effects"></a>Effects on makefile creation</h4>
+Because of the nature of target-specific and custom variables, they are
+added to the makefile in a particular order.&nbsp; The order MakeMake assumes
+is correct for most instances, but there may be cases where the user will
+need to alter the ordering manually outside of MakeMake, for example, with
+a text editor.
+<p>Target-specific variables are always placed after the ".include &lt;${RULES_MK}>"
+line, since variable names are fully parsed (during which variable expansion
+occurs) as they are read.&nbsp; This insures that variable names such as
+"x${PROG_SUFF}_OFILES" is expanded properly, since PROG_SUFF isn't defined
+until after the rules have been processed.
+<p>Custom variables are placed before or after the ".include &lt;${RULES_MK}>"
+line depending on the content of their name.&nbsp; If the name contains
+a dollar sign, it is assumed that some variable from the rules might be
+used, so they are placed after the .include line.&nbsp; Otherwise, the
+variables are inserted before the .include line.
+</body>
+</html>

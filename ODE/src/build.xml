@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+
+<!--
+  ===========================================================================
+     File:  build.xml
+
+  Purpose:  Build Central components build file.
+
+  Primary Targets   Usage
+  ................  ......................................................
+
+  init              Initializes the build tree.
+
+    Notes:  1. Default properties may be overridden using a local build
+               properties file (${basedir}/odeplugin-ant.properties), or a local
+               user properties file (${user.home}/odeplugin-ant.properties).  If
+               both files are present, a value contained in the user file
+               takes precedence.
+
+  ===========================================================================
+-->
+
+
+<project name="odeplugin" default="main" basedir=".">
+  <description>
+
+    Build file for ODE plugin.
+
+  </description>
+
+  <!--
+    =========================================================================
+      Properties
+    =========================================================================
+  -->
+
+  <!-- Define the property file name. -->
+  <property name="propfile"      value="${ant.project.name}-ant.properties"/>
+
+  <!-- Define the jar file names needed for the classpaths. -->
+  <property file="../bcbuild.jarfile.properties"/>
+
+  <!-- Give the user a chance to override without editing this file (and
+       without typing -D each time they run it). -->
+  <property file="${user.home}/${propfile}"/>
+  <property file="${basedir}/${propfile}"/>
+
+  <!-- Define version-specific values. -->
+  <property file="${ant.project.name}-version.properties"/>
+
+  <property environment="bc"/>
+  
+  <!-- Define common build file -->
+  <property name="common.build"  value="../bcbuild.common.xml"/>
+  
+  <property name="project(version)" value="0.9"/>
+
+  <!--
+    * Miscellaneous root location property settings:
+  -->
+  <property name="root"          location="${basedir}"/>
+
+  <!--
+    * Source location property settings:
+  -->
+  <property name="project.source(dirname)"      value="src"/>
+
+  <!--
+    * Export location property settings:
+  -->
+  <property name="project.export(dirname)"      value="exp"/>
+  
+  <!--
+    * Component location property settings:
+  -->
+  <property name="ode.feature"    value="com.ibm.sdwb.ode"/>
+  <property name="ode.core"       value="com.ibm.sdwb.ode.core"/>
+  <property name="ode.help"       value="com.ibm.sdwb.ode.help"/>
+  
+  <!--
+    * Lib path properties:
+  -->
+  <property name="lib"               location="${root}/../lib"/>
+
+  <!--
+    * Image location property settings:
+  -->
+  <property name="ship"              location="${root}/ship"/>
+
+  <!--
+    * File definition properties:
+  -->
+  <property name="ode.core.jar(name)"        value="ODECorePlugin.jar"/>
+  <property name="ode.source.tar(name)"      value="${level}.tar"/>
+
+  <!--
+    =========================================================================
+      Classpaths
+    =========================================================================
+  -->
+  <!--
+    * Common portion of compile classpath.
+  -->
+
+  <path id="project(classpath)">
+    <fileset dir="${eclipse.home}/plugins">
+      <include name="**/*.jar"/>
+    </fileset>
+    
+    <fileset dir="${external.plugins.home}">
+      <include name="**/*.jar"/>
+    </fileset>
+    
+    <fileset dir="${was.home}/AppServer/lib">
+      <include name="**/*.jar"/>
+    </fileset>
+    
+    <pathelement location="${sdwbcommon.jar}"/>
+    <pathelement location="${collabcore.jar}"/>
+  </path>
+
+  <!-- =================================================================== -->
+  <!-- Initializes the build process.                                      -->
+  <!-- =================================================================== -->
+  <target name="init">
+    <copy todir="${root}/${ode.core}">
+      <fileset dir="${ode.zipfiles}">
+        <include name="ode5.0_b1_confs.zip"/>
+        <include name="ode5.0_b1_rules.zip"/>
+      </fileset>
+    </copy>
+
+    <property name="odebldid"		value="${buildcentral.distribute(odeuser)}"/>
+    <property name="odebldpasswd"	value="${odebld.pw}"/>
+    
+    <mkdir dir="${root}/${ode.core}/win32"/>
+    <mkdir dir="${root}/${ode.core}/linux"/>
+    
+    <unzip src="${ode.zipfiles}/ode5.0_b3_x86_win32.zip" dest="${root}/${ode.core}/win32"/>
+    <unzip src="${ode.zipfiles}/ode5.0_b3_x86_linux_2.zip" dest="${root}/${ode.core}/linux"/>
+
+    <mkdir dir="${ship}"/>
+  </target>
+
+  <!--
+    =========================================================================
+       Target:  clean
+
+      Purpose:  Clean build tree.
+    =========================================================================
+  -->
+  <target name="clean"
+          depends="init"
+          description="Removes all target files from build tree">
+          
+    <ant antfile="${common.build}" target="clean">
+      <property name="project(dirname)" value="${ode.core}"/>
+      <property name="project.jar(name)" value="${ode.core.jar(name)}"/>
+    </ant>
+    
+    <delete dir="${ship}"/>
+  </target>
+
+  <target name="tar.source" depends="init">
+    <tar destfile="${root}/${ode.source.tar(name)}">
+      <tarfileset dir="${root}"
+                  mode="755">
+        <include name="**/*"/>
+        <exclude name="${ode.source.tar(name)}"/>
+        <exclude name="build.xml"/>
+      </tarfileset>
+    </tar>
+
+    <ftp server="csbax105.raleigh.ibm.com"
+         remotedir="/ode/build/5.0"
+         userid="${odebldid}"
+         password="${odebldpasswd}">
+      <fileset dir="${root}">
+        <include name="${ode.source.tar(name)}"/>
+      </fileset>
+    </ftp>
+  </target>
+
+  <target name="package.plugins" depends="init">
+    <ant antfile="${common.build}" target="package.plugin">
+      <property name="project(dirname)" value="${ode.core}"/>
+      <property name="project.jar(name)" value="${ode.core.jar(name)}"/>
+      <reference refid="project(classpath)" torefid="project(classpath)"/>
+    </ant>
+    
+    <ant antfile="${common.build}" target="plugin">
+      <property name="project(dirname)" value="${ode.help}"/>
+    </ant>
+  </target>
+  
+  <target name="package.features">
+    <ant antfile="${common.build}" target="feature">
+      <property name="project(dirname)" value="${ode.core}"/>
+      <property name="project.feature(name)" value="${ode.feature}"/>
+    </ant>
+  </target>
+  
+  <target name="update.site.xml">
+    <ant antfile="${common.build}" target="update.site.xml">
+      <property name="project(dirname)" value="${ode.core}"/>
+      <property name="project.feature(name)" value="${ode.feature}"/>
+      <property name="project.category(name)" value="ODE Build"/>
+      <property name="project.category(description)" value="ODE Build"/>
+    </ant>
+  </target>
+
+  <target name="all" depends="tar.source,package.plugins,package.features,update.site.xml"/>
+  
+  <!--
+    =========================================================================
+       Target:  main
+
+      Purpose:  Runs the default build processing.
+    =========================================================================
+  -->
+  <target name="main"
+          description="Perform the default build action.">
+    <echo message="Beginning default build"/>
+    <echo message="  Project:  ${ant.project.name}"/>
+    <echo message="   Script:  ${ant.file}"/>
+    <echo message="   Target:  images"/>
+
+    <antcall inheritAll="true" target="all">
+      <param name="user.home" value="${user.home}"/>
+    </antcall>
+  </target>
+
+</project>

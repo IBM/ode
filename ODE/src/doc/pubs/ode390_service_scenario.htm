@@ -1,0 +1,505 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Wayne Mathis">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>ODE 390 Service Scenario and Process</title>
+</head>
+<body>
+<img SRC="bannerx.gif" ALT="IBM Books" BORDER=0 height=92 width=490>
+<h1>
+<a NAME="Top_Of_Page"></a></h1>
+
+<h1>
+ODE 390 Service Packaging Scenarios</h1>
+Open Development Environment
+<br>ODE 390 Service Packaging Scenarios
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<p>
+<hr>
+<h2>
+Introduction</h2>
+ODE 390 Service Packaging allows users to package ++APARs, ++USERMODs and
+PTFs for shipment to customers.&nbsp; This document provides a scenario
+view of the service solution, and will indicate what steps the user must
+take to build and package a fix, and what steps are taking place behind
+the scenes so the user understands what tools and processes are involved
+in the scenario.
+<h3>
+Basic Environment Requirements</h3>
+Detailed configuration requirements can be found in the <a href="ode390_service_config.htm">ODE
+390 Service Packaging Configuration</a> document.&nbsp; Please read this
+document to understand the configuration of the service environment and
+the files that must be in place before you begin service work.
+<p>ODE 2.5 or higher must be installed with corresponding rules
+<br>A BPS 2.4 or higher server must be installed and configured.
+<br>Build/390 2.4 or higher server and Build/390 2.4 USS client must be
+installed and configured
+<br>Build/390 PDT created and initialized through ODE service transfer
+<br>CMVC95 installed and configured for service based on BPS and Build/390
+configuration requirements
+<p><img SRC="sdwb_tools_pic.gif" height=342 width=442>
+<br>&nbsp;
+<h3>
+An APAR is born</h3>
+When a problem arises at a customer site, Level 2 support creates an APAR
+in RETAIN to report the problem to the IBM service team.&nbsp; The BPS
+server should be configured to poll RETAIN COMP/RELs for your product on
+periodic cycle.&nbsp; When new APARs are pulled in, BPS can open a defect
+in the CMVC95 family if the auto-create-defect option is turned on.&nbsp;
+This automatic defect function opens the defect with the APAR information
+and saves the service team from manually transferring the problem information
+from RETAIN to the CMVC95 family.&nbsp; BPS uses the CMVC95 command line
+to open a defect.&nbsp; When a user views that defect in CMVC95, some of
+the APAR information is directly part of the defect, such as the title
+and severity.&nbsp; A BPS user exit runs on the CMVC95 server to append
+much of the APAR information to the defect view.&nbsp; Now the problem
+must be fixed and tested.
+<h3>
+CMVC95 Defects are used to work on the code</h3>
+The CMVC95 library is used for development of products as well as servicing
+products.&nbsp; Combined with BPS, these two tools can be used to manage
+APARs.&nbsp; Once BPS has opened a defect in CMVC95, the CMVC95 component
+owner is notified that a new defect has been created via CMVC95 notification.&nbsp;
+Once the defect is accepted, a CMVC95 user exit triggers BPS to move the
+APAR state from INTRAN to OPEN in RETAIN, and triggers BPS to update the
+RETAIN status detail to ANALYSIS with an S2Update transaction.&nbsp; Then
+the component owner decides who needs to work on this particular defect,
+and the component owner assigns the defect to the appropriate component
+and/or owner.&nbsp; This triggers a BPS user exit to update the RETAIN
+status detail to ASSIGNMENT with an S2Update transaction.&nbsp; The RETAIN
+status detail is updated to communicate to the customer that the problem
+reported by the APAR is getting some attention.&nbsp; The originator of
+the defect is set by BPS, each RETAIN release configured in BPS has an
+assigned defect originator.
+<p>If the defect is cancelled for any reason, the APAR will also be cancelled
+in RETAIN.&nbsp; If the defect is reopened, the APAR will also be reopened.
+<br>When the developer is ready to fix the problem a track is created in
+CMVC95 for all applicable releases.&nbsp; There may be more than one CMVC95
+release that requires this fix, a track must be created for each one.&nbsp;
+All tracks must be created prior to entering APAR closing text in BPS.&nbsp;
+When tracks are created in BPS, a CMVC95 user exit triggers a RETAIN S2Update
+transaction through BPS to update the RETAIN status detail to FIX.
+<br>&nbsp;
+<h3>
+<b>Working with APARs</b></h3>
+After accepting the defect/APAR and creating the appropriate tracks, the
+developer should create an ODE sandbox for each APAR fix and associate
+each sandbox with a backing build.&nbsp; The associated backing build,
+referred to as the COPYSENT backing build, should have the GA level code
+along with any fixes that have already been shipped to customers.&nbsp;
+The sandbox chain may include the COPYSENT backing build or a test backing
+build, for example.
+<br><font color="#000000">The d</font>eveloper extracts, locks or checks
+out source files in CMVC95 and populates the sandbox with these files.&nbsp;
+Using the ODE workon command, the developer is in the sandbox environment
+and can update and build the code.&nbsp;&nbsp;&nbsp;&nbsp; From here the
+<b>mk</b>
+command will build the changed files in the sandbox.&nbsp; Then the built
+code should be tested in the appropriate environments.&nbsp; Several iterations
+of code updates, builds and testing may occur.
+<p>When the code is working properly the code is checked in to CMVC95.
+There is an info file that must also be checked in for any admin APARs.
+CMVC95 File checkin triggers a CMVC95 user exit to update RETAIN status
+detail to DESIGN/CODE with an S2Update transaction.&nbsp;&nbsp; Fix records
+are created for each CMVC95 component that has files checked in.
+<h3>
+<b><font size=+1>Build APAR Driver and Packages</font></b></h3>
+Once the code is built properly, it must be packaged using the ODE packaging
+commands<b>.&nbsp;&nbsp;</b> The ODE mk package_all command should be used.&nbsp;
+With the appropriate additional parameters, this pass will install built
+files to the ship tree, generate the control files for Build/390's packaging
+tools, and build the APAR in preparation for future ++APAR/++USERMOD and
+PTF builds.&nbsp; ODE uses Build/390 to create and build the APAR delta
+driver that will be used later to define the parts to the Build/390 PDT.&nbsp;
+The APAR delta driver is a Build/390 entity representing the fixed parts
+that can later be packaged into a ++APAR or ++USERMOD, or later be built
+with other APAR delta drivers into a PTF.
+<h4>
+<b>Use BPS to close the APAR</b></h4>
+The fix records should be accepted by the component owners, which means
+they agree to the fix being supplied for this defect.&nbsp; The developer
+can enter the APAR closing text in BPS at any point after the track is
+created in CMVC95.&nbsp; ++HOLD data is captured during APAR closing text
+entry because the developer will
+<br>&nbsp;know at this point whether that type of data is needed for the
+APAR.&nbsp; If this is a cumulative APAR, then all the associated APARs
+included in this fix should be listed.<font color="#3333FF">&nbsp; </font><font color="#000000">BPS
+provides a tab for entering ++HOLD data.&nbsp; The entering of ++HOLD data
+is an optional step.</font>
+<p><font color="#000000">Optionally, a ++APAR can be built at this time
+using the <b>mk package_all</b> command.&nbsp; ODE uses Build/390 to create
+this package.&nbsp; After completing all the code fixes and requisite packaging
+steps, the developer</font> promotes the track to the "review" state in
+CMVC95.&nbsp; When the track is moved to the review state in CMVC95, a
+user exit checks for requisite tracks not already in review state (if this
+is the last track to go to review), and checks for closing text for the
+APAR&nbsp; At this point, the review state is allowed if all requisites
+are satisfied.&nbsp; If all requisites are not satisfied, the review state
+will not be allowed and the track will remain in the fix state.&nbsp; When
+the track against an inService release moves to the review state, BPS initiates
+the APAR closing text review process and submits a RETAIN S2Update for
+Review.&nbsp; The BPS review process is an optional setting for each RETAIN
+release configured in BPS.&nbsp; The review process allows a designated
+reviewer to edit or verify the closing text entered for the APAR.&nbsp;
+If the reviewer would like the developer to update the closing text they
+can make comments in the reviewer comment box and reject the review for
+the developer to change the text.&nbsp; The reviewer can also update the
+text, or just submit the APAR to close if there are no updates to be made.&nbsp;
+Once the review is submitted, the BPS user exit on CMVC95 moves the track
+to the "integrate" state.&nbsp; A CMVC95 user exit repeats the requisite
+check and maps the track to the APAR, and will prevent the integration
+of the track if the requisites are not met.&nbsp; An error is returned
+to BPS, so that the APAR close does not take place out of order.&nbsp;
+When the review is complete, the APAR is closed in RETAIN and defined to
+the Build/390 PDT via CMVC95 user exits.&nbsp; The track is now a candidate
+for a PTF build in BPS.
+<h3>
+<b>Working with PTFs</b></h3>
+Building PTFs actually involves many SDWB components, ODE, Build/390 and
+the PDT, CMVC95, and BPS.&nbsp; The user only sees the ODE and CMVC95 interfaces.&nbsp;
+Before proceeding with this step ensure all the CMVC95 tracks for each
+inService release are in the integrate state.&nbsp; This ensures the APARs
+have been defined to the PDT.
+<p><font color="#000000">For each CMVC95 release there will be one Level
+with a collection of integrated tracks that will define a PTF.&nbsp; The
+group of Levels that represent the Releases of code being fixed must be
+packaged simultaneously for the proper requisites to be maintained.&nbsp;
+The builder checks to see if any of the tracks included in the Level have
+any unsatisfied requisistes.</font>
+<p><font color="#000000">A sandbox is created to hold the PTF source code
+changes and build output for all the APARs being included in this PTF.&nbsp;&nbsp;
+One sandbox is required for each CMVC95 release.&nbsp; CMVC95 Level check
+and the ODE 'mksb' command take care of creating the proper code collection
+and build environment for the PTF.&nbsp; The code is extracted from CMVC95
+to the new sandbox and built with ODE.&nbsp; Once the build successfully
+completes, the builder is ready for PTF numbers for the built sandbox(es).&nbsp;&nbsp;
+This determines which APAR(s) make up the Level(s) that are being built
+and then defines this PTF set to Build/390's PDT.&nbsp; This call is made
+once from any one of the sandboxes, regardless of&nbsp; the number of sandboxes.&nbsp;
+The builder then creates the ++PTF package in the sandbox.&nbsp; ODE interfaces
+with Build/390 to create the PTF package.</font>
+<p><font color="#000000">The ODE user actions to initialize and build a
+PTF are summarized below:</font>
+<ul>
+<li>
+<font color="#000000">Request a set of PTF numbers from RETAIN via Build/390
+and BPS&nbsp;&nbsp;<b> build getptfnums_all&nbsp; </b>This step is issued
+one time for all the sandboxes/releases included in this PTF set.&nbsp;
+Any sandbox can be used, but the same sandbox should be used during the
+later PTF creation step.</font></li>
+
+<li>
+<font color="#000000">Modified ship tree is generated in each sandbox&nbsp;<b>
+build instdep_all</b></font></li>
+
+<li>
+<font color="#000000">Modified metadata files are generated in each sandbox
+with <b>build PKG_TYPE=PTF parse_all</b></font></li>
+
+<li>
+<font color="#000000">Perform steps necessary in each sandbox to prepare
+for building PTFs&nbsp;<b> build PKG_TYPE=PTF runpkgtool_all&nbsp; </b>This
+step will create a new level in CMVC95 for each PTF number in the PTF set.</font></li>
+
+<li>
+<font color="#000000">Build the PTF set.&nbsp; This step is executed once
+time for all sandoxes/releases included in the PTF set, and should be executed
+from the same sandbox the get PTF numbers step was executed.&nbsp; <b>build
+PKG_TYPE=++PTF runpkgtool_all</b></font></li>
+
+<li>
+<font color="#000000">The PTF set is tested, and CMVC Test Records are
+used to indicate PTF test success or failure.&nbsp; If the PTF set is bad,
+then the builder should use the AE (APAR in ERROR) process to create a
+new APAR.</font></li>
+
+<li>
+<font color="#000000">Builder promotes the Level(s) to Certify.</font></li>
+
+<li>
+<font color="#000000">Optionally, a new backing build containing the new
+level of PTF code can be created by the builder.&nbsp; This backing build
+becomes the COPYSENT backing build which is the base for future APAR/PTF
+work.</font></li>
+
+<li>
+<font color="#000000">The test group is now responsible for testing the
+PTF.&nbsp; Upon completion, the CMVC95 test records should be rejected
+or accepted (the Level moves to build).&nbsp; Upon acceptance of the test
+records, the Level for the PTF moves to commit, triggering the Build/390
+user exit to mark the PTF as COPYSENT in RETAIN and transmitting the PTF
+to PTF Control.&nbsp; BPS polls RETAIN for the PTF(s) based on the schedule
+defined by the BPS Administrator.&nbsp; When the PTF(s) are COR/CLOSED,
+BPS promotes the Level to complete.&nbsp; CMVC95 moves tracks for completed
+level to "Complete" state and defects go to "Verify" state.&nbsp; Defect
+originator accepts or rejects defect verification record and the defect
+is "Closed."</font></li>
+</ul>
+
+<h3>
+<font color="#000000">Example scenario</font></h3>
+
+<h5>
+An APAR is born</h5>
+
+<ul>
+<li>
+<font color="#000000">Level 2 creates APAR in RETAIN</font></li>
+
+<li>
+<font color="#000000">BPS poll RETAIN COMP/REL on periodic cycle</font></li>
+
+<li>
+<font color="#000000">BPS automatically opens a defect</font></li>
+</ul>
+
+<h5>
+CMVC95 Defects are used to work on the code</h5>
+
+<ul>
+<li>
+<font color="#000000">Component owner notified of defect via CMVC95 notification</font></li>
+
+<li>
+<font color="#000000">Component owner assigns defect to appropriate component
+and/or owner</font></li>
+
+<li>
+<font color="#000000">Developer accepts defect in CMVC95.&nbsp; BPS moves
+APAR from INTRAN to OPEN in RETAIN, and triggers a RETAIN S2UPdate for
+ANALYSIS</font></li>
+
+<li>
+<font color="#000000">APAR Administrator creates track in CMVC95 for all
+applicable releases.&nbsp; All tracks must be created prior to entering
+closing text.&nbsp; BPS executes an S2Update transaction with FIX.&nbsp;
+For DOC APARs, a track in the appropriate release designated for documentation
+should be created to be updated later.</font></li>
+
+<li>
+<font color="#000000">Developer establishes the correct backing sandbox
+chain for the fix, primarily using information from CMVC95.&nbsp; The sandbox
+chain may include the "COPYSENT backing build" or a test backing build,
+for example.</font></li>
+</ul>
+
+<h5>
+<b>Working with APARs</b></h5>
+
+<ul>
+<li>
+<font color="#000000">Developer creates an ODE sandbox on desired system(s)
+with mksb command and the backing build name.&nbsp;&nbsp;<b> mksb -back
+COPYSENT -sb IC27568.&nbsp;</b> Start here if only a USERMOD is to be created.
+No defect or APAR is needed for USERMOD creation.</font></li>
+
+<li>
+<font color="#000000">Developer extracts, locks or checks out source files
+in CMVC95</font></li>
+
+<li>
+<font color="#000000">Developer works on the sandbox with the workon command,
+<b>workon
+-sb IC27568</b></font></li>
+
+<li>
+<font color="#000000">Developer makes code changes in the appropriate common
+code or os specific code.</font></li>
+
+<li>
+<font color="#000000">Developer issues the mk command from a workon session
+in the sandbox, to build or compile changed files</font></li>
+
+<li>
+<font color="#000000">Developer tests fix and migrate code change to other
+appropriate tracks/releases.&nbsp; Also repeat compile steps as necessary
+for testing purposes and for each os.</font></li>
+
+<li>
+<font color="#000000">Developer checks in code changes into CMVC95. BPS
+sends an S2Update transaction for DESIGN/CODE.&nbsp; Check in changes for
+all appropriate tracks.&nbsp; Delete any tracks that are not needed and
+note deleted tracks in the defect remarks.&nbsp; Do not delete tracks for
+DOC APARs, leave the track empty (since DOC is a code-change closing code.)</font></li>
+</ul>
+
+<h5>
+<b>Build APAR Driver and Packages</b></h5>
+
+<ul>
+<li>
+<font color="#000000">Developer runs the ODE <b>mk package_all</b> command
+with the appropriate parameters to create package.&nbsp;<b> mk package_all
+APAR=IC27568</b> or <b>mk package_all USERMOD=&lt;usermod></b>&nbsp; This
+creates the APAR delta driver for later packaging into a ++APAR, ++USERMOD,
+or PTF.</font></li>
+
+<br><b><font color="#000000">mk package_all APAR=IC27568</font></b>
+<br><font color="#000000">A ++APAR or ++USERMOD package can optionally
+be created after this step.</font>
+<br><b><font color="#000000">mk package_all PKG_TYPE=++APAR APAR=IC27568</font></b>
+<br><font color="#000000">The <b>package_all</b> target triggers the targets
+<b>instdep_all,
+parse_all</b>, and <b>runpkgtool_all</b>.&nbsp; Each of these targets can
+also be run independently.</font>
+<br><font color="#000000"><b>mk instdep_all, </b>then verify the correct
+files have been copied to the inst.images directory</font>
+<br><font color="#000000"><b>mk parse_all&nbsp; PKG_TYPE=APAR</b>, then
+verify the packaging files have been created in the inst.images directory</font>
+<br><font color="#000000"><b>mk runpkgtool_all PKG_TYPE=APAR</b> <b>APAR=IC27568</b>,
+then verify the driver and data.&nbsp; In TSO look for the APAR dataset,
+or use the Build/390 client GUI to show the driver contents.</font>
+<p><font color="#000000">USERMOD processing stops here since it does not
+require an actual APAR</font>
+<br>&nbsp;
+<li>
+<font color="#000000">Developer enters APAR closing text in BPS.</font></li>
+
+<li>
+<font color="#000000">Enter any ++HOLD data in BPS while entering APAR
+closing text (optional).</font></li>
+
+<li>
+<font color="#000000">Optionally the developer can create a ++APAR package
+that is SMPE installable.&nbsp; Use the ODE mk package_all command with
+the appropriate additional parameters to create a ++APAR package.&nbsp;
+ODE uses Build/390 to create the ++APAR package.&nbsp;&nbsp; <b>mk package_all
+PKG_TYPE=++APAR</b></font></li>
+
+<li>
+<font color="#000000">Target dates for PTF can be added at this time in
+CMVC.</font></li>
+
+<li>
+<font color="#000000">Developer completes the fix record for track in CMVC95</font></li>
+
+<li>
+<font color="#000000">Developer promotes track to the "Review" state in
+CMVC95.&nbsp; When the track against an inService release moves to the
+review state, BPS initiates the APAR closing text review process.</font></li>
+
+<li>
+<font color="#000000">If reviewer rejects the APAR in BPS, it goes back
+to the closing text submitter for further work.</font></li>
+
+<li>
+<font color="#000000">If the reviewer submits the APAR closing text for
+APAR close, then BPS moves the track to the "integrate" state in CMVC95.&nbsp;
+The APAR is closed and defined to the Build390 PDT via the Build/390 user
+exit on CMVC95.&nbsp; The track is now a candidate for a PTF build in Build/390.</font></li>
+</ul>
+
+<h5>
+<br>
+<b>Working with PTFs</b></h5>
+
+<ul>
+<li>
+<font color="#000000">Open an Admin APAR to package all fixes in one PTF
+set.</font></li>
+
+<li>
+<font color="#000000">The builder groups the smallest related sets of Tracks
+(in 'integrate' that represent code changes for APARs) into distinct CMVC95
+Levels (one Level for each CMVC95 release).&nbsp; This defines the content
+of the PTF set.</font></li>
+
+<li>
+<font color="#000000">The builder checks the CMVC95 level for outstanding
+requisites with the <b>Level -check &lt;level></b> command</font></li>
+
+<li>
+<font color="#000000">The builder creates the build level ODE sandbox,
+with the <b>mksb &lt;sbname></b> command.&nbsp;&nbsp; Level check and mksb
+take care of creating the proper code collection and build environment
+for the PTF.&nbsp;&nbsp; The Sandbox created should be backed on the "Copysent"
+level of code.&nbsp; There is one Copysent level of code for each product
+release.</font></li>
+
+<li>
+<font color="#000000">The builder extracts the code to the sandbox from
+CMVC95.&nbsp;&nbsp; The builder will also need to extract any previously
+shipped levels to build a cumulative PTF.</font></li>
+
+<li>
+<font color="#000000">The builder performs an ODE build with <b>mk build_all</b>.</font></li>
+
+<li>
+<font color="#000000">The builder initiates a call to get PTF numbers with
+<b>mk&nbsp;
+PKG_API_URL=&lt;bps_server> CMVC_LEVEL=&lt;level> CMVC_RELEASE=&lt;release>
+CMVC_FAMILY=&lt;family> FORCESUP=&lt;ptfs> getptfnums_all.&nbsp;</b> This
+determines which APAR(s) make up the Level that is being built and then
+defines this PTF set to Build/390's PDT.&nbsp; (ROUTED requested through
+BPS when this build command is executed.)</font></li>
+
+<li>
+<font color="#000000">Update and check in "PTF".INFO file and MEMO.PTF
+for admin APAR.&nbsp; This requires a track to be moved from integrate
+to fix to update the parts, and then integrate the track again. Internal
+defect could also be included in this fix, APAR administrator will check
+cross-reference field for other APARs included in this PTF.&nbsp; APAR
+administrator will have to move the track from fix to review to integrate
+manually to get the defect back to the prior state.</font></li>
+
+<li>
+<font color="#000000">Builder promotes the Level to Build</font></li>
+
+<li>
+<font color="#000000">Entire cumulative package is regression tested.</font></li>
+
+<li>
+<font color="#000000">The builder initiates the packaging of the PTF(set)
+with <b>mk PKG_TYPE=PTF PKG_API_URL=&lt;bps_server> CMVC_LEVEL=&lt;level>
+CMVC_RELEASE=&lt;release> CMVC_FAMILY=&lt;family> package_all.</b></font></li>
+
+<br><font color="#000000">These individual commands are recommended to
+see the individual steps run</font>
+<br><font color="#000000">build PKG_TYPE=PTF CMVC_LEVEL=&lt;level> instdep_all</font>
+<br>build PKG_TYPE=PTF CMVC_LEVEL=&lt;level> parse_all
+<br>build PKG_TYPE=PTF CMVC_LEVEL=&lt;level> runpkgtool_all
+<br><font color="#000000">These commands are preparing the sandbox to build
+the PTFs, and creating/updating levels in CMVC95 as needed by the Build/390
+PTF process.</font>
+<li>
+<font color="#000000">Builder promotes the Level to Ready</font></li>
+
+<li>
+<font color="#000000">The builder builds the PTFs using</font></li>
+
+<br><b><font color="#000000">mk PKG_TYPE=++PTF CMVC_LEVEL=&lt;level> runpkgtool_all</font></b>
+<br><font color="#000000">ODE interfaces with Build/390 to create PTF pkg.&nbsp;
+Use the original level name, and not the renamed level in this step.</font>
+<li>
+<font color="#000000">The builder creates a new backing build containing
+this PTF fix. <b>mkbb &lt;newbb>&nbsp;</b>&nbsp; This backing build becomes
+the COPYSENT backing build which is the base for future APAR/PTF work.</font></li>
+
+<li>
+<font color="#000000">Builder promotes the Level(s) to Certify.&nbsp; <b>Level
+-certify &lt;level> -release &lt;release> -family &lt;family></b></font></li>
+
+<li>
+<font color="#000000">If CMVC95 test records are rejected, the Level moves
+to build.&nbsp; If CMVC95 test records are accepted, the Level moves to
+commit (implicitly upon the last test record acceptance), triggering the
+Build/390 user exit to mark the PTF as COPYSENT in RETAIN and transmitting
+the PTF to PTF Control.</font></li>
+
+<li>
+<font color="#000000">BPS polls RETAIN for the PTF(s).&nbsp; When the PTF(s)
+are COR/CLOSED, BPS promotes the Level to complete.</font></li>
+
+<li>
+<font color="#000000">CMVC95 moves tracks for completed level to "complete"
+state and defects go to "verify" state</font></li>
+
+<li>
+<font color="#000000">Defect originator accepts or rejects defect verification
+record and the defect is "closed."</font></li>
+</ul>
+
+</body>
+</html>

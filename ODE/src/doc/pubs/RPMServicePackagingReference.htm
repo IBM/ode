@@ -1,0 +1,589 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="default">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>RPM Service Packaging Reference</title>
+</head>
+<body>
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490>
+<p><b><font size=+3>RPM Service Packaging User's Guide</font></b>
+<p>Open Development Environment
+<br>RPM Service Packaging Reference
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<br>
+<hr WIDTH="100%">
+<p><b><font size=+2>Table of Contents</font></b>
+<p><a NAME="Toc_Introduction"></a><a href="#Introduction">Introduction</a>
+<br><a NAME="Toc_Overview of"></a><a href="#Overview of">Overview of RPM</a>
+<br><a NAME="Toc_ODE passes for Service"></a><a href="#ODE passes for Service">ODE
+passes for Service Packaging</a>
+<br><a NAME="Toc_Makefile"></a><a href="#Makefile">Makefile Variables</a>
+<br><a NAME="Toc_Naming the"></a><a href="#Naming the">Naming the Patch</a>
+<br><a NAME="Toc_Support for Directories"></a><a href="#Support for Directories">Support
+for Directories</a>
+<br><a NAME="Toc_Support for Symbolic"></a><a href="#Support for Symbolic">Support
+for Symbolic Links</a>
+<br><a NAME="Toc_Generating"></a><a href="#Generating">Generating Dependencies</a>
+<br><a NAME="Toc_Example"></a><a href="#Example:">Example</a>
+<br><a NAME="Toc_Installation of"></a><a href="#Installation of">Installation
+and Removal of Patches</a>
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="Introduction"></a><a href="#Toc_Introduction">Introduction</a></h2>
+The objective of this document is to explain the patch creation process
+using RPM (Redhat Package Manager). ODE supports both the creation of base
+packages (Initial Product Packaging (IPP)) and patches (Service Packaging
+(SP)) using RPM. A patch will usually contain relatively less number of
+files than the package for the whole product because a patch contains just
+fixes and improvements to the original product. The procedure to create
+patches using ODE is slightly different from creating the base packages
+and this document will stress on these differences wherever possible. It
+is recommended that the <a href="ODEPackagingConcepts.htm">ODE Packaging
+Concepts</a> and <a href="ODEPackagingReference.htm">ODE Packaging Reference</a>
+documents be read before reading this document.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Overview of"></a><a href="#Toc_Overview of">Overview of RPM</a></h2>
+RPM (Redhat Package Manager) is a tool which enables the user to create,
+install and manage packages. RPM can also check dependencies while managing
+packages. RPM gets the desired information for making a package from a
+specification file (usually ends with .spec). This specification file contains
+all the relevant information for the package (name, version info, dependencies
+etc)&nbsp; embedded in specific tags. Unlike the packaging tools on HP-UX
+and Solaris, RPM does not strictly differentiate between packaging a product
+and packaging a patch. Hence, the existing RPM functionality of packaging
+a product is used with some modifications on the ODE side to have RPM create
+a patch.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="ODE passes for Service"></a><a href="#Toc_ODE passes for Service">ODE
+passes for Service Packaging</a></h2>
+As mentioned above, ODE already supports the creation of base packages
+(IPP) using RPM. The same file structure currently used for IPP can be
+used for service packaging. The specification file changes from IPP to
+SP, hence ODE will generate a slightly different and a smaller specification
+file during service packaging than during IPP from the same CMF. The user
+does not have to make any changes in the CMF for service packaging except
+for adding new files and directories in the patch. The additional information
+needed for the creation of the patch is obtained from the makefile variables
+<b>PATCH_NAME,
+PATCH_NEW_DIRS, PATCH_NEW_LINKS and PATCH_REQUIRES_LIST</b>.
+<br>In a typical patch creation process, the user changes the files that
+need to be included in the patch in his sandbox, builds the sandbox and
+creates the patch. The various passes needed to create a patch are explained
+below.
+<p><b>'build' pass:</b> Run as <i>mk</i> or <i>mk build_all</i>
+<br>This pass builds the modified source files.
+<p><b>'gather' pass:</b> Run as <i>mk gather_all PKG_CLASS=sp</i> or <i>mk
+instdep_all</i>
+<br>This pass populates the shiptree with the modified files.
+<p><b>'parse' pass:</b> Run as <i>mk parse_all PKG_CLASS=sp PATCH_NAME=xxxx</i>
+<br>This pass parses the CMF and generates the spec file which will be
+used by the packaging tool RPM. Since the <b>PKG_CLASS</b> is set to "sp",
+the resultant spec file will contain the entries for only the contents
+of the shiptree of the sandbox. This pass uses the above mentioned makefile
+variables.
+<p><b>'runpkgtool' pass:</b> Run as <i>mk runpkgtool_all</i>
+<br>This pass runs the actual packaging tool RPM with all the required
+flags. An installable patch is created based on the contents of the spec
+file.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Makefile"></a><a href="#Toc_Makefile">Makefile Variables</a></h2>
+ODE uses four additional makefile variables for service packaging than
+for initial product packaging. They are <b>PATCH_NAME, PATCH_NEW_DIRS,
+PATCH_NEW_LINKS and PATCH_REQUIRES_LIST</b>. These variables can be set
+in the command line or in a makefile itself. For the list of other makefile
+variables required by both the types of packaging refer to the <a href="ODEPackagingReference.htm">Packaging
+Reference document.</a>
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER CELLSPACING=0 CELLPADDING=0 COLS=4 WIDTH="100%" >
+<tr>
+<td BGCOLOR="#999999">
+<center><b>Makefile Variable</b></center>
+</td>
+
+<td BGCOLOR="#999999">
+<center><b>Definition</b></center>
+</td>
+
+<td BGCOLOR="#999999">
+<center><b>Required/Optional</b></center>
+</td>
+
+<td BGCOLOR="#999999">
+<center><b>Format</b></center>
+</td>
+</tr>
+
+<tr>
+<td><b>PATCH_NAME</b></td>
+
+<td>Used to name the patch being created. Generates <b>Name:</b> in the
+spec file. For more information, check <a href="#Naming the">Naming the
+Patch</a></td>
+
+<td>Required</td>
+
+<td>String</td>
+</tr>
+
+<tr>
+<td><b>PATCH_NEW_DIRS</b></td>
+
+<td>Contains a list of colon separated directories to be included in the
+patch. For more information, check <a href="#Support for Directories">Support
+for Directories</a></td>
+
+<td>Optional</td>
+
+<td>List of colon separated strings</td>
+</tr>
+
+<tr>
+<td><b>PATCH_NEW_LINKS</b></td>
+
+<td>Contains a list of colon separated symbolic links to be included in
+the patch. For more information, check <a href="#Support for Symbolic">Support
+for Symbolic Links</a></td>
+
+<td>Optional</td>
+
+<td>List of colon separated strings</td>
+</tr>
+
+<tr>
+<td><b>PATCH_REQUIRES_LIST</b></td>
+
+<td>Generates <b>Requires:</b> tags in the spec file to force dependencies.
+Contains a list of strings with each entry corresponding to the values
+for the tag <b>Requires:</b> in the corresponding package. For more information,
+check <a href="#Generating">Generating Dependencies</a></td>
+
+<td>Optional</td>
+
+<td>List of colon seperated strings. Each string contains the package name
+and its requisites.</td>
+</tr>
+</table>
+
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Naming the"></a><a href="#Toc_Naming the">Naming the Patch</a></h2>
+The <b>Name:</b> tag in the spec file determines the name of the package
+being created. In service packaging, PATCH_NAME is used to name the patch.
+<br>If the spec file contains a main package and several sub-packages,
+then this value refers to the name of the main package. The names for all
+the sub-packages referred to by <b>%package</b> tags in the spec file are
+derived from the CMF.
+<br>Note that during IPP the value for the <b>Name:</b> tag is obtained
+from the CMF.
+<br>Eg: PATCH_NAME=patch1
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Support for Directories"></a><a href="#Toc_Support for Directories">Support
+for Directories</a></h2>
+A package can contain directories along with the files. During IPP, all
+the directories specified in the CMF will be included in the package but
+during SP, they will not be included in the patch unless they are specified
+in <b>PATCH_NEW_DIRS</b>.
+<br>All the directories included in this variable should be colon separated.
+<br>Eg: PATCH_NEW_DIRS=/opt/odehello/bin:/opt/odehello/html
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Support for Symbolic"></a><a href="#Toc_Support for Symbolic">Support
+for Symbolic Links</a></h2>
+A package can contain symbolic links. During IPP, all the symbolic links
+specified in the CMF will be included in the package. But during SP, all
+such links will not be included in the patch unless they are specified
+in this variable.
+<br>All the symbolic links included in this variable should be colon separated.
+<br>Eg: PATCH_NEW_LINKS=/opt/odehello/links/link1:/opt/odehello/links/link2
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Generating"></a><a href="#Toc_Generating">Generating Dependencies</a></h2>
+The <b>Requires:</b> tag is used to alert RPM to the fact that the package
+needs to have certain packages already installed in order to operate properly.
+This check is done when the package is installed or erased. Each package
+created from the spec file can have different values for this tag.
+<br>During IPP, the values for these tags are obtained from the requisites
+"c" and "co" of the RequisitesInfo stanzas of the CMF. But during service
+packaging, since these requisites do not refer to the correct dependencies
+the required information for each package is obtained from <b>PATCH_REQUIRES_LIST</b>.
+<br>A dependency referring to the corresponding base package(which is already
+installed) is also added to this value. Note that if the dependencies for
+a package are ommitted in this variable, this default value is the only
+dependency that will be generated for that package.
+<br>Also note that the information for the tags corresponding to the other
+valid CMF requisites "P", "V" and "X" is still obtained from the CMF as
+in IPP.
+<br>This variable should be set to a colon(":") seperated list with each
+entry corresponding to a package name and the list of its dependencies.
+Each package name and its dependencies are seperated by "@" and the dependencies
+are itself seperated by ";"(semi-colon). When this variable is set from
+the command line, the value should be enclosed in quotes to prevent the
+semi-colons being interpreted by the shell.
+<br>Eg: PATCH_REQUIRES_LIST=bin@HelloWorld > 2.1;Bbexample:html@WebStuff
+(in a makefile) OR
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PATCH_REQUIRES_LIST="bin@HelloWorld
+> 2.1;Bbexample:html@WebStuff" (on the command line)
+<br>In the above example, "bin" and "html" are the names of the packages
+and the values after @ are their dependencies. The package "bin" requires
+packages "HelloWorld" of version higher than 2.1 and "Bbexample" already
+installed while the package "html" requires "Webstuff".
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Example:"></a><a href="#Toc_Example">Example:</a></h2>
+Consider the following CMF in a sandbox used to create a patch for the
+product odehello.
+<p><tt>InstallEntity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Representing the Product/Main package odehello. This is the parent entity.
+*/</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; EntityInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityName&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehello" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fullEntityName&nbsp;&nbsp;
+=&nbsp; ["odehello Package"] ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "ODE Test Package ";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '3';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maintLevel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fixLevel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; LinkInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildEntities =&nbsp;
+[ "odehellobin" "odehellodoc" "odehellotest" ] ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildFiles&nbsp;&nbsp;&nbsp;
+=&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; NULL ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RequisitesInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; requisites = [ ("c" "oldodehello
+= 2.1")&nbsp; ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; .......</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; .......</tt>
+<br><tt>}</tt><tt></tt>
+<p><tt>InstallEntity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Representing
+the subpackage odehellobin. This is a child entity. */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; EntityInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityName&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehellobin";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehellobin";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fullEntityName&nbsp;
+=&nbsp; [ "Executables of odehello" ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; description&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "This package contains the executables of odehello";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '3';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maintLevel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fixLevel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; LinkInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildFiles&nbsp;&nbsp;
+=&nbsp; [&lt; /opt ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/bin ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/bin/client ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/bin/logger ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/bin/server ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/bin/link1 ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/bin/link2 ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/bin/link3 > ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehello";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RequisitesInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; requisites = [ ("c" "ode_prev_bin")
+("c" "old_bin") ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>}</tt><tt></tt>
+<p><tt>InstallEntity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Representing the subpackage odehellodoc. This is a child entity. */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; EntityInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityName&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehellodoc";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehellodoc";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fullEntityName&nbsp;&nbsp;
+=&nbsp; [ "Documents of odehello" ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "This package contains the documents of odehello";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '3';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maintLevel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fixLevel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; LinkInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildFiles&nbsp;&nbsp;
+=&nbsp; [&lt; /opt ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/html ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/html/page.html > ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehello";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RequisitesInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; requisites = [ ("c" "ode_prev_doc")
+("c" "old_doc") ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>}</tt><tt></tt>
+<p><tt>InstallEntity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Representing the subpackage odehellotest. This is a child entity. */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; EntityInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityName&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehellotest";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehellotest";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fullEntityName&nbsp;&nbsp;&nbsp;
+=&nbsp; [ "Test scripts of odehello" ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "This package contains the test scripts of odehello";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '3';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maintLevel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fixLevel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; '0';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; LinkInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildFiles&nbsp;&nbsp;
+=&nbsp; [&lt; /opt ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/test ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/test/testscript1 ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/test/testscript2 ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/newdir1 ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/newdir1/newdir2 ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/opt/odehello/newdir1/newdir2/newfile> ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehello";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; RequisitesInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; requisites = [ ("c" "ode_prev_test")
+("c" "old_test") ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>}</tt>
+<p>Note that the above CMF is not complete and only the information needed
+to demonstrate the use of the service packaging makefile variables is included.
+It is assumed that this CMF also contains the file stanzas representing
+the files in the attribute "immChildFiles" of the child install entities.
+<br>This CMF has three child entities representing three subpackages odehellobin,
+odehellodoc and odehellotest. All the three subpackages are part of the
+main package odehello which is represented by the parent entity.
+<p>Assume that
+<ol>
+<li>
+The files /opt/odehello/bin/client, /opt/odehello/bin/server and /opt/odehello/test/testscript2
+are changed in the sandbox used to create the patch.</li>
+
+<li>
+/opt/odehello/newdir1/newdir2/newfile is a new file to be included in the
+patch.</li>
+
+<li>
+&nbsp;/opt/odehello/bin/link1, /opt/odehello/bin/link2 and /opt/odehello/bin/link3
+are symbolic links.</li>
+
+<li>
+The sandbox is built and <i>mk instdep_all</i> is run and the shiptree
+of the sandbox is populated with the require files for the patch.</li>
+
+<li>
+The service packaging makefile variables are set as</li>
+</ol>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PATCH_NAME=patch1</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PATCH_REQUIRES_LIST=odehellobin@ibmbin
+> 2.1;rpmbin &lt;= 4.2.1-1:odehellodoc@ibmdoc</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PATCH_NEW_DIRS=/opt/odehello/newdir1:/opt/odehello/newdir1/newdir2</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PATCH_NEW_LINKS=/opt/odehello/bin/link1:/opt/odehello/bin/link3</tt>
+<p>After running <i>mk parse_all PKG_CLASS=sp</i> the resultant pcd.spec
+file will look as below.
+<p><tt>Summary: odehello Package</tt>
+<br><tt>Name: <b>patch1</b></tt>
+<br><tt>Version: 3.0.0</tt>
+<br><tt>Release: 0</tt>
+<br><b><tt>Requires: odehello&nbsp; = 3.0.0-0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</tt></b><tt>/* Ignoring the value of requisite "c" in CMF */</tt>
+<br><tt>.......</tt>
+<br><tt>.......</tt>
+<br><tt>%description</tt>
+<br><tt>ODE Test Package</tt><tt></tt>
+<p><tt>%package odehellobin</tt>
+<br><tt>Summary: Executables of odehello</tt>
+<br><tt>Version: 3.0.0</tt>
+<br><tt>Release: 0</tt>
+<br><tt>/* Ignoring the value of requisite "c" in CMF */</tt>
+<br><tt>Requires: <b>ibmbin > 2.1 rpmbin &lt;= 4.2.1-1 odehello-odehellobin
+= 3.0.0-0</b></tt>
+<br><tt>.......</tt>
+<br><tt>.......</tt><tt></tt>
+<p><tt>%description</tt>
+<br><tt>This package contains the executables of odehello</tt><tt></tt>
+<p><tt>%files odehellobin</tt>
+<br><tt>%attr( 755, root, other ) /opt/odehello/bin/client</tt>
+<br><tt>%attr( 755, root, other ) /opt/odehello/bin/server</tt>
+<br><tt>%attr( 755, root, other ) /opt/odehello/bin/link1</tt>
+<br><tt>%attr( 755, root, other ) /opt/odehello/bin/link3</tt><tt></tt>
+<p><tt>%package odehellotest</tt>
+<br><tt>Summary: Test scripts of odehello</tt>
+<br><tt>Version: 3.0.0</tt>
+<br><tt>Release: 0</tt>
+<br><tt>/* Ignoring the value of requisite "c" in CMF */</tt>
+<br><tt>Requires: <b>odehello-odehellotest = 3.0.0-0</b></tt>
+<br><tt>.......</tt>
+<br><tt>.......</tt><tt></tt>
+<p><tt>%description</tt>
+<br><tt>This package contains the test scripts of odehello</tt><tt></tt>
+<p><tt>%files odehellotest</tt>
+<br><tt>%attr( 755, root, other ) /opt/odehello/test/testscript2</tt>
+<br><tt>%attr( 755, root, other ) %dir /opt/odehello/newdir1</tt>
+<br><tt>%attr( 755, root, other ) %dir /opt/odehello/newdir1/newdir2</tt>
+<br><tt>%attr( 755, root, other ) /opt/odehello/newdir1/newdir2/newfile</tt>
+<p>The following points should be noted.
+<ul>
+<li>
+Name: tag is set to patch1. This would be odehello in IPP. When running
+with <i>PKG_CLASS=sp</i>, it is assumed that the value of the Name: tag
+comes from the <b>PATCH_NAME </b>variable, as opposed to the entityName
+attribute in the CMF.</li>
+
+<li>
+The %package tags remain the same as in IPP as they refer to the subpackages.</li>
+
+<li>
+There are only two %package tags in the spec file (odehellobin, odehellotest)
+and odehellodoc is ignored which would have been included in IPP. This
+is because no files which are part of odehellodoc have been changed in
+the sandbox.</li>
+
+<li>
+The value of Requires: tag in odehellobin is obtained from <b>PATCH_REQUIRES_LIST</b>.
+The default dependency &lt;<i>main-package</i>>-&lt;<i>sub-package</i>>
+<i>&lt;version-release></i>
+obtained from the CMF is appended to this value. Note that the <i>main-package</i>
+refers to the base product which is odehello and not patch1.</li>
+
+<li>
+The value of Requires: tag in odehellotest consists of only the default
+dependency since there is no dependency specified for this package in <b>PATCH_REQUIRES_LIST</b>.</li>
+
+<li>
+During IPP, the values for the Requires: tags are obtained from the requisites
+"c" or "co" in the CMF which is not the case during SP.</li>
+
+<li>
+The values for the other requisites are still obtained from the CMF in
+SP as in IPP.</li>
+
+<li>
+The %files list in both the subpackages contains only the files present
+in the shiptree of the sandbox. All the directories except the ones specified
+in <b>PATCH_NEW_DIRS</b> are ignored.</li>
+
+<li>
+The symbolic links in odehellobin are included in the spec file only if
+they are set in <b>PATCH_NEW_LINKS</b>.</li>
+
+<li>
+When <i>mk runpkgtool_all</i> is run on the above spec file, two packages
+get created. They are patch1-odehellobin-3.0.0-0 and patch1-odehellotest-3.0.0-0.</li>
+</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="Installation of"></a><a href="#Toc_Installation of">Installation
+and Removal of Patches</a></h2>
+Since RPM does not differentiate between the installation of the patches
+and the base packages, care needs to be taken while installing the patches.
+If the patch contains a file which is already installed on the system (as
+part of a different package)&nbsp; then the RPM will complain about overwriting
+the file. This could be overcome by using "--replacefiles" option in the
+install command. This will overwrite the existing file but if the patch
+is erased later, this conflicting file will be permanently removed instead
+of restoring the original version like on Solaris and HP. In this case,
+the user will have to restore this file by reinstalling the original package.
+More caution needs to be taken when multiple patches are installed and
+erased because this might lead to the presence of some unwanted files or
+some wanted files missing on the system.
+</body>
+</html>

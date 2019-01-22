@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<title>Creating a new Java project</title>
+<!-- All rights reserved. Licensed Materials Property of IBM -->
+<!-- US Government Users Restricted Rights                   -->
+<!-- Use, duplication or disclosure restricted by            -->
+<!-- GSA ADP Schedule Contract with IBM Corp.                -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="dc.date" scheme="iso8601" content="2003-09-23" />
+<meta name="copyright" content="(C) Copyright IBM Corporation 2003" />
+<meta name="security" content="" />
+<meta name="dc.language" scheme="rfc1766" content="en-us" />
+<meta name="Robots" content="index,follow"/>
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<meta name="keywords" content="creating, Java project" />
+<link rel="stylesheet" type="text/css" href="ibmidwb.css" />
+<link rel="stylesheet" type="text/css" href="help.css" />
+</head>
+<body>
+<a id="Top_Of_Page" name="Top_Of_Page"></a>
+<a name="rgetstart1019674"></a>
+<h2 id="rgetstart1019674">Creating a new Java project</h2>
+<p><a id="idx55" name="idx55"></a>The ODE Build Feature can generate makefiles for either Java or C/C++
+projects. Before you can perform any build actions using the ODE Build Feature,
+you must create a project within the Workbench. Review the <a href="ODEBuildFeatureGuide27.html#rgetstart1055388">known limitations of the ODE Build Feature</a> before creating
+the new project.</p>
+<p>To create a new Java project in your Workbench:</p>
+<ol type="1">
+<li>In the Navigator or the Package Explorer view, right-click inside the
+Navigator space (not on any existing project) and click <span class="bold">New > Project</span>.</li>
+<li>In the New Project window, select Java from the list of possible project
+types.</li>
+<li>Click <span class="bold">Next</span>.</li>
+<li>Type a name for your project in the Project Name field.</li>
+<li>Click <span class="bold">Next</span>.</li>
+<li>Add a new <span class="italic">src</span> (source) folder to the project,
+as follows: 
+<ol type="a">
+<li>In the Java Settings panel, make sure that the Source tab is selected.</li>
+<li>Expand the project folder.</li>
+<li>Click <span class="bold">Add Folder</span>.</li>
+<li>In the Source Folder Selection window, click <span class="bold">Create New
+Folder</span>.</li>
+<li>In the New Folder window, type <span class="bold">src</span> as the folder
+name.</li>
+<li>When you return to the Source Folder Selection window, a tree view of
+your new project is shown with the project name at the top level, and src
+as the only child directory.</li>
+<li>Click <span class="bold">OK</span>.</li>
+<li>When asked, "Do you want to remove the project as source folder and update
+build output folder to "[project_name]/bin?", click <span class="bold">Yes</span>.</li>
+<li>The Source Folder window appears, indicating that you have successfully
+added the folder.</li></ol></li>
+<li>The standard default output folder is the <span class="italic">\export\classes</span> folder. Add the name of this folder to the project by typing the folder
+path in the <span class="bold">Default ouput folder</span> field at the bottom
+of the New Java Project window. For example, if your project name is <span class="italic">test</span>, then the path to the default output folder should be <span class="italic">test\export\classes</span>.</li>
+<li>Click <span class="bold">Finish</span> to create the new Java project.</li></ol>
+<a id="Bot_Of_Page" name="Bot_Of_Page"></a>
+</body>
+</html>

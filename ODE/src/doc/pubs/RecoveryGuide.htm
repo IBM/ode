@@ -1,0 +1,1314 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Wayne Mathis">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>Recovery Guide for MVS Service Packaging</title>
+</head>
+<body bgcolor="#FFFFFF">
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+Recovery Guide for MVS/USS Service Packaging</h1>
+Open Development Environment
+<br>Recovery Guide
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<br>
+<hr>
+<h2>
+Table of Contents</h2>
+<a NAME="introduction" href="#intro"></a><b><a href="#intro" name="introduction">Introduction</a></b>
+<p><a NAME="odeprocess" href="#svcpkg"></a><b><a href="#svcpkg" name="odeprocess">ODE
+Backout Procedures:</a></b>
+<ul>
+<li>
+<a NAME="svctransfer" href="#st"></a><b><a href="#st" name="svctransfer">mk
+runpkgtool_all PKG_CLASS=ST (Service Transfer)</a></b></li>
+
+<li>
+<a NAME="buildall" href="#bldall"></a><b><a href="#bldall" name="buildall">mk
+build_all</a></b></li>
+
+<li>
+<a NAME="instdepall" href="#instdep"></a><b><a href="#instdep" name="instdepall">mk
+instdep_all</a></b></li>
+
+<li>
+<a NAME="parseall" href="#parse"></a><b><a href="#parse" name="parseall">mk
+parse_all PKG_CLASS=SP PKG_TYPE=APAR or PTF</a></b></li>
+
+<li>
+<a NAME="apar" href="#aparinfo"></a><b><a href="#aparinfo" name="apar">mk
+runpkgtool_all PKG_TYPE=APAR</a></b></li>
+
+<li>
+<a NAME="usermod" href="#usermodinfo"></a><b><a href="#usermodinfo" name="usermod">mk
+runpkgtool_all PKG_TYPE=USERMOD</a></b></li>
+
+<li>
+<a NAME="plususermod" href="#plususermodinfo"></a><b><a href="#plususermodinfo" name="plususermod">mk
+runpkgtool_all PKG_TYPE=++USERMOD</a></b></li>
+
+<li>
+<a NAME="plusapar" href="#plusaparinfo"></a><b><a href="#plusaparinfo" name="plusapar">mk
+runpkgtool_all PKG_TYPE=++APAR</a></b></li>
+
+<li>
+<a NAME="aparreview" href="#reviewinfo"></a><b><a href="#reviewinfo" name="aparreview">APAR
+Review in BPS</a></b></li>
+
+<li>
+<a NAME="getptfnums" href="#ptfnumsinfo"></a><b><a href="#ptfnumsinfo" name="getptfnums">mk
+getptfnums_all</a></b></li>
+
+<li>
+<a NAME="ptf" href="#ptfinfo"></a><b><a href="#ptfinfo" name="ptf">mk runpkgtool_all
+PKG_TYPE=PTF</a></b></li>
+
+<li>
+<a NAME="plusptf" href="#plusptfinfo"></a><b><a href="#plusptfinfo" name="plusptf">mk
+runpkgtool_all PKG_TYPE=++PTF</a></b></li>
+</ul>
+
+<hr width="100%">
+<p><a NAME="bld390recoverycmds" href="#recover"></a><b><a href="#recover" name="bld390recoverycmds">Build390
+Recovery Commands</a></b>
+<ul>
+<li>
+<a NAME="deldrvr_info" href="#deldrvr"></a><b><a href="#deldrvr" name="deldrvr_info">Deleting
+a Driver</a></b></li>
+
+<ul>
+<li>
+Command Line Option</li>
+
+<li>
+TSO Option</li>
+</ul>
+
+<li>
+<a NAME="unlockdrvr_info" href="#unlockdrvr"></a><b><a href="#unlockdrvr" name="unlockdrvr_info">Unlocking
+a Driver</a></b></li>
+
+<ul>
+<li>
+Command Line Option</li>
+
+<li>
+TSO Option</li>
+</ul>
+
+<li>
+<a NAME="delshad_info" href="#delshad"></a><b><a href="#delshad" name="delshad_info">Deleting
+a Release</a></b></li>
+
+<ul>
+<li>
+Command Line Option</li>
+
+<li>
+TSO option</li>
+</ul>
+
+<li>
+<a NAME="delpdt_info" href="#delpdt"></a><b><a href="#delpdt" name="delpdt_info">Deleting
+a PDT</a></b></li>
+
+<ul>
+<li>
+TSO Option</li>
+</ul>
+
+<li>
+<a NAME="delbld_info" href="#delbld"></a><b><a href="#delbld" name="delbld_info">Cleaning
+up after a Build Failure</a></b></li>
+
+<ul>
+<li>
+Command Line Option</li>
+</ul>
+
+<li>
+<a NAME="delapar_info" href="#delapar"></a><b><a href="#delapar" name="delapar_info">Opening
+a Closed APAR</a></b></li>
+
+<ul>
+<li>
+TSO Option</li>
+</ul>
+
+<li>
+<a NAME="deleteapar_info" href="#deleteapar"></a><b><a href="#deleteapar" name="deleteapar_info">Deleting
+APARs from PDT</a></b></li>
+
+<ul>
+<li>
+TSO Option</li>
+</ul>
+
+<li>
+<a NAME="defineapar_info" href="#defineapar"></a><b><a href="#defineapar" name="defineapar_info">Defining
+APARs to PDT</a></b></li>
+
+<ul>
+<li>
+TSO Option</li>
+</ul>
+
+<li>
+<a NAME="delnums_info" href="#delnums"></a><b><a href="#delnums" name="delnums_info">Removing
+Defined PTF(s)</a></b></li>
+
+<ul>
+<li>
+TSO Option</li>
+</ul>
+
+<li>
+<a NAME="renamelvl_info" href="#renamelvl"></a><b><a href="#renamelvl" name="renamelvl_info">Renaming
+PTF Level(s)</a></b></li>
+
+<ul>
+<li>
+TSO Option</li>
+</ul>
+
+<li>
+<a NAME="ptfbuild_info" href="#ptfbuild"></a><b><a href="#ptfbuild" name="ptfbuild_info">Removing
+Built PTF(s)</a></b></li>
+</ul>
+
+<hr width="100%">
+<p><a NAME="scenario" href="#scenarioinfo"></a><b><a href="#scenarioinfo" name="scenario">Specific
+APAR and PTF Scenarios</a></b>
+<ul>
+<li>
+<a NAME="delspecdrvr_info" href="#delspecdrvr"></a><b><a href="#delspecdrvr" NAME="delspecdrvr_info">Backing
+out of specific Delta Drivers for an APAR</a></b></li>
+</ul>
+
+<hr width="100%">
+<p><a NAME="moreinfo" href="#referenceinfo"></a><b><a href="#referenceinfo" name="moreinfo">Additional
+Information</a></b>
+<p>
+<hr width="100%">
+<h2>
+<a NAME="intro" href="#introduction"></a><b><a href="#introduction" name="intro">Introduction</a></b></h2>
+<b><font color="#CC0000"><font size=+0>THIS DOCUMENT IS FOR SITES USING
+THE ODE AND BUILD/390 SERVICE PROCESS WITH THE USS CLIENT.</font></font></b>
+<p>The intent of this document is to give those sites the necessary information
+to recover from MVS Service Packaging problems in the USS environment using
+ODE and Build/390.
+<p><b>Note:</b>&nbsp; If you are using the standard Build/390 service process,
+please see <a href="http://w3.sdwb.ibm.com/b390doc50/B390ServiceProcessGuide50.html#h1xtrouble">SDWB5.0
+Service Process Guide</a> for the appropriate backout procedures.
+<p>Before using any of the TSO options, the <a href="http://w3.sdwb.ibm.com/b390doc50/B390CLEARREXXFunctionsRef50.html">Control
+Library Environment and Resource (CLEAR) Tool</a> must be available and
+accessible.
+<p><b>Note:</b> In these examples, the Build/390 shopping list is reached
+with <b>ISPF C.</b> However, each installation/site is free to put Build/390
+at any valid <b>ISPF</b> option.&nbsp;
+<hr width="100%">
+<h2>
+<a NAME="svcpkg" href="#odeprocess"></a><b><a href="#odeprocess" name="svcpkg">ODE
+Backout Procedures</a></b></h2>
+
+<ul>
+<li>
+<a NAME="st" href="#svctransfer"></a><b><a href="#svctransfer" name="st">mk
+runpkgtool_all PKG_CLASS=ST (Service Transfer)</a></b></li>
+
+<br><b>Description:</b>&nbsp; In this situation, the user needs to backout
+of the service transfer process because either the FMIDs or service attributes
+in the CMF have changed. After executing all of steps listed below, the
+copysent driver, the shadow release and the PDT would have been deleted.
+<br><b>Assumptions:</b>&nbsp; No other drivers (APAR or PTF) based on the
+copysent driver exist.
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+<b><a href="#deldrvr">Delete CopySent Driver</a></b></li>
+
+<li>
+<b><a href="#delshad">Delete Shadow Release</a></b></li>
+
+<li>
+Delete PDT Version Record (OPTIONAL)</li>
+
+<li>
+<b><a href="#delpdt">Delete PDT (OPTIONAL)</a></b></li>
+</ul>
+
+<p><br><b><font color="#CC0000">WARNING</font></b>&nbsp; - A PDT may contain
+service information for more than one release or product.&nbsp; Make sure
+you do not need any information in this PDT before deleting it.
+<p><b>NOTE:</b> If <b><a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEPackagingReference.htm#CMFStanza">service-specific
+attributes</a></b> have been changed in the CMF, the file will need to
+be reparsed before running service transfer again.
+<p>
+<hr width="100%">
+<li>
+<a NAME="bldall" href="#buildall"></a><b><a href="#buildall" name="bldall">mk
+build_all</a></b></li>
+
+<br><b>Description:</b>&nbsp; In this situation, the user needs to rebuild
+the source code in the backing build/sandbox because some problems occurred.
+After executing the steps listed below, the object files from the <i>obj</i>
+directory or class files from the <i>export</i> directory would have been
+deleted.
+<br><b>Assumptions:</b>&nbsp; The files to be compiled are in subdirectories
+of the <i>src</i> directory.
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+run <b>mk clean_all</b> - which removes all object files for all targets
+listed in the makefile</li>
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or
+<li>
+run <b>mk clobber_all</b> - which removes all targets from clean_all and
+other designated targets</li>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="instdep" href="#instdepall"></a><b><a href="#instdepall" name="instdep">mk
+instdep_all</a></b></li>
+
+<br><b>Description:</b>&nbsp; In this situation, the user needs to remove
+the shippable files because changes made to some of the files are no longer
+needed. After executing the step listed below, the shippable files would
+have been deleted.
+<br><b>Assumptions:</b>&nbsp; All the modified shippable file were copied
+to the directory specified by the <b>TOSTAGE</b> makefile variable.
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+Remove the files in the <b>TOSTAGE</b> directory.</li>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="parse" href="#parseall"></a><b><a href="#parseall" name="parse">mk
+parse_all PKG_CLASS=SP PKG_TYPE=APAR or PTF</a></b></li>
+
+<br><b>Description:</b>&nbsp; In this situation, the user has made changes
+to packaging metadata in the Common Metadata File <b>(CMF)</b>, which require
+reparsing of the file. After executing the steps listed below, the pcd.mvs
+file and the control files would have been deleted.
+<br><b>Assumptions:</b>&nbsp; All the required makefile variables needed
+have been defined prior to running this command.
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+Remove the <b>pcd.mvs</b> file in the <b>PKG_CONTROL_DIR</b> directory.</li>
+
+<li>
+Remove the FMID directories in the <b>PKG_CONTROL_DIR</b> directory.</li>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="aparinfo" href="#apar"></a><b><a href="#apar" name="aparinfo">mk
+runpkgtool_all PKG_TYPE=APAR</a></b></li>
+
+<br><b>Description:</b>&nbsp; In this situation, the user needs to remove
+the existing APAR delta driver because a problem was found with the fix
+or the user was not satisfied with some portion of the fix. After executing
+the steps listed below, the specified APAR delta driver would have been
+deleted.
+<br><b>Assumptions:</b>
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+<b><a href="#deldrvr_cmdline">Delete Driver</a></b></li>
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or
+<li>
+Rerun <b>mk runpkgtool_all PKG_TYPE=APAR</b> command, which will automatically
+delete a previously existing driver prior to recreating it when the makefile
+variable <b>B390_AUTO_DELETE_DRIVER=YES</b></li>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="usermodinfo" href="#usermod"></a><b><a href="#usermod" name="usermodinfo">mk
+runpkgtool_all PKG_TYPE=USERMOD</a></b></li>
+
+<br><b>Description:</b>&nbsp; In this situation, the user needs to remove
+the existing USERMOD delta driver because a problem was found with the
+fix or the user was not satisfied with some portion of the fix. After executing
+the steps listed below, the specified USERMOD delta driver would have been
+deleted.
+<br><b>Assumptions:</b>
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+<b><a href="#deldrvr_cmdline">Delete Driver</a></b></li>
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or
+<li>
+Rerun <b>mk runpkgtool_all PKG_TYPE=USERMOD</b> command, which will automatically
+delete a previously existing driver prior to recreating it when the makefile
+variable <b>B390_AUTO_DELETE_DRIVER=YES</b></li>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="plususermodinfo" href="#plususermod"></a><b><a href="#plususermod" name="plususermodinfo">mk
+runpkgtool_all PKG_TYPE=++USERMOD</a></b></li>
+
+<br><b>Description:</b>&nbsp; In this situation, the user needs to build
+++USERMOD because the existing APAR or USERMOD delta driver has been rebuilt.
+After executing the step listed below, the ++USERMOD would have been built.
+<br><b>Assumptions:</b>&nbsp; Once a SYSMOD (++USERMOD) is built, it must
+be included in all future service logic because it may have been shipped
+to a customer.
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+Rerun <b>mk runpkgtool_all PKG_TYPE=++USERMOD</b> command to build the
+++USERMOD.</li>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="plusaparinfo" href="#plusapar"></a><b><a href="#plusapar" name="plusaparinfo">mk
+runpkgtool_all PKG_TYPE=++APAR</a></b></li>
+
+<br><b>Description:</b>&nbsp; In this situation, the user needs to rebuild
+the ++APAR because the existing APAR delta driver has been rebuilt. If
+the user chooses to repackage the SYSMOD after the APAR delta driver has
+been rebuilt, they may also rebuild the last increment used. After executing
+the step listed below, the ++APAR would have been rebuilt.
+<br><b>Assumptions:</b>&nbsp; Once a SYSMOD (++APAR) is built, it must
+be included in all future service logic because it may have been shipped
+to a customer.
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+Rerun <b>mk runpkgtool_all PKG_TYPE=++APAR</b> command&nbsp; to rebuild
+the ++APAR.</li>
+</ul>
+
+<p><br><b>NOTE:</b> The <b>REBUILD</b> option must be set to <b>YES</b>,
+if the user wants to use the existing ++APAR. This option will rebuild
+the last build with a new <b>REWORK</b> date.
+<p><b><font color="#CC0000">WARNING</font></b>&nbsp; - The default for
+the <b>REBUILD</b> option is <b>NO</b>. If the <i>REBUILD</i> option is
+not changed to <b>YES</b>, the ++APAR gets incremented during the build.
+<p>
+<hr width="100%">
+<li>
+<a NAME="reviewinfo" href="#aparreview"></a><b><a href="#aparreview" name="reviewinfo">APAR
+Review in BPS</a></b></li>
+
+<br><b>Description:</b>&nbsp; In this situation, the user needs to move
+the track back to the fix state because all of the changes did not get
+incorporated. After executing the steps listed below, the APAR would have
+been reopened in RETAIN and the track would have been back to the fix state
+in CMVC.
+<br><b>Assumptions:</b> The track is in the Integrate state in CMVC.
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+<a href="#delapar">Re-open APAR</a></li>
+
+<li>
+In CMVC, move the track back to the fix state.</li>
+
+<li>
+Delete APAR from PDT</li>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="ptfnumsinfo" href="#getptfnums"></a><b><a href="#getptfnums" name="ptfnumsinfo">mk
+getptfnums_all</a></b></li>
+
+<br><b>Description:</b>&nbsp; In this situation, the user needs to remove
+the PTF number because an existing APAR needs to be redefined or the temp
+PTF number needs to be removed because of network problems that prevented
+BPS from retrieving real PTF numbers. After executing the steps listed
+below, the ptfSet.lst file would have been deleted and the PTF would not
+be defined.
+<br><b>Assumptions:</b>
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+Remove the <b>ptfSet.lst</b> (ie.<i> /u/ODETEST/bld390/ptf/MULTIPTF409611D/<b>ptfSet.lst</b></i>)
+file located in the buildid directory</li>
+
+<li>
+<a href="#delnums">Undefine the PTF</a></li>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="ptfinfo" href="#ptf"></a><b><a href="#ptf" name="ptfinfo">mk runpkgtool_all
+PKG_TYPE=PTF</a></b></li>
+
+<br><b>Description</b>&nbsp; In this situation, the user needs to backout
+of the PTF process because the PTF was cancelled or the exising PTF needs
+to be redefined. After executing the steps listed below, the CMVC level
+would have been renamed and the control files would have been deleted.
+<br><b>Assumptions:</b>
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+<a href="#renamelvl">Rename the CMVC Level&nbsp;</a> from PTF number back
+to its original level name</li>
+
+<li>
+Remove the control files from the /tmp directory.<b> (OPTIONAL)</b></li>
+
+<ul>
+<li>
+File Format: HLQ_FMID_PTFnumber_B390.LST ( <b>ODETEST_HEDS323_UI05173_B390.LST</b>
+)</li>
+
+<li>
+File Format: HLQ_FMID_PTFnumber_B390.UPD ( <b>ODETEST_HEDS323_UI05173_B390.UPD</b>
+)</li>
+</ul>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="plusptfinfo" href="#plusptf"></a><b><a href="#plusptf" name="plusptfinfo">mk
+runpkgtool_all PKG_TYPE=++PTF</a></b></li>
+
+<br><b>Description:</b>&nbsp; In this situation, the user needs to backout
+of the ++PTF process because the PTF was cancelled or the exising PTF needs
+to be redefined. After executing the step listed below, the delta driver
+and the PTF would have been deleted.
+<br><b>Assumptions:</b>
+<br><b>Procedures/Steps:</b>
+<ul>
+<li>
+<a href="#ptfbuild">Delete PTF Delta Driver</a></li>
+</ul>
+
+<p><br><b><font color="#CC0000">WARNING</font></b>&nbsp; - Do not try to
+reuse a delta driver for a PTF because unwanted parts could remain. Also,
+an individual PTF of a set may not be removed. If any PTF of a set is removed
+the entire set will be removed. Frozen PTFs cannot be removed and PTFs
+that have other PTFs depending on them.</ul>
+
+<hr width="100%">
+<h2>
+<a NAME="recover" href="#bld390recoverycmds"></a><b><a href="#bld390recoverycmds" name="recover">Build390
+Recovery Commands</a></b></h2>
+
+<ul>
+<li>
+<a NAME="deldrvr" href="#deldrvr_info"></a><b><a href="#deldrvr_info" name="deldrvr">Deleting
+a Driver</a></b></li>
+
+<p><br>The following types of drivers can be deleted: APAR (Delta), COPYSENT
+(Base) and PTF (Delta)
+<p>In this situation, the existing APAR delta driver needs to be removed
+because a problem was found with the fix or the developer was not satisfied
+with some portion of the fix. <b>Note:</b> The BASE (COPYSENT) driver only
+needs to be removed if the release it is associated with is being deleted.
+To delete a driver, do the following:
+<ul>
+<li>
+<a NAME="deldrvr_cmdline" href="#deldrvr_info"></a><b><a href="#deldrvr_info" name="deldrvr_cmdline">Command
+Line Option</a></b></li>
+
+<br><font color="#330033">Issue the following command:</font>
+<p><tt><font color="#330033"><b>Build390.MBClient DELETEDRIVER MVSRELEASE=&lt;</b>fmid<i>></i><b>
+DRIVER=&lt;</b>drvname<i>></i><b> PARMFILE=&lt;</b>parmfile<i>></i><b>
+CHILVL=</b>&lt;hlq><b> LIBRELEASE=</b>&lt;fmid><b> /ODEBUILD</b></font></tt>
+<p><font color="#330033">where:&nbsp; &lt;fmid> is the name of the shadow
+release on MVS</font>
+<br><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;hlq> is the MVS high level qualifier</font>
+<br><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;drvname> is the name of either APAR/COPYSENT/PTF driver</font>
+<br><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;parmfile> full path to the parmfile</font>
+<p><b>Example:</b> <a href="http://w3.ode.raleigh.ibm.com/4.0/doc/pubs/ode390_service_users.htm#deletedriver">Delete
+an existing APAR Delta Driver (DELETEDRIVER)</a>
+<p><b>Note:</b> If you receive a message stating that the "<b>Driver is
+NOT locked by Build But has LOCK FLAG Set to ON. Driver Cannot be Deleted"
+</b>then
+follow the TSO Option described below for "Deleting a Driver" and set the
+<b>"Delete
+even if locked"</b> option to <b>YES</b>.
+<br>&nbsp;
+<li>
+<a NAME="deldrvr_tso" href="#deldrvr_info"></a><b><a href="#deldrvr_info" name="deldrvr_tso">TSO
+Option</a></b></li>
+
+<br>&nbsp;
+<ul>
+<li>
+<font color="#330033">Logon to TSO</font></li>
+
+<li>
+<font color="#330033">Open the ISPF utility program</font></li>
+
+<li>
+<font color="#330033">Type <b>=c.deldrvr </b>at the prompt</font></li>
+
+<li>
+<font color="#330033">The following screen is displayed. Enter high level
+qualifier (HLQ) for <b>High-level Index </b>option, enter release (FMID)
+name for <b>MVS Release Name</b> option, enter driver name for
+<b>Driver
+Name</b> option and enter YES for <b>Delete even if locked </b>option<b>.</b></font></li>
+</ul>
+
+<ul>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 COLS=1 WIDTH="70%" BGCOLOR="#FFFF99" >
+<tr>
+<td><tt>------------------- Delete a Driver Database-------------------</tt>
+<br><tt>Command ===></tt>
+<p><tt>Type information. Then press ENTER.</tt>
+<p><tt>High-level Index............ <b>HLQ</b></tt>
+<br><tt>MVS Release Name........... <b>FMID</b></tt>
+<br><tt>Driver Name............... <b>driver name</b></tt>
+<br><tt>Delete even if locked.... <b>YES</b></tt></td>
+</tr>
+</table>
+
+<li>
+<font color="#330033">Press Enter</font></li>
+</ul>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="unlockdrvr" href="#unlockdrvr_info"></a><b><a href="#unlockdrvr_info" name="unlockdrvr">Unlocking
+a Driver</a></b></li>
+
+<p><br>The following types of drivers can be unlocked: APAR (Delta), COPYSENT
+(Base) and PTF (Delta)
+<p>In this situation, the developer would have attempted to delete a driver
+and received a message stating that "<b><font color="#000000">t</font>he
+driver is NOT locked by build, but has LOCK FLAG Set to ON. Driver cannot
+be deleted</b>."
+<ul>
+<li>
+<a NAME="unlockdrvr_cmdline" href="#unlockdrvr_info"></a><b><a href="#unlockdrvr_info" name="unlockdrvr_cmdline">Command
+Line Option</a></b></li>
+
+<br><tt>The procedure for unlocking a driver is described at <a href="#delbld">Cleaning
+up after a Build Failure</a></tt>
+<br>&nbsp;
+<li>
+<a NAME="unlockdrvr_tso" href="#unlockdrvr_info"></a><b><a href="#unlockdrvr_info" name="unlockdrvr_tso">TSO
+Option</a></b></li>
+
+<br>To unlock a driver, do the following:
+<ul>
+<li>
+<font color="#330033">Logon to TSO</font></li>
+
+<li>
+<font color="#330033">Open the ISPF utility program</font></li>
+
+<li>
+<font color="#330033">Type <b>=c.unimodc</b> at the prompt</font></li>
+
+<li>
+<font color="#330033">The following screen is displayed. Enter 5 for <b>Option</b></font></li>
+
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 COLS=1 WIDTH="70%" BGCOLOR="#FFFF99" >
+<tr>
+<td><tt><font color="#330033">-</font>------------------------------------------------</tt>
+<br><tt>Monitor and Control the Integration Process</tt>
+<br><tt>Option ===> <b>5</b></tt>
+<p><tt>5 Bulk data set information</tt></td>
+</tr>
+</table>
+</ul>
+
+<ul>
+<li>
+<font color="#330033">Press Enter</font></li>
+
+<li>
+<font color="#330033">The following screen is displayed. Enter the UNIMODC
+name for the <b>BANK </b>option. The UNIMODC name is of form <i>HLQ.FMID.APARNAME.UNIMODC</i>
+where <i>HLQ</i> is the high level qualifier, <i>FMID</i> is the name of
+the release, <i>DRIVERNAME</i> is the name of an APAR/PTF/COPYSENT driver
+and <i>UNIMODC</i> for UNIMODC</font></li>
+
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 COLS=1 WIDTH="70%" BGCOLOR="#FFFF99" >
+<tr>
+<td><tt><font color="#330033">-------------------------------------------------</font></tt>
+<br><tt><font color="#330033">UNIMODC Data Set Information: Update mode</font></tt>
+<br><tt><font color="#330033">Command ===></font></tt>
+<p><tt><font color="#330033">Enter/Verify Parameters Below:</font></tt>
+<br><tt><font color="#330033">BANK ===> <b>'HLQ.FMID.DRIVERNAME.UNIMODC'</b></font></tt></td>
+</tr>
+</table>
+</ul>
+
+<ul>
+<li>
+<font color="#330033">Press Enter</font></li>
+
+<li>
+<font color="#330033">The following screen is displayed. Enter Update for
+<b>OPTION
+</b>and
+change <b>LOCK</b> option to OFF</font></li>
+
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 COLS=1 WIDTH="70%" BGCOLOR="#FFFF99" >
+<tr>
+<td><tt>UNIMODC Bulk Storage Information: Update mode</tt>
+<br><tt>UNILIB : 'HLQ.FMID.APARNAME.UNIMODC'</tt>
+<br><tt>OPTION ===> <b>Update</b> - Equal|Start|Next|Prev|End|Update|Delete</tt>
+<br><tt>Change LOCK = <b>OFF</b></tt></td>
+</tr>
+</table>
+</ul>
+
+<ul>
+<li>
+<font color="#330033">Press Enter</font></li>
+</ul>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="delshad" href="#delshad_info"></a><b><a href="#delshad_info" name="delshad">Deleting
+a Release</a></b></li>
+
+<p><br>In this situation, the developer would remove a release because
+a particular FMID is no longer needed/valid or an error occurred during
+the Service Transfer process. <b>Note:</b> Before deleting a release, all
+of the APAR delta drivers associated with the release and the BASE (COPYSENT)
+driver for the release must be deleted.
+<br><b><font color="#CC0000">WARNING</font></b>&nbsp; - Everything under
+the qualifier will be deleted, whether it owns the datasets or not.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+These options will <b>NOT</b> prompt for <b>delete</b> confirmation.
+<br>To delete a Release, do the following:
+<ul>
+<li>
+<a NAME="delshad_cmdline" href="#delshad_info"></a><b><a href="#delshad_info" name="delshad_cmdline">Command
+Line Option</a></b></li>
+
+<br>Issue the following command:
+<p><tt><font color="#330033"><b>Build390.MBClient DELETERELEASE MVSRELEASE=</b>&lt;FMID><b>
+LIBRELEASE=</b>&lt;FMID><b> CHILVL=</b>&lt;HLQ><b> PARMFILE=</b>&lt;PARMFILE><b>
+/ODEBUILD</b></font></tt>
+<p><font color="#330033">where: &lt;FMID> is the name of the shadow release
+on MVS</font>
+<br><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;HLQ> is the MVS high level qualifier</font>
+<br><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;PARMFILE> is the full path to the parmfile</font>
+<br>&nbsp;
+<li>
+<a NAME="delshad_tso" href="#delshad_info"></a><b><a href="#delshad_info" name="delshad_tso">TSO
+Option</a></b></li>
+
+<ul>
+<li>
+<font color="#330033">Logon to TSO</font></li>
+
+<li>
+<font color="#330033">Open the ISPF utility program</font></li>
+
+<li>
+<font color="#330033">Type <b>=c.delshad </b>at the prompt.</font></li>
+
+<li>
+<font color="#330033">The following screen is displayed. Enter high level
+qualifier (HLQ) for <b>High-level Index </b>option and enter release (FMID)
+name for <b>MVS Release</b></font></li>
+
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 COLS=1 WIDTH="70%" BGCOLOR="#FFFF99" >
+<tr>
+<td>
+<li>
+<font color="#330033"><b>Name</b> option.</font></li>
+
+<br><tt>------------------- Delete a Shadow Database-------------------</tt>
+<br><tt>Command ===></tt>
+<p><tt>Type information. Then press ENTER.</tt>
+<p><tt>High-level Index............ <b>HLQ</b></tt>
+<br><tt>MVS Release Name........... <b>FMID</b></tt></td>
+</tr>
+</table>
+</ul>
+
+<ul>
+<li>
+<font color="#330033">Press Enter</font></li>
+</ul>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="delpdt" href="#delpdt_info"></a><b><a href="#delpdt_info" name="delpdt">Deleting
+a PDT</a></b></li>
+
+<p><br>In this situation, the developer wants to remove the PDT object
+because an error occurred during the Service Transfer process, the wrong
+PDT name was used, or any other condition that warrants removal of the
+entire service history of the product(s). <b>Note:</b> Before deleting
+a PDT, the release(s) and all of the APAR delta drivers associated with
+the release and the BASE (COPYSENT) driver for the release must be deleted.
+To delete a PDT, do the following:
+<ul>
+<li>
+<a NAME="delpdt_tso" href="#delpdt_info"></a><b><a href="#delpdt_info" name="delpdt_tso">TSO
+Option</a></b></li>
+
+<ul>
+<li>
+<font color="#330033">Logon to TSO</font></li>
+
+<li>
+<font color="#330033">Open the ISPF utility program</font></li>
+
+<li>
+<font color="#330033">Type <b>=c.delpdt </b>at the prompt</font></li>
+
+<li>
+<font color="#330033">The following screen is displayed. Enter PDT information
+for the <b>PDT Stem Name </b>option.</font> The PDT information is of the
+form <i>HLQ.PDTNAME</i>, where <i>HLQ</i> is the high level qualifier and
+<i>PDTNAME</i>
+is the name of the PDT.</li>
+
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 COLS=1 WIDTH="70%" BGCOLOR="#FFFF99" >
+<tr>
+<td><tt>--------------------- Delete a PDT Database-------------------</tt>
+<br><tt>Command ===></tt>
+<p><tt>Type information. Then press ENTER.</tt>
+<p><tt>PDT Stem Name............... <b>HLQ.PDTNAME</b></tt></td>
+</tr>
+</table>
+
+<li>
+<font color="#330033">Press Enter</font></li>
+</ul>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="delbld" href="#delbld_info"></a><b><a href="#delbld_info" name="delbld">Cleaning
+up after a Build Failure</a></b></li>
+
+<p><br>In this situation, the driver build failed for some reason and the
+driver remains locked by the host system, preventing its deletion.
+<ul>
+<li>
+<a NAME="delbld_cmdline" href="#delbld_info"></a><b><a href="#delbld_info" name="delbld_cmdline">Command
+Line Option</a></b></li>
+
+<br>The CLEANUP command deletes local and remote files that were created
+as the result of a build and unlocks the driver associated with a build.
+Issue the command as follows:
+<p><b><tt><font color="#330033">Build390.MBClient CLEANUP BUILD1=BUILDID1
+BUILDn=BUILDIDn /HOSTDS /JOBS /UNLOCK /EXTRACTED /LOCAL</font></tt></b>
+<p><font color="#330033">Where /hostds - deletes all host data sets releated
+to the build</font>
+<br><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/jobs - deletes all job output on the host releated to the build</font>
+<br><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/unlock - unlocks the driver assoctiated with the build</font>
+<br><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/extracted - deletes all files extracted for the build</font>
+<br><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/local - deletes all other local files associated with the build</font>
+<p><font color="#000000">To clean up after a build or build failure, rerun
+the following:</font>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp; mk runpkgtool_all PKG_TYPE=APAR
+APAR=APARNAME</font></tt>
+<br><font color="#000000">since the ODE delta driver creation and build
+process will attempt to automatically clean up the build if it is locked.&nbsp;
+Optionally, the user can execute the following at the prompt:</font>
+<br><font color="#000000">&nbsp;&nbsp; <tt>Build390.MBClient CLEANUP BUILD1=buildid1
+/HOSTDS /JOBS /UNLOCK /EXTRACTED</tt></font>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; /LOCAL PARMFILE=path/to/parmfile</tt>
+<p><b>Example:</b> <a href="http://w3.ode.raleigh.ibm.com/4.0/doc/pubs/ode390_service_users.htm#cleanup">Cleanup
+an existing APAR Delta Driver (CLEANUP)</a>
+<p><b>Note:</b> The CLEANUP command only unlocks a driver locked on a <b>build
+id</b> and not on a driver which has <b>LOCK FLAG=ON. </b>If you receive
+a message stating that the <b>Driver is NOT locked by Build, But has LOCK
+FLAG Set to ON. Driver Cannot be Deleted</b>, then follow the procedure
+described at <b><a href="#deldrvr_tso">Deleting a Driver (TSO Option)</a></b></ul>
+
+<hr width="100%">
+<li>
+<a NAME="delapar" href="#delapar_info"></a><b><a href="#delapar_info" name="delapar">Opening
+a Closed APAR</a></b></li>
+
+<p><br><font color="#330033">In this situation, the APAR was successfully
+closed in RETAIN and the Build/390 PDT was updated. However, the developer
+is not satisfied with some portion of the APAR and wants to back out of
+the process, make some updates, and go through the APAR process again.
+To back out of the APAR process, do the following:</font>
+<ul>
+<li>
+<a NAME="delapar_tso" href="#delapar_info"></a><b><font color="#330033"><a href="#delapar_info" name="delapar_tso">TSO
+Option</a></font></b></li>
+
+<ul>
+<li>
+<font color="#330033">In RETAIN, use the TRANS/RO option.</font></li>
+
+<li>
+<font color="#330033">In BPS, do an <b><a href="http://w3.bps.raleigh.ibm.com/bps241Pubs/usrl5s22.htm#HDRDIVPULLSPECIFIC">APAR
+pull </a></b>to refresh the BPS database</font></li>
+
+<li>
+<font color="#330033">In CMVC, move the track back to the fix state.</font></li>
+
+<li>
+<font color="#330033"><a href="#deleteapar">Delete APARs from PDT</a></font></li>
+</ul>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="deleteapar" href="#deleteapar_info"></a><b><a href="#deleteapar_info" name="deleteapar">Deleting
+APARs from PDT</a></b></li>
+
+<p><br><font color="#330033">In this situation, the APAR was removed because
+the APAR was cancelled or the existing APAR needs to be redefined. <b>Note:
+</b>The
+APARs that have other APARs depending on them cannot be removed until the
+dependent APARs have been removed. Also, if the APAR has been included
+in a PTF, the PTF needs to be removed first and then the APAR may be removed.
+To delete an APAR, do <b>ONE</b> of the following options <b>(Preprocessor
+or JCL)</b>:</font>
+<ul>
+<li>
+<a NAME="deleteapar_tso" href="#deleteapar_info"></a><b><a href="#deleteapar_info" name="deleteapar_tso">TSO
+Option</a></b></li>
+
+<ul><b>*** Preprocessor ***</b>
+<li>
+<font color="#330033">Logon to TSO</font></li>
+
+<li>
+<font color="#330033">Open the ISPF utility program</font></li>
+
+<li>
+<font color="#330033">Type <b>=c.clrprpx </b>at the prompt</font></li>
+
+<li>
+<font color="#330033">The following screen is displayed.</font></li>
+
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 COLS=1 WIDTH="70%" BGCOLOR="#FFFF99" >
+<tr>
+<td><tt><font color="#330033">Enter/Verify Parameters Below:</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Edit/Browse&nbsp;&nbsp;&nbsp;&nbsp;
+TSO data set name or '*'</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+YES|NO</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Input YES => ISPFILE</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Messages YES =>
+CLRPRINT</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Output YES => CLROUT</font></tt>
+<p><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Supplemental Verb
+Library</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Verblib ===></font></tt>
+<p><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; JOB Verb ===> NO
+- YES|NO - Generate a CLEAR JOB verb</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Trace ===> ALL&nbsp;&nbsp;
+- YES|NO|ALL - Trace verb commands</font></tt>
+<p><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; JOB Parms ===> NO
+- YES|NO - Specify JOB verb parameters</font></tt></td>
+</tr>
+</table>
+
+<li>
+<font color="#330033">Press Enter</font></li>
+
+<li>
+<font color="#330033">Edit screen:</font></li>
+
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 COLS=1 WIDTH="70%" BGCOLOR="#FFFF99" >
+<tr>
+<td><tt><font color="#330033">Edit session:</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; $ PDTUPD OP=RIPAPAR,</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; $ PDT=CLRTEST.ANNLOGD.PDT,</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; $ PTF=ZB12345</font></tt></td>
+</tr>
+</table>
+
+<li>
+<font color="#330033">Press PF3 and then Press Enter</font> when preprocessor
+message is shown</li>
+
+<p><br><b>*** JCL ***</b>
+<li>
+<font color="#330033">Logon to TSO</font></li>
+
+<li>
+<font color="#330033">Open the ISPF utility program</font></li>
+
+<li>
+<font color="#330033">The ISPF screen is displayed. Enter 2 for Edit at
+the prompt</font></li>
+
+<li>
+<font color="#330033">Enter the name of the CNTRL file containing sample
+JCL jobs; include the member name, as follows:</font></li>
+
+<br><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;HLQ>.&lt;CNTRL
+Name>(REMAPAR) -- if this is the first edit of the job; paste the following
+text:</font>
+<p><tt><font color="#330033">----------------------------------------------------</font></tt>
+<br><tt><font color="#330033">//PDTUPD JOB (ANNMYRA,07DB,0503,W97),</font></tt>
+<br><tt><font color="#330033">//&nbsp; 'A.M.SMITH',TIME=(10),CLASS=A,</font></tt>
+<br><tt><font color="#330033">//&nbsp; MSGCLASS=H,USER=ANNMYRA,MSGLEVEL=(1,1)</font></tt>
+<br><tt><font color="#330033">//JOBLIB&nbsp;&nbsp; DD&nbsp; DSN=CLRPROD.SDWB240.SHIP.LOAD,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//TSO&nbsp;&nbsp;&nbsp; EXEC&nbsp; PGM=CLRPRPX,REGION=8M</font></tt>
+<br><tt><font color="#330033">//<b>CLRHJN</b>&nbsp; DD&nbsp; DSN=CASTER.CONTROL.LIBRARY,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//<b>SYSEXEC</b>&nbsp; DD&nbsp; DSN=CLRPROD.SDWB240.LOCAL.EXEC,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//DD&nbsp; DSN=CLRPROD.SDWB40.SHIP.EXEC,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//<b>CLRVERB</b>&nbsp; DD&nbsp; DSN=CLRPROD.SDWB240.LOCAL.VERBLIB,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//DD&nbsp; DSN=CLRPROD.SDWB40.SHIP.VERBLIB,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//CLRPRINT DD&nbsp; SYSOUT=*</font></tt>
+<br><tt><font color="#330033">//CLROUT DD&nbsp; SYSOUT=*</font></tt>
+<br><tt><font color="#330033">//CLRIN DD&nbsp; *</font></tt>
+<br><tt><font color="#330033">$ PDTUPD <b>PDT</b>=CLRTEST.ANNLOGD.PDT,OP=RIPAPAR,PTF=ZB12345</font></tt>
+<br>&nbsp;
+<li>
+<font color="#330033">Change the location of the SYSEXEC, CLRVERB, and
+PDT datasets.&nbsp; The PDT name is of form HLQ.PDTNAME where HLQ is high
+level qualifier and PDTNAME is the name of the PDT.</font></li>
+
+<li>
+<font color="#330033">Change the job statement and APAR number, move cursor
+to command area</font></li>
+
+<li>
+<font color="#330033">Type SUBMIT</font></li>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="defineapar" href="#defineapar_info"></a><b><font color="#330033"><a href="#defineapar_info" name="defineapar">Defining
+APARs to PDT</a></font></b></li>
+
+<p><br><font color="#330033">In this situation, the developer defines the
+APAR to the PDT because the user exit did not complete the DEFAPAR process
+after the track had been moved to the integrate state. There may also be
+occasions when the existing APAR needs to be redefined. To define an APAR
+to a PDT, do the following:</font>
+<ul>
+<li>
+<a NAME="defineapar_tso" href="#defineapar_info"></a><b><font color="#330033"><a href="#defineapar_info" name="defineapar_tso">TSO
+Option</a></font></b></li>
+
+<br>&nbsp;
+<ul>
+<li>
+<font color="#330033">Logon to TSO</font></li>
+
+<li>
+<font color="#330033">Open the ISPF utility program</font></li>
+
+<li>
+<font color="#330033">Type <b>=c.defapar </b>at the prompt</font></li>
+
+<li>
+<font color="#330033">The following screen is displayed. Enter the Family
+Name (FamilyName) for <b>CMVC Family Name</b> , enter Family Address in
+the form of (ServerName.ibm.com@PortNumber) for <b>Family Address</b> and
+enter APAR (APARNumber) number for <b>APAR #</b></font></li>
+
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 COLS=1 WIDTH="70%" BGCOLOR="#FFFF99" >
+<tr>
+<td><tt><font color="#330033">------------------- Define an APAR to PDT-------------------</font></tt>
+<br><tt><font color="#330033">Command ===></font></tt>
+<br><tt><font color="#330033">Type information. Then press ENTER.</font></tt>
+<br><tt><font color="#330033">CMVC Family Name.... <b>FamilyName</b></font></tt>
+<br><tt><font color="#330033">Family Address..... <b>SeverName.ibm.com@PortNumber</b></font></tt>
+<br><tt><font color="#330033">CMVC Release 1... <b>FMID</b></font></tt>
+<p><tt><font color="#330033">APAR #.............. <b>APARNumber</b></font></tt>
+<br><tt><font color="#330033">Integrity.......... NO No|Yes</font></tt></td>
+</tr>
+</table>
+
+<li>
+<font color="#330033">Press Enter</font></li>
+</ul>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="delnums" href="#delnums_info"></a><b><a href="#delnums_info" name="delnums">Removing
+Defined PTF(s)</a></b></li>
+
+<p><br><font color="#330033">In this situation, the PTF number was removed
+because an existing APAR needs to be redefined or the temp PTF number needs
+to be removed because of network problems that prevented BPS from retrieving
+real PTF numbers. To back out of PTFDEFINE, do <b>ONE</b> of the following
+options <b>(Preprocessor or JCL)</b>:</font>
+<ul>
+<li>
+<a NAME="delnums_tso" href="#delnums_info"></a><b><a href="#delnums_info" name="delnums_tso">TSO
+Option</a></b></li>
+
+<ul><b>*** Preprocessor ***</b>
+<li>
+<font color="#330033">Logon to TSO</font></li>
+
+<li>
+<font color="#330033">Open the ISPF utility program</font></li>
+
+<li>
+<font color="#330033">Type <b>=c.clrprpx </b>at the prompt</font></li>
+
+<li>
+<font color="#330033">The following screen is displayed.</font></li>
+
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 COLS=1 WIDTH="70%" BGCOLOR="#FFFF99" >
+<tr>
+<td><tt><font color="#330033">Enter/Verify Parameters Below:</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Edit/Browse&nbsp;&nbsp;&nbsp;&nbsp;
+TSO data set name or '*'</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+YES|NO</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Input YES => ISPFILE</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Messages YES =>
+CLRPRINT</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Output YES => CLROUT</font></tt>
+<p><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Supplemental Verb
+Library</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Verblib ===></font></tt>
+<p><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; JOB Verb ===> NO
+- YES|NO - Generate a CLEAR JOB verb</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; Trace ===> ALL&nbsp;&nbsp;
+- YES|NO|ALL - Trace verb commands</font></tt>
+<p><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; JOB Parms ===> NO
+- YES|NO - Specify JOB verb parameters</font></tt></td>
+</tr>
+</table>
+
+<li>
+<font color="#330033">Press Enter</font></li>
+
+<li>
+<font color="#330033">Edit screen:</font></li>
+
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 COLS=1 WIDTH="70%" BGCOLOR="#FFFF99" >
+<tr>
+<td><tt><font color="#330033">Edit session:</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; $ PDTUPD OP=RIPPTF,</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; $ PDT=CLRTEST.ANNLOGD.PDT,</font></tt>
+<br><tt><font color="#330033">&nbsp;&nbsp;&nbsp;&nbsp; $ PTF=UB0003T</font></tt></td>
+</tr>
+</table>
+
+<li>
+<font color="#330033">Press PF3 and then Press Enter</font> when preprocessor
+message is shown</li>
+
+<p><br><b>*** JCL ***</b>
+<li>
+<font color="#330033">Logon to TSO</font></li>
+
+<li>
+<font color="#330033">Open the ISPF utility program</font></li>
+
+<li>
+<font color="#330033">The ISPF screen is displayed. Enter 2 for Edit at
+the prompt</font></li>
+
+<li>
+<font color="#330033">Enter the name of the CNTRL file containing sample
+JCL jobs; include the member name, as follows:</font></li>
+
+<br><font color="#330033">&lt;HLQ>.&lt;CNTRLName>(REMPTF) -- if this is
+the first edit of the job; paste the following text:</font>
+<p><tt><font color="#330033">----------------------------------------------------</font></tt>
+<br><tt><font color="#330033">//PDTUPD JOB (ANNMYRA,07DB,0503,W97),</font></tt>
+<br><tt><font color="#330033">//&nbsp; 'A.M.SMITH',TIME=(10),CLASS=A,</font></tt>
+<br><tt><font color="#330033">//&nbsp; MSGCLASS=H,USER=ANNMYRA,MSGLEVEL=(1,1)</font></tt>
+<br><tt><font color="#330033">//JOBLIB&nbsp;&nbsp; DD&nbsp; DSN=CLRPROD.SDWB240.SHIP.LOAD,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//TSO&nbsp;&nbsp;&nbsp; EXEC&nbsp; PGM=CLRPRPX,REGION=8M</font></tt>
+<br><tt><font color="#330033">//<b>CLRHJN</b>&nbsp; DD&nbsp; DSN=CASTER.CONTROL.LIBRARY,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//<b>SYSEXEC</b>&nbsp; DD&nbsp; DSN=CLRPROD.SDWB240.LOCAL.EXEC,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//DD&nbsp; DSN=CLRPROD.SDWB40.SHIP.EXEC,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//<b>CLRVERB</b>&nbsp; DD&nbsp; DSN=CLRPROD.SDWB240.LOCAL.VERBLIB,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//DD&nbsp; DSN=CLRPROD.SDWB40.SHIP.VERBLIB,DISP=SHR</font></tt>
+<br><tt><font color="#330033">//CLRPRINT DD&nbsp; SYSOUT=*</font></tt>
+<br><tt><font color="#330033">//CLROUT DD&nbsp; SYSOUT=*</font></tt>
+<br><tt><font color="#330033">//CLRIN DD&nbsp; *</font></tt>
+<br><tt><font color="#330033">$ PDTUPD <b>PDT</b>=CLRTEST.ANNLOGD.PDT,OP=RIPPTF,PTF=UB0003T</font></tt>
+<br>&nbsp;
+<li>
+<font color="#330033">Change the location of the SYSEXEC, CLRVERB, and
+PDT datasets.&nbsp; The PDT name is of form HLQ.PDTNAME where HLQ is high
+level qualifier and PDTNAME is the name of the PDT.</font></li>
+
+<li>
+<font color="#330033">Change the job statement and PTF number, move cursor
+to command area.</font></li>
+
+<li>
+<font color="#330033">Type SUBMIT</font></li>
+</ul>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="renamelvl" href="#renamelvl_info"></a><b><a href="#renamelvl_info" name="renamelvl">Renaming
+PTF Level(s)</a></b></li>
+
+<p><br><font color="#330033">In this situation, the PTF needs to be removed
+because the PTF was cancelled or the exising PTF needs to be redefined.
+To back out of the PTF process, do the following:</font>
+<ul>
+<li>
+<a NAME="renamelvl_tso" href="#renamelvl_info"></a><b><font color="#330033"><a href="#renamelvl_info" name="renamelvl_tso">TSO
+Option</a></font></b></li>
+
+<ul>
+<li>
+<font color="#330033">In CMVC, rename the PTF LEVEL back to the name of
+the original level.</font></li>
+
+<li>
+<font color="#330033"><a href="#delnums">Removing Defined PTF(s)</a></font></li>
+
+<li>
+<font color="#330033">Cancel the PTF in Retain <b>(OPTIONAL)</b></font></li>
+
+<ul>
+<li>
+<font color="#330033"><b>Note:</b> If the PTF numbers are expected to be
+reused, then skip this step. <b>However, if the PTF is never going to be
+used again, then perform this step.</b></font></li>
+</ul>
+
+<li>
+<font color="#330033">Close/D to cancel</font></li>
+
+<li>
+<font color="#330033">Trans/cs to copysend <b>(OPTIONAL)</b></font></li>
+</ul>
+<font color="#330033"><b>Note:</b> If the PTF level needs to be renamed
+because the wrong level name was specified in the parmfile, then only the
+following needs to be done:</font>
+<br>&nbsp;
+<ul>
+<li>
+<font color="#330033">In CMVC, rename the PTF LEVEL back to the name of
+the original level.</font></li>
+
+<li>
+<font color="#330033">Rerun<tt> <b>mk runpkgtool_all PKG_TYPE=PTF</b></tt></font></li>
+
+<li>
+<font color="#330033">Continue with PTF BUILD (++PTF process)</font></li>
+
+<li>
+<font color="#330033">Run<tt> <b>mk runpkgtool_all PKG_TYPE=++PTF</b></tt></font></li>
+</ul>
+</ul>
+
+<hr width="100%">
+<li>
+<a NAME="ptfbuild" href="#ptfbuild_info"></a><b><a href="#ptfbuild_info" name="ptfbuild">Removing
+Built PTF(s)</a></b></li>
+
+<p><br><font color="#000000">In this situation, a PTF&nbsp; may be removed
+because the PTF was cancelled or the exising PTF needs to be redefined.
+If a PTF needs to be removed from PDT, then delta driver should be deleted
+first. Do not try to reuse a delta driver for a PTF because unwanted parts
+could remain. Also, an individual PTF of a set may not be removed. If any
+PTF of a set is removed the entire set will be removed. <b>Note:</b> Frozen
+PTFs cannot be removed and PTFs that have other PTFs depending on them
+cannot be removed. To delete a PTF, do the following :</font>
+<ul>
+<li>
+<font color="#330033"><a href="#delnums">Remove PTFs from PDT using the
+Preprocessor or JCL option</a></font></li>
+
+<li>
+<font color="#330033"><a href="#deldrvr">Delete the PTF delta driver using
+command line or TSO</a></font></li>
+
+<ul>
+<li>
+<b><font color="#330033">Note: This deletes all associated files; including
+the SHIPPTF</font></b></li>
+</ul>
+
+<li>
+<a href="#renamelvl">Rename the CMVC Level</a></li>
+</ul>
+</ul>
+
+<hr width="100%">
+<h2>
+<a NAME="scenarioinfo" href="#scenario"></a><b><a href="#scenario" name="scenarioinfo">Specific
+APAR and PTF Scenarios</a></b></h2>
+
+<ul>
+<li>
+<a NAME="delspecdrvr" href="#delspecdrvr_info"></a><b><a href="#delspecdrvr_info" name="delspecdrvr">Backing
+out of specific Delta Drivers for an APAR</a></b></li>
+
+<p><br><font color="#330033">There also may be occassions when a specific
+delta driver has been incorrectly built against an APAR.&nbsp; For example,
+if an APAR had more than one delta driver built against it during the APAR
+delta driver build process, and it is then desired to remove the reference
+to a single delta driver.&nbsp; In this case, the unwanted delta driver
+may be deleted as usual, but the ensuing definition of the APAR to PDT
+will still fail due to the previous driver's build object in the RMI server,
+which cannot be deleted.&nbsp; In this case, the APAR must be manually
+defined to PDT.&nbsp; Execute the following steps to get around the problem:</font>
+<ul>
+<li>
+<a href="#deldrvr">Delete the unwanted delta driver</a></li>
+
+<li>
+<font color="#330033"><a href="#defineapar">Define APAR to PDT</a></font></li>
+</ul>
+</ul>
+
+<hr width="100%">
+<h2>
+<a NAME="referenceinfo" href="#moreinfo"></a><b><a href="#moreinfo" name="referenceinfo">Additional
+Information</a></b></h2>
+Please see these references for information on backup and recovery of the
+SDWB components:
+<ul>
+<li>
+<a href="http://rtpgsa.ibm.com/projects/b/build390/Docs/Build390ODEInterface.html">ODE
+Command Line Document</a></li>
+
+<li>
+<a href="http://w3.sdwb.ibm.com/b390doc50/B390ServiceProcessGuide50.html#h1xtrouble">Build/390
+Service Process</a></li>
+
+<li>
+<a href="http://w3.sdwb.ibm.com/bps/bps40Pubs/ADMGUIDE.html#hdrdivperformbpsbackuprestore">BPS
+Backup and Restore</a></li>
+
+<li>
+<a href="http://w3.sdwb.ibm.com/bps/bps40Pubs/ADMGUIDE.html#hdrdivconfiguringdb">BPS
+Synchronization</a></li>
+
+<li>
+<a href="http://w3.sdwb.ibm.com/cmvc/5.0/infocenter/">CMVC Backup and Recovery</a></li>
+</ul>
+
+<hr width="100%"></ul>
+
+</body>
+</html>

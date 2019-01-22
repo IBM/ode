@@ -1,0 +1,3407 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <meta name="Author" content="Steve Speicher">
+   <title>ODE Installation and Administration Guide</title>
+</head>
+<body bgcolor="#FFFFFF">
+<img SRC="bannerx.gif" ALT="IBM Books" BORDER=0 height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+ODE Installation and Administration Guide</h1>
+Open Development Environment
+<br>Installation and Administration Guide
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="ToC"></a>Table of Contents</h2>
+<a NAME="ToC_5"></a><b><a href="#Header_5">About this document</a></b>
+<p><a NAME="ToC_Highlighting_Conventions"></a><b><a href="#HighlightingConventions">Highlighting
+conventions</a></b>
+<p><a NAME="ToC_4"></a><b><a href="#Header_4">Supported Operating Systems</a></b>
+<p><a NAME="ToC_Hardware_and_Software_Req"></a><b><a href="#Hardware_and_Software_Req">Hardware
+and software requirements</a></b>
+<p><a NAME="TOC_Packaging"></a><b><a href="#Packaging">Packaging Support</a></b>
+<p><a NAME="ToC_6"></a><b><a href="#HDRODEINST">Installing and configuring
+ODE</a></b>
+<ul>
+<li>
+<a NAME="ToC_Obtaining_ODE"></a><a href="#Obtaining_ODE">Obtaining ODE</a></li>
+
+<li>
+<a NAME="ToC_ODE_Component_Install"></a><a href="#ODE_Component_Install">Installing
+and configuring the ODE commands using zip files</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_AIX_INSTALL"></a><a href="#AIX_INSTALL">AIX</a></li>
+
+<li>
+<a NAME="ToC_HPUX_INSTALL"></a><a href="#HPUX_INSTALL">HP-UX</a></li>
+
+<li>
+<a NAME="ToC_IRIX_INSTALL"></a><a href="#IRIX_INSTALL">IRIX</a></li>
+
+<li>
+<a NAME="ToC_LINUX_INSTALL"></a><a href="#LINUX_INSTALL">Linux</a></li>
+
+<li>
+<a NAME="ToC_MVSOE_INSTALL"></a><a href="#MVSOE_INSTALL">MVS/USS</a></li>
+
+<li>
+<a NAME="ToC_OS2_INSTALL"></a><a href="#OS2_INSTALL">OS/2</a></li>
+
+<br><a NAME="ToC_OS400_INSTALL"></a><a href="#OS400_INSTALL">OS/400</a>
+<li>
+<a NAME="ToC_Solaris_INSTALL"></a><a href="#Solaris_INSTALL">Solaris</a></li>
+
+<li>
+<a NAME="ToC_Tru64_INSTALL"></a><a href="#Tru64_INSTALL">Tru64</a></li>
+
+<li>
+<a NAME="ToC_WIN32_INSTALL"></a><a href="#WIN32_INSTALL">Windows NT/2000</a></li>
+</menu>
+</ul>
+
+<ul>
+<li>
+<a NAME="ToC_13"></a><a href="#Header_13">Installing the backing build
+example</a></li>
+
+<li>
+<a NAME="ToC_InstallConfigFiles"></a><a href="#InstallConfigFiles">Installing
+the configuration files</a></li>
+</ul>
+<a NAME="ToC_AIX_PkgTools"></a><b><a href="#AIX_PkgTools">Installing and
+configuring the AIX packaging tools</a></b>
+<p><a NAME="ToC_Appendix_A"></a><b><a href="#Appendix_A">Appendix A. Restrictions</a></b>
+<ul>
+<li>
+<a NAME="ToC_Restrictions_UNIX"></a><a href="#Restrictions_UNIX">Restrictions
+in UNIX environments</a></li>
+
+<ul>
+<li>
+<a NAME="ToC_OS400_RESTRICT"></a><a href="#OS400_RESTRICT">OS/400 environment
+(Qshell)</a></li>
+</ul>
+
+<li>
+<a NAME="ToC_HDRRESTR_NONUNIX"></a><a href="#HDRRESTR_NONUNIX">Restrictions
+and differences in Non-UNIX environments</a></li>
+
+<ul>
+<li>
+<a NAME="ToC_31"></a><a href="#Header_31">OS/2 environment</a></li>
+
+<li>
+<a NAME="ToC_32"></a><a href="#Header_32">Win32 environment</a></li>
+</ul>
+</ul>
+<a NAME="ToC_HintsTips"></a><b><a href="#HintsTips">Appendix B. Hints and
+Tips</a></b>
+<ul>
+<li>
+<a NAME="ToC_howto"></a><a href="#howto">How to read syntax statements</a></li>
+
+<li>
+<a NAME="ToC_IncludesCpp"></a><a href="#IncludesCpp">Use of #include ""
+in C/C++ source files</a></li>
+
+<li>
+<a NAME="ToC_SpacesInPaths"></a><a href="#SpacesInPaths">Spaces in pathnames</a></li>
+</ul>
+<a NAME="ToC_Release_Notes"></a><b><a href="#Release_Notes">Appendix C.
+Release notes</a></b>
+<ul>
+<li>
+<a NAME="ToC_Changes_5.0_4.0"></a><a href="#Changes_5.0_4.0">Changes in
+ODE5.0 from ODE5.0</a></li>
+
+<li>
+<a NAME="ToC_Changes_4.0_3.0"></a><a href="#Changes_4.0_3.0">Changes in
+ODE4.0 from ODE3.0</a></li>
+
+<li>
+<a NAME="ToC_Changes_3.0_2.5"></a><a href="#Changes_3.0_2.5">Changes in
+ODE3.0 from ODEi2.5</a></li>
+
+<li>
+<a NAME="ToC_Changes_2.5_2.4"></a><a href="#Changes_2.5_2.4">Changes in
+ODEi2.5 from ODEi2.4</a></li>
+
+<li>
+<a NAME="ToC_Changes_2.4_2.3"></a><a href="#Changes_2.4_2.3">Changes in
+ODEi2.4 from ODEi2.3</a></li>
+
+<li>
+<a NAME="ToC_Changes_2.3_2.2"></a><a href="#Changes_2.3_2.2">Changes in
+ODEi2.3 from ODEi2.2</a></li>
+
+<li>
+<a NAME="ToC_Changes_2.2_2.1"></a><a href="#Changes_2.2_2.1">Changes in
+ODEi2.2 from ODEi2.1</a></li>
+
+<li>
+<a NAME="ToC_Changes_2.1_2.0.1"></a><a href="#Changes_2.1_2.0.1">Changes
+in ODEi2.1 from ODEi2.0.1</a></li>
+
+<li>
+<a NAME="ToC_Changes_2.0.1_2.0"></a><a href="#Changes_2.0.1_2.0">Changes
+in ODEi2.0.1 from ODEi2.0</a></li>
+
+<li>
+<a NAME="ToC_Changes_2.0_1.0"></a><a href="#Changes_2.0_1.0">Changes in
+ODEi2.0 from ODEi1.0</a></li>
+
+<li>
+<a NAME="ToC_Changes_1.0_OSF236"></a><a href="#Changes_1.0_OSF236">Changes
+in ODEi1.0 from OSF-ODE 2.3.6</a></li>
+
+<li>
+<a NAME="ToC_Changes_Prior_OSF236"></a><a href="#Changes_Prior_OSF236">Changes
+Prior to OSF-ODE 2.3.6</a></li>
+</ul>
+<a NAME="ToC_Upgrading"></a><b><a href="#Upgrading">Appendix D. Upgrading
+from previous releases</a></b>
+<ul>
+<li>
+<a NAME="ToC_Upgrading_5.0_4.0"></a><a href="#Upgrading_5.0_4.0">Upgrading
+to ODE5.0 from ODE4.0</a></li>
+
+<li>
+<a NAME="ToC_Upgrading_4.0_3.0"></a><a href="#Upgrading_4.0_3.0">Upgrading
+to ODE4.0 from ODE3.0</a></li>
+
+<li>
+<a NAME="ToC_Upgrading_3.0_2.5"></a><a href="#Upgrading_3.0_2.5">Upgrading
+to ODE3.0 from ODEi2.5</a></li>
+
+<li>
+<a NAME="ToC_Upgrading_2.5_2.4"></a><a href="#Upgrading_2.5_2.4">Upgrading
+to ODEi2.5 from ODEi2.4</a></li>
+
+<li>
+<a NAME="ToC_Upgrading_2.4_2.3"></a><a href="#Upgrading_2.4_2.3">Upgrading
+to ODEi2.4 from ODEi2.3</a></li>
+
+<li>
+<a NAME="ToC_Upgrading_2.3_2.2"></a><a href="#Upgrading_2.3_2.2">Upgrading
+to ODEi2.3 from ODEi2.2</a></li>
+
+<li>
+<a NAME="ToC_Upgrading_2.2_2.1"></a><a href="#Upgrading_2.2_2.1">Upgrading
+to ODEi2.2 from ODEi2.1</a></li>
+
+<li>
+<a NAME="ToC_Upgrading_2.1_2.0.1"></a><a href="#Upgrade_2.1_2.0.1">Upgrading
+to ODEi2.1 from ODEi2.0.1 and ODEi2.0</a></li>
+
+<li>
+<a NAME="ToC_Upgrading_2.1_1.0"></a><a href="#Upgrade_2.1_1.0">Upgrading
+to ODEi2.1 from ODEi1.0</a></li>
+
+<li>
+<a NAME="ToC_Upgrading_2.1_OSFODE2.3"></a><a href="#Upgrade_2.1_OSFODE2.3">Upgrading
+to ODEi2.1 from OSF-ODE 2.3+</a></li>
+
+<li>
+<a NAME="ToC_Upgrading_2.1_preOSFODE2.3"></a><a href="#Upgrade_2.1_preOSFODE2.3">Upgrading
+to ODEi2.1 from pre OSF-ODE 2.3</a></li>
+</ul>
+
+<hr>
+<h1>
+<a NAME="Header_5"></a><a href="#ToC_5">About this document</a></h1>
+This document is intended to give the information necessary for the reader
+to prepare to install ODE and migrate from previous releases.
+<p>For information on ODE documentation conventions see <a href="#HighlightingConventions">Highlighting
+Conventions</a> and <a href="#howto">How to Read Syntax Statements</a>.
+<p>See the <i><a href="index.htm">ODE Documentation Index</a></i> for a
+complete list of ODE documents and their purposes.
+<h1>
+
+<hr WIDTH="100%"></h1>
+
+<h1>
+<a NAME="HighlightingConventions"></a><a href="#ToC_Highlighting_Conventions">Highlighting
+Conventions</a></h1>
+The style conventions used in ODE command syntax are described in <a href="#howto">How
+to Read Syntax Statements</a>. The following highlighting conventions are
+also used in ODE documentation:
+<dl>
+<dt>
+<b>Bold</b></dt>
+
+<dd>
+Actions, backing build areas, commands, directories, drive names, execs,
+flags, filenames, field names, machine names, names of sandboxes, parameters,
+passes, targets, appear in bold. Valid abbreviations for commands are also
+in bold.</dd>
+
+<dt>
+<i>Italic</i></dt>
+
+<dd>
+Arguments, options and variables whose names or values must be supplied
+by you appear in italics. Italics are also used for emphasis and for titles
+of books.</dd>
+
+<dt>
+<tt>Monotype</tt></dt>
+
+<dd>
+Examples of specific data values, examples of expected output, messages,
+or information that you should type appear in monotype.</dd>
+</dl>
+
+<hr WIDTH="100%">
+<h1>
+<a NAME="Header_4"></a><a href="#ToC_4">Supported Operating Systems</a></h1>
+This release of IBM ODE supports the following operating systems.&nbsp;
+Where multiple machine names are shown for the same operating system, which
+only differ by the version number at the end, the lowest version number
+is the one used by default (for our distribution filenames, etc.).&nbsp;
+The others are used when ODE is run on those versions of the operating
+systems.
+<p>
+<b>Note:</b> if using a newer release of an operating system than the minimum
+shown below, it may be necessary to use backdated system libraries (mainly
+the C++ library) with ODE.  This is most commonly encountered with Solaris
+(due to the use of a third party C++ library) and sometimes Linux (in cases
+where very new C++ libraries are not fully backwards-compatible).  Typically
+one need only get a near enough version of the library and create a symbolic
+link to it with the name that ODE expects (which should be shown in an error
+message when trying to run any ODE command).
+<p>
+<table BORDER >
+<tr>
+<th ALIGN=LEFT VALIGN=TOP>Supported Operating Systems&nbsp;</th>
+
+<th ALIGN=LEFT VALIGN=TOP>Default Machine Names</th>
+</tr>
+
+<tr>
+<td ALIGN=LEFT VALIGN=TOP>IBM AIX for PowerPC 4.2.1 and higher&nbsp;</td>
+
+<td ALIGN=LEFT VALIGN=TOP>rios_aix_4
+<br>rios_aix_5</td>
+</tr>
+
+<tr>
+<td>IBM MVS/USS (z/OS) for S/390 V2R10 and higher<sup>2</sup></td>
+
+<td>mvs390_oe_2</td>
+</tr>
+
+<tr>
+<td>IBM OS/400 V4R4 for AS/400 and higher</td>
+
+<td>as400_os400_4</td>
+</tr>
+
+<tr>
+<td ALIGN=LEFT VALIGN=TOP>Hewlett Packard HP-UX 10.20 and higher</td>
+
+<td ALIGN=LEFT VALIGN=TOP>hp9000_ux_10
+<br>hp9000_ux_11</td>
+</tr>
+
+<tr>
+<td>Sun Microsystems Solaris for Sparc 2.6 and higher</td>
+
+<td>sparc_solaris_2
+<br>sparc_solaris_7
+<br>sparc_solaris_8
+<br>sparc_solaris_9</td>
+</tr>
+
+<tr>
+<td ALIGN=LEFT VALIGN=TOP>Microsoft Windows NT 4.0<sup>1</sup>
+<br>Windows 2000 (NT 5.0)<sup>1</sup></td>
+
+<td ALIGN=LEFT VALIGN=TOP>x86_nt_4&nbsp;
+<br>x86_nt_5</td>
+</tr>
+
+<tr>
+<td>Linux for Intel 2.2 and higher (tested distributions include&nbsp;
+<br>Red Hat 6.1 &amp; 6.2, SuSE 6.2, Caldera OpenLinux 2.3, and&nbsp;
+<br>TurboLinux 3.6)</td>
+
+<td>x86_linux_2</td>
+</tr>
+
+<tr>
+<td>Linux for PowerPC 2.4.12 and higher (tested distributions include&nbsp;
+<br>SuSE 7.3)</td>
+
+<td>ppc_linux_2</td>
+</tr>
+
+<tr>
+<td>Linux for S/390 2.4.7 and higher (tested distributions include
+<br>SuSE SLES-7)</td>
+
+<td>s390_linux_2</td>
+</tr>
+
+<tr>
+<td>Linux for IA-64 2.4.19 and higher (tested distributions include&nbsp;
+<br>SuSE SLES-8)</td>
+
+<td>ia64_linux_2</td>
+</tr>
+
+<tr>
+<td>Linux for zSeries 2.4.5 and higher (tested distributions include
+<br>SuSE Linux 7.2 SMP)</td>
+
+<td>zseries_linux_2</td>
+</tr>
+</table>
+
+<ol>
+<li>
+Sometimes Microsoft Windows NT/2000 will be referenced in its abbreviated
+form Win32.</li>
+
+<li>
+MVS/USS was previously known as MVS/OE.</li>
+</ol>
+
+<hr>
+<h1>
+<a NAME="Hardware_and_Software_Req"></a><b><a href="#ToC_Hardware_and_Software_Req">Hardware
+and software requirements</a></b></h1>
+See the section <i><a href="ODECommonMakefiles.htm#SupportedToolsCompilers">Supported
+Tools and Compilers</a></i> of the <i><a href="ODECommonMakefiles.htm">ODE
+Common Makefiles</a></i> document for the list of supported build tools
+(compilers, linkers, etc.)
+<br>&nbsp;
+<h2>
+<b><font size=+1>Software Requirements</font></b></h2>
+
+<table BORDER >
+<tr>
+<td>
+<center><b>OS</b></center>
+</td>
+
+<td>
+<center><b>Build</b></center>
+</td>
+
+<td>
+<center><b>JDK</b>
+<br><b>(Packaging and MakeMake only)</b></center>
+</td>
+
+<td>
+<center><b>Packaging</b></center>
+</td>
+</tr>
+
+<tr>
+<td>AIX</td>
+
+<td>C++ Runtime (fileset xlC.rte) 3.6.4.1 or higher&nbsp;
+<br>(available at <a href="ftp://service.software.ibm.com/aix/fixes/v4/xlc/" target="new">ftp://service.software.ibm.com/aix/fixes/v4/xlc/</a>)</td>
+
+<td>1.2 or higher</td>
+
+<td>PKGTOOL toolset&nbsp;
+<br>(see <a href="http://orbitadm.austin.ibm.com:8080/dist.html">Obtaining
+SDWB Code from the Repository</a>)&nbsp;</td>
+</tr>
+
+<tr>
+<td>HP-UX</td>
+
+<td>C++ Runtime patch PHSS_22354&nbsp;
+<br>(available at <a href="http://us-support.external.hp.com/" target="new">http://us-support.external.hp.com/</a>)</td>
+
+<td>1.2 or higher</td>
+
+<td>swpackage</td>
+</tr>
+
+<tr>
+<td>IRIX</td>
+
+<td>Nothing</td>
+
+<td>1.2 or higher</td>
+
+<td>pkgmk</td>
+</tr>
+
+<tr>
+<td>Linux</td>
+
+<td>Nothing</td>
+
+<td>1.2 or higher</td>
+
+<td>Not supported</td>
+</tr>
+
+<tr>
+<td>MVS/USS</td>
+
+<td>Nothing</td>
+
+<td>1.2 or higher</td>
+
+<td>Build/390 load library&nbsp;
+<br>(see <a href="http://orbitadm.austin.ibm.com:8080/dist.html">Obtaining
+SDWB Code from the Repository</a>)</td>
+</tr>
+
+<tr>
+<td>OS/2</td>
+
+<td>Nothing</td>
+
+<td>1.2 or higher</td>
+
+<td>Not supported</td>
+</tr>
+
+<tr>
+<td>OS/400</td>
+
+<td>Nothing</td>
+
+<td>1.2 or higher</td>
+
+<td>Not supported</td>
+</tr>
+
+<tr>
+<td>Solaris (Sparc)</td>
+
+<td>GNU libstdc++ 2.8.1.1 or higher (available at <a href="http://sunfreeware.com/">http://sunfreeware.com/</a>). See the Note: in the preceding chapter,
+Supported Operating Systems, for more info.
+<br>Solaris patch cluster is recommended (available at <a href="http://sunsolve.Sun.COM/">http://sunsolve.Sun.com/</a>).</td>
+
+<td>1.2 or higher</td>
+
+<td>pkgmk</td>
+</tr>
+
+<tr>
+<td>Tru64</td>
+
+<td>Nothing</td>
+
+<td>1.2 or higher</td>
+
+<td>Not supported</td>
+</tr>
+
+<tr>
+<td>Win32</td>
+
+<td>For NT 4.0, ServicePack 3</td>
+
+<td>1.2 or higher</td>
+
+<td>For NT 4.0, InstallShield Professional Edition 5.1+
+<br>For Windows 2000, InstallShield Professional Edition 6.1+</td>
+</tr>
+</table>
+
+<h2>
+<b><font size=+1>Hardware Requirements</font></b></h2>
+These are rough estimates for ODE, based on the sizes of the packages and
+executables.
+<br>&nbsp;
+<table BORDER >
+<tr>
+<td>
+<center><b>OS</b></center>
+</td>
+
+<td>
+<center><b>Minimum Recommended Processor</b></center>
+</td>
+
+<td>
+<center><b>RAM</b>
+<br><b>(MegaBytes)</b></center>
+</td>
+
+<td>
+<center><b>Disk Space</b>
+<br><b>(Megabytes)</b></center>
+</td>
+</tr>
+
+<tr>
+<td>AIX</td>
+
+<td>Model 410</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>HP-UX</td>
+
+<td>Model 712/80</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>IRIX</td>
+
+<td>None</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>Linux (Intel)</td>
+
+<td>Pentium 166 MHz</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>Linux (PowerPC)</td>
+
+<td>None</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>Linux (Sparc)</td>
+
+<td>SparcStation 5</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>Linux (S/390)</td>
+
+<td>None</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>Linux (zSeries)</td>
+
+<td>None</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>Linux (IA-64)</td>
+
+<td>None</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>MVS/USS</td>
+
+<td>None</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>OS/2</td>
+
+<td>Pentium 166 MHz</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>OS/400</td>
+
+<td>None</td>
+
+<td>
+<center>64</center>
+</td>
+
+<td>
+<center>100</center>
+</td>
+</tr>
+
+<tr>
+<td>Solaris (Sparc)</td>
+
+<td>SparcStation 5</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>Solaris (Intel)</td>
+
+<td>Pentium 166 MHz</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>Tru64</td>
+
+<td>None</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+
+<tr>
+<td>Win32</td>
+
+<td>Pentium 166 MHz</td>
+
+<td>
+<center>16</center>
+</td>
+
+<td>
+<center>30</center>
+</td>
+</tr>
+</table>
+
+<hr WIDTH="100%">
+<h1>
+<a NAME="Packaging"></a><a href="#TOC_Packaging">Packaging Support</a></h1>
+The following table provides information on the platforms that are currently
+supported by the ODE packaging tools.
+<br>&nbsp;
+<table BORDER COLS=3 WIDTH="75%" >
+<tr>
+<td><b>Platform</b></td>
+
+<td><b>Package Tool</b></td>
+
+<td><b>Install Tool</b></td>
+</tr>
+
+<tr>
+<td>HP-UX</td>
+
+<td>swpackage</td>
+
+<td>swinstall</td>
+</tr>
+
+<tr>
+<td>IRIX</td>
+
+<td>pkgmk</td>
+
+<td>pkgadd</td>
+</tr>
+
+<tr>
+<td>Solaris (Sparc/Intel)</td>
+
+<td>pkgmk</td>
+
+<td>pkgadd</td>
+</tr>
+
+<tr>
+<td>Win32</td>
+
+<td>InstallShield
+<br>PackageForTheWeb</td>
+
+<td>executable</td>
+</tr>
+
+<tr>
+<td>MVS/USS</td>
+
+<td>Build/390</td>
+
+<td>SMP/E</td>
+</tr>
+
+<tr>
+<td>Linux</td>
+
+<td>rpm</td>
+
+<td>rpm</td>
+</tr>
+</table>
+
+<hr WIDTH="100%">
+<h1>
+<a NAME="HDRODEINST"></a><a href="#ToC_6">Installing and configuring ODE</a></h1>
+IBM ODE provides these components for installation:
+<ul>
+<li>
+Executable commands for both developers and builders, available as <a href="#ODE_Component_Install">zip
+files</a> or <a href="#ODE_Package_Install">install images</a></li>
+
+<li>
+Base set of common Makefile rules, used in both the <a href="#Header_13">backing
+build example</a> and many ODE projects</li>
+
+<li>
+A <a href="#Header_13">backing build example</a> primarily for builders
+to get started</li>
+
+<li>
+A generic set of <a href="#InstallConfigFiles">configuration files</a>
+(Makeconf, Buildconf, etc.) to start with when creating a new ODE project.</li>
+</ul>
+
+<hr>
+<h2>
+<a NAME="Obtaining_ODE"></a><a href="#ToC_Obtaining_ODE">Obtaining ODE</a></h2>
+All of the various ODE components can be obtained using the following steps:
+<ol>
+<li>
+Go to the ODE home page: <a href="http://w3.ode.raleigh.ibm.com/">http://w3.ode.raleigh.ibm.com/</a></li>
+
+<li>
+Click on the <a href="http://w3.ode.raleigh.ibm.com/download.html">Download</a>
+link on the left margin.</li>
+
+<li>
+Click on <a href="http://w3.ode.raleigh.ibm.com/5.0/latest/">ODE 5.0</a>.</li>
+
+<li>
+Click (or Shift-click, if you have trouble downloading .jar files) on the
+desired files to download.&nbsp; For new users, this will normally include
+the archive(s) of the tools for the desired platform(s) to use ODE on (e.g.,
+%release_name%_b<i>num</i>_rios_aix_4.zip, where <i>num</i> is the desired
+build number), the rules and bbexample archives, and the tools.jar archive.</li>
+</ol>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="ODE_Component_Install"></a><a href="#ToC_ODE_Component_Install">Installing
+and configuring the ODE commands using zip files</a></h2>
+The following information applies to the installation of the ODE commands
+in all the supported environments. These instructions assume that you will
+install ODE in the /ode directory. However, this is not necessary. ODE
+can be installed in another directory.
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">An unzip utility needs to be used for the installation
+process.&nbsp; The instructions will assume the use of the JDK <b>jar</b>
+command to unzip the zip files.</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="AIX_INSTALL"></a><a href="#ToC_AIX_INSTALL">AIX</a></h3>
+To extract the file<b> %release_name%_b<i>num</i>_rios_aix_4.zip</b> (where
+<i>num</i>
+is the build number), enter the following lines at the command prompt:
+<pre>&nbsp; <b>%mkdir -p /ode/aix
+&nbsp; %cd /ode/aix&nbsp;&nbsp;&nbsp;
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_rios_aix_4.zip </b>to<b> /ode/aix)
+&nbsp; %jar -xvf %release_name%_b<i>num</i>_rios_aix_4.zip</b></pre>
+To assign permissions to read-write-execute for owner, read-execute for
+group, and read-execute for others enter the command:
+<pre>&nbsp;<b> %chmod 755 /ode/aix/*</b></pre>
+The PATH and LIBPATH environment variables should be set as the following:
+<pre>&nbsp; <b>%export PATH=$PATH:/ode/aix
+&nbsp; %export LIBPATH=$LIBPATH:/ode/aix</b></pre>
+To use the packaging tools, set the CLASSPATH environment variable to:
+<pre>&nbsp; <b>%export CLASSPATH=$CLASSPATH:/ode/classes/%release_name%_b<i>num</i>_tools.jar</b></pre>
+or rename the jar file to something more common.&nbsp; By renaming the
+file, it will allow to easily upgrade your version of ODE without resetting
+your CLASSPATH.&nbsp; For example, you could rename <b><font face="Courier">%release_name%_b<i>num</i>_tools.jar</font></b>
+to <b><font face="Courier">odetools.jar</font></b>.
+<h3>
+<a NAME="HPUX_INSTALL"></a><a href="#ToC_HPUX_INSTALL">HP-UX</a></h3>
+To extract the file <b>%release_name%_b<i>num</i>_hp9000_ux_10.zip</b>
+(where <i>num</i> is the build number), enter the following lines at the
+command prompt.
+<pre>&nbsp; <b>%mkdir /ode/hp
+&nbsp; %cd /ode/hp&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_hp9000_ux_10.zip </b>to<b> /ode/hp)
+&nbsp; %jar -xvf %release_name%_b<i>num</i>_hp9000_ux_10.zip</b></pre>
+To assign permissions to read-write-execute for owner, read-execute for
+group, and read-execute for others enter the following lines at the command
+prompt:
+<pre>&nbsp;<b> %chmod 755 /ode/hp/*</b></pre>
+The PATH and SHLIB_PATH environment variables should be set as the following:
+<pre>&nbsp; <b>%export PATH=$PATH:/ode/hp
+&nbsp; %export SHLIB_PATH=$SHLIB_PATH:/ode/hp</b></pre>
+To use the packaging tools, set the CLASSPATH environment variable to:
+<pre>&nbsp; <b>%export CLASSPATH=$CLASSPATH:/ode/classes/%release_name%_b<i>num</i>_tools.jar</b></pre>
+or rename the jar file to something more common.&nbsp; By renaming the
+file, it will allow to easily upgrade your version of ODE without resetting
+your CLASSPATH.&nbsp; For example, you could rename <b><font face="Courier">%release_name%_b<i>num</i>_tools.jar</font></b>
+to <b><font face="Courier">odetools.jar</font></b>.
+<h3>
+<a NAME="IRIX_INSTALL"></a><a href="#ToC_IRIX_INSTALL">IRIX</a></h3>
+To extract the file <b>%release_name%_b<i>num</i>_mips_irix_6.zip</b> (where
+<i>num</i>
+is the build number), enter the following lines at the command prompt:
+<pre>&nbsp; <b>%mkdir /ode/irix
+&nbsp; %cd /ode/irix&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_mips_irix_6.zip </b>to<b> /ode/irix)
+&nbsp; %jar -xvf %release_name%_b<i>num</i>_mips_irix_6.zip</b></pre>
+Assign permissions to read-write-execute for owner, read-execute for group,
+and read-execute for others:
+<pre>&nbsp; <b>%chmod 755 /ode/irix/*</b></pre>
+The PATH and LD_LIBRARY_PATH environment variables should be set as the
+following
+<pre>&nbsp; <b>%export PATH=$PATH:/ode/irix
+&nbsp; %export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/ode/irix</b></pre>
+To use the packaging tools, set the CLASSPATH environment variable to:
+<pre>&nbsp;<b> %export CLASSPATH=$CLASSPATH:/ode/classes/%release_name%_b<i>num</i>_tools.jar</b></pre>
+or rename the jar file to something more common.&nbsp; By renaming the
+file, it will allow to easily upgrade your version of ODE without resetting
+your CLASSPATH.&nbsp; For example, you could rename <b><font face="Courier">%release_name%_b<i>num</i>_tools.jar</font></b>
+to <b><font face="Courier">odetools.jar</font></b>.
+<h3>
+<a NAME="LINUX_INSTALL"></a><a href="#ToC_LINUX_INSTALL">Linux</a></h3>
+To extract the file <b>%release_name%_b<i>num</i>_<i>arch</i>_linux_2.zip</b>
+(where <i>num</i> is the build number, and <i>arch</i> is <b>x86</b>, <b>sparc</b>,
+<b>s390</b>,
+or <b>ppc</b>), enter the following lines at the command prompt.
+<pre>&nbsp;<b> %mkdir /ode/linux
+&nbsp; %cd /ode/linux&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_<i>arch</i>_linux_2.zip </b>to<b> /ode/linux)
+&nbsp; %jar -xvf %release_name%_b<i>num</i>_<i>arch</i>_linux_2.zip</b></pre>
+To assign permissions to read-write-execute for owner, read-execute for
+group, and read-execute for others enter the following lines at the command
+prompt:
+<pre>&nbsp; <b>%chmod 755 /ode/linux/*</b></pre>
+The PATH and LD_LIBRARY_PATH environment variables should be set as the
+following.
+<pre>&nbsp; <b>%export PATH=$PATH:/ode/linux
+&nbsp; %export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/ode/linux</b></pre>
+
+<h3>
+<a NAME="MVSOE_INSTALL"></a><a href="#ToC_MVSOE_INSTALL">MVS/USS</a></h3>
+To extract the file <b>%release_name%_b<i>num</i>_mvs390_oe_2.zip </b>(where
+<i>num</i>
+is the build number), enter the following lines at the command prompt.
+<pre>&nbsp; <b>%mkdir /ode/mvs
+&nbsp; %cd /ode/mvs&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_mvs390_oe_2.zip </b>to<b> /ode/mvs)
+&nbsp; %jar -xvf %release_name%_b<i>num</i>_mvs390_oe_2.zip</b></pre>
+To assign permissions to read-write-execute for owner, read-execute for
+group, and read-execute for others enter the following lines at the command
+prompt:
+<pre>&nbsp; <b>%chmod 755 /ode/mvs/*</b></pre>
+The PATH and LIBPATH environment variables should be set as the following.
+<pre>&nbsp; <b>%export PATH=$PATH:/ode/mvs
+&nbsp; %export LIBPATH=$LIBPATH:/ode/mvs</b></pre>
+To use the packaging tools, set the CLASSPATH environment variable to:
+<pre>&nbsp; <b>%export CLASSPATH=$CLASSPATH:/ode/classes/%release_name%_b<i>num</i>_tools.jar</b></pre>
+or rename the jar file to something more common.&nbsp; By renaming the
+file, it will allow to easily upgrade your version of ODE without resetting
+your CLASSPATH.&nbsp; For example, you could rename <b><font face="Courier New,Courier">%release_name%_b<i>num</i>_tools.jar</font></b>
+to <b><font face="Courier New,Courier">odetools.jar</font></b>.
+<p>The following additional Java installation program is required to install
+REXX execs for packaging into a MVS partitioned data set (PDS).&nbsp;&nbsp;
+Run this java program (contained in the <b>odetools.jar </b>file)
+<pre>&nbsp;<b>%java com.ibm.ode.pkg.pkgMvs.MvsExecInstallation</b></pre>
+to extract the REXX exec from the bpsBuildTools.jar file, the program will
+prompt you for a target PDS to copy the execs into. This can be a new data
+set (which will be allocated by the installation program) or an existing
+data set (the existing data set must have a lrecl of at least 80).
+<h3>
+<a NAME="OS2_INSTALL"></a><a href="#ToC_OS2_INSTALL">OS/2</a></h3>
+To extract the file <b>%release_name%_b<i>num</i>_x86_os2_4.zip</b> (where
+<i>num</i>
+is the build number), enter the following lines at the command prompt.
+<pre>&nbsp;<b> c:\> mkdir ode\os2
+&nbsp; c:\> cd ode\os2&nbsp;&nbsp;&nbsp;
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_x86_os2_4.zip </b>to<b> c:\ode\os2)
+&nbsp; c:\ode\os2> jar -xvf %release_name%_b<i>num</i>_x86_os2_4.zip</b></pre>
+The PATH environment variable should be set as the following.
+<pre>&nbsp; <b>c:\> set PATH=%PATH%;c:\ode\os2;</b></pre>
+To permanently change the DLL search path in order to find the ODE library,
+add the above path to the LIBPATH variable in the <b>CONFIG.SYS</b> file.&nbsp;
+For example:
+<pre>&nbsp; <b>LIBPATH=c:\ode\os2;c:\os2\dll;...</b></pre>
+To temporarily change the DLL search path, use BEGINLIBPATH or ENDLIBPATH
+from the command line.&nbsp; For example:
+<pre>&nbsp; <b>c:\> set BEGINLIBPATH=c:\ode\os2</b></pre>
+
+<h3>
+<a NAME="OS400_INSTALL"></a><a href="#ToC_OS400_INSTALL">OS/400</a></h3>
+The file <b>%release_name%_b<i>num</i>_as400_os400_4.zip</b> (where
+<i>num</i>
+is the build number) must be extracted on a machine from which FTP can
+be used to place the save file onto the target AS/400 machine.&nbsp; The
+following command can be used to do so on virtually any system with Java
+installed:
+<pre><b>&nbsp; jar -xvf %release_name%_b<i>num</i>_as400_os400_4.zip</b></pre>
+Within this archive is the save file, "ode25", and several other files.&nbsp;
+The file "ode25" should be transferred in binary mode via FTP to an awaiting
+save file of the same name on the target AS/400 machine (this can be created
+in OS/400 with the CL command "<b><tt>CRTSAVF FILE(ODE25)</tt></b>").&nbsp;
+The other files should be placed in IFS in a directory that should be added
+to your PATH variable (e.g., /home/myname/ode/os400).
+<p>Once the save file has been transferred, run the following CL command
+in OS/400 to extract the ODE tools into the desired library, where <i>yourlib</i>
+is the library you wish to extract to (this can be created with "<b><tt>CRTLIB
+LIB(<i>yourlib</i>)</tt></b>").
+<pre><b>&nbsp; RSTLIB DEV(*SAVF) SAVF(ODE25) SAVLIB(ODE25) RSTLIB(<i>yourlib</i>)</b></pre>
+The PATH environment variable should be set in Qshell as follows:
+<pre>&nbsp; <b>export PATH=$PATH:/ode/os400</b></pre>
+Finally, run the Qshell script "<b>linkode </b><i>yourlib</i>" in order
+to make it easier to run the ODE tools from Qshell.&nbsp; The only argument
+to <b>linkode</b> is the library name to where the save file was extracted
+(<i>yourlib</i>).&nbsp; This script will create over a dozen symbolic links
+that point to each of the ODE tools (the PGM files), so make sure the current
+directory is where you wish the symbolic links to be created.
+<h3>
+<a NAME="Solaris_INSTALL"></a><a href="#ToC_Solaris_INSTALL">Solaris</a></h3>
+To extract the file <b>%release_name%_b<i>num</i>_<i>arch</i>_solaris_2.zip</b>
+(where <i>num</i> is the build number, and <i>arch</i> is <b>sparc</b>
+or <b>x86</b>), enter the following lines at the command prompt:
+<pre>&nbsp; <b>%mkdir /ode/solaris
+&nbsp; %cd /ode/solaris&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_<i>arch</i>_solaris_2.zip </b>to<b> /ode/solaris)
+&nbsp; %jar -xvf %release_name%_b<i>num</i>_<i>arch</i>_solaris_2.zip</b></pre>
+Assign permissions to read-write-execute for owner, read-execute for group,
+and read-execute for others:
+<pre>&nbsp; <b>%chmod 755 /ode/solaris/*</b></pre>
+The PATH and LD_LIBRARY_PATH environment variables should be set as follows,
+assuming that the GNU libstdc++ library is in <b>/usr/local/lib</b> (it
+can be anywhere the user wants):
+<pre>&nbsp; <b>%export PATH=$PATH:/ode/solaris
+&nbsp; %export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/ode/solaris:/usr/local/lib</b></pre>
+To use the packaging tools, set the CLASSPATH environment variable to:
+<pre>&nbsp;<b> %export CLASSPATH=$CLASSPATH:/ode/classes/%release_name%_b<i>num</i>_tools.jar</b></pre>
+or rename the jar file to something more common.&nbsp; By renaming the
+file, it will allow to easily upgrade your version of ODE without resetting
+your CLASSPATH.&nbsp; For example, you could rename <b><font face="Courier">%release_name%_b<i>num</i>_tools.jar</font></b>
+to <b><font face="Courier">odetools.jar</font></b>.
+<h3>
+<a NAME="Tru64_INSTALL"></a><a href="#ToC_Tru64_INSTALL">Tru64</a></h3>
+To extract the file <b>%release_name%_b<i>num</i>_alpha_tru64_5.zip</b>
+(where <i>num</i> is the build number), enter the following lines at the
+command prompt:
+<pre>&nbsp; <b>%mkdir /ode/tru64
+&nbsp; %cd /ode/tru64&nbsp;&nbsp;&nbsp;
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_alpha_tru64_5.zip </b>to<b> /ode/tru64)
+&nbsp; %jar -xvf %release_name%_b<i>num</i>_alpha_tru64_5.zip</b></pre>
+Assign permissions to read-write-execute for owner, read-execute for group,
+and read-execute for others:
+<pre>&nbsp; <b>%chmod 755 /ode/tru64/*</b></pre>
+The PATH and LD_LIBRARY_PATH environment variables should be set as the
+following
+<pre>&nbsp; <b>%export PATH=$PATH:/ode/tru64
+&nbsp; %export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/ode/tru64</b></pre>
+
+<h3>
+<a NAME="WIN32_INSTALL"></a><a href="#ToC_WIN32_INSTALL">Windows NT/2000</a></h3>
+To extract the file <b>%release_name%_b<i>num</i>_x86_win32.zip</b> (where
+<i>num</i>
+is the build number), enter the following lines at the command prompt.
+<pre>&nbsp; <b>c:\> mkdir ode\win
+&nbsp; c:\> cd ode\win&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; (</b>copy<b> </b>%<b>release_nam</b>e<b>%</b>_<b>b<i>num</i>_x86_win32.zip </b>to<b> c:\ode\win)
+&nbsp; c:\ode\win> jar -xvf %release_name%_b<i>num</i>_x86_win32.zip</b></pre>
+The PATH environment variable should be set as the following.
+<pre>&nbsp; <b>c:\> set PATH=%PATH%;c:\ode\win;</b></pre>
+To use the packaging tools, set the CLASSPATH environment variable to:
+<pre>&nbsp; <b>c:\> set CLASSPATH=%CLASSPATH%;c:\ode\classes\%release_name%_b<i>num</i>_tools.jar</b></pre>
+or rename the jar file to something more common.&nbsp; By renaming the
+file, it will allow to easily upgrade your version of ODE without resetting
+your CLASSPATH.&nbsp; For example, you could rename <b>%release_name%_b<i>num</i>_tools.jar</b>
+to <b>odetools.jar</b><tt>.</tt>
+<p>
+<hr>
+<h2>
+<a NAME="Header_13"></a><a href="#ToC_13">Installing the backing build
+example</a></h2>
+For all environments except USS, the backing build example filename is
+<b>%release_name%_b<i>num</i>_bbexample.zip</b>
+(where <i>num</i> is the build number). For USS, the file is <b>%release_name%_b<i>num</i>_bbexample_ebcdic.zip.</b>
+<p>If you are installing the backing build example to work on the <a href="ODETutorial.htm#Top_Of_Page">Build
+Tutorial</a>, then you should install using the <a href="ODETutorial.htm#Installing ODE and the Backing Build Example">instructions
+in the Build Tutorial</a> instead of the following install instructions.
+<p>To create the backing build structure in the directory /ode, first enter
+the following command to change to the /ode directory:
+<pre>&nbsp; <b>cd /ode</b></pre>
+Then type the following command to create the backing build (where <i>machines</i>
+is a colon-separated list of machine names for which builds will be performed;
+for example, <b><tt>rios_aix_4:sparc_solaris_2:hp9000_ux_10</tt></b>).
+<pre>&nbsp;<b> mkbb -rc bbexample/.sandboxrc -dir . -m <i>machines</i> bbexample</b></pre>
+To extract the jar file for all platforms, except USS:
+<pre>&nbsp; <b>(</b>copy<b> %release_name%_b<i>num</i>_bbexample.zip </b>to<b> /ode)
+&nbsp; jar -xf %release_name%_b<i>num</i>_bbexample.zip</b></pre>
+To put the Makefile rules into the bbexample, except USS:
+<pre>&nbsp; <b>cd bbexample/src
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_rules.zip </b>to<b> /ode/bbexample/src)
+&nbsp; jar -xf %release_name%_b<i>num</i>_rules.zip</b></pre>
+To extract the jar file for USS:
+<pre>&nbsp; <b>(</b>copy<b> %release_name%_b<i>num</i>_bbexample_ebcdic.zip </b>to<b> /ode)
+&nbsp; jar -xf %release_name%_b<i>num</i>_bbexample_ebcdic.zip</b></pre>
+To put the Makefile rules into the bbexample for USS:
+<pre>&nbsp; <b>cd bbexample/src
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_rules_ebcdic.zip </b>to<b> /ode/bbexample/src)
+&nbsp; jar -xf %release_name%_b<i>num</i>_rules_ebcdic.zip</b></pre>
+
+<hr>
+<h2>
+<a NAME="InstallConfigFiles"></a><a href="#ToC_InstallConfigFiles">Installing
+the configuration files</a></h2>
+A generic version of the <b>Makeconf</b>, <b>Buildconf</b>, and <b>Buildconf.exp</b>
+configuration files are shipped with ODE. When starting a new ODE project,
+these files are useful to start with. See the <a href="#Header_13">backing
+build example</a> for versions of these three files which have already
+been customized to the backing build example.
+<p>To install on an ASCII platform (where <i>num</i> is the build number):
+<pre>&nbsp; <b>cd <i>sandbox</i>/src
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_confs.zip </b>to<b> <i>sandbox</i>/src)
+&nbsp; jar -xf %release_name%_b<i>num</i>_confs.zip</b></pre>
+To install on an EBCDIC platform:
+<pre>&nbsp; <b>cd <i>sandbox</i>/src
+&nbsp; (</b>copy<b> %release_name%_b<i>num</i>_confs_ebcdic.zip </b>to<b> <i>sandbox</i>/src)
+&nbsp; jar -xf %release_name%_b<i>num</i>_confs_ebcdic.zip</b></pre>
+
+<pre>
+<hr></pre>
+
+<h3>
+<a NAME="AIX_PkgTools"></a><a href="#ToC_AIX_PkgTools">Installing and configuring
+the AIX packaging tools</a></h3>
+Get the file from the ftp site.<b> <a href="ftp://guest@orbitadm.austin.ibm.com/home/guest/ode/v2.5/gaLink/aix_pkgtools_installp">aix_pkgtools_installp</a></b>
+<br>(where <i>num</i> is the build number).
+<p>Install the package from the location you saved the file to using <b>installp</b>.
+<br>(See HP administrators guide for details on how to use <b>installp</b>).
+<p>The <b>PATH</b> environment variable should be set as the following:
+<pre>&nbsp; <b>%export PATH=$PATH:/usr/opt/pkgtools/bin</b></pre>
+
+<hr>
+<h2>
+<a NAME="Header_14"></a><a href="#ToC_13">Upgrading the ODE commands</a></h2>
+ODE commands can be upgraded by organizing an install tree so you can easily
+switch between different releases and builds of ODE commands.
+<p>Upgrading ODE commands involves removing the old installation and replacing
+it with either a new installation or creating a new subdirectory for a
+new release/build.
+<p>For example, you can have the installation directory <b>/ode/<i>release_name/build_num/machine_name</i></b>
+for release 5.0 build 20031202.0300 on AIX. You would install to <b>/ode/5.0/20031202.0300/rios_aix_4</b>.
+Then, you would have links to<b> /ode/latest-release/latest-build/rios_aix_4</b>.&nbsp;
+<hr>
+<h1>
+<a NAME="Appendix_A"></a><a href="#ToC_Appendix_A">Appendix A. Restrictions</a></h1>
+
+<h2>
+<a NAME="Restrictions_UNIX"></a><a href="#ToC_Restrictions_UNIX">Restrictions
+in UNIX environments</a></h2>
+Directories in sandboxes and backing builds must be real directories; they
+can't be symbolic links.&nbsp; When the directories are symbolic links,
+it causes the recursive <a href="ODEMakeReference.htm">mk tool</a> to lose
+track of where it was and where it is now.&nbsp; Since the rules heavily
+depend on the <b>mk</b> tool to properly set relative path information,
+symbolic links can cause unwanted results.&nbsp; Since UNIX-type platforms
+support symbolic links, this restriction is limited to UNIX.&nbsp; Use
+the <a href="ODEBuildReference.htm#HDRMKLINKS">mklinks tool </a>to create
+symbolic links to files and create the directories that contain the links.
+<h3>
+<a NAME="OS400_RESTRICT"></a><a href="#ToC_OS400_RESTRICT">OS/400 environment
+(Qshell)</a></h3>
+
+<ul>
+<li>
+Two code sets are supported for all files which ODE tools reads and writes:
+037 (EBCDIC) and 437 (IBMPC ASCII).&nbsp; The code set which Java's <b>jar</b>
+command uses when extracting files, 819 (ISO ASCII), is not supported.&nbsp;
+When ODE creates configuration files for the first time (e.g., <b>.sandboxrc</b>),
+they will always be in code page 037; however, when updating existing files,
+their code pages will remain as whatever they are currently set to.</li>
+
+<li>
+So that ODE may work in both case-sensitive (/QOpenSys) and case-insensitive
+(/) file systems, ODE behaves in a mostly case-sensitive manner.&nbsp;
+Although the file accesses that are handled by the system API (e.g., the
+stat() function) will dictate case sensitivity for many operations, all
+ODE-internal pathname and string comparisons, pathname sorting, and related
+activity will behave in a case-sensitive manner.</li>
+
+<li>
+The equivalent of Ctrl-C, which in Qshell is SYSREQ-2, will not kill child
+processes.&nbsp; This effectively means that <b>mk</b> cannot be interrupted
+in the same way as on other operating systems.&nbsp; The F3 (Exit) key
+can of course be used to terminate the Qshell environment altogether, which
+will kill all running jobs.</li>
+
+<li>
+<b>mk</b> cannot directly read/write the "members" of an archive library
+(touch members, use members as targets/dependents, etc.).</li>
+</ul>
+
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="HDRRESTR_NONUNIX"></a><a href="#ToC_HDRRESTR_NONUNIX">Restrictions
+and differences in non-UNIX environments</a></h2>
+The following summarizes restrictions for non-UNIX platforms such as OS/2,
+Windows, etc.
+<h3>
+<a NAME="Header_31"></a><a href="#ToC_31">OS/2 environment</a></h3>
+
+<ul>
+<li>
+All configuration files must use the UNIX-style directory slashes (<b>/</b>)
+rather than the DOS-style slashes (<b>\</b>). For example, the OS/2 directory
+c:\tmp must appear in an ODE resource configuration file as c:/tmp.</li>
+
+<li>
+Drive letters are legal in absolute path names. For example, the specification
+of the <b>c: </b>drive in</li>
+
+<pre>build -rc c:\ode\.sandboxrc</pre>
+which would not be allowed in AIX, is legal in OS/2.
+<li>
+The path separator is the semicolon (;) character. For example, note the
+use of the semicolon in the following <b>setenv</b> statement</li>
+
+<pre>setenv OBJECTDIR ${sandbox}/obj/${CONTEXT};${OBJECTDIR}</pre>
+
+<li>
+ODE generates paths with UNIX-style forward slashes (/). For example,</li>
+
+<pre>${.ALLSRC}</pre>
+is given a value like ./../src/file.c. If your compiler or other tool requires
+DOS-style backward slashes, you can use a variable modifier in the Makefile.
+For example,
+<pre>${.ALLSRC:S;/;\\;g}</pre>
+converts the string ../../src/file.c to ..\..\src\file.c.
+<li>
+The <b>mksb</b> and <b>mklinks </b>commands cannot populate the user's
+sandbox with symbolic links to backing build files.&nbsp; Instead of creating
+symbolic links, <b>mksb </b>and <b>mklinks </b>copy files by default.</li>
+
+<li>
+The <b>workon</b> command for OS/2 starts the command processor defined
+in the <i>SHELL</i> environment variable. If <i>SHELL</i> is not defined,
+it starts the command processor defined in the <i>OS2_SHELL</i> environment
+variable. If <i>OS2_SHELL</i> is not defined, it defaults to <b>CMD.EXE</b><i>.</i></li>
+
+<li>
+No packaging tools are supported for OS/2.</li>
+
+<li>
+Drive reference using the active current directory is not supported except
+for command line arguments where it makes sense.&nbsp; For example, if
+on drive <b>C:</b> the current directory is <b>temp</b> which contains
+the file <b>.sandboxrc</b>, then from drive <b>D:</b> you attempt the command:
+<b>mksb
+-rc C:.sandboxrc</b>, this will work.&nbsp; However, if drive references
+are made in config files, Makefiles, etc., the paths must be absolute rather
+than relative to the drive reference.</li>
+
+<li>
+Ctrl-C and Ctrl-Break do not cause mk to run the .INTERRUPT target when
+a child process is running.</li>
+
+<li>
+UNC style pathnames (for example, <b>\\machine\shareddirectory</b>) have
+limited support. When creating a sandbox, a UNC pathname may be used for
+its backing build or backing sandbox.&nbsp; For example:</li>
+
+<pre>mksb sb2 -back \\machine\shareddirectory\build5 -dir d:\sbox</pre>
+Sometimes it is possible to create a backing build or sandbox using <b>mkbb</b>
+or <b>mksb -dir</b> with a UNC pathname, but it is not supported. The <b>build</b>
+and <b>workon</b> commands cannot be used with such a sandbox, since it
+is not possible to make anything on a UNC path be a current directory.&nbsp;
+This is a shell restriction.&nbsp; To share a backing build with a UNC
+pathname, create and build the backing build with a normal pathname, and
+then create the UNC pathname if it does not already exist.</ul>
+
+<h3>
+<a NAME="Header_32"></a><a href="#ToC_32">Win32 environment</a></h3>
+
+<ul>
+<li>
+All specified resource files must use the UNIX-style directory slashes
+(/) rather than the DOS-style slashes (\). For example, the Win32 directory
+c:\tmp must appear in an ODE resource configuration file as c:/tmp.</li>
+
+<li>
+Drive letters are legal in absolute path names. For example, the specification
+of the <b>c:</b> drive in</li>
+
+<pre>build -rc c:\ode\.sandboxrc</pre>
+which would not be allowed in AIX, is legal in Win32.
+<li>
+Command-line arguments that allow directory specifications will accept
+either DOS-style (\) or Unix-style (/) slashes.</li>
+
+<li>
+The path separator is the semicolon (;) character. For example, note the
+use of the semicolon in the following <b>setenv</b> statement:</li>
+
+<pre>setenv OBJECTDIR ${sandbox}/obj/${CONTEXT};${OBJECTDIR}</pre>
+
+<li>
+ODE generates paths with UNIX-style forward slashes (/). For example,</li>
+
+<pre>${.ALLSRC}</pre>
+is given a value like ./../src/file.c. If your compiler or other tool requires
+DOS-style backward slashes, you can use a variable modifier in the Makefile.
+For example,
+<pre>${.ALLSRC:S;/;\\;g}</pre>
+converts the string ../../src/file.c to ..\..\src\file.c.
+<li>
+The <b>mksb</b> and <b>mklinks</b> commands cannot populate the user's
+sandbox with symbolic links to backing build files.&nbsp; Instead of creating
+symbolic links <b>mksb </b>and <b>mklinks </b>just copy files by default.</li>
+
+<li>
+The <b>workon</b> command for Win32 starts the command processor defined
+in the <i>SHELL</i> environment variable. If <i>SHELL</i> is not defined,
+then it defaults to <b>CMD.EXE</b> for Windows NT/2000 and <b>COMMAND.COM</b>
+for Windows 95/98..</li>
+
+<li>
+The COMMAND.COM shell does not return error codes properly, so if this
+shell is used then the tools will be unable to detect error conditions
+(e.g., mk will behave as if the -i flag had been given).&nbsp; Because
+of this and other inherent COMMAND.COM limitations, it is highly recommended
+that an alternative shell, such as <a href="http://www.jpsoft.com/">JP
+Software's 4DOS</a>, be considered as a replacement.&nbsp; When using an
+alternate shell on Windows 95/98, the value of <b>CMDSEP</b>(command separator)
+in the default Buildconf file must be updated to the appropriate value.</li>
+
+<li>
+Drive reference using the active current directory is not supported except
+for command line arguments where it makes sense.&nbsp; For example, if
+on drive <b>C:</b> the current directory is temp which contains the file
+<b>.sandboxrc</b>,
+then from drive <b>D:</b> you attempt the command: <b>mksb -rc C:.sandboxrc</b>,
+this will work.&nbsp; However, if drive references are made in config files,
+Makefiles, etc., the paths must be absolute rather than relative to the
+drive reference.</li>
+
+<li>
+UNC style pathnames (for example, <b>\\machine\shareddirectory</b>) have
+limited support. When creating a sandbox, a UNC pathname may be used for
+its backing build or backing sandbox.&nbsp; For example:</li>
+
+<pre>mksb sb2 -back \\machine\shareddirectory\build5 -dir d:\sbox</pre>
+Sometimes it is possible to create a backing build or sandbox using <b>mkbb</b>
+or <b>mksb -dir</b> with a UNC pathname, but it is not supported. The <b>build</b>
+and <b>workon</b> commands cannot be used with such a sandbox, since it
+is not possible to make anything on a UNC path be a current directory.&nbsp;
+This is a shell restriction.&nbsp; To share a backing build with a UNC
+pathname, create and build the backing build with a normal pathname, and
+then create the UNC pathname if it does not already exist.
+<li>
+There is limited support for blanks in filenames.&nbsp; See <i><a href="#SpacesInPaths">Spaces
+in Pathnames</a></i> for more information.</li>
+
+<li>
+Since ODE is compiled with Microsoft Visual C++, which provides no regex
+code, the POSIX regular expression functionality in <b>mk</b> is made possible
+by the (unmodified) GNU source code (regex.c), which is available upon
+request per the GPL license agreement.</li>
+</ul>
+
+<hr width="100%">
+<h1>
+<a NAME="HintsTips"></a><a href="#ToC_HintsTips">Appendix B. Hints and
+Tips</a></h1>
+
+<h2>
+<a NAME="howto"></a><a href="#ToC_howto">How to Read Syntax Statements</a></h2>
+
+<table BORDER WIDTH="74%" >
+<tr>
+<td><b>Style</b></td>
+
+<td><b>Usage</b></td>
+</tr>
+
+<tr>
+<td><b>bold</b></td>
+
+<td>Items you must enter exactly as shown, such as commands, flags, and
+symbols. The valid abbreviations for commands and flags appear in bold,
+with the optional part of the command or flag shown in regular type. For
+example,
+<b>workon</b> or <b>mk</b>.&nbsp;</td>
+</tr>
+
+<tr>
+<td><i>Italic</i></td>
+
+<td>Arguments or options whose values you must supply. For example, <i>sandbox_name</i>
+or text.&nbsp;</td>
+</tr>
+
+<tr>
+<td>...</td>
+
+<td>Parameter can be repeated on the command line. For example, <b>-</b><i>machine2</i>...
+means that you can enter more than one argument for machine_names.</td>
+</tr>
+
+<tr>
+<td>[ ]&nbsp;</td>
+
+<td>Optional parameters are enclosed in square brackets. For example, [<b>-dir
+</b><i>sandbox_dir</i>].</td>
+</tr>
+
+<tr>
+<td>{ }</td>
+
+<td>There is more than one parameter choice, but one is required.</td>
+</tr>
+
+<tr>
+<td>|&nbsp;</td>
+
+<td>Choose one parameter only. [a|b] indicates that you can choose a or
+b, or neither a nor b. {a|b} indicates that you must choose either a or
+b.</td>
+</tr>
+</table>
+
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="IncludesCpp"></a><a href="#ToC_IncludesCpp">Use of #include ""
+in C/C++ Source Files</a></h2>
+In most organizations of source files the C/C++ implementation file includes
+a local header file.&nbsp; For example, we have<b> main.c</b> which includes
+<b>file.h</b>.&nbsp;
+So the source for <b>main.c</b> is:
+<blockquote><font face="Courier New,Courier">#include "file.h"</font>
+<br><font face="Courier New,Courier">void main() { foo(); }</font></blockquote>
+And the source for<b> file.h</b> is:
+<blockquote><font face="Courier New,Courier">void foo();</font></blockquote>
+In this example all three files reside in the same directory.&nbsp; The
+problem comes in with ODE sandbox.&nbsp; If a developer has only the <b>file.h</b>
+file in their sandbox and they try to compile <b>main.c</b>, the C/C++
+compiler will include the <b>file.h </b>from the backing build.&nbsp; By
+definition of the <b>#include ""</b> directive, the C/C++ compiler will
+begin searching for included files from the location of the current file
+being processed.&nbsp; In this case, since<b> main.c</b> is in the backing
+build, then the C/C++ compiler finds the <b>file.h</b> in the backing build.
+<p>There are a couple of options to work around this problem.&nbsp; The
+<b>#include
+"file.h<font face="Courier New,Courier">"</font></b> can be changed to
+<b>#include
+&lt;file.h></b>.&nbsp; Also it would be possible to export header files
+to a subdirectory in the export directory, then the<b> #include "file.h"</b>
+can be changed to <b>#include "myincs/file.h"</b>.
+<br>&nbsp;
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="SpacesInPaths"></a><a href="#ToC_SpacesInPaths">Spaces in pathnames</a></h2>
+With the exception of Windows NT, it is not customary to have blanks in
+pathnames, especially in development environments.&nbsp; As a result, development
+tools (compilers, etc.) are not expected to support blanks in filenames,
+except on Windows NT.&nbsp; ODE does not fully support the use of spaces
+in pathnames, so it is best to put sandboxes, backing builds, compiler
+tools, etc. in directories that have names that do not contain spaces.&nbsp;
+For example, creating a backing build or sandbox on Windows NT under "<b>C:\My
+Programs</b>" can cause problems when using ODE tools.&nbsp; Although some
+ODE tools can work in certain cases by enclosing appropriate paths in double
+quotes, there is no guarantee that they will work in all cases.
+<h3>
+A generic workaround</h3>
+One way to work around this problem is to create symbolic links (on Unix
+systems) or use the <b>subst</b> command (on Windows) to bypass the problematic
+directory.&nbsp; For example:
+<p><img SRC="unix.gif" ALT="UNIX" height=16 width=31><b><tt> ln -s "/tmp/directory
+with spaces/subdir" /tmp/shortcut</tt></b>
+<br><img SRC="windows.gif" ALT="Windows" height=16 width=58><b><tt> subst
+M: "C:\Program Files\subdir"</tt></b>
+<p>Then use the link or substituted drive when giving paths to ODE.&nbsp;
+However, there are some <a href="ODEAdminsGuide.htm#Restrictions_UNIX">restrictions</a>
+on using symbolic links in ODE.&nbsp; Since paths to backing builds and
+sandboxes should not use symbolic links, this restricts the above workaround
+somewhat.
+<p>Another solution on Windows is to use the DOS 8.3 short name of the
+directory.&nbsp; For example, use <b>PROGRA~1</b> instead of <b><nobr>Program
+Files</nobr></b>.&nbsp; The short names can be viewed with <b>dir /x</b>.
+<h3>
+Special NT support</h3>
+Windows NT provides more support than other operating systems for blanks
+embedded in filenames.&nbsp; However using double quotes often is still
+required to ensure that blanks are not interpreted as argument separators.&nbsp;
+For NT only, several ODE tools have been modified to support blanks in
+filenames.&nbsp; The intent is to support toolkits that have been installed
+on paths which have blanks embedded in filenames.&nbsp; The support is
+still limited, but includes the following features and restrictions:
+<ul>
+<li>
+Windows NT only.&nbsp; (Blanks are possible in UNIX filenames, but no UNIX
+development environment appears to support them.)</li>
+
+<li>
+The ODE build environment itself (sandbox or backing build) must NOT have
+any blanks in filenames.</li>
+
+<li>
+The toolkit can have blanks in the path to the toolkit, for example <b>d:\Program
+Files\DevStudio</b></li>
+
+<li>
+Leading blanks and trailing blanks in filenames are NOT supported.</li>
+
+<li>
+Blanks in suffixes are NOT supported.</li>
+
+<li>
+If ODE command flags include filenames, and the filenames have blanks,
+such flags must be double quoted.</li>
+
+<li>
+Use only double quotes, as single quotes are not quaranteed to work</li>
+</ul>
+
+<blockquote>Several ODE tools are affected.&nbsp; Click on the link for
+each tool for more details.
+<li>
+<b><a href="ODEBuildReference.htm#gendepPlatformSpecific">gendep</a></b>:
+output <b>*.u</b> files will have double quotes around filenames if needed.</li>
+
+<li>
+<b><a href="ODEBuildReference.htm#genpathPlatformSpecific">genpath</a></b>:
+appropriate filenames in output will be double quoted if needed.</li>
+
+<li>
+<b><a href="ODEBuildReference.htm#Header_34a">mkdep</a></b>: <b>*.u</b>
+files used as input may have filenames with embedded blanks in dependency
+rules. Double quotes are not required.&nbsp; The output <b>depend.mk</b>
+file will have quotes around filenames with embedded blanks.</li>
+
+<li>
+<b><a href="ODEMakeReference.htm#HDRDEP">mk</a></b>: Dependency rules in
+makefiles are treated slightly differently.&nbsp; Filenames with embedded
+blanks must be in double quotes so that the blanks are not treated as filename
+separators.</li>
+</blockquote>
+
+<h1>
+
+<hr WIDTH="100%"></h1>
+
+<h1>
+<a NAME="Release_Notes"></a><b><a href="#ToC_Release_Notes">Appendix C.
+Release notes</a></b></h1>
+
+<h2>
+<a NAME="Changes_5.0_4.0"></a><a href="#ToC_Changes_5.0_4.0">Changes in
+ODE5.0 from ODE4.0</a></h2>
+
+<ul>
+<li>
+<b>mk</b></li>
+
+<ul>
+<li>
+Added <b>:i</b> variable modifier (builds after 20040610.0700)</li>
+</ul>
+
+<li>
+<b>gendep</b></li>
+
+<ul>
+<li>
+Added support for -o flag to specify the name of the output file.</li>
+</ul>
+
+<li>
+<b>packaging</b></li>
+
+<ul>
+<li>
+added support for inline PARM statements in JCLIN generation.</li>
+
+<li>
+added support for side deck (SYSDEFSD) definition from JCLIN generation.</li>
+
+<li>
+added support for configurable condition (COND) values in link-edit job
+evaluation.</li>
+
+<li>
+allow parts not in the HFS to be included in the CMF.</li>
+</ul>
+
+<li>
+<b>rules</b></li>
+
+<ul>
+<li>
+added rules and code to perform <a href="ODETsoBuildUserGuide.htm">TSO
+building </a>of z/OS parts (PL/X, Assembler, etc.)</li>
+
+<li>
+added Makeconf.def file to confs.zip (SDWB Req #1737, builds after 20040315.0300)</li>
+
+<li>
+added <a href="ODECommonMakefiles.htm#ExportingRules">EXPPGMS</a> support
+(builds after 20040610.0700)</li>
+</ul>
+
+<li>
+<b>Eclipse</b></li>
+
+<ul>
+<li>
+added ODE build feature for WSWB (build and makefile generation)</li>
+</ul>
+
+<li>
+<b>platform support</b></li>
+
+<ul>
+<li>
+terminated support for the following platforms:</li>
+
+<ul>
+<li>
+IBM Monterey/64 for Intel Itanium (ia64_aix_5)</li>
+
+<li>
+NetBSD for Intel (x86_netbsd_1)</li>
+
+<li>
+OpenBSD for Intel (x86_openbsd_2)</li>
+
+<li>
+FreeBSD for Intel (x86_freebsd_3)</li>
+
+<li>
+Compaq OpenVMS for Alpha&nbsp; (alpha_openvms_7)</li>
+
+<li>
+BeOS for Intel (x86_beos_4)</li>
+
+<li>
+SCO UnixWare (x86_sco_7)</li>
+
+<li>
+SCO OpenServer (x86_sco_5)</li>
+
+<li>
+DYNIX/ptx for Intel (x86_ptx_4)</li>
+</ul>
+</ul>
+</ul>
+
+<h2>
+<a NAME="Changes_4.0_3.0"></a><a href="#ToC_Changes_4.0_3.0">Changes in
+ODE4.0 from ODE3.0</a></h2>
+
+<ul>
+<li>
+<b>mk</b></li>
+
+<ul>
+<li>
+Added runtime <a href="ODEMakeReference.htm#runtimeconditionals">for-loop</a>
+support: <b>.rfor</b> and <b>.rendfor</b></li>
+</ul>
+
+<li>
+<b>rules</b></li>
+
+<ul>
+<li>
+Added EAR &amp; WAR file building (build 8 and higher).</li>
+
+<li>
+Added ability to build all Java code from a single directory...see JAVA_CLASSES_DIRS
+and USE_JAVADIR_RECURSION (build 8 and higher).</li>
+
+<li>
+Added ability for all pass-specific SUBDIRS variables (e.g., EXPINC_SUBDIRS)
+to inherit from the default SUBDIRS contents, when USE_SUBDIR_INHERITANCE
+is defined.</li>
+
+<li>
+On MVS/USS, prelinker/binder map (.map) files are saved when SAVE_MAPS
+is defined.</li>
+
+<li>
+On limited platforms, GEN_CC_LISTINGS will generate listing (.lst) files.</li>
+
+<li>
+On MVS/USS, prelinker will be used and prelinked (.p) files saved when
+KEEP_PRELINKER_FILES is defined.</li>
+
+<li>
+On MVS/USS, prelinked (.p) files will automatically be added to ILIST when
+INSTALL_PRELINKER_FILES is defined.</li>
+</ul>
+
+<li>
+<b><a href="ODEBuildReference.htm#HDRSBMERGE">sbmerge</a></b></li>
+
+<ul>
+<li>
+Added this new tool to act as a sandbox-aware front-end for a user-supplied
+three-way merge command.</li>
+</ul>
+
+<li>
+<b>Packaging:</b></li>
+
+<ul>
+<li>
+Added <a href="RPMServicePackagingReference.html">RPM service packaging</a>
+(patch-creation) support.</li>
+
+<li>
+Added InstallShield Multi-Platform support.</li>
+
+<li>
+Added <a href="CMFGenerationUserGuide.htm">CMF Generation</a> functionality.</li>
+
+<li>
+Various enhancements for the MVS/USS service packaging process.</li>
+
+<ul>
+<li>
+Automatic sizing of Build/390 drivers based on number of parts.</li>
+
+<li>
+Additional version record information passed into the DEFVER command.</li>
+
+<li>
+Added support to retrieve ++PTFs, ++APARs, and ++USERMODs via the ODE command
+line.</li>
+
+<li>
+Created a MVS/USS service packaging recovery document.</li>
+
+<li>
+Added support for re-building of a ++APAR.</li>
+</ul>
+
+<li>
+Added support for VPL generation in the PTF process (USS).</li>
+
+<li>
+Added patch-level identification for Solaris (pkgmk) Initial Product Packages</li>
+
+<li>
+Created an <a href="ODEPackagingUserGuide.html">ODE Packaging User's Guide</a>
+docuement.</li>
+</ul>
+
+<li>
+Added a <a href="ODEGuiReference.htm">GUI tool</a> to allow users to create
+and delete sandboxes, workon sandboxes, perform builds, and list and edit
+files, all without having to type commands at a shell prompt.</li>
+</ul>
+
+<h2>
+<a NAME="Changes_3.0_2.5"></a><a href="#ToC_Changes_3.0_2.5">Changes in
+ODE3.0 from ODEi2.5</a></h2>
+
+<ul>
+<li>
+<b>mk</b></li>
+
+<ul>
+<li>
+The <b><tt><font size=+1>:!</font></tt></b> variable modifier now allows
+an "<b>i</b>" option to ignore return codes from the command it runs (build
+10 and higher).</li>
+
+<li>
+Added <b>ODEMAKE_BOMSHOWALL</b>, <b>ODEMAKE_BOMSHOWTIME</b>, and <b>ODEMAKE_NOCONTSPC</b>
+variables (build 9 and higher).</li>
+
+<li>
+The <b>:Q</b> variable modifier was added to sort words in ascending or
+descending order (build 8 and higher).</li>
+
+<li>
+Enhanced <a href="ODEMakeReference.htm#HDRPATTERNRULES">pattern rules</a>
+to be more powerful.</li>
+
+<li>
+Added <a href="ODEMakeReference.htm#HDRSUFFIXTRFMS">single suffix rule</a>
+functionality.</li>
+
+<li>
+Added new <a href="ODEMakeReference.htm#runtimecommands">runtime commands</a><b>&nbsp;
+.rcp</b>,
+<b>.rmv</b>, and <b>.rrm</b>.</li>
+
+<li>
+Added new special source <b>.LINKTARGS</b>.</li>
+
+<li>
+Added new debugging flag <b>-dp</b>.</li>
+
+<li>
+The <b><tt><font size=+1>:!</font></tt></b> variable modifier now allows
+an "<b>e</b>" option to echo (to standard output) the command it is going
+to run.</li>
+</ul>
+
+<li>
+<b>rules</b></li>
+
+<ul>
+<li>
+Added the ability to install to multiple directories...IDIR can contain
+multiple paths.</li>
+
+<li>
+Java developers may use pass names which make more sense for them; instead
+of EXPINC, OBJECTS, and EXPLIB, they can use JAVAH, JAVAC, and JAR, respectively.&nbsp;
+The new boolean variables USE_JAVA_PASSES and CONVERT_JAVA_SUBDIRS are
+available to facilitate usage of these new pass names.</li>
+</ul>
+
+<li>
+<b>mklinks</b></li>
+
+<ul>
+<li>
+Added <b>-timecmp</b> flag.</li>
+</ul>
+
+<li>
+<b>Packaging:</b></li>
+
+<ul>
+<li>
+Added checking for truncation warnings in MVS/USS packaging.</li>
+
+<li>
+Upgraded supported level of SMP/E to V2R11 in MVS/USS packaging.</li>
+
+<li>
+Added <a href="SolarisServicePackagingReference.htm">Solaris service packaging</a>
+(patch-creation) support.</li>
+
+<li>
+Added <a href="HPServicePackagingReference.html">HP-UX service packaging</a>
+(patch-creation) support.</li>
+
+<li>
+Added capability to add flags to the 'ar' command as run by the AIX packaging
+tools.</li>
+
+<li>
+Enhanced <a href="ODEPackagingReference.htm#configfile">configFiles</a>
+attribute to be more powerful and provide additional abstraction.</li>
+
+<li>
+Enhanced <a href="ODEPackagingReference.htm#ReqInfo">requisites</a> attribute
+to be more powerful and provide additional abstraction.</li>
+
+<li>
+Added variable to control execution of the 'swreg' tool during HP-UX packaging.</li>
+</ul>
+
+<li>
+Added support for ODE on OpenVMS for Alpha (build 11 and higher).&nbsp;
+Make sure to read the section on <a href="#VMS_RESTRICT">VMS restrictions</a>
+before downloading/using ODE on OpenVMS.</li>
+
+<li>
+Added support for ODE on Linux for zSeries (build 9 and higher).</li>
+
+<li>
+Added the new <a href="ODEMigrationGuide.htm">Migration Guide</a> documentation.</li>
+
+<li>
+Users may now edit <b>.sandboxrc</b> by hand and the ODE tools will no
+longer remove comments or otherwise reorganize the file.</li>
+
+<li>
+Made modifications to several machine names...see the <a href="#Upgrading_3.0_2.5">Upgrading
+section</a> for more information.</li>
+
+<li>
+All references to "<b><tt>ODEi</tt></b>" have been changed to simply "<b><tt>ODE</tt></b>".</li>
+</ul>
+
+<h2>
+<a NAME="Changes_2.5_2.4"></a><a href="#ToC_Changes_2.5_2.4">Changes in
+ODEi2.5 from ODEi2.4</a></h2>
+
+<ul>
+<li>
+Support for the following platforms has been added: Linux for Intel Itanium
+(ia64_linux_2, build 22 and higher), Linux for Alpha (alpha_linux_2, build
+23 and higher).</li>
+
+<li>
+Created a new archive (confs.zip) with templates for the <b>Makeconf</b>,
+<b>Buildconf</b>,
+and <b>Buildconf.exp</b> files for easier migration to ODE (build 16 and
+higher).</li>
+
+<li>
+The <b>jikes</b> command has been added to the ODE suite of tools, with
+changes that allow it to work better with ODE.</li>
+
+<li>
+EBCDIC formatted bbexample and rules archives for operating systems such
+as MVS/USS were renamed from "bbexamplemvs" and "rulesmvs" to "bbexample_ebcdic"
+and "rules_ebcdic", respectively.</li>
+
+<li>
+<b>mk</b>:</li>
+
+<ul>
+<li>
+Dollar signs can be used in Java targets/dependents by setting the <a href="ODEMakeReference.htm#ODEMAKE_DOLLARS">ODEMAKE_DOLLARS</a>
+variable (build 18 and higher).</li>
+
+<li>
+Building can be done in <a href="ODECommonMakefiles.htm#concurrent_dirs">multiple
+directories concurrently</a> (build 18 and higher).</li>
+
+<li>
+Added special sources <b>.PMAKE</b>, <b>.FORCEBLD</b>, and <b>.REPLSRCS</b>
+(build 18 and higher).</li>
+
+<li>
+Added special target <b>.LINKTARGS</b> (build 17 and higher).</li>
+
+<li>
+Added special source <b>.NORMTARG</b> (build 16 and higher).</li>
+
+<li>
+Regular Expression (Basic and Extended) functionality added via the <b>:x</b>
+variable modifier.</li>
+
+<li>
+The <b>:A</b> and <b>:a</b> variable modifiers were added to output text
+to a file.</li>
+
+<li>
+The <b>:d</b> variable modifier was added to allow finding the full path
+for directories, similar to <b>:p</b>.</li>
+
+<li>
+The <b>:m</b> and <b>:n</b> modifiers were added to behave like <b>:M</b>
+and <b>:N</b> without splitting the string into words.</li>
+
+<li>
+The <b>:r</b> variable modfier was added to allow the removal of files
+and/or directories.</li>
+
+<li>
+The <b>:S</b> and <b>:s</b> variable modifiers were enhanced to support
+the <b>f</b> and <b>w</b> options.</li>
+
+<li>
+Added ability to use wildcard syntax for suffix transformations (<b><tt>%.o
+: %.c</tt></b>).</li>
+
+<li>
+The internal run-time command equivalent of <b>mkdep</b>, called <b>.rmkdep</b>,
+was added.</li>
+</ul>
+
+<li>
+<b>rules</b>:</li>
+
+<ul>
+<li>
+The strip tool can now be used automatically on objects, programs, archive
+libraries, and shared libraries using boolean variables STRIP_OBJ, STRIP_EXE,
+STRIP_ARCH, and STRIP_LIB (build 24 and higher).</li>
+
+<li>
+Conditional keywords (.if, .ifdef, etc.) may now be indented to make them
+easier to read in nested situations (build 21 and higher).</li>
+
+<li>
+Added ability to export to multiple directories simultaneously, i.e., EXP[INC|LIB]DIR
+can contain multiple paths (build 20 and higher).</li>
+
+<li>
+jar files can be built in "update" mode using the <a href="ODECommonMakefiles.htm#JarFileVars">USE_JAR_UPDATE</a>
+variable (build 18 and higher).</li>
+
+<li>
+Added ability to compile both C and C++ source code in the same directory
+(build 17 and higher).</li>
+
+<li>
+Added new (optional) pass EXPSHLIB (build 17 and higher).</li>
+
+<li>
+Added new variables to obtain a list of <a href="ODECommonMakefiles.htm#FilesInCurDir">files/dirs
+in the current directory</a> (build 16 and higher).</li>
+
+<li>
+The instdep_all action and INSTALL_USING_DEPS variable were both added
+to allow conditional installation functionality.</li>
+</ul>
+
+<li>
+<b>workon</b></li>
+
+<ul>
+<li>
+Added the <b>-k</b> flag (build 20 and higher).</li>
+
+<li>
+Added the <b>-c</b> flag (build 19 and higher).</li>
+</ul>
+
+<li>
+<b>mkdep</b></li>
+
+<ul>
+<li>
+Added the <b>-E</b> and <b>-elpdep</b> flags (build 16 and higher).</li>
+</ul>
+
+<li>
+<b>gendep</b></li>
+
+<ul>
+<li>
+Added <b>-respfile</b> flag to support response files (build 20 and higher).</li>
+
+<li>
+Added the <b>-targname</b> and <b>-hdrsonly</b> flags (build 16 and higher).</li>
+</ul>
+
+<li>
+<b>mksb/mkbb</b>:</li>
+
+<ul>
+<li>
+Added the ability to change the default sandbox to an existing sandbox
+using the <b>-def</b> flag (build 19 and higher).</li>
+
+<li>
+Added the ability to add a machine context (the directories under obj,
+export, tools, and inst.images) to an existing sandbox using the <b>-m</b>
+flag.</li>
+
+<li>
+Added the ability for <b>mksb</b> to utilize <b>-blist</b> functionality
+(previously only available to <b>mkbb</b>).</li>
+
+<li>
+<b>mksb</b>/<b>mkbb</b> now translate ALL relative paths for the "sandbox
+base" into absolute paths (unless they start with a variable). Previously,
+mksb/mkbb would ONLY translate "." into an absolute path.</li>
+</ul>
+
+<li>
+<b>currentsb</b></li>
+
+<ul>
+<li>
+Can now specify a particular sandbox to show information for on the command
+line.</li>
+</ul>
+
+<li>
+<b>Packaging:</b></li>
+
+<ul>
+<li>
+Added support for creating 390 service packages via Build/390.</li>
+
+<li>
+Added support for PATH attibute in the SYSLMOD DD statement (build 22 and
+higher).</li>
+
+<li>
+Added support for allocating PDS/E datasets in MVS packaging (build 19
+and higher).</li>
+
+<li>
+Added maintLevel and fixLevel support for HP-UX packages (build 16 and
+higher).</li>
+
+<li>
+Added support for JCLIN generation for MVS/USS packaging.</li>
+
+<li>
+Added support for automating the link-edit process for MVS/USS packaging.</li>
+
+<li>
+Added support for RPM package generation.</li>
+
+<li>
+Added packaging support on SGI-IRIX (via pkgmk).</li>
+
+<li>
+Added support for package creation based on packaging tool, as opposed
+to platform.</li>
+
+<li>
+Moved supported level of the JDK to 1.2/1.3.</li>
+
+<li>
+Removed support for SPA service packaging on MVS/USS.</li>
+</ul>
+</ul>
+
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="Changes_2.4_2.3"></a><a href="#ToC_Changes_2.4_2.3">Changes in
+ODEi2.4 from ODEi2.3</a></h2>
+
+<ul>
+<li>
+File support for sets was removed.</li>
+
+<li>
+Project file support was removed.</li>
+
+<li>
+Support for the following platforms has been added: Monterey/64 for Intel
+Itanium (ia64_aix_5), SCO OpenServer (x86_sco_7), OS/400 (as400_os400_4),
+IRIX (mips_irix_6), Tru64 (alpha_tru64_5).</li>
+
+<li>
+<b>mk</b>:&nbsp; (See the <i><a href="ODEMakeReference.htm">ODE Make Reference</a></i>
+for more information)</li>
+
+<ul>
+<li>
+Added support for run-time conditionals in Makefiles.</li>
+
+<li>
+Added <b>-B</b> option to <b>mk</b> to implement Bill of Materials (BOM)
+file output.</li>
+
+<li>
+Reactivated the <b>-O</b> option. It will be used to control the file and
+directory cache algorithms.</li>
+
+<li>
+Removed <b>-N</b> option, it is now ignored. Its functionality was added
+to the <b>-dd</b> and <b>-dA</b> command line options.&nbsp; It will be
+treated like other nonvalid flags, it will be treated as a target.</li>
+
+<li>
+Added the <b>.PRECMDS</b>, <b>.POSTCMDS</b>, and <b>.REPLCMDS</b> special
+sources.</li>
+</ul>
+
+<li>
+<b>rules</b>:</li>
+
+<ul>
+<li>
+DEF_MDFLAGS and DEF_RMFLAGS were removed.</li>
+
+<li>
+Support for the KAI C++ compiler was added.</li>
+
+<li>
+Support for the IBM SDE cross compiler (for compiling Monterey/64 code
+on SCO UnixWare).</li>
+</ul>
+
+<li>
+<b>mkdep</b>:</li>
+
+<ul>
+<li>
+<b>-subst</b> flag was added.</li>
+</ul>
+
+<li>
+<b>build:</b></li>
+
+<ul>
+<li>
+Removed <b>-set</b> option due to the removal of support for sets.</li>
+</ul>
+
+<li>
+<b>currentsb</b>: (See the <i><a href="ODEBuildReference.htm">ODE Build
+Reference</a></i> for more information)</li>
+
+<ul>
+<li>
+Removed <b>-set</b> and <b>-setdir</b> options due to the removal of support
+for sets.</li>
+</ul>
+
+<li>
+<b>mkbb </b>(See the <i><a href="ODEBuildReference.htm">ODE Build Reference</a></i>
+for more information)</li>
+
+<ul>
+<li>
+Added <b>-sb</b> option, you can now either specify the backing build name
+with or without <b>-sb</b></li>
+
+<li>
+Removed <b>-set</b> option due to the removal of support for sets.</li>
+</ul>
+
+<li>
+<b>mksb</b>: (See the <i><a href="ODEBuildReference.htm">ODE Build Reference</a></i>
+for more information)</li>
+
+<ul>
+<li>
+Added <b>-sb</b> option, you can now either specify the sandbox name with
+or without <b>-sb</b></li>
+
+<li>
+Removed <b>-set</b> option due to the removal of support for sets.</li>
+</ul>
+
+<li>
+<b>sbinfo</b>: (See the <i><a href="ODEBuildReference.htm">ODE Build Reference</a></i>
+for more information)</li>
+
+<ul>
+<li>
+Removed <b>-set</b> option due to the removal of support for sets.</li>
+</ul>
+
+<li>
+<b>workon</b>:&nbsp; (See the <i><a href="ODEBuildReference.htm">ODE Build
+Reference</a></i> for more information)</li>
+
+<ul>
+<li>
+Changed the unqualified parameter of <i>set_name</i> to be <i>sandbox_name</i>.</li>
+
+<li>
+Removed <b>-list</b>,<b> -set</b>, <b>-setdir</b>, and <b>-undo</b> options,
+due to the removal of support for sets.</li>
+</ul>
+
+<li>
+<b>Packaging: </b>(See the <i><a href="ODEPackagingReference.htm">ODE Packaging
+Reference</a></i> for more information)</li>
+
+<ul>
+<li>
+Eliminated use of <b>ctldef</b> in MVS packaging.</li>
+
+<li>
+Support of multiple shippable files from one source file</li>
+
+<li>
+Version 2 Release 7 SMP/E support for MVS/USS packaging</li>
+
+<li>
+Numerous usage enhancements for MVS/USS packaging</li>
+</ul>
+</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="Changes_2.3_2.2"></a><a href="#ToC_Changes_2.3_2.2">Changes in
+ODEi2.3 from ODEi2.2</a></h2>
+
+<ul>
+<li>
+Numerous performance improvements.</li>
+
+<li>
+Default CONTEXT and MACHINE for USS changed to <b>mvs390_oe_2</b> from
+<b>mvs390_oe_1</b>.</li>
+
+<li>
+Moved supported level of AIX up to 4.2.1+</li>
+
+<li>
+Moved supported level of USS up to 2.5+</li>
+
+<li>
+Moved supported level of Linux/Intel up to kernel 2.2+ (starting with build
+28)</li>
+
+<li>
+Moved supported level of Solaris/Sparc up to 2.6+ (starting with build
+25)</li>
+
+<li>
+Added support for the NetBSD, OpenBSD, FreeBSD, Linux/PowerPC, Linux/Sparc,
+Solaris/Intel, DYNIX/ptx, BeOS, and Linux/S390 operating systems.</li>
+
+<li>
+<b>mk</b>:&nbsp; (See the <i><a href="ODEMakeReference.htm">ODE Make Reference</a></i>for
+more information)</li>
+
+<ul>
+<li>
+New <b>:C</b> and <b>:G</b> variable modifiers added to <b>mk</b> (so that
+calling mkpath and genpath as external commands isn't necessary).</li>
+
+<li>
+The <b>:N</b> and <b>:M</b> variable modifiers of <b>mk</b> now operate
+with words on the left side, not just a string as before.</li>
+
+<li>
+Special target <b>.MAKEFLAGS</b> can now be used in any Makefile.</li>
+
+<li>
+Special source <b>.DIRS</b> added to allow specification of targets that
+are directories, instead of the default of files.</li>
+
+<li>
+Renamed the predefined variables: <b>.CURDIR </b>=> <b>CURDIR</b> and <b>.POUND</b>
+=> <b>POUND</b>.&nbsp; The prepending dot ('.') has been removed.</li>
+
+<li>
+It is now possible to assign multiple variables on one line to the same
+value in Makefiles.</li>
+
+<li>
+Added the separate document <i><a href="ODEMakeReference.htm">ODE Make
+Reference</a> </i>which includes information only on the <b>mk</b> command
+and Makefile syntax.</li>
+
+<li>
+Removed <b>-r</b> option, it is now ignored.&nbsp; It will be treated like
+other nonvalid flags, it will be treated as a target.</li>
+
+<li>
+New <b>-dV</b> debug option includes variable modifier processing information
+and it also includes the <b>-dv</b> output.</li>
+
+<li>
+New <b>-dg1</b>/<b>dg2</b> options added to the <b>mk</b> command to print
+basic target graph information, before and after building of the targets.
+(Was added in a 2.2 post-GA build)</li>
+
+<li>
+New <b>-b</b> option added to <b>mk</b> to allow the use of directories
+as targets/sources. (Was added in a 2.2 post-GA build)</li>
+</ul>
+
+<li>
+<b>rules</b>:&nbsp; (See the <i><a href="ODECommonMakefiles.htm">ODE Common
+Makefiles</a></i> document for more information)</li>
+
+<ul>
+<li>
+Added support for NLS, resource, help, and message processing.</li>
+
+<li>
+The CCFAMILY "native" has replaced "cset" (on AIX and MVS), "hpux" (on
+HPUX), and "spro" (on Solaris).</li>
+
+<li>
+Added CCVERSION to the rules so that multiple versions of the same compiler
+can be supported.</li>
+
+<li>
+Added support for debug builds and separate debug contexts to allow for
+optimized and debug builds to coexist in the backing build.</li>
+
+<li>
+Added easier way for extension of base set of rules with &lt;myproj>.passes.mk.</li>
+</ul>
+
+<li>
+<b>Packaging</b>:&nbsp; (See the <i><a href="ODEPackagingReference.htm">ODE
+Packaging Reference</a></i> for more information)</li>
+
+<ul>
+<li>
+Packaging was migrated to ODE from BPS.</li>
+
+<li>
+Added instructions on using InstallShield5.5 with ODE.</li>
+
+<li>
+Numerious USS enhancements.</li>
+</ul>
+
+<li>
+<b>crlfcon</b>: New command <b>crlfcon</b> added.&nbsp; See the<i><a href="ODEBuildReference.htm">ODE
+Build Reference</a></i> section on <b><a href="ODEBuildReference.htm#crlfcon">crlfcon</a></b>
+for more information.</li>
+
+<li>
+<b>MakeMake</b>: has been significantly enhanced and released as a pre-built
+tool instead of as a tutorial example. Added MakeMake tool with GUI, see
+the <i><a href="ODEMakeMake.htm">ODE MakeMake</a> d</i>ocument for more
+information.</li>
+</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="Changes_2.2_2.1"></a><a href="#ToC_Changes_2.2_2.1">Changes in
+ODEi2.2 from ODEi2.1</a></h2>
+
+<ul>
+<li>
+New <b>-dg1</b>/<b>dg2</b> options added to the <b>mk</b> command to print
+basic target graph information, before and after building of the targets.</li>
+
+<li>
+New <b>-b</b> option added to <b>mk</b> to allow the use of directories
+as targets/sources.</li>
+
+<li>
+Empty targets are allowed in Makefiles to backwards compatible with ODEi2.0.1
+and before.&nbsp; This was added in build 17 of ODEi2.3.</li>
+
+<li>
+Output for the <b>mk </b>command's <b>-dv</b> option was improved to reflect
+the Makefile/line information for the assigned variable.</li>
+
+<li>
+Added the <b>gendep</b> utility to generate Makefile dependencies for C/C++
+source files.</li>
+
+<li>
+Added support for the Linux operating system.</li>
+
+<li>
+Enhanced Java support to include dependency generation, jar creation, rmic
+usage and javah usage.</li>
+
+<li>
+Additional variable modifiers added to <b>mk</b> to test for existence
+of files or directories, process a string as characters and not words,
+case modifiers.&nbsp; See the <a href="ODEMakeReference.htm#HDRMAKEDET">Makefile
+Syntax </a>section in the <i><a href="ODEMakeReference.htm">ODE Make Reference</a></i>
+for more information.</li>
+
+<li>
+Enhanced the <b>mklinks </b>command to handle pattern matching and multiple
+arguments.</li>
+
+<li>
+Enhanced the <b>mkdep</b> command to handle multiple directories and targets
+with path information.</li>
+
+<li>
+Removed the <b>-O</b> option to the <b>mk</b> command.&nbsp; This <b>-O
+</b>option
+is ignored, future releases will treat the <b>-O</b> option to <b>mk</b>
+as an error.</li>
+
+<li>
+Removed the RMS/Java dependency for doing remote builds.&nbsp; Remote builds
+are now handled with rsh/remsh/rexec.</li>
+
+<li>
+Numerous other minor enhancements.</li>
+</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="Changes_2.1_2.0.1"></a><a href="#ToC_Changes_2.1_2.0.1">Changes
+in ODEi2.1 from ODEi2.0.1</a></h2>
+
+<ul>
+<li>
+Added support for Windows95/98.</li>
+
+<li>
+Planning to enable make to break the subdirectory boundary by implementing
+passes within the make code as opposed to the previous Makefile definition
+or passes.&nbsp; See the .PASSES special source in mk for more information.</li>
+
+<li>
+The new Makefile variable modifier: %=, will allow the setting of environment
+variables from Makefiles.</li>
+
+<li>
+Inference rule separator in Makefiles will support the use of a separator
+character for double suffix rules.</li>
+
+<li>
+Conditionally allow the use of spaces or tabs when <b>mk</b> usually expects
+only tabs.&nbsp; Problems occur that certain editors on&nbsp; OS/2 and
+WindowsNT that automatically remove tabs from files or don't provide a
+way to add tabs.&nbsp; The Makefile syntax requires tabs to be the first
+character in the line of a Makefile if the line is a command used to update
+a target.</li>
+
+<br>The command line argument of "<b>-w</b>" will be added to <b>mk</b>
+that will indicate to use "whitespace"(space or tab) instead of just tabs.&nbsp;
+The option can be turned on for an entire build by adding the "<b>-w</b>"
+flag to the .MAKEFLAGS: special target in the Makeconf file.
+<li>
+<b>mk </b>supports the command line options: -di, -w and -O[0-2].</li>
+
+<li>
+<b>mk </b>supports the variable modifiers: %=, F and p.</li>
+
+<li>
+<b>mk</b> supports these reserved variables: ODERELEASE, ODEMAKE_SHELL,
+NDIRS, NTGTS, .PATH[.suffix] and POUND.</li>
+
+<li>
+<b>mk </b>no longer supports theses special targets and sources: .DEFAULT,
+.EXEC, .IGNORE, .INCLUDES, .JOIN, .LIBS, .MFLAGS, .NULL, .OPTIONAL, .RECURSIVE,
+.SILENT AND .USE</li>
+
+<li>
+<b>mk</b> no longer supports these reserved variables: @F, @D, &lt;F, .MFLAGS,
+.INCLUDES and .LIBS.</li>
+
+<li>
+<b>mk</b> no longer supports these command line flags: -q, -r and -S.</li>
+
+<li>
+<b>mk</b> no longer allows directories as targets or sources.&nbsp; This
+was done to eliminate problems when directories were unintentionally found
+when a file was expected.&nbsp; This also affects the file searching variable
+modifier <b>P</b>.</li>
+
+<li>
+Add "for" keyword to Buildconf/sb.conf syntax, so that the CONTEXT platform
+can be compared ("on" compares with MACHINE).</li>
+
+<li>
+A new environment variable, ODEMAKE_SHELL, will be tested for existence
+when ODE runs an external command (this does not apply to <b>workon</b>,
+which uses SHELL instead).&nbsp; If the variable exists, it is used to
+prepend the command executed.&nbsp; It must therefore include any necessary
+flags to make sure the shell will exit when finished.&nbsp; For example,
+the default setting of this variable on Windows NT would be:</li>
+
+<br><tt>&nbsp;&nbsp; CMD.EXE /C</tt>
+<li>
+A new option "-ignore" has been added to <b>build</b>, which when specified,
+ignores errors when multiple targets are specified on the command line.
+Previously if there was an error when building a target, <b>build</b> would
+ignore any more targets and exit. But with the "-ignore" option these errors
+are ignored and a build is attempted for all the targets.</li>
+
+<li>
+<b>genpath</b> has two new flags "-O" and "-S". When specified, "-O" outputs
+only object directories and similarly "-S" outputs only the src directories.</li>
+</ul>
+
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="Changes_2.0.1_2.0"></a><a href="#ToC_Changes_2.0.1_2.0">Changes
+in ODEi2.0.1 from ODEi2.0</a></h2>
+
+<ul>
+<li>
+Added new command <b>mkbb</b> to provide a convenient way to create backing
+builds.</li>
+
+<li>
+Added new command <b>sbls</b> to provide a convenient way to view a "collapsed"
+view of a sandbox without reorganizing the file location.</li>
+
+<li>
+Allow the location of configuration files to be configurable.</li>
+
+<li>
+Allow name of the directory rc_files to be configurable. The <b>ODERCFNAME</b>
+environment variable will tell ODE that the "rc_files" directory has been
+changed.</li>
+</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="Changes_2.0_1.0"></a><a href="#ToC_Changes_2.0_1.0">Changes in
+ODEi2.0 from ODEi1.0</a></h2>
+
+<ul>&nbsp;
+<li>
+The <b>release</b> command no longer exists.</li>
+
+<li>
+<b>build</b> takes the arguments <b>-rmt -rmtsvr </b>&lt;<i>rms_server_name<b>>
+</b></i>where
+<b>-rmt</b>
+indicates to <b>build</b> that it should reissue a <b>build</b> command
+through BPS/RMS, and <b>-rmtsvr</b> indicates where to direct the requests.</li>
+
+<li>
+<b>mk</b> can distribute jobs to BPS/RMS to distribute the work across
+many build machines.</li>
+
+<li>
+When the final sandbox listed in the .sandboxrc file is removed with the
+<b>mksb
+</b>command,
+the .sandboxrc file is also removed.</li>
+
+<li>
+<b>link</b> subdirectory has been removed from sandboxes.</li>
+
+<li>
+<b>resb</b> gives a list of builds to choose from when retargeting a sandbox.</li>
+
+<li>
+<b>sbinfo</b> no longer list variables that were unset.&nbsp; Also, it
+only list variables that were successfully set during processing; e.g.,
+if the <b>replace</b> modifier isn't used on a variable and it is already
+set in the environment, that variable will not appear in the <b>sbinfo</b>
+listing.</li>
+
+<li>
+The <b>sb.conf </b>file has an entry called <b>machine_list</b> which is
+a colon separated list of machines that are valid for a build.&nbsp; This
+is a replacement for the MACHINELIST variable in Buildconf.</li>
+
+<li>
+The <b>sc.conf</b> file is no longer required to exist when using the source
+control/sets feature.</li>
+
+<li>
+The optional BUILD_LIST environment variable may be used to specify the
+path to the build_list file.</li>
+
+<li>
+The DIRSEP environment variable, similar to PATHSEP, may be used to specify
+the directory separator character (i.e., "/" or "\") used when exporting
+environment variables that are known to contain paths.&nbsp; It must be
+used explicitly by the user for constructing paths in variables (for example,
+the ones in the Buildconf files) which ODE does not generate internally.</li>
+
+<li>
+The MACHINE variable will now always represent the <i>actual</i> platform
+ODE is running on.&nbsp; CONTEXT will continue to represent the target
+platform specified by the -m flag in <b>workon</b> and <b>build</b>.</li>
+
+<li>
+When ODE creates temporary files, it searches for the following variables
+(in the order given) to determine a directory to use: ODETMP, TMPDIR, TMP,
+and TEMP.&nbsp; If none of these variables are set, the current working
+directory is used.</li>
+
+<li>
+Changed CONTEXT names to be more consistent:&nbsp; See table below:</li>
+</ul>
+
+<ul>&nbsp;
+<table BORDER COLS=2 WIDTH="35%" >
+<tr>
+<td><b>Old Context Name</b></td>
+
+<td><b>New Context Name</b></td>
+</tr>
+
+<tr>
+<td>rios_aix4</td>
+
+<td>rios_aix_4</td>
+</tr>
+
+<tr>
+<td>i386_os2</td>
+
+<td>x86_os2_4</td>
+</tr>
+
+<tr>
+<td>i386_win32</td>
+
+<td>x86_nt_4</td>
+</tr>
+
+<tr>
+<td>hp9000_ux10</td>
+
+<td>hp9000_ux_10</td>
+</tr>
+
+<tr>
+<td>sparc_solaris</td>
+
+<td>sparc_solaris_2*</td>
+</tr>
+
+<tr>
+<td>mvs390_oe3</td>
+
+<td>mvs390_oe_1*</td>
+</tr>
+</table>
+*these names have changed again in later releases...see the <a href="#Header_4">Supported
+OS table</a> for current values</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="Changes_1.0_OSF236"></a><a href="#ToC_Changes_1.0_OSF236">Changes
+in ODEi1.0 from OSF-ODE 2.3.6</a></h2>
+
+<ul>
+<li>
+Windows NT, OS/2 and USS support</li>
+
+<li>
+Removed all code and commands associated with RCS (Revision Control System).</li>
+
+<li>
+Renamed commands: make to mk, makepath to mkpath, md to mkdep.</li>
+
+<li>
+Many defects from OSF code.</li>
+
+<li>
+Changed <b>mkdep</b> to be more flexible</li>
+
+<li>
+Added -a option to <b>mk</b> to force rebuild of up-to-date targets.</li>
+</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="Changes_Prior_OSF236"></a><a href="#ToC_Changes_Prior_OSF236">Changes
+Prior to OSF-ODE 2.3.6</a></h2>
+
+<ul>
+<li>
+See the Open Software Foundation's URL for details on non-IBM releases
+of ODE at <a href="http://www.ede.com/ode/index.html">http://www.ede.com/ode/index.html</a>
+(old location from OSF no longer exists, EDE Corporation has the only known
+public distribution)</li>
+</ul>
+
+<hr WIDTH="100%">
+<h1>
+<a NAME="Upgrading"></a><b><a href="#ToC_Upgrading">Appendix D. Upgrading
+from previous releases</a></b></h1>
+
+<h2>
+<a NAME="Upgrading_5.0_4.0"></a><a href="#ToC_Upgrading_5.0_4.0">Upgrading
+to ODE5.0 from ODE4.0</a></h2>
+
+<ul>
+<li>
+N/A</li>
+</ul>
+
+<h2>
+<a NAME="Upgrading_4.0_3.0"></a><a href="#ToC_Upgrading_4.0_3.0">Upgrading
+to ODE4.0 from ODE3.0</a></h2>
+
+<ul>
+<li>
+The minimum supported release of Linux/PPC is now kernel 2.4.12 (SuSE 7.3).</li>
+
+<li>
+<b>Packaging</b></li>
+
+<ul>
+<li>
+Removed support for the <b>comp</b> File stanza attribute. Any occurence
+of this attribute should be removed.</li>
+
+<li>
+Removed support for the <b>comp</b> MvsInfo stanza attribute.&nbsp; Any
+occurence of this attribute should be removed and replaced with the <b>retainComponent</b>
+attribute in the ServiceInfo stanza.</li>
+
+<li>
+The <b>Url</b> attribute of the SupportInfo stanza has been changed to
+<b>url</b>.
+Any occurence of this attribute should be changed to <b>url</b>.</li>
+
+<li>
+Removed support for the <b>shipPath</b> attribute of the PathInfo stanza.
+Any occurence of this attribute should be removed.</li>
+</ul>
+</ul>
+
+<h2>
+<a NAME="Upgrading_3.0_2.5"></a><a href="#ToC_Upgrading_3.0_2.5">Upgrading
+to ODE3.0 from ODEi2.5</a></h2>
+
+<ul>
+<li>
+<b>mk</b></li>
+
+<ul>
+<li>
+When quoted strings across multiple lines were encountered, the continuation
+character had previously been replaced with 2 spaces.&nbsp; The new behavior
+is that the continuation character is replaced with only 1 space.&nbsp;
+(build 9 and higher)</li>
+
+<br><b><tt>&nbsp;&nbsp;&nbsp; echo "Hello\</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp; World"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ->&nbsp;
+"Hello World"</tt></b>
+<li>
+Due to the new <a href="ODEMakeReference.htm#HDRSUFFIXTRFMS">single suffix
+rule</a> functionality, targets that start with a period will no longer
+be treated as a normal explicit target.&nbsp; For example:</li>
+
+<br><b><tt>&nbsp;&nbsp;&nbsp; .mytarg :</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo ${.TARGET}</tt></b>
+<br>In ODE3.0, this will now be treated as a suffix transformation (to
+create foo from foo.mytarg).&nbsp; To cause <b>mk</b> to treat the above
+as a normal target (as previous releases of ODE would have), use the <b>.NORMTARG</b>
+special source:
+<br><b><tt>&nbsp;&nbsp;&nbsp; .mytarg : .NORMTARG</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo ${.TARGET}</tt></b></ul>
+
+<li>
+<b>rules</b></li>
+
+<ul>
+<li>
+The lex and yacc rules have been rewritten somewhat to be more flexible,
+and bugs with Y_TAB_C and LEX_YY_C fixed.&nbsp; The main behavior change
+is that the output files (lex.yy.c and y.tab.c) are renamed to the filename
+of the user's choice (by default, the name of the object file target with
+a .c suffix) <i>before</i> compilation by the C/C++ compiler.&nbsp; See
+the <a href="ODECommonMakefiles.htm#LexRules">lex</a> and <a href="ODECommonMakefiles.htm#YaccRules">yacc</a>
+sections of the Common Makefiles doc for the full list of available variables.
+(build 10 and higher)</li>
+
+<li>
+If you have <b>OMIT_PACKAGING_RULES</b> defined, the default <b>TOSTAGE</b>
+setting will now be the same as if it was undefined, that is the <b><nobr>inst.images/${CONTEXT}/shipdata</nobr></b>
+directory of your sandbox.&nbsp; This matches the setting of <b>TOSTAGE</b>
+in the sample <b>Makeconf</b> of our bbexample and <b>confs.zip</b> archive.&nbsp;
+(build 9 and higher)</li>
+
+<li>
+The <b>javadoc_all</b> target will perform javadoc processing even if <b>BUILDJAVADOCS</b>
+isn't defined.&nbsp; Also, <b>JAVADOC_SUBDIRS</b> will no longer be traversed
+if <b>BUILDJAVADOCS</b> isn't defined.&nbsp; Lastly, javadoc processing
+will now occur when the <b>comp_all</b> target is used (before, only <b>build_all</b>
+and <b>javadoc_all</b> would perform javadoc processing).&nbsp; (all changes
+apply to build 9 and higher)</li>
+
+<li>
+The <b>FROMSTAGE</b> variable was removed from the rules.&nbsp; Use <b>ILIST</b>
+and <b>IDIR</b> instead.</li>
+</ul>
+
+<li>
+<b>machine name changes</b></li>
+
+<ul>
+<li>
+<b>sparc_solaris_2</b> will become <b>sparc_solaris_7</b>,
+<b>sparc_solaris_8</b>,
+or <b>sparc_solaris_9</b>, only on those versions of the operating system
+(<b>sparc_solaris_2</b> will still be used on Solaris 2.6).&nbsp; On Solaris
+7, 8, and 9, you would need to perform one of the following actions: (1)
+change your backing build(s) to use one or more of these new machine/context
+names, or (2) set <b>MACHINE</b> as an environment variable in your shell
+initialization file (e.g., <b>$HOME/.profile</b>) to the old name (<b>sparc_solaris_2</b>),
+or (3) add lines at the very top of your <b>Buildconf</b> file as follows:</li>
+
+<br><b><tt>&nbsp;&nbsp;&nbsp; on&nbsp; sparc_solaris_8 replace setenv MACHINE
+sparc_solaris_2</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp; for sparc_solaris_8 replace setenv CONTEXT
+sparc_solaris_2</tt></b>
+<br>If you choose to use solution #3, when running <b>mkbb</b> and
+<b>mksb</b>
+you may need to specify the old machine name with the <b>-m</b> flag (e.g.,
+<b>mksb
+-m sparc_solaris_2</b>).
+<br>If you choose to use solution #1, don't forget to add appropriate <b>on</b>
+and/or <b>for</b> lines in your <b>Buildconf</b>[<b>.exp</b>] files for
+the new machine names, as well as any makefiles or custom rules you have
+which do version-specific machine comparisons (e.g., <b><tt><nobr>.if ${MACHINE}=="sparc_solaris_2"</nobr></tt></b>,
+which would be written better as <b><tt><nobr>.if !empty(MACHINE:Msparc_solaris_*)</nobr></tt></b>).
+<li>
+<b>x86_solaris_2</b> will undergo the exact same changes as <b>sparc_solaris_2</b>,
+mentioned above (<b>x86_solaris_7</b>, etc. will be added).</li>
+
+<li>
+<b>x86_nt_4</b> will become <b>x86_nt_5</b> only on Windows 2000.&nbsp;
+Solutions are as mentioned for <b>sparc_solaris_2</b>, above (replacing
+<b>sparc_solaris_8</b>
+with <b>x86_nt_5</b> and <b>sparc_solaris_2</b> with <b>x86_nt_4</b>).</li>
+
+<li>
+<b>rios_aix_4</b> will become <b>rios_aix_5</b> only on AIX 5.&nbsp; Solutions
+are as mentioned for <b>sparc_solaris_2</b>, above (replacing <b>sparc_solaris_8</b>
+with <b>rios_aix_5</b> and <b>sparc_solaris_2</b> with <b>rios_aix_4</b>).</li>
+
+<li>
+<b>hp9000_ux_10</b> will become <b>hp9000_ux_11</b> only on HP-UX 11.&nbsp;
+Solutions are as mentioned for <b>sparc_solaris_2</b>, above (replacing
+<b>sparc_solaris_8</b>
+with <b>hp9000_ux_11</b> and <b>sparc_solaris_2</b> with <b>hp9000_ux_10</b>).</li>
+
+<li>
+<b>x86_sco_7</b> will become <b>x86_sco_5</b> only on SCO OpenServer 5.&nbsp;
+Solutions are as mentioned for <b>sparc_solaris_2</b>, above (replacing
+<b>sparc_solaris_8</b>
+with <b>x86_sco_5</b> and <b>sparc_solaris_2</b> with <b>x86_sco_7</b>).</li>
+</ul>
+
+<li>
+The variables <b>SOURCEDIR</b> and <b>SANDBOXDIR</b> were removed from
+our example <b>Buildconf</b>, <b>Buildconf.exp</b>, and <b>Makeconf</b>
+configuration files.&nbsp; They were never utilized in our rules and had
+no real purpose.</li>
+
+<li>
+The minimum supported release of MVS/USS is now V2R10.&nbsp; ODE3.0 may
+work on earlier releases, but only V2R10 and higher is officially supported.</li>
+
+<li>
+The Getting Started document was removed.&nbsp; The "Hints and Tips" section
+was moved to this document as Appendix B, and the rest of the information
+was made obsolete by the new Migration Guide.</li>
+
+<li>
+<b>Packaging</b></li>
+
+<ul>
+<li>
+A new makefile variable, RUN_SWREG, was added to control execution of the
+HP-UX packaging tool 'swreg'.&nbsp; Previously, 'swreg' ran for all HP-UX
+packages built via 'swpackage'.&nbsp; Now, the default value of RUN_SWREG
+is 'no', which tells the packaging tools to not run 'swreg'.&nbsp; With
+ODE3.0, RUN_SWREG must be 'yes' to invoke 'swreg' during the packaging
+process.</li>
+
+<li>
+The <b>configFiles</b> attribute was enhanced to be more powerful and provide
+more abstraction in the CMF.&nbsp; While the changes that were made ultimately
+make specifying the different installation control scripts across multiple
+platforms easier and more consistent, some changes to existing CMFs may
+be necessary.&nbsp; See the <a href="ODEPackagingReference.htm#configfile">ODE
+Packaging Reference
+</a>for details.</li>
+
+<li>
+The <b>requisites</b> attribute was enhanced to be more powerful and provide
+more abstraction in the CMF.&nbsp; While the changes that were made ultimately
+make specifying software requisites across multiple platforms easier and
+more consistent, some changes to existing CMFs may be necessary.&nbsp;
+See the <a href="ODEPackagingReference.htm#ReqInfo">ODE Packaging Reference
+</a>for
+details.</li>
+
+<li>
+Removed support for the <b>compver</b> RequisitesInfo stanza attribute.
+Any occurence of this attribute should be removed and replaced with a supersede
+("S") entry in the requisites attribute.</li>
+
+<li>
+Removed support for the <b>ancestor</b> EntityInfo stanza attribute. Any
+occurence of this attribute should be removed and replaced with a supersede
+("S") entry in the requisites attribute.</li>
+
+<li>
+Removed support for the <b>build390Release</b> ServiceInfo stanza attribute.
+Any occurence of this attribute should be removed.</li>
+
+<li>
+For platforms using the <b><tt><font size=+1>pkgmk</font></tt></b> packaging
+tool, the packaging control file, <b><tt>pcd.proto</tt></b>, has been renamed
+to be <b><tt>prototype</tt></b>.</li>
+</ul>
+</ul>
+
+<h2>
+<a NAME="Upgrading_2.5_2.4"></a><a href="#ToC_Upgrading_2.5_2.4">Upgrading
+to ODEi2.5 from ODEi2.4</a></h2>
+
+<ul>
+<li>
+<b>rules</b></li>
+
+<ul>
+<li>
+If using a version of <b>jikes</b> not included with ODEi2.5, the DEPEND_FILE_DIRS
+variable may need to be used.&nbsp; See the <a href="ODECommonMakefiles.htm#JavadepVars">Common
+Makefiles document</a>.</li>
+
+<li>
+The suffix transformation to create object files from yacc files had a
+side effect in which the <b>y.tab.h</b> file would be left behind (which
+could then be used) if the user put the appropriate flag in YFLAGS to create
+it (usually "-d"). This is no longer true. The header file, if created,
+will either be renamed to the target name (with a .h suffix), or deleted
+(if KEEP_ALL_YACC_FILES is undefined). The long term solution is to change
+the source code to include the output file name (with a .h suffix) instead
+of y.tab.h. A workaround is to add the following lines to the <b>${<i>PROJECT_NAME</i>}.rules.mk</b>
+file and define KEEP_ALL_YACC_FILES:</li>
+
+<dd>
+<tt>${YACC_SUFF}${OBJ_SUFF} : .POSTCMDS</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; ${CP} ${_CPFLAGS_} ${.TARGET:s/${OBJ_SUFF}$/.h/}
+y.tab.h</tt></dd>
+</ul>
+
+<li>
+<b>packaging</b></li>
+
+<ul>
+<li>
+Removed support for the <b>spaName</b> file stanza attribute. Any occurence
+of this attribute should be removed.</li>
+
+<li>
+Removed support for the <b>spaClass</b> file stanza attribute. Any occurence
+of this attribute should be removed.</li>
+
+<li>
+Removed support for the <b>spaVersion</b> ServiceInfo stanza attribute.
+Any occurence of this attribute should be removed.</li>
+
+<li>
+Removed support for the <b>spaRelease</b> ServiceInfo stanza attribute.
+Any occurence of this attribute should be removed.</li>
+
+<li>
+The <b>packageFlags</b> InstallStatesInfo stanza attribute was renamed
+to <b>adePackageFlags</b>.</li>
+
+<li>
+The <b>selection</b> InstallStatesInfo stanza attribute was deleted and
+replaced with two attributes:</li>
+
+<ul>
+<li>
+<b>adeInvFlags</b>, to denote flags for the <b>adeinv</b> packaging tool
+on AIX.</li>
+
+<li>
+<b>maxInst</b>, to denote the maximum number of packages instances, for
+a package created with <b>pkgmk</b>.</li>
+</ul>
+</ul>
+</ul>
+
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="Upgrading_2.4_2.3"></a><a href="#ToC_Upgrading_2.4_2.3">Upgrading
+to ODEi2.4 from ODEi2.3</a></h2>
+
+<ul>
+<li>
+<b>mk/build</b></li>
+
+<ul>
+<li>
+The remote building variable ODEMAKE_ROSTYPE no longer exists.&nbsp; Use
+ODEMAKE_RDCECMD_QUOTED instead.</li>
+</ul>
+
+<li>
+<b>rules</b></li>
+
+<ul>
+<li>
+The variable DEF_MDFLAGS is no longer referenced in the rules.&nbsp; The
+default <b>mkdep</b> flags are now stored in MDFLAGS.&nbsp; If the user
+appended additional flags to the default by using MDFLAGS in earlier releases,
+the effect in ODEi2.4 will be that the default flags will be overridden.&nbsp;
+In this situation, to continue to make use of the default flags, one may
+either use MDARGS or MDENV instead of MDFLAGS, or manually add the default
+flags that they want to their own setting of MDFLAGS.</li>
+
+<li>
+The variable DEF_RMFLAGS is no longer referenced in the rules.&nbsp; Use
+RMFLAGS instead.</li>
+</ul>
+
+<li>
+<b>flag changes due to removal of projects and sets</b></li>
+
+<ul>
+<li>
+<b>build</b> flag <b>-set</b> will no longer function. Any occurence of
+this flag should be removed.</li>
+
+<li>
+<b>currentsb</b> flags <b>-set</b> and <b>-setdir</b> will produce errors.
+Any occurence of these flags should be removed.</li>
+
+<li>
+<b>mkbb</b> flag <b>-set</b> will produce errors. Any occurence of this
+flag should be removed.</li>
+
+<li>
+<b>mksb</b> flag <b>-set</b> will produce errors. Any occurence of this
+flag should be removed.</li>
+
+<li>
+<b>sbinfo</b> flag <b>-set</b> will produce errors. Any occurence of this
+flag should be removed.</li>
+
+<li>
+<b>workon</b> flags <b>-list</b>, <b>-set</b>, <b>-setdir</b>, and <b>-undo</b>
+will produce errors. Any occurence of these flags should be removed.</li>
+</ul>
+
+<li>
+<b>converting from projects or sets usage</b></li>
+
+<ul>
+<li>
+The projects and sets form of source code control has been removed from
+ODEi2.4. A source control system which is independent of ODE should be
+used, such as CMVC, once the change to the new directory structure is accomplished.</li>
+
+<li>
+Moving files and directories:</li>
+
+<ul>
+<li>
+If a sandbox directory structure has more than one project or set in it,
+each project or set will have to be moved to its own sandbox structure.
+There is either a <b>sets</b> file or a <b>projects</b> file in the <b>rc_files</b>
+directory. It should be examined to understand how many sets or projects
+are in the sandbox.</li>
+
+<li>
+Generally if there is a default project, its line in the <b>projects</b>
+file will resemble:</li>
+
+<pre>. projectname</pre>
+If sets are used instead, the equivalent in the <b>sets</b> file would
+be
+<p><tt>default projectname</tt>
+<br><tt>set projectname .</tt>
+<p>The default project or set has its files directly under the <b>src</b>
+directory. These files can be left where they are. We are assuming that
+the sandbox will contain only this project or set after we are finished.
+The file <b>sb.conf</b> will be in the <b>rc_files/projectname</b> directory,
+and it should be moved to the <b>rc_files</b> directory. Then the <b>projectname</b>
+directory in <b>rc_files</b> may be removed.&nbsp; The <b>Buildconf</b>,
+<b>Buildconf.exp</b>,
+and <b>Buildconf.local</b> files will be in the <b>src/projectname</b>
+directory and should be moved to the
+<b>src</b> directory. Then the <b>projectname</b>
+directory can be removed from the
+<b>src</b> directory.
+<li>
+If there are other projects, their lines in the <b>projects</b> file will
+have the form:</li>
+
+<pre><tt>./projectdir projectname</tt></pre>
+The equivalent lines in the <b>sets</b> file would have the form:
+<p><tt>set projectname ./projectdir</tt>
+<p>The project or set has its files under the <b>src/projectdir</b> directory.&nbsp;
+These files should be moved to the <b>src</b> directory of a new sandbox.
+The <b>sb.conf</b> file for the <b>projectname</b> project or set will
+be in the <b>rc_files/projectname</b> directory, and it should be moved
+to the <b>rc_files</b> directory of the new sandbox.&nbsp; Then the <b>projectname</b>
+directory in <b>rc_files</b> may be removed. The <b>Buildconf</b>, <b>Buildconf.exp</b>,
+and <b>Buildconf.local</b> files will be in the <b>src/projectname</b>
+directory and should be moved to <b>src</b> directory of the new sandbox.&nbsp;
+Then the <b>projectname</b> directory can be removed from the <b>src</b>
+directory.</ul>
+
+<li>
+Files used to support the sets and projects features will be ignored by
+ODEi2.4, and may be removed.&nbsp; These files are the <b>sets</b> or <b>projects</b>
+files in the <b>rc_files</b> directory.</li>
+
+<li>
+The <b>sb.conf</b> file may need editing. You may remove the line that
+has the variable <b>ode_sc</b>. This line is ignored by ODEi2.4.</li>
+</ul>
+</ul>
+
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="Upgrading_2.3_2.2"></a><a href="#ToC_Upgrading_2.3_2.2">Upgrading
+to ODEi2.3 from ODEi2.2</a></h2>
+
+<ul>
+<li>
+<b>mk</b> flags <b>-r</b> and <b>-O</b> will produce errors.&nbsp; Any
+occurence of these flags should be removed.</li>
+
+<li>
+<b>rules</b></li>
+
+<ul>
+<li>
+Rename usages of the predefined variables: <b>.CURDIR </b>=> <b>CURDIR</b>
+and <b>.POUND</b> => <b>POUND</b>.&nbsp; It is also possible to provide
+the rename in the Makeconf file.</li>
+
+<li>
+Change usage of CONTEXT/MACHINE being <b>mvs390_oe_1 </b>to <b>mvs390_oe_2</b>.&nbsp;
+This can be done (if old ODE rules are to be used) by the following line
+in Buildconf:</li>
+
+<br>&nbsp;&nbsp;&nbsp; <tt>on mvs390_oe_2 replace setenv CONTEXT mvs390_oe_1</tt></ul>
+</ul>
+
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="Upgrading_2.2_2.1"></a><a href="#ToC_Upgrading_2.2_2.1">Upgrading
+to ODEi2.2 from ODEi2.1</a></h2>
+
+<ul>
+<li>
+No actions required</li>
+
+<li>
+If the -O flags were used for <b>mk</b> they will be ignored.</li>
+</ul>
+
+<h2>
+
+<hr WIDTH="100%"></h2>
+
+<h2>
+<a NAME="Upgrade_2.1_2.0.1"></a><a href="#ToC_Upgrading_2.1_2.0.1">Upgrading
+to ODEi2.1 from ODEi2.0.1 and ODEi2.0</a></h2>
+
+<ul>
+<li>
+Targets must exist on the left hand side of the dependency operator.&nbsp;
+For example:</li>
+
+<br>${var} :
+<br>Will now produce an error.&nbsp; This can be corrected by doing:
+<br>.if defined(var)
+<br>${var} :
+<br>.endif
+<li>
+Update Makefiles to remove unsupported syntax as described in the <a href="#Changes_2.1_2.0.1">Release
+Notes Section for ODEi2.1</a>.</li>
+</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="Upgrade_2.1_1.0"></a><a href="#ToC_Upgrading_2.1_1.0">Upgrading
+to ODEi2.1 from ODEi1.0</a></h2>
+
+<ul>
+<li>
+Put <b>machine_list</b> into <b>sb.conf</b>.&nbsp; You can leave <b>MACHINELIST</b>
+in <b>Buildconf</b> so you can still use ODEi1.0.</li>
+
+<li>
+Change machine names to ODE defaults, for example rios_aix_4, or change
+<b>Buildconf</b>
+to convert them for you, for example add the line:</li>
+
+<br>&nbsp; on rios_aix_4 replace setenv context rios_aix4
+<br>&nbsp; replace setenv CONTEXT ${context}
+<br><b>mkbb -upgrade</b> will upgrade the sb.conf file automatically for
+the backing build.
+<br>By using ODE default machine names you may have to change your rules
+files for conditionals like "rios_aix4".&nbsp; Since every project has
+a different version of a Buildconf file this fix is not guaranteed to work.&nbsp;
+You can always specify your target machine name by give the <b>-m</b> <b>&lt;machine_name></b>flag
+to the <b>build</b> and <b>workon</b> commands.
+<li>
+Upgrade sandboxes by issuing the command: <b>mksb -upgrade <i>&lt;other
+options></i></b></li>
+
+<li>
+Perform steps described in <a href="#Upgrade_2.1_2.0.1">Upgrading to ODEi2.1
+from ODEi2.0.1 and ODEi2.1</a>.</li>
+</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="Upgrade_2.1_OSFODE2.3"></a><a href="#ToC_Upgrading_2.1_OSFODE2.3">Upgrading
+to ODEi2.1 from OSF-ODE 2.3+</a></h2>
+
+<ul>
+<li>
+Change names of ODE commands these commands to be: make to mk, makepath
+to mkpath and md to mkdep.</li>
+
+<li>
+Perform steps described in <a href="#Upgrade_2.1_1.0">Upgrading to ODEi2.1
+from ODEi1.0</a></li>
+</ul>
+
+<hr WIDTH="100%">
+<h2>
+<a NAME="Upgrade_2.1_preOSFODE2.3"></a><a href="#ToC_Upgrading_2.1_preOSFODE2.3">Upgrading
+to ODEi2.1 from pre OSF-ODE 2.3</a></h2>
+
+<ul>
+<li>
+Convert local and shared files to Buildconf and Buildconf.exp files.&nbsp;
+This can be done with a script like this:</li>
+
+<br>#!/bin/sh
+<br>echo "Upgrading pre-OSF ODE2.3 backing build rc files to OSF ODE2.3
+or later"
+<br>if [ $# -eq 1 ]; then
+<br>&nbsp;&nbsp; _src=$1
+<br>&nbsp;&nbsp; _dst=$1
+<br>elif [ $# -eq 2 ]; then
+<br>&nbsp;&nbsp; _src=$1
+<br>&nbsp;&nbsp; _dst=$2
+<br>else
+<br>&nbsp;&nbsp; echo "USAGE:"
+<br>&nbsp;&nbsp; echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; upgrade &lt;backing
+build location> [destination]"
+<br>&nbsp;&nbsp; exit 1
+<br>fi
+<br>if [ ! -d $_src ]; then
+<br>&nbsp; echo "$_src is not a directory"
+<br>fi
+<br>_local=$_src/rc_files/local
+<br>_localtmpl=$_src/rc_files/local.tmpl
+<br>_shared=$_src/rc_files/shared
+<br>_sharedtmpl=$_src/rc_files/shared.tmpl
+<br>_sets=$1/rc_files/sets
+<br>if [ -f $_shared ]; then
+<br>&nbsp; echo "Converting $_shared to $_dst/src/Buildconf"
+<br>&nbsp; grep -v "../link/rc_files" $_shared | sed -e "s/^sandbox_base/#sandbox_base/"
+-e "s/^build_list/#build_list/" > $_dst/src/Buildconf
+<br>else
+<br>&nbsp; echo "$_shared does not exist: aborting..."
+<br>&nbsp; exit 1
+<br>fi
+<br>if [ -f $_sharedtmpl ]; then
+<br>&nbsp; echo "Converting $_sharedtmpl to $_dst/src/Buildconf.exp"
+<br>&nbsp; grep -v "../link/rc_files" $_sharedtmpl | sed -e "s/^replace
+sandbox_base/#replace sandbox_base/" > $_dst/src/Buildconf.exp
+<br>else
+<br>&nbsp; echo "$_sharedtmpl does not exist: aborting..."
+<br>&nbsp; exit 1
+<br>fi
+<br>echo "Creating $1/rc_files/sb.conf..."
+<br>if [ -f $_sets ]; then
+<br>&nbsp; echo "Source control is enabled"
+<br>&nbsp; echo "replace ode_sc true" > $_dst/rc_files/sb.conf
+<br>&nbsp; echo " " > $_dst/rc_files/sc.conf
+<br>else
+<br>&nbsp; echo "Source control is disabled"
+<br>&nbsp; echo "replace ode_sc false" > $_dst/rc_files/sb.conf
+<br>fi
+<br>echo "replace ode_build_env true" >> $_dst/rc_files/sb.conf
+<br>grep build_list $_shared >> $_dst/rc_files/sb.conf
+<br># *********************&nbsp;&nbsp; END SCRIPT ***********************
+<br>&nbsp;
+<li>
+Perform steps described in <a href="#Upgrade_2.1_OSFODE2.3">Upgrading to
+ODEi2.1 from OSF-ODE 2.3+</a></li>
+</ul>
+<a NAME="Bot_Of_Page"></a>
+</body>
+</html>

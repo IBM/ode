@@ -1,0 +1,4 @@
+LIBRARY exa
+EXPORTS
+	printmsg
+	printnl

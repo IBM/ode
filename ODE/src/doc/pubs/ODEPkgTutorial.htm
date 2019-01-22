@@ -1,0 +1,607 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Chad Holliday">
+   <meta name="GENERATOR" content="Mozilla/4.72 [en] (WinNT; U) [Netscape]">
+   <title>ODE Packaging Tutorial</title>
+</head>
+<body bgcolor="#FFFFFF">
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+ODE Packaging Tutorial</h1>
+Open Development Environment
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<center>
+<p>
+<hr SIZE=6></center>
+
+<h2>
+<a NAME="toc_contents"></a>Contents</h2>
+
+<ul>
+<h3>
+<a NAME="toc_whatispkg"></a><a href="#whatisodepkg">What is ODE Packaging</a></h3>
+
+<h3>
+<a NAME="toc_about"></a><a href="#about">About this Tutorial</a></h3>
+
+<h3>
+<a NAME="toc_setup"></a><a href="#setup">Setup</a></h3>
+
+<dl>
+<dl>
+<li>
+<a NAME="toc_installode"></a><a href="#installode">The Backing Build Example</a></li>
+
+<li>
+<a NAME="toc_setuppkg"></a><a href="#setuppkg">Setup for Packaging</a></li>
+</dl>
+
+<h3>
+<a NAME="toc_pkgbasics"></a><a href="#pkgbasics">Packaging Basics</a></h3>
+
+<dl>
+<li>
+<a NAME="toc_gather"></a><a href="#gather">Gathering the Built Files</a></li>
+
+<li>
+<a NAME="toc_parse"></a><a href="#parse">Parsing the CMF</a></li>
+
+<li>
+<a NAME="toc_runpkgtool"></a><a href="#runpkgtool">Creating the Package</a></li>
+
+<li>
+<a NAME="toc_installpkg"></a><a href="#installpkg">Installing the Package</a></li>
+</dl>
+</dl>
+
+<h3>
+<a NAME="toc_modpkg"></a><a href="#modifypkg">Modify a Package</a></h3>
+
+<dl>
+<dl>
+<li>
+<a NAME="toc_createfile"></a><a href="#createfile">Creating a New File</a></li>
+
+<li>
+<a NAME="toc_shiplist"></a><a href="#shiplist">Adding a File to the Ship
+List</a></li>
+
+<li>
+<a NAME="toc_editcmf"></a><a href="#editcmf">Adding a File to the CMF</a></li>
+
+<li>
+<a NAME="toc_odetargets"></a><a href="#odetargets">ODE Packaging Targets</a></li>
+</dl>
+</dl>
+</ul>
+
+<h2>
+
+<hr WIDTH="100%"><a NAME="whatisodepkg"></a><a href="#toc_whatispkg">What
+is ODE Packaging?</a></h2>
+Open Development Environment (ODE) is a product that lets you simultaneously,
+yet independently, create code for various releases of a program.&nbsp;
+This process works in conjunction with established releases controlled
+by the release administrator without interfering with the established releases.&nbsp;
+Developers can perform builds, create packages (installable images), and
+test the function of their code against established program levels called
+backing builds.&nbsp; Release administrators can use ODE to create new
+backing builds and ultimately, new releases of code for completely different
+hardware environments.
+<p>ODE uses its own <b>build</b> command to compile source code into object
+code and link the object modules to create an executable program. The ODE
+<b>build</b>
+command is based on the <b>mk</b> command and a control file called makefile.
+Makefile contains the variables and specifies the include statements needed
+for the build. Backing builds and sandboxes support this building model.
+ODE uses the build command as a front-end to the <b>mk</b> process. Any
+options not recognized by build are automatically passed on to the <b>mk</b>
+command.
+<p>Once a build is done, one or more ODE passes can be used to create a
+package. A package, also known as an installable image, is a platform-specific
+file or group of files that is used to install a product on a target system.&nbsp;
+Click <a href="ODEAdminsGuide.htm#Packaging">here</a> for a list of all
+platforms on which packaging is supported.&nbsp; The key element that drives
+the packaging process for platforms, other than Windows platforms, is the
+Common Metadata File (CMF). The CMF is a file which contains the packaging
+data description. The CMF contains the definition of the product(s) relative
+to the backing build directory structure, so the same CMF can be used in
+multiple builds with different directory locations without modification.
+During the build, however, the full path to the necessary control files
+and built objects is determined by prepending the backing build (or sandbox)
+path to the directories specified in the CMF.
+<p>The package action drives three ODE passes: collection of the shippable
+files into a common location, parsing the CMF into the control files used
+by the packaging tools, and creation of the package using the desired packaging
+tool.
+<p>Packages for Windows NT/95/98 are created using InstallShield 5.x (or
+higher) Professional. Since the product and the files are described using
+the InstallShield Professional integrated development environment, this
+data need not be captured in a CMF for the Windows NT/95/98 platforms.
+The CMF will be ignored if it is provided because of common source with
+other platforms.
+<p>The <a href="ODEAdminsGuide.htm">ODE Installation and Administration
+Guide</a> and the <a href="ODEPackagingReference.htm">ODE Packaging Reference</a>
+provide more product information that will be helpful when following the
+tutorial steps.&nbsp; You will find several links in the tutorial to these
+two guides.&nbsp; See the <a href="index.htm">ODE Documentation Index</a>
+for the complete set of ODE documentation.
+<br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="about"></a><a href="#toc_about">About this Tutorial</a></h2>
+The purpose of this tutorial is to take you through some of the steps necessary
+to use ODE Packaging.&nbsp; There is a Setup section, which reviews some
+basic concepts of ODE and details instructions on how to create the build
+environment for this tutorial.&nbsp; There is a Packaging Basics section
+which includes information on the basic packaging actions of parse, gather,
+and runpkgtool, and how to execute them to generate a package.&nbsp; Also,
+there is a section that provides information on how to add to an existing
+package by editing the CMF and modifying the shipping information for a
+product.
+<p>Some of the information in this tutorial is specific to a particular
+operating system. Operating systems included in this tutorial are...
+<dl>&nbsp;
+<table BORDER CELLPADDING=3 WIDTH="75%" >
+<tr>
+<td WIDTH="54%"><b><font size=+0>Operating Systems</font></b></td>
+
+<td WIDTH="22%"><a NAME="Machine Name"></a><b><font size=+0>Machine Name</font></b></td>
+</tr>
+
+<tr>
+<td WIDTH="54%"><img SRC="hpux.gif" ALT="HP-UX" BORDER=0 height=16 width=39></td>
+
+<td WIDTH="22%">hp9000_ux_10 hp9000_ux_11</td>
+</tr>
+
+<tr>
+<td WIDTH="54%"><img SRC="mvsuss.gif" ALT="MVS/USS" BORDER=0 height=16 width=56></td>
+
+<td WIDTH="22%">mvs390_oe_2</td>
+</tr>
+
+<tr>
+<td ROWSPAN="2" WIDTH="54%"><img SRC="windows.gif" ALT="Windows" height=16 width=58></td>
+
+<td WIDTH="22%">x86_nt_4</td>
+</tr>
+
+<tr>
+<td>x86_95_4</td>
+</tr>
+</table>
+
+<p>The above operating system labels are used throughout this document
+to identify platform-specific behaviors.&nbsp;<img SRC="windows.gif" ALT="Windows" height=16 width=58>
+refers to Windows 95/98/NT/2000 unless specified otherwise.&nbsp;<img SRC="unix.gif" ALT="UNIX" height=16 width=31>
+is used to represent all of the above operating systems <i>except</i> Windows
+95/98/NT/2000.</dl>
+<i><a href="#Machine Name">Machine name</a></i> is used as a variable in
+many places in this document. The appropriate machine name(s) from this
+list should be substituted for the variable.
+<p>See the <a href="ODEAdminsGuide.htm">ODE Installation and Administration
+Guide</a> for a complete list of which platforms and packaging tools are
+supported by ODE packaging, and more information on operating systems and
+current requirements.
+<br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="setup"></a><a href="#toc_setup">Setup</a></h2>
+This section includes information on how to set up the ODE backing build
+example for use in ODE packaging.
+<br>
+<hr WIDTH="100%">
+<h3>
+<a NAME="installode"></a><a href="#toc_installode">The Backing Build Example</a></h3>
+First, follow the first three steps in the <a href="ODETutorial.htm#Basics">Basics
+section of the main Tutorial</a> to ensure the backing build example installs,
+builds, and verifies properly.
+<br>
+<hr WIDTH="100%">
+<h3>
+<a NAME="setuppkg"></a><a href="#toc_setuppkg">Setup for Packaging</a></h3>
+A few additional steps must be taken to set up the environment for packaging.&nbsp;
+As discussed in the <a href="ODEAdminsGuide.htm">Installation and Administration
+Guide</a>, the ODE packaging tools jar file must be added to the CLASSPATH
+variable, for instance on Unix systems, enter the following:
+<p><tt>&nbsp; </tt><b>export CLASSPATH=/ode/classes/%release_name%_b<i>num</i>_tools.jar:$CLASSPATH</b>
+<p>where /ode/classes is the location of the tools jar file on your system,
+and <i>num</i> is the build number.
+<p><b>Note</b>:&nbsp;<img SRC="mvsuss.gif" ALT="MVS/USS" BORDER=0 height=16 width=56>
+Some additional steps must be made to configure the bbexample environment
+for packaging:
+<p>1.&nbsp; The CMF must be edited to reflect the ID that the MVS packaging
+jobs will be run on.&nbsp; To accomplish this, cd to the <b>src/cmf</b>
+directory of the bbexample, and edit the <b>bbex_cmf.c</b> file using your
+favorite editor.&nbsp; There are a few occurrences of an attribute called
+"applid", which currently have a value of "g1spa".&nbsp; This value must
+be changed to be the MVS/USS ID you are using.&nbsp; For example, <b>applid
+= '<i>username</i>'</b>;
+<p>2.&nbsp; After editing the bbex_cmf.c file, it is necessary to pre-process
+this file to reflect the changes in the CMF.&nbsp; To pre-process <b>bbex_cmf.c</b>
+to generate the CMF, execute the following from the <b>bbexample/src/cmf</b>
+directory:
+<br>&nbsp;&nbsp;&nbsp;<b>&nbsp;&nbsp;&nbsp;&nbsp; build -rc ../../.sandboxrc</b>
+<p>3.&nbsp; Also for MVS/USS packaging, it is necessary to create a dataset
+on the TSO side that is used by the MVS package-generation tool.&nbsp;
+This dataset, known as the "function control" dataset, can be allocated
+using the ISPF utility on the MVS system.&nbsp; Below are a sample set
+of values this dataset may have:
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Space Units:&nbsp; Cylinders</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Primary Quantity: 5</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Secondary Quantity: 5</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Directory Blocks: 5</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Record Format: FB</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Record Length: 80</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Block Size: 6160</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Data Set Name Type: PDS</b>
+<p>4.&nbsp; To facilitate the creation of packages on the TSO of an MVS
+system, ODE utilizes a few REXX scripts that drive certain packaging functions.&nbsp;
+These scripts must be installed per the instructions detailed in the <a href="ODEAdminsGuide.htm#MVSOE_INSTALL">Installation
+and Administration Guide</a>.&nbsp; Packaging on MVS/USS cannot run without
+them.
+<p>5.&nbsp; A local job card file, used to provide job submission information
+to MVS, must be present on the MVS system that packaging is to run on.&nbsp;
+Consult your MVS documentation for more information on the creation and
+use of job cards.
+<p>6.&nbsp; Lastly, after all of the previous steps have been completed,
+the set of MVS/USS Packaging variables needed to customize packaging for
+this environment can be edited.&nbsp; At the end of <b>Makeconf</b> file
+in the src directory, the following variables should be defined:
+<p><b>PKG_MVS_JOBCARD</b> - Full path name of the local MVS job card file.
+<br><b>PKG_MVS_USERID</b> - The MVS userid under which the packaging job
+should run.
+<br><b>PKG_MVS_PASSWORD</b> - The password for the MVS userid.
+<br><b>PKG_MVS_EXEC_DATASET</b> - The dataset name where the REXX scripts
+were installed on the MVS host.
+<br><b>PKG_MVS_TERSE_CLIST_DATASET</b> - The dataset name where the terse
+CLIST can be found on the MVS host.
+<br><b>PKG_MVS_RTG_LOADLIB</b> - The dataset name where the RTG executables
+can be found on the MVS host.
+<br><b>PKG_MVS_JOBMONITOR_TIME</b> - Number of minutes to wait before querying
+job output on the MVS host.
+<br><b>PKG_MVS_FUNCCNTL_DATASET</b> - The dataset name of the "function
+control" dataset allocated in step 3 above.
+<br><b>PKG_MVS_VSAM_VOLUME_INFO</b> - The volume on which a VSAM dataset
+for RTG processing should be allocated.
+<p>For more information on these and other MVS/USS packaging issues, consult
+the <a href="ODEPackagingReference.htm">ODE Packaging Reference</a>.
+<br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="pkgbasics"></a><a href="#toc_pkgbasics">Packaging Basics</a></h2>
+This section includes information on the basic ODE packaging tasks used
+for Initial Product Packaging (IPP), which include gather, parse, and runpkgtool
+in that order for all platforms except MVS/USS. This section also states
+how to invoke them using the built-in ODE makefile rules.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">During MVS/USS IPP, the ODE packaging task order is <b>parse</b>,
+<b>gather</b>, and <b>runpkgtool</b>.&nbsp; Therefore, the command sequence
+on MVS/USS should be:
+<blockquote><b>build -rc ../.sandboxrc parse_all&nbsp;</b></blockquote>
+
+<blockquote><b>build -rc ../.sandboxrc gather_all</b></blockquote>
+
+<blockquote><b>build -rc ../.sandboxrc runpkgtool_all</b></blockquote>
+</td>
+</tr>
+</table>
+
+<p>
+<hr WIDTH="100%">
+<h3>
+<a NAME="gather"></a><a href="#toc_gather">Gathering the built files</a></h3>
+Once all of the files have been built, it is usually desirable to copy,
+or "gather" all of the files to be shipped in a product to a common location,
+known as a ship tree.&nbsp; ODE provides built-in rules and targets to
+facilitate this.&nbsp; Each makefile specifies what files should be shipped,
+and to what location, and the target "gather_all" can be built to execute
+the gather.&nbsp; From the root of the source directory, execute the following:
+<blockquote><b>build -rc ../.sandboxrc gather_all</b></blockquote>
+Each file that has been defined as a "shippable" file is copied its corresponding
+ship tree location, which for the bbexample exists under the <b>inst.images<i><a href="#Machine Name">/machine_name</a></i>/shipdata</b>
+directory.
+<p><b>Note</b>:&nbsp;<img SRC="mvsuss.gif" ALT="MVS/USS" BORDER=0 height=16 width=56>
+There is an additional step that is performed as part of the gather action.&nbsp;
+In addition to copying files to their respective ship trees on the USS
+side, each shippable file is also uploaded to a dataset on the TSO side
+of the MVS system, since the package creation actually takes place on the
+TSO side. This step of copying files to the TSO side is known as the <b>installmvs_all</b>
+action. This is also accomplished by building the <b>gather_all</b> target
+on MVS/USS, so no additional user steps need to be executed to run the
+<b>installmvs_all</b> target.
+<br>
+<hr WIDTH="100%">
+<h3>
+<a NAME="parse"></a><a href="#toc_parse">Parsing the CMF</a></h3>
+The Common Metadata File, or CMF, is the file that contains all of the
+information, or metadata, required to generate the installable image for
+the product.&nbsp; This file can be used on all platforms, and is "parsed"
+into the platform-specific control files that are used by each platform's
+package creation tool.
+<p><img SRC="unix.gif" ALT="UNIX" height=16 width=31>In this example, we
+will be working with the CMF located at <b>obj/<i><a href="#Machine Name">machine_name</a></i>/cmf/bbex_cmf.pp</b>.&nbsp;
+This file was generated during the build of the bbexample by pre-processing
+a C file located at <b>src/cmf/bbex_cmf.c</b>.&nbsp; Although the CMF itself
+is platform-independent, it is usually desirable to have different contents
+in the CMF based on the platform the product is being packaged for, which
+is generally what is accomplished by pre-processing a C file to generate
+a CMF.
+<p><b>Note: </b>There are several compilers on various platforms that do
+not correctly pre-process the bbex_cmf.c file. For example the pre-processor
+for&nbsp;<img SRC="hpux.gif" ALT="HP-UX" BORDER=0 height=16 width=39>'s
+native C++ compiler (aCC) has a limitation where it removes the quotes
+between the entities. For example, if ENTITY1 = "odehellobin" and ENTITY2
+= "odehellodoc", then immChildEntities = [ENTITY1 ENTITY2] is declared,
+the pre-processor will generate output as ["odehellobinodehellodoc"], not
+["odehellobin" "odehellodoc"].&nbsp; This may cause problems during the
+parse pass of ODE packaging.&nbsp; If pre-processing problems arise with
+the compiler you have chosen, choose another compiler or pre-processor
+and rebuild the
+<b>src/cmf</b> directory of the bbexample.
+<p>To parse the CMF, the <b>parse_all</b> target must be built, which will
+"parse" the CMF into the platform-specific control files.&nbsp; From the
+root of the source directory, execute the following:
+<blockquote><b>build -rc ../.sandboxrc parse_all</b></blockquote>
+If you receive an error message that says the class "ParserGeneratorInitiator"
+cannot be found, ensure that the ODE packaging tools jar file is in your
+CLASSPATH environment variable (see <a href="#setuppkg">Setup for Packaging</a>).&nbsp;
+To verify that control files were created successfully, view the contents
+of the<b> inst.images/<i><a href="#Machine Name">machine_name</a></i>/mdata</b>
+directory.&nbsp; There should be one or more text files in this directory
+that are the packaging "control" files, and will be used by the platform's
+package-creation tool.
+<p><b>Note</b>:&nbsp;<img SRC="windows.gif" ALT="Windows" height=16 width=58>As
+mentioned previously, packages are created using InstallShield, which does
+not provide the means to generate the package outside of the InstallShield
+integrated development environment.&nbsp; Therefore, the CMF is not used,
+and the parse pass of ODE does nothing.
+<p>For more information on the CMF, see the <a href="ODEPackagingReference.htm">ODE
+Packaging Reference</a>.
+<br>
+<hr WIDTH="100%">
+<h3>
+<a NAME="runpkgtool"></a><a href="#toc_runpkgtool">Creating the Package</a></h3>
+The last step in ODE packaging is the actual creation of the platform-specific
+installable image.&nbsp; This is accomplished by the ODE target, <b>runpkgtool_all</b>,
+which uses the shippable files copied during <b>gather_all</b>, the information
+in the control files generated during <b>parse_all</b>, and calls the platform's
+package-creation tool to generate the package.
+<p><img SRC="windows.gif" ALT="Windows" height=16 width=58> Since the InstallShield
+control data cannot be generated via the <b>parse_all</b> target, the bbexample
+comes with a ready-to-use InstallShield project that contains the necessary
+information.&nbsp; Ensure that the "odehello.zip" InstallShield file has
+been unzipped in the <b>inst.images/x86_nt_4/mdata </b>directory of the
+bbexample.
+<p>To generate the package image, from the root of the source directory,
+execute the following:
+<blockquote><b>build -rc ../.sandboxrc runpkgtool_all</b></blockquote>
+The platform-specific image will be generated in the<b> inst.images/<a href="#Machine Name">machine_name</a>/images</b>
+directory.&nbsp; The format of this image will vary from platform to platform,
+but in each case, the system's install tool should be able to successfully
+install the "odehello" package that was created.
+<p>A single platform-specific installable image can be created by defining
+<b>PKG_GEN_DIST_FILE</b>,
+<b>INSTALL_IMAGE_FILE</b>,
+<b>INSTALL_IMAGE_NAME</b>.
+These variables are defined in the Makeconf of the bbexample for all platforms
+except Windows.
+<p>On non-MVS/USS platforms, extra flags can be passed to the package creation
+tool on each platform by specifying <b>PKG_TOOL_FLAGS</b> to the desired
+flags. These flags are not checked for validity or format for the specific
+packaging tool by ODE. Hence, it is the responsibility of the user to take
+care of these issues.
+<p><b>Note</b>:&nbsp;<img SRC="windows.gif" ALT="Windows" height=16 width=58>
+If PKG_GEN_DIST_FILE is defined, <a href="http://www.installshield.com/pftw/">PackageForTheWeb</a>
+needs to be installed on the system and the variables <b>PKG_ISPE_PFW_FILE</b>,
+<b>INSTALL_IMAGE_NAME</b>,
+<b>INSTALL_IMAGE_FILE</b>
+need to be defined. This also needs PackageForTheWeb to be configured to
+create the installable image where the user has write access. For more
+information on how to use PackageForTheWeb, see <a href="ODEPackagingReference.htm#Header_ISPFW">ODE
+Packaging Reference</a>.
+<p><b>Note</b>:&nbsp;<img SRC="hpux.gif" ALT="HP-UX" BORDER=0 height=16 width=39>
+The package-creation tool will create files owned by the root user ID.&nbsp;
+It may be necessary to respecify the <b>PKG_OUTPUT_DIR</b> variable to
+a location where root has write access.&nbsp; The images files will then
+be created in that directory.&nbsp; For example:
+<blockquote><b>build -rc ../.sandboxrc PKG_OUTPUT_DIR="/tmp/pkgdir" runpkgtool_all</b></blockquote>
+<b>Note</b>:&nbsp;<img SRC="mvsuss.gif" ALT="MVS/USS" BORDER=0 height=16 width=56>
+The package is not created in the inst.images/mvs390_oe_2/images directory,
+since it is actually generated on the TSO side.&nbsp; To verify that the
+package components exist, the following datasets, which are the actual
+installable components of the package, should exist on the TSO side of
+the MVS system where the packaging job was run:
+<p>&nbsp;&nbsp;&nbsp;<b>&nbsp;&nbsp;&nbsp;&nbsp; <i>username</i>.HBPS112.SMPMCS</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>username</i>.HBPS112.F1</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>username</i>.JBPS112.SMPMCS</b>
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>username</i>.JBPS112.F1</b>
+<br>
+<hr WIDTH="100%">
+<h3>
+<a NAME="installpkg"></a><a href="#toc_installpkg">Installing the Package</a></h3>
+To verify the package was generated correctly, it is useful to install
+the package using the platform's install tool (see <a href="ODEAdminsGuide.htm#Packaging">packaging
+platform table</a>).&nbsp;&nbsp; To successfully install the package, it
+may be necessary to have root access on the machine you wish to install
+the package on.&nbsp; The details on how to run the installation tools
+on each platform can usually be found on that system's help or man pages,
+and are not discussed in this tutorial.&nbsp; However, the end result of
+the installation should be that the "odehello" package is installed, and
+it contains the shippable files built in the bbexample.
+<p><b>Note:</b> Some requisite information has been included in the bbexample
+package to provide an example of how to specify system requisite information
+on various platforms.&nbsp; However, there are not actually any requisite
+software packages for installing and running the bbexample.&nbsp; Any errors
+or warnings from installation tools regarding requisite information for
+the bbexample package can be ignored.&nbsp; However, in general, other
+packages can and do contain requisite information, and messages from the
+installation regarding them should not be ignored.
+<br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="modifypkg"></a><a href="#toc_modpkg">Modify a Package</a></h2>
+This section includes information on how to modify an existing ODE package,
+including adding a file, updating the CMF and ship list, and how to execute
+some of the additional ODE packaging targets.
+<br>
+<hr WIDTH="100%">
+<h3>
+<a NAME="createfile"></a><a href="#toc_createfile">Creating a New File</a></h3>
+Since the objective of this section is to modify the existing "odehello"
+package by adding a new file, we must first create a new file.&nbsp; For
+this example, a simple text file can be created in the src/doc directory
+called<b> testpkg.txt </b>and containing some text such as:
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Test file for ODE Packaging</b>
+<p>
+<hr WIDTH="100%">
+<h3>
+<a NAME="shiplist"></a><a href="#toc_shiplist">Adding a File to the Ship
+List</a></h3>
+Now that a new file has been generated, instructions must now be provided
+on where to ship, or copy the file for inclusion in the product package.&nbsp;
+To facilitate the "gather" pass of ODE, the makefile variables <b>ILIST</b>
+and <b>IDIR</b> are used.&nbsp; <b>ILIST</b> is a list of all targets in
+the current directory to be installed, or "shipped", while <b>IDIR</b>
+is their relative location from the top-level ship directory.&nbsp; The
+top-level ship tree location is defined by the variable <b>TOSTAGE</b>.
+<p>In the bbexample, we must ensure that our new file <b>testpkg.txt</b>
+is listed by the ship list variable in <b>ILIST</b>.&nbsp; Currently, in
+the src/doc/makefile, the <b>ILIST</b> variables contains two entries.&nbsp;
+To add our new file as a shippable file, change the line
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> ILIST = bps0cntl.htm
+bpsov.gif</b>
+<br>to
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ILIST = bps0cntl.htm
+bpsov.gif testpkg.txt</b>
+<p>This signifies to ODE to include <b>testpkg.txt</b> as a shippable file
+in the product, and it will be copied to the location specified by <b>TOSTAGE/IDIR</b>
+during the ODE gather pass.
+<p>In the bbexample in this tutorial, the <b>TOSTAGE </b>variable, or top-level
+ship tree is defined in the Makeconf file to be <b>inst.images/machine_name/shipdata</b>.&nbsp;
+In the local src/doc/makefile, the <b>IDIR</b> variable is defined to be
+a directory representing the location of the file on the target installation
+machine.&nbsp; For example on AIX, the <b>gather_all</b> pass of ODE will
+result in the shippable files in the current directory to be copied to
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>bbexample/inst.images/rios_aix_4/shipdata/usr/odehello/html</b>
+<p>So by executing the gather pass in this directory, the new file <b>testpkg.txt</b>
+will be copied to the ship tree for use in the final package.
+<br>
+<hr WIDTH="100%">
+<h3>
+<a NAME="editcmf"></a><a href="#toc_editcmf">Adding a File Stanza to the
+CMF</a></h3>
+In addition to making the necessary changes to the ship list and ship location,
+the CMF must also be modified to reflect the presence of the new file.&nbsp;
+This is accomplished by adding a File Stanza to the CMF.&nbsp; As mentioned
+previously, the CMF originates from a C file, so the changes that will
+be made for the new file <b>testpkg.txt</b> will be made in the file <b>src/cmf/bbex_cmf.c</b>.
+<p>Edit the file <b>src/cmf/bbex_cmf.c</b>, and add the following file
+stanza at the end of the file
+<blockquote><tt>// Representing file /usr/lpp/odehello/html/testpkg.txt</tt>
+<br><tt>file {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>#ifdef mvs390_oe_2</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'hfs';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "testpkg";</tt>
+<br><tt>#else</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= FTYPE ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "testpkg.txt" ;</tt>
+<br><tt>#endif</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= HTMLSRC ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= HTMLTGT ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "testpkg.txt" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; permissions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= MODE;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= USERID;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= GROUPID;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; comp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'vse01';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shipType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= [ 'ipp' ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; partInfo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= [ ("text") ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</tt></blockquote>
+This file stanza uses the existing macros and directives in the C file
+to properly define all of the attributes for the new file in the package.
+In addition to the new file stanza, a few other changes must be made in
+the C file to generate the new CMF, namely the conditional settings of
+the <b>immChildFiles</b> for the second InstallEntity of the CMF.&nbsp;
+The new <b>immChildFiles</b> entry must now contain a listing for <b>testpkg.txt</b>,
+in addition to the existing listings for <b>bps0cntl.htm</b> and <b>bpsov.gif</b>.
+<p>After the C file has been updated, it must now be recompiled, which
+will generate a new CMF via the C preprocessor.
+<blockquote><b>cd cmf</b>
+<br><b>build -rc ../../.sandboxrc</b></blockquote>
+See the <a href="ODEPackagingReference.htm">ODE Packaging Reference</a>
+for more information on the CMF and its stanzas and attributes.
+<br>
+<hr WIDTH="100%">
+<h3>
+<a NAME="odetargets"></a><a href="#toc_odetargets">ODE Packaging Targets</a></h3>
+In order to test the changes to our product, the ODE packaging passes parse,
+gather, and runpkgtool must be executed to generate a new installable image
+that contains the new file.&nbsp; As an alternative, the package_all target
+can be executed, which will in turn run all three packaging targets in
+succession, and will generate the new package.&nbsp; Therefore, from the
+<b>bbexample/src</b>
+directory, execute the following:
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>build -rc ../.sandboxrc
+package_all</b>
+<p>Optionally, if the desire was to both build and package the entire product,
+the target "buildandpackage_all" could be run, which would execute both
+the build_all and package_all targets in succession.
+<p>To validate the package creation was successful, the following can be
+checked:
+<ul>
+<li>
+<img SRC="unix.gif" ALT="UNIX" height=16 width=31>to validate the parse
+pass was correct, a reference to the new <b>testpkg.txt </b>file should
+exist in one of the control files in <b>inst.images/machine_name/mdata</b>
+directory</li>
+
+<li>
+to validate the gather pass was correct, the file<b> testpkg.txt</b> should
+exist in the <b>inst.images/machine_name/shipdata/<i>platform_idir</i>/html</b>
+directory, where <i>platform_idir</i> is<b> /opt</b>, <b>/usr</b>, or <b>/usr/lpp</b>
+depending on the operating system</li>
+
+<li>
+<img SRC="mvsuss.gif" ALT="MVS/USS" BORDER=0 height=16 width=56> the additional
+step performed by gather (installmvs_all) should be verified, by ensuring
+the
+<b>testpkg</b> exists in the dataset <b><i>username</i>.JBPS112.ABPSHTML.</b></li>
+
+<li>
+to validate the runpkgtool pass was correct, a new image should have been
+created in the<b> inst.images/machine_name/images</b> directory.&nbsp;
+For further validation, the image itself can be installed on a target system,
+and the file <b>testpkg.txt</b> should exist in the "odehello" product's
+html directory.</li>
+
+<li>
+<img SRC="mvsuss.gif" ALT="MVS/USS" BORDER=0 height=16 width=56> recall
+that the installable images will be datasets on the TSO side, and should
+be verified accordingly.</li>
+</ul>
+
+</body>
+</html>

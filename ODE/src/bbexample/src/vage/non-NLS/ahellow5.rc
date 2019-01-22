@@ -1,0 +1,112 @@
+//********************************************************************
+// This file was produced using Visual Age C++ IRCC
+//
+//
+//
+//  This file was read from ahellow5.rcx  (OS/2 .rc file)  and converted to 
+//    Windows .rc file.
+//********************************************************************
+#ifdef  IC_WIN
+#include <windows.h>
+#endif  
+#ifdef  IC_PM
+#include <os2.h>
+#endif  
+#ifdef  WORKSHOP_INVOKED
+#include <windows.h>
+#endif  
+#include "ahellow5.h"
+WND_MAIN          ICON       ahellow5.ico
+
+STRINGTABLE
+  BEGIN
+    STR_HELLO                     ,    "Hello, World!!!"
+    WND_MAIN                      ,    "Hello World Sample - Version 5"
+    WND_TEXTDIALOG                ,    "Hello World Edit Dialog"
+    STR_INFO                      ,    "Use Alt-F4 to Close Window"
+    MI_EDIT                       ,    "Edit Menu"
+    MI_ALIGNMENT                  ,    "Alignment Menu"
+    MI_CENTER                     ,    "Set Center Alignment"
+    MI_LEFT                       ,    "Set Left Alignment"
+    MI_RIGHT                      ,    "Set Right Alignment"
+    MI_TEXT                       ,    "Display Edit Dialog"
+    MI_HELP                       ,    "Help for Selected Item"
+    SC_HELPEXTENDED               ,    "Display General Help"
+    SC_HELPKEYS                   ,    "Display Keys Help"
+    SC_HELPINDEX                  ,    "Display Help Index"
+    STR_INFODLG                   ,    "Modal Edit Text Dialog Active"
+    STR_CENTER                    ,    "Center Alignment"
+    STR_LEFT                      ,    "Left Alignment"
+    STR_RIGHT                     ,    "Right Alignment"
+    STR_LEFTB                     ,    "Left"
+    STR_CENTERB                   ,    "Center"
+    STR_RIGHTB                    ,    "Right"
+    STR_HELPB                     ,    "Help"
+    STR_HTITLE                    ,    "C++ Hello World - Help Window"
+    STR_HELP_NOT_FOUND            ,    "Help file not found. Help is not available."
+    DID_OK                        ,    "OK"
+    DID_CANCEL                    ,    "Cancel"
+    DID_STATIC                    ,    "Edit Text:"
+    DID_ENTRY                     ,    ""
+    HI_WORLD                      ,    "Hello, World!"
+    HI_WORLD+1                    ,    "Hi, World!"
+    HI_WORLD+2                    ,    "Howdy, World!"
+    HI_WORLD+3                    ,    "Alo, Mundo!"
+    HI_WORLD+4                    ,    "Ola, Mondo!"
+    HI_WORLD+5                    ,    "Hallo wereld!"
+    HI_WORLD+6                    ,    "Hallo Welt!"
+    HI_WORLD+7                    ,    "Bonjour le monde!"
+    HI_WORLD+8                    ,    "Put your language here!"
+  END
+
+WND_MAIN  MENUEX  
+  BEGIN
+    POPUP     "&Edit"                    ,  MI_EDIT
+      BEGIN
+        POPUP     "&Alignment"               ,  MI_ALIGNMENT
+          BEGIN
+            MENUITEM  "&Left\tF7"                ,  MI_LEFT
+            MENUITEM  "&Center\tF8"              ,  MI_CENTER
+            MENUITEM  "&Right\tF9"               ,  MI_RIGHT
+          END
+        MENUITEM  "&Text..."                 ,  MI_TEXT
+      END
+    POPUP     "&Help"                   ,  MI_HELP  ,  RIGHTJUSTIFY
+      BEGIN
+        MENUITEM  "&General help..."        ,  SC_HELPEXTENDED  /*MIS_SYSCOMMAND*/
+        MENUITEM  "&Keys help..."           ,  SC_HELPKEYS  /*MIS_SYSCOMMAND*/
+        MENUITEM  "Help &index..."          ,  SC_HELPINDEX  /*MIS_SYSCOMMAND*/
+      END
+  END
+
+WND_MAIN  ACCELERATORS
+  BEGIN
+    VK_F7       ,    MI_LEFT                       ,  VIRTKEY
+    VK_F8       ,    MI_CENTER                     ,  VIRTKEY
+    VK_F9       ,    MI_RIGHT                      ,  VIRTKEY
+  END
+
+HELP_TABLE      HELPTABLE
+  BEGIN
+    WND_MAIN             , SUBTABLE_MAIN        , 100                 
+    WND_TEXTDIALOG       , SUBTABLE_DIALOG      , 200                 
+  END
+
+SUBTABLE_MAIN     HELPSUBTABLE
+  BEGIN
+    WND_HELLO            , 100                 
+    WND_LISTBOX          , 102                 
+    MI_EDIT              , 110                 
+    MI_ALIGNMENT         , 111                 
+    MI_LEFT              , 112                 
+    MI_CENTER            , 113                 
+    MI_RIGHT             , 114                 
+    MI_TEXT              , 199                 
+  END
+
+SUBTABLE_DIALOG     HELPSUBTABLE
+  BEGIN
+    DID_ENTRY            , 201                 
+    DID_OK               , 202                 
+    DID_CANCEL           , 203                 
+  END

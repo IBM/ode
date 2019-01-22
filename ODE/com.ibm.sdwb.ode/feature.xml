@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.ibm.sdwb.ode"
+      label="ODE for RAD"
+      version="5.3.0.3"
+      provider-name="IBM">
+   <install-handler/>
+
+   <description url="[Enter Feature URL here.]">
+      Allows developers to build and generate makefiles with ODE for
+Java and C/C++ projects.
+   </description>
+
+   <copyright url="[Enter Copyright URL here.]">
+      For IBM Internal Use Only
+(c) Copyright IBM Corporation 1996, 2003
+Software Developers&apos; Workbench 5.0
+   </copyright>
+
+   <license url="[Enter License URL here.]">
+      For IBM Internal Use Only
+(c) Copyright IBM Corporation 1996, 2003
+Software Developers&apos; Workbench 5.0
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.cdt.core"/>
+   </requires>
+
+   <plugin
+         id="com.ibm.sdwb.ode.core"
+         download-size="0"
+         install-size="0"
+         version="5.3.0.3"/>
+
+   <plugin
+         id="com.ibm.sdwb.ode.help"
+         download-size="0"
+         install-size="0"
+         version="5.3.0.3"/>
+
+</feature>

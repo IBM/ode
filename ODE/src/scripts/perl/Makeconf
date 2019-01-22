@@ -1,0 +1,7 @@
+# This Makeconf is intentionally left blank except for this notification
+# that this Makeconf file is intentionally left blank, and an explanation
+# of why a blank Makeconf file was needed.
+# 
+# mk now searches for Makeconf toward the root of the directory tree, if
+# mk does not find it any other way.  When the perl test scripts are run,
+# some tests are messed up if the real ODE Makeconf is found.

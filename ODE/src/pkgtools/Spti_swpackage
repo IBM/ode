@@ -1,0 +1,35 @@
+#!/bin/ksh
+#
+# This is a front-end to HP's swpackage tool
+#
+# Arguments: 
+#       $1: Package Control Directory (absolute path)
+#       $2: Location of the depot (absolute path)
+#       $3: Path to swpackage
+#       $4: Any other flags to be used by swpackage
+
+_status=1
+echo ------------------------------------------------------------------
+echo Package Control Directory: $1
+echo Location of Depot        : $2
+echo Path to swpackage        : $3
+if [[ -n "$4" ]]; then
+echo Package Flag             : $4
+fi
+echo ------------------------------------------------------------------
+echo Packaging the Depot...
+echo ${3} -vv -s $1/pcd.psf $4 @ $2 
+${3} -vv -s $1/pcd.psf $4 @ $2 
+_status=$?
+
+if [[ $_status -eq 0 ]]; then
+  if [ "$RUN_SWREG" = "yes" ] ; then
+     echo Registering the Depot...
+     echo swreg -l depot -v @ $2
+     swreg -l depot -v @ $2
+  fi
+  _status=$?
+fi
+
+exit $_status
+# End of Script

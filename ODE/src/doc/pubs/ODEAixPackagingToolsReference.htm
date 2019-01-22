@@ -1,0 +1,1435 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="updated" content="Tue, 17 Mar 1998 12:05:56">
+   <meta http-equiv="review" content="Wed, 17 Mar 1999 12:05:56">
+   <meta http-equiv="expires" content="Fri, 17 Mar 2000 12:05:56">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (WinNT; U) [Netscape]">
+   <meta name="Author" content="Steve Speicher">
+   <title>ODE Packaging Reference</title>
+</head>
+<body bgcolor="#FFFFFF">
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+AIX Packaging Tools Reference</h1>
+Open Development Environment
+<br>Packaging Reference
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<br>
+<hr>
+<h2>
+Table of Contents</h2>
+<a NAME="ToC_AboutDoc"></a><a href="#AboutDoc">About this Document</a>
+<p><a NAME="ToC_AIXTools"></a><a href="#AIXTools">AIX Packaging Tools</a>
+<menu>
+<li>
+<a NAME="ToC_Examples"></a><a href="#Examples">Examples</a></li>
+
+<li>
+<a NAME="ToC_Parameters"></a><a href="#Parameters">Parameters</a></li>
+</menu>
+<a NAME="ToC_PkgDefSyntax"></a><a href="#PkgDefSyntax">Package Definition
+Syntax</a>
+<menu>
+<li>
+<a NAME="ToC_Files"></a><a href="#Files">Files</a></li>
+
+<li>
+<a NAME="ToC_PrimarySyntax"></a><a href="#PRIMARY_SYNTAX">Primary Syntax</a></li>
+
+<li>
+<a NAME="ToC_ShipfileSyntax"></a><a href="#ShipfileSyntax">Shipfile Syntax</a></li>
+</menu>
+<a NAME="ToC_DebuggingInformation"></a><a href="#DebuggingInformation">Debugging
+Information</a>
+<menu>
+<li>
+<a NAME="ToC_CommonDebugPatterns"></a><a href="#CommonDebugPatterns">Common
+Debug Patterns</a></li>
+
+<li>
+<a NAME="ToC_ReturnCodes"></a><a href="#ReturnCodes">Return Codes</a></li>
+</menu>
+<a NAME="ToC_PackageDefRS"></a><a href="#PackageDefRS">Package Definition
+Rules</a>
+<menu>
+<li>
+<a NAME="ToC_DirectoryStructureConsiderations"></a><a href="#DirectoryStructureConsiderations">Directory
+Structure Considerations</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_AllInOneDirectoryStructure"></a><a href="#AllInOneStructure">The
+All In One Directory Structure</a></li>
+
+<li>
+<a NAME="ToC_SeperateObjectStructure"></a><a href="#SeperateObjectStructure">The
+Separate Object Structure</a></li>
+
+<li>
+<a NAME="ToC_SeperatePackagingStructure"></a><a href="#SeperatePackagingStructure">The
+Separate Packaging Structure</a></li>
+
+<li>
+<a NAME="ToC_ShipTreeStructure"></a><a href="#TheShipTreeStructure">The
+Ship Tree Structure</a></li>
+</menu>
+</menu>
+<a NAME="ToC_LocatingInputFiles"></a><a href="#LocatingInputFiles">Locating
+Input Files</a>
+<menu>
+<li>
+<a NAME="ToC_LocatingShipFiles"></a><a href="#LocatingShipFiles">Locating
+Ship Files</a></li>
+
+<li>
+<a NAME="ToC_LocatingPackagingSourceFiles"></a><a href="#LocatingPkgSourceFiles">Locating
+Packaging Source Files</a></li>
+</menu>
+<a NAME="ToC_PackagingObjectTypes"></a><a href="#PackagingObjectTypes">Packaging
+Object Types</a>
+<menu>
+<li>
+<a NAME="ToC_ProductObject"></a><a href="#ProductObject">PRODUCT object</a></li>
+
+<li>
+<a NAME="ToC_FilesetObject"></a><a href="#FilesetObject">FILESET object</a></li>
+
+<li>
+<a NAME="ToC_ShipfileObject"></a><a href="#ShipfileObject">SHIPFILE object</a></li>
+</menu>
+<a NAME="ToC_AppendixA"></a><a href="#AppendixA">Appendix A</a>
+<menu>
+<li>
+<a NAME="ToC_RelatedInformation"></a><a href="#RelatedInformation">Related
+Information</a></li>
+</menu>
+<a NAME="ToC_AppendixB"></a><a href="#AppendixB">Appendix B</a>
+<menu>
+<li>
+<a NAME="ToC_TermsAndConcepts"></a><a href="#TermsAndConcepts">Introduction
+of Terms and Concepts</a></li>
+</menu>
+
+<hr>
+<h1>
+<a NAME="AboutDoc"></a><a href="#ToC_AboutDoc">About this Document</a></h1>
+This document is intended to give the information necessary for the reader
+to use the AIX packaging commands <b><i>mkinstall</i></b>, <b><i>mkupdate</i></b>,
+and packaging configuration files specific to those Perl scripts.
+<p>See the<i> <a href="index.htm">ODE Documentation Index</a></i> for a
+complete list of ODE documents and their purposes. It is recommended that
+the <i><a href="ODEPackagingReference.htm">ODE Packaging Reference</a></i>
+document be read before reading the AIX Packaging Reference.
+<br>
+<hr>
+<h1>
+<a NAME="AIXTools"></a><a href="#ToC_AIXTools">AIX Packaging Tools Reference</a></h1>
+
+<h3>
+mkinstall - Make install package</h3>
+The <b>mkinstall</b> command provides the mechanism to create one or more
+installable packages based upon the contents of one or more product definition
+files. The <b>mkinstall</b> command is the only command that needs to be
+run to create the installable image. It manages the execution of all supporting
+commands that are necessary to create the installable packages.
+<p>If no flags are given to the <b>mkinstall</b> command, it searches the
+current directory for product definition files (any file ending in <b>.pd</b>).
+Every file found matching this pattern is loaded and each <b>product</b>
+defined in these files is packaged into an installable image which is also
+placed in the current directory. This default behavior can be modified
+by the flags identified and described in the following section.
+<h3>
+mkupdate - Make update package</h3>
+The <b>mkupdate</b> command provides the mechanism to create one or more
+update packages based upon the contents of one or more product definition
+files.&nbsp; The <b>mkupdate</b> command is the only command that needs
+to be run to create the update image.&nbsp; It manages the execution of
+all supporting commands that are necessary to create the updates.
+<p>If no flags are given to the <b>mkupdate</b> command, it searches the
+current directory for product definition files (any file ending in '.pd').&nbsp;
+Every file found matching this pattern is loaded and each <b>update</b>
+object defined in these files is packaged into update images which are
+also placed in the current directory.&nbsp; This default behavior can be
+modified by the flags identified and described in the following section.
+<br>
+<hr>
+<h3>
+<a NAME="Parameters"></a><a href="#ToC_Parameters">Parameters</a></h3>
+The following syntax and parameters are valid for both <b>mkinstall</b>
+and <b>mkupdate</b>.
+<p><b>mkinstall</b> [<b>-configfile</b> <i>file_name</i>] [<b>-cppflags</b>
+"<i>flag string</i>"] [<b>-nocpp | -cpp</b>] [<b>-outputdir</b> <i>some/directory</i>]
+[<b>-Debug</b> <i>"filter pattern"</i>] [<b>-product</b> <i>name1</i> [<b>-product</b><i>name2</i>]...]
+[<i>Definition file(s)</i>]
+<p>Any item enclosed in square brackets ('[' and ']') is optional; so all
+parameters are optional. Specifying an unknown flag will generate a usage
+statement. Each flag can be abbreviated down to the point of being unique.
+<p>In order to load specific product definition files, those files must
+be listed on the command line after all flags have been specified. Any
+product definition file that does not reside in the current directory,
+or does not end in the conventional <b>.pd</b> suffix, must be specified
+on the command line. Multiple product definition files can be specified
+if necessary.
+<br>
+<hr>
+<dl>
+<dt>
+<b>-configfile <i>file_name</i></b></dt>
+
+<dd>
+The <b>-configfile</b> flag (which can be abbreviated down to -<b>co</b>)
+is used to override the default config file. The <i>file_name</i> parameter
+to the flag is required. The default config file is <b>/usr/opt/pkgtools/lib/pkgtools.conf</b>.
+If the default file contains unacceptable values, a new config file can
+be written and then used for individual invocations of the <b>mkinstall</b>
+command by specifying the pathname of the new config file in the <b>-configfile</b>
+flag. If the <b>-configfile</b> flag appears more than once on the command
+line, the last specification on the command line is the one that is used.</dd>
+
+<dt>
+<b>-cppflags "<i>flag string"</i></b></dt>
+
+<dd>
+The <b>-cppflags</b> flag (which can be abbreviated down to <b>-cppf</b>)
+is used to pass flags to the C preprocessor (the <b>cpp</b> command). The
+<i>flag string</i> is a required parameter to the flag. The contents of
+the<i> flag string</i> are not looked at or modified in any way. The string
+is passed "as is" to the <b>cpp</b> command. The <b>-cppflags</b> flag
+is irrelevant if the <b>-nocpp</b> flag is also present on the command
+line. If the <b>-cppflags</b> flag appears more than once on the command
+line, the last specification on the command line is the one that is used.</dd>
+
+<dt>
+<b>-cpp</b></dt>
+
+<dd>
+The <b>-cpp</b> command (which cannot be abbreviated at all) is used to
+explicitly specify that the C preprocessor is to be used. This behavior
+is the default behavior and so this flag is not really needed except to
+explicitly "document" that the <b>cpp</b> command is to be used. If the&nbsp;<h>-cpp
+flag and the <b>-nocpp</b> flag are both specified, the last one on the
+command line is the one that will be used.</dd>
+
+<dt>
+<b>-nocpp</b></dt>
+
+<dd>
+The <b>-nocpp</b> flag (which can be abbreviated down to <b>-n</b>) is
+used to turn off the use of the C preprocessor (<b>cpp</b>). If the <b>-cpp</b>
+flag and the <b>-nocpp</b> flag are both specified, the last one on the
+command line is the one that will be used.</dd>
+
+<dt>
+<b>-outputdir <i>some/directory</i></b></dt>
+
+<dd>
+The <b>-outputdir</b> flag (which can be abbreviated down to <b>-o</b>)
+is used to place the generated installable file into the specified directory.
+The <i>some/directory</i> parameter to the flag is required. It may be
+either a relative path, or an absolute path; typically an absolute path
+is specified. Using the <b>-outputdir </b>flag, the installable file can
+automatically be placed in a common repository for installable images.
+If the <b>-outputdir</b> flag appears more than once on the command line,
+the last specification on the command line is the one that is used.</dd>
+
+<dt>
+<b>-Debug "<i>filter pattern</i>"</b></dt>
+
+<dd>
+The <b>-Debug</b> flag (which can be abbreviated down to <b>-D</b>) is
+used to turn on the generation of debug messages. The "<i>filter pattern</i>"
+parameter to the flag is required. This pattern and its effect is described
+in the section <b>Debugging Information</b> below. If the<b> -Debug</b>
+flag appears more than once on the command line, the last specification
+on the command line is the one that is used.</dd>
+</dl>
+
+<hr>
+<dl>
+<h3>
+<a NAME="Examples"></a><b><a href="#ToC_Examples">Examples</a></b></h3>
+
+<ul>
+<li>
+To generate all packages for everything in all <b>*.pd</b> files in the
+current directory use the following command:</li>
+
+<blockquote><b><tt>mkinstall</tt></b></blockquote>
+
+<li>
+To use a '.pd' file in another directory and place the resulting file in
+a common install images directory use:</li>
+
+<blockquote><b><tt>mkinstall -out /packages/inst.images /packages/src/example/test.pd</tt></b></blockquote>
+
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td>In this case, the <b>mkinstall</b> command is smart enough to include
+the <b>packages/src/example</b> directory in the set of directories to
+search for related input files (files like <b>inslists</b>, <b>control
+files</b>, and <b>ODM</b> add files). See the the <b><i>pkgtools_tech_reference</i></b>
+manpage for more information about searching for input files.</td>
+</tr>
+</table>
+
+<li>
+To generate all product packages in a definition file that does not end
+in '.pd' and to generate debug output regarding the locating of input files,
+use:</li>
+
+<blockquote><b><tt>mkinstall -Debug "find_file" weird_named_pd_file</tt></b></blockquote>
+</ul>
+
+<hr>
+<h2>
+<a NAME="PkgDefSyntax"></a><a href="#ToC_PkgDefSyntax">Package Definition
+Syntax</a></h2>
+
+<hr>
+<h3>
+<a NAME="Files"></a><b><a href="#ToC_Files">Files</a></b></h3>
+<b>The .pd file</b>
+<p>The <b>.pd</b> file is the product definition file. This file is the
+primary input file to <b>mkinstall </b>and<b> mkupdate</b>. The format
+and syntax for this file is described in the <b><i>pkgtools_files_reference</i>
+manpage</b>; but, some information about auxiliary files (control files
+in particular) can be found in the <i><b>AIX_pkg_design</b> </i>manpage.
+<br><b>The inslist file</b>
+<p>The <b>inslist</b> file is the file that identifies and defines the
+ship files and directories that are to be installed on the customer machine.
+The format and syntax for this file is described in the <b><i>pkgtools_files_reference</i>
+manpage</b>.
+<br>
+<hr>
+<h3>
+<a NAME="PRIMARY_SYNTAX"></a><a href="#ToC_PrimarySyntax">Primary Syntax</a></h3>
+The primary language syntax is used in the package definition <b><tt>.pd</tt></b>
+file. It provides the ability to define the various <b>packaging</b> objects;
+currently only <b><tt>product</tt></b> and <b>fileset</b> objects, but
+also <b><tt>shipfile</tt></b> and <b><tt>update</tt></b> objects in the
+future. Currently there is no <b><tt>update</tt></b> object at all, and
+the <b><tt>shipfile</tt></b> object has its own specification syntax (described
+in the next section).
+<p>The <b><i>config file</i></b> also uses this syntax. However, the config
+file only contains <b><i>Statements</i></b> and <b><i>Comments</i></b>.
+No packaging <tt>Object Structures</tt> are allowed in the config file.
+<p>In the descriptions that follow, text enclosed in angle brackets (<b>'
+&lt; '</b> and <b>' > '</b>) indicates a variable name supplied by the
+user. Text enclosed in parentheses indicates the item is optional (it does
+not have to be included).
+<p><b>Comments</b>
+<pre># this is a comment</pre>
+Comments are allowed in a product definition file. A comment begins with
+a pound sign <b><tt>#</tt></b> and continues to the end of the line; just
+like shell comments.
+<br>&nbsp;
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FF6600">Caution:</td>
+
+<td WIDTH="92%">Since all product definition files are sent through the
+C preprocessor (<tt>cpp</tt>) by default and the C preprocessor uses the
+pound sign <b><tt>#</tt></b> as its identifier, care must be taken so that
+no conflict with C preprocessor directives exist. This conflict can easily
+be avoided if whole line comments start with the character sequence <b><tt>#*</tt></b>
+or <b><tt>#@</tt></b>, or some other unique sequence.</td>
+</tr>
+</table>
+
+<p><b>Object Structure</b>
+<pre>Object_Type&nbsp; &lt;name> {Statement (Statement)}</pre>
+A packaging object structure looks very much like a C or C++ structure.
+It must begin with a valid <b><tt>Object_Type</tt></b> identifier, which
+are identified later in this document. Following the type identifier is
+the name of the object. This name is the user supplied name used to identify
+this particular object. Following the object name is the definition enclosed
+in curly brackets ' <b><tt>{ </tt></b>' and ' <b><tt>} </tt></b>'.
+<p>The object definition is composed of one or more statements, which are
+defined later in this section.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">Even if there is only one statement for an object, the
+curly brackets are still required.</td>
+</tr>
+</table>
+
+<p>An example object definition would be:
+<blockquote>
+<pre>product name
+&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; image_name&nbsp;&nbsp;&nbsp; = file_name;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 4;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maint_level&nbsp;&nbsp; = 5;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fix_level&nbsp;&nbsp;&nbsp;&nbsp; = 0;
+&nbsp;&nbsp;&nbsp; }</pre>
+</blockquote>
+The set of valid characters for a <tt>name</tt> is limited. Valid names
+may consist of any alphabetic or numeric character plus underscores ' <b>_
+</b>' and periods ' <b>. </b>' -- also called dots. Any character other
+than these is not allowed. All names <b>are</b> case sensitive.
+<br><b>Statement</b>
+<pre>Field_Name = &lt;value>;</pre>
+A statement is basically a Field and Value pair. The <b><tt>Field_Name</tt></b>
+must be one of the valid names identified later in this document. The value
+can be one of three different types; <b><tt>Scalar Value</tt></b>, <b><tt>String
+Value</tt></b>, or an <b><tt>Array Value</tt></b> -- each of which is describe
+below.
+<p>The <b><tt>Field_Name</tt></b> and the <tt>value</tt> must be separated
+by an equal sign '&nbsp; <b><tt>= </tt></b>'. Zero or more white space
+may exist around the equal sign. Each statement <b>must</b> be terminated
+by a semi-colon ' <b><tt>; </tt></b>'. A statement can span multiple lines.
+<p>The following are valid statements:
+<blockquote>
+<pre>image_name = pkgtools;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # a scalar value
+filesets&nbsp;&nbsp; = [pkgtools.core pkgtools.rte]; # an array value
+copyright&nbsp; = "
+Copyright IBM Corp. 1997
+All rights reserved."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # multi line string value</pre>
+</blockquote>
+The three different value types and their syntax are:
+<p><b>Scalar Value</b>
+<p>A <b>scalar value</b> is a single word or number value. Scalar values
+cannot contain any of the <i>special characters</i> -- '<tt>#</tt>', '<tt>,</tt>',
+'<tt>$</tt>', '
+<p>', '<tt>[</tt>', '<tt>]</tt>', '<tt>{</tt>', '<tt>}</tt>', or '<tt>"</tt>'.
+If a value must contain one of these characters, the value will have to
+be a String Value. The first statement example above is a scalar value.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">C preprocessor macro <i><tt>#define</tt></i> substitution
+does occur in Scalar Values.</td>
+</tr>
+</table>
+
+<p><b>String Value</b>
+<p>A <b>string value</b> is enclosed in double quotes ( <b><tt>" </tt></b>).
+Single quotes are not allowed to indicate a string value. The contents
+of the string value can be anything. If a double quote is required in the
+string, it must be escaped with a backslash ( i.e. \`` ).
+<p>If a string spans multiple lines, the new lines embedded in the string
+are preserved. For example:
+<pre>&nbsp; copyright = "
+&nbsp; Licensed Materials of IBM</pre>
+
+<pre>&nbsp; Copyright IBM, 1997";</pre>
+is a valid string and would appear as 3 lines when include in the package.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">C preprocessor macro <tt>#define</tt>'s substitution does
+<b>NOT</b> occur in String Values.</td>
+</tr>
+</table>
+
+<p><b>Array Value</b>
+<p>An <b>array value</b> is any combination of space separated Scalar Values
+and/or String Values enclosed in square bracket delimiters ('<tt>[</tt>'
+and '<tt>]</tt>'). For example:
+<blockquote>filesets = [bos.up bos.mp];</blockquote>
+is a valid array value.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">Commas '<tt>,</tt>' are not allowed as element separators.
+Also note that all rules for Scalar and String values apply to each element
+of an Array Value. Nested arrays are <u>not</u> allowed.</td>
+</tr>
+</table>
+
+<p>Remember that <tt>statements</tt> are the only constructs allowed in
+the <b><i>config file</i></b>. Currently, the language itself does not
+support variable interpolation, or substitution. The C preprocessor is
+used to gain some level of substitution, as well as the ability to <tt>#include</tt>
+subfiles.
+<br>
+<hr>
+<h3>
+<a NAME="ShipfileSyntax"></a><a href="#ToC_ShipfileSyntax">Shipfile Syntax</a></h3>
+As stated earlier the syntax used to define ship files is different than
+the rest of the language. This difference is due to the underlying core
+tools used to actually generate the package. The ship file syntax is a
+requirement of these tools. In order to make the toolset more versatile,
+this syntax will probably be changed to match the rest of the packaging
+objects (a conversion utility will have to be provided if and when the
+change is implemented).
+<p>The <b><tt>shipfile</tt></b> object is really more like a record. It
+identifies the file to be installed, where it is to be located, the permissions,
+and the ownership of the file. These records are <b>NOT</b> included in
+the <b><tt>.pd</tt></b> file, but in their own file commonly called the
+<b><i>inslist</i></b>. An <b><i>inslist</i></b> typically has a suffix
+of <b>*<tt>.il</tt></b>.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">Unlike the <b><tt>.pd</tt></b> file, the <i>inslist</i>
+files are <b><u>NOT</u></b> run through the C preprocessor ( <tt>cpp</tt>
+).</td>
+</tr>
+</table>
+
+<p>The <b><tt>shipfile</tt></b> object differs from all of the other packaging
+objects because it uses a record format rather a class/structure format.
+This format is used because the underlying (Core) packaging tools require
+this format.
+<p>A <b><tt>shipfile</tt></b> element is a record containing space separated
+fields. It has the following format:
+<pre>&nbsp; &lt;file_type> &lt;uid> &lt;gid> &lt;mode> &lt;full/path/name> &lt;link/source/path></pre>
+All of these fields are required except the <b><tt>link/source/path</tt></b>
+which is only present if the <b><tt>full/path/name</tt></b> is a symbolic
+or hard link rather than being a ``<i>real</i>'' file.
+<p><b>File Type</b>
+<p>The <b><tt>file_type</tt></b> field identifies the type of file represented
+by this record. The <b><tt>file_type</tt></b> is a 1 or 2 character value.
+<p>The first character indicates the type of file and the fileset content
+to which the file belongs -- an uppercase character indicates the file
+is either <b>USR</b> or <b>SHARE</b> content, while a lowercase character
+indicates <b>ROOT</b>.
+<p>If the type is 2 characters, the second character <b><u>must</u></b>
+be the letter <b><tt>T</tt></b>. The <b><tt>T</tt></b> must be in the same
+case (upper or lower) as the first character of the file type. The letter
+<b><tt>T</tt></b> indicates the file is part of the <b>TCB</b> (Trusted
+Computing Base) . Any file that is <b>SUID</b> <b><tt>root</tt></b> or
+<b>SGID</b> <b><tt>system</tt></b> should be considered part of the <b>TCB</b>
+and have the <b><tt>T</tt></b> specified so that additional AIX installation
+checks will be done.
+<p>The set of valid <tt>file types</tt> are:
+<dt>
+<a NAME="item_A"></a><b>A</b></dt>
+
+<dd>
+A type of <b><i>A</i></b> indicates the file is part of the apply list
+only. A file of this type does not remain on the system after the installation
+of the fileset is complete. It will be deleted by one of the <b>control_files</b>
+somewhere in the installation process.</dd>
+
+<dt>
+<a NAME="item_B"></a><b>B</b></dt>
+
+<dd>
+A type of <b>B</b> indicates the file is a block device.</dd>
+
+<dt>
+<a NAME="item_C"></a><b>C</b></dt>
+
+<dd>
+A type of <b>C</b> indicates the file is a character device.</dd>
+
+<dt>
+<a NAME="item_D"></a><b>D</b></dt>
+
+<dd>
+A type of <b>D</b> indicates the file is a directory.</dd>
+
+<dt>
+<a NAME="item_F"></a><b>F</b></dt>
+
+<dd>
+A type of <b>F</b> indicates the file is a regular file.</dd>
+
+<dt>
+<a NAME="item_H"></a><b>H</b></dt>
+
+<dd>
+A type of <b>H</b> indicates the file is a hard link to another file. The
+<i>real</i> file is identified in the <b><tt>link/source/path</tt></b>
+field.</dd>
+
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">ALL hard links for a given <i>real</i> file MUST IMMEDIATELY
+follow that <i>real</i> file in the <i>inslist</i> file. This is a limitation
+of the Core packaging tools processing of the <i>inslist</i> file and how
+they make the association of hard links to <i>real</i> files.</td>
+</tr>
+</table>
+
+<dt>
+<a NAME="item_I"></a><b>I</b></dt>
+
+<dd>
+A type of <b>I</b> indicates the file is an inventory only file. Files
+of this type will not actually reside in the install package. These files
+are created during the installation process by one of the <b>control_files</b>
+for the fileset. An example of these files are the terminfo files created
+by the <b><tt>tic</tt></b> compiler.</dd>
+
+<dt>
+<a NAME="item_N"></a><b>N</b></dt>
+
+<dd>
+A type of <b>N</b> indicates that the file is an inventory only file (like
+a type <b>I</b>), but this file is not volatile. A non-volatile file is
+one whose size and checksum will not be changing.</dd>
+
+<dt>
+<a NAME="item_S"></a><b>S</b></dt>
+
+<dd>
+A type of <b>S</b> indicates the file is a symbolic link. Like the hard
+link, the <i>real</i> file is identified in the <b><tt>link/source/path</tt></b>
+field. However, unlike the hard link, symbolic link entries can appear
+anywhere with respect to the <i>real</i> file they are associated with.
+Symbolic links can even appear in a different fileset.</dd>
+
+<dt>
+<a NAME="item_V"></a><b>V</b></dt>
+
+<dd>
+A type of <b>V</b> indicates the file is a regular file (like type <b>F</b>),
+but this file is volatile. A volatile file is one whose size and checksum
+may change over time. Any file that can be modified by the customer is
+a Volatile file.</dd>
+
+<dt>
+<a NAME="item_uid"></a><b>uid Field</b></dt>
+
+<dd>
+The <b>uid</b> field is the <b>UID</b> number for the owner of the file.
+<b>UIDs</b> are looked up in the <b>uid_table</b> specified in the <b>fileset</b>
+object, or its parent <b><tt>product</tt></b> object. If no <b>uid_table</b>
+is defined, the <b>UID</b> table on the machine where the package is built
+will be used.</dd>
+
+<dt>
+<a NAME="item_gid"></a><b>gid Field</b></dt>
+
+<dd>
+The <b>gid</b> field is the <b>GID</b> number for the owning group of the
+file. <b>GIDs</b> are looked up in the <b>uid_table</b> specified in the
+<b>fileset</b> object, or its parent <b><tt>product</tt></b> object. If
+no <b>uid_table</b> is defined, the <b>UID</b> table on the machine where
+the package is built will be used.</dd>
+
+<dt>
+<a NAME="item_mode"></a><b>mode Field</b></dt>
+
+<dd>
+The <b>mode</b> field contains the mode, or permissions, for the file once
+it is installed on the customer's machine. This field is an octal number
+just like the normal Unix mode for a file.</dd>
+
+<dt>
+<a NAME="item_full"></a><b>full/path/name Field</b></dt>
+
+<dd>
+The <b><tt>full/path/name</tt></b> field identifies the installed location
+of the file. AIX does not support relocatable install images, so this path
+is an absolute pathname.</dd>
+
+<dt>
+<a NAME="item_link"></a><b>link/source/path Field</b></dt>
+
+<dd>
+The <b><tt>link/source/path</tt></b> field is only relevant for link type
+files, both hard links <b>H</b> and symbolic links <b>S</b>. This pathname
+must match exactly with the <i>real</i> file that is the source of the
+link.</dd>
+</dl>
+
+<hr>
+<dl>
+<h2>
+<a NAME="DebuggingInformation"></a><b><a href="#ToC_DebuggingInformation">Debugging
+Information</a></b></h2>
+There are two levels of debugging information generated by the <b>mkinstall</b>
+command. The first level is always generated and cannot currently be turned
+off. This information is status logging. The messages are sent to <b>STDOUT</b>
+and record the sub-command about to be executed and the return code from
+that command after it is executed.
+<p>The second level of debugging information is controlled by the <b>-Debug</b>
+flag. This level of debug information is at a detailed level about the
+inner-workings of the pkgtools Run Time Environment code. These messages
+are sent to <b>STDERR</b> so that they can easily by redirected away from
+the <b>log</b> messages. Also, all of these debug statements are prefixed
+with two (2) at signs -- <b>@@</b>, to facilitate grepping them out of
+a merged output listing.
+<p>What debug information is generated is controlled by the<i> <b>filter
+pattern</b> </i>parameter to the<b> -Debug</b> flag. This parameter is
+a standard <b>Perl</b> regular expression. The <b><i>filter pattern</i></b>
+therefore enables things that match the pattern to pass through and be
+generated.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">Case is relevant to matching.</td>
+</tr>
+</table>
+
+<p>The filter applies to Perl class names, function names and method names
+in the RTE tools. If the class, function, or method name matches the pattern,
+all debug statements within that class, function, or method are allowed
+to be generated. The Perl classes that make up the <b>RTE</b> can be found
+in the <b>/usr/opt/pkgtools/lib/Pkg </b>directory. Each file ending in
+<b>.pm</b> is a class name (when stripping the <b>.pm</b> suffix). Individual
+functions and methods are within those files.
+<br>
+<hr>
+<h3>
+<a NAME="CommonDebugPatterns"></a><a href="#ToC_CommonDebugPatterns">Common
+debug patterns</a></h3>
+Common debug patterns are:
+<dt>
+<b>Fileset</b></dt>
+
+<dd>
+This pattern allows ALL debug statements in the<b> Fileset</b> class to
+be generated. The debug information generated includes all activities related
+to any and all 'fileset' objects found in the <b>.pd</b> files.</dd>
+
+<dt>
+<b>Product</b></dt>
+
+<dd>
+This pattern allows ALL debug statements in the <b>Product</b> class to
+be generated. The debug information generated includes all activities related
+to any and all <b>product</b> objects found in the <b>.pd</b> files.&nbsp;
+Used for <b>mkinstall</b> only.</dd>
+
+<dt>
+<b>Update</b></dt>
+
+<dd>
+This pattern allows ALL debug statements in the <b>Update</b> class to
+be generated.&nbsp; The debug information generated includes all activities
+related to any and all <b>update</b> objects found in the <b>.pd</b> files.&nbsp;
+Used for <b>mkupdate</b> only.</dd>
+
+<dt>
+<b>find_file</b></dt>
+
+<dd>
+This pattern generates debug statements related to locating an input file
+somewhere in the set of <b>input_path</b> search directories. This pattern
+is useful if you cannot figure out why a certain file is being picked up,
+or why it is not being found.</dd>
+
+<dt>
+<b>Parser</b></dt>
+
+<dd>
+This pattern allows ALL debug statements in the <b>Parser</b> class to
+be generated. The debug information generated includes all activities related
+parsing a specification file <b>.pd</b> file. The amount of information
+generated in this instance is quite large and rather detailed. Multiple
+patterns can be specified at once if each pattern is separated by a vertical
+bar <b>' | '</b>. To get all possible debug output, use the pattern <b>"
+.* " </b>. The amount of debug information generated in this case can be
+overwhelming. This pattern is not recommended. You are much better off
+restricting the filter pattern more.</dd>
+</dl>
+
+<hr>
+<h3>
+<a NAME="ReturnCodes"></a><b><a href="#ToC_ReturnCodes">Return Codes</a></b></h3>
+<b>mkinstall</b> and <b>mkupdate</b> utilize a varying severity mechanism
+in its return codes. The following ranges are used:
+<p><b>0</b>
+<br>A return code of zero ( 0 ) indicates the entire process completed
+successfully without warnings or errors.
+<p><b>1 - 7</b>
+<br>A return code between one ( 1 ) and seven ( 7 ) inclusive indicates
+that everything has completed and an install image has been generated.
+However, some warning situations were encountered.
+<p>A warning situation is a condition where something is not quite right,
+but the inconsistency is not enough to abort the process. The generated
+install images should be carefully inspected and tested to ensure they
+are complete.
+<p><b>8 and higher</b>
+<br>A return code of eight ( 8 ) or greater indicates a severe error was
+detected and the install image could not be created.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">If multiple install images are to be created, all images
+created before the error occurred are left intact and should be alright.
+The only way to know which images are alright is to inspect the progress
+log messages generated by the <b>mkinstall</b> command.</td>
+</tr>
+</table>
+
+<hr>
+<h2>
+<a NAME="PackageDefRS"></a><a href="#ToC_PackageDefRS">Package Definition
+Rules</a></h2>
+
+<h3>
+<a NAME="DirectoryStructureConsiderations"></a><a href="#ToC_DirectoryStructureConsiderations">Directory
+Structure Considerations</a></h3>
+A required directory structure has been intentionally avoided in the <b><i>pkgtools</i></b>
+toolset. In the internal environment used by AIX development in Austin,
+a rigid directory structure is required and is the source of some strong
+complaints.
+<p>The <b><i>pkgtools</i></b> toolset is designed to allow each developer,
+or development group, to define the directory structure they wish to use;
+much the same as the compiler. The directory structure can be totally ad
+hoc, except for the <b><i>ship tree</i></b> structure, or it can be more
+defined.
+<p>The <b><i>pkgtools</i></b> toolset does require that a <b><i>ship tree</i></b>
+directory structure exist. This directory structure is described below,
+but it can exist anywhere.
+<p>While generating install images, all necessary information is available
+in the packaging definition files. When generation of update images is
+supported, some residual history information will need to be kept. In this
+case, more thought will have to be given to how and where this residual
+history is kept. It is desired that the history information can be pointed
+to by a field in the config file -- or in one of the packaging object definitions.
+<p>For now, lets look at some alternative directory structures.
+<h4>
+<a NAME="AllInOneStructure"></a><b><a href="#ToC_AllInOneDirectoryStructure">The
+All In One Structure</a></b></h4>
+The <b><i>all in one</i></b> structure is what is typically used when doing
+simple programs. The source files, the object files, and the executables
+are all in one directory. There are no subdirectories. This approach is
+simple and quick to implement. However, care must be taken that the source
+files are not accidentally deleted when a clean compile is desired.
+<p>The <b><i>pkgtools</i></b> toolset supports this model. When executing
+the <b><tt>mkinstall</tt></b> command with no flags, it builds install
+images for all definition files <b><tt>*.pd</tt></b> found in the current
+directory. The resulting install images are left in the current directory.
+However, all intermediate work files are placed in a working subdirectory
+called <b><tt>work</tt></b> found in the current directory.
+<p><a NAME="SeperateObjectStructure"></a><b><a href="#ToC_SeperateObjectStructure">The
+Separate Object Structure</a></b>
+<p>The <b><i>separate object</i> structure</b> is used in the <b>Open Development
+Environment</b>. The source files reside in a <b><tt>src</tt></b> directory
+tree while the objects and executables are created in a <b><tt>obj</tt></b>
+directory tree. This approach is a little more complicated, but it has
+the benefit of not mixing generated/created files with the input source
+files. This separation makes it easy to see what was input and what was
+created. It also makes it easy to delete just the created items when doing
+a clean compile.
+<p>For this <b><i>separate object</i> structure</b> to work, the compiler
+must know how to look for local include files. It has to remember that
+the source files are in a different directory than the output files. The
+<b><i>pkgtools</i></b> toolset has been designed to handle this situation
+also.
+<p>This <b><i>separate object</i> structure</b> works because of the way
+the <b><i>pkgtools</i></b> toolset searches for its input files. This searching
+mechanism is described in section <b><i>Locating Input Files</i></b> below,
+along with a sample directory structure inherently supported by the toolset.
+<h4>
+<a NAME="SeperatePackagingStructure"></a><b><a href="#ToC_SeperatePackagingStructure">The
+Separate Packaging Structure</a></b></h4>
+The <b><i>separate object</i> structure</b> can also be carried one step
+further. A completely separate set of directory structures can be maintained
+for ship file source and object files and the packaging <b>source</b> and
+<b>object</b> files. This mechanism is used by the AIX development team
+in Austin.
+<p>This <b><i>separate packaging</i> structure</b> allows all of the product
+packaging information to be maintained completely separately from the source,
+object, and executables that make up the product when installed. This separation
+can be useful if the source and object directory tree has no relationship
+to the packaging layout.
+<p>The AIX development environment in Austin requires a directory structure
+under the packaging directory that mirrors the product/fileset names. In
+this environment, the dots ('<tt>.</tt>' -- also called periods) that separate
+the text in a fileset name are turned into slashes ('<tt>/</tt>' -- directory
+separators) and this pathname is made a subdirectory structure under the
+root packaging directory. All of the packaging source files are placed
+down in the product and fileset levels of this directory structure. The
+AIX development directory structure looks something like:
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- bos/ ...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ex. bos/net/tcp/client)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- packages/ -+&nbsp; ...&nbsp; # many directories left out ...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- rte/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- sx25/ - + ...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- pad/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- obj/ --+ ... # many directories left out...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- tcpip/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- var/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- etc/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp; build/ -+- ship/ -+- usr/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- tmp/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- sbin/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- tcpip/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- src/ --+ ... # many directories left out...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- bos/ ...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ex. bos/net/tcp/client)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- packages/ -+&nbsp; ...&nbsp; # many directories left out ...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- rte/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- sx25/ - + ...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- pad/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (pkg src files for sx25.rte here)</pre>
+While the AIX development environment may be overkill for most people (Austin
+builds a few thousand filesets from its development environment), a separate
+packaging directory structure may be beneficial and is supported by the
+<i>pkgtools</i> toolset.
+<h4>
+<a NAME="TheShipTreeStructure"></a><b><a href="#ToC_ShipTreeStructure">The
+Ship Tree Structure</a></b></h4>
+The <b><i>ship tree</i></b> concept again comes from the ``Open Development
+Environment''. This concept is that there is a directory that contains
+a ``mirror image'' of the root directory of a machine. This mirror image
+directory is called the <i>ship tree</i>. This <i>ship tree</i> directory
+structure is obviously different than any source directory structure or
+object directory structure.
+<p>The <b><i>ship tree</i></b> must contain the subdirectories and the
+ship files that reside in those subdirectories for the product being packaged.
+The<b><i>ship tree</i></b> can also contain more information, possibly
+for other products ship files. It is possible for a single <b><i>ship tree</i></b>
+to contain ship files for multiple products because the <i>inslist</i>
+files identify the specific ship files that are relevant to a single fileset.
+It is this list the <i>pkgtools</i> toolset uses to determine which files
+to pull from the <b><i>ship tree</i></b>.
+<p>The <b><i>pkgtools</i></b> toolset supports the ability to have a single
+<b><i>ship tree</i></b> or multiple ship trees. A typical case of having
+multiple ship trees is the case of building a test package to test some
+newly modified ship files. There could be a <i>ship tree</i> containing
+the newly modified ship files and another <b><i>ship tree</i></b> containing
+the production level ship files. It is possible to define a local config
+file that has a <b><tt>ship_path</tt></b> field set to
+<pre>&nbsp;&nbsp;&nbsp; ship_path = "/development/ship_tree:/production/ship_tree";</pre>
+This definition causes the <b><i>pkgtools</i></b> toolset to look in the
+<b><tt>/development/ship_tree</tt></b> directory first. If the ship file
+is not found there, the <b><tt>/production/ship_tree</tt></b> is searched.
+For more information on locating ship files, see the <b><i>Locating Ship
+Files</i></b> section below.
+<br>
+<hr>
+<h2>
+<a NAME="LocatingInputFiles"></a><a href="#ToC_LocatingInputFiles">Locating
+Input Files</a></h2>
+There are really two main sets of files that the <b><i>pkgtools</i></b>
+toolset must locate. One is the <b>ship files</b> to be installed on a
+customer system and the other is the <b>packaging source files</b> used
+to define the installation packaging that will contain those ship files.
+Each of these sets has its own locating or search algorithms.
+<br>
+<hr>
+<h3>
+<a NAME="LocatingShipFiles"></a><a href="#ToC_LocatingShipFiles">Locating
+Ship Files</a></h3>
+The ship files are searched for by the commands in the <tt>pkgtools.core</tt>
+part of the <b><i>pkgtools</i></b> toolset. The pkgtools.core are the core
+<b>ADE</b> tools and are supported separately from mkinstall and mkupdate
+so no further discussion is necessary here.
+<br>
+<hr>
+<h3>
+<a NAME="LocatingPkgSourceFiles"></a><a href="#ToC_LocatingPackagingSourceFiles">Locating
+Packaging Source Files</a></h3>
+The discovery of <b>packaging source</b> files is done by the toolset tools
+(tools in the fileset <b><tt>pkgtools.rte</tt></b>). There are really two
+types of packaging files. The first is the <b><tt>.pd</tt></b> file itself.
+The <b><tt>.pd</tt></b> file is either an absolute path, or a path relative
+to the current working directory when the command was issued. If no <b><tt>.pd</tt></b>
+is specified, the current directory is searched for all files matching
+the pattern <b><tt>*.pd</tt></b>. This mechanism is very similar to the
+way a compiler finds its source files.
+<p>The second type of the packaging source files are files identified in
+the <b><tt>.pd</tt></b> file. These files are mainly <b>ODM add files</b>,
+<b>control files</b>, and <b><i>inslist</i> files</b>. The developer has
+some control over the directories searched as described below.
+<p>These are searched for in the following order:
+<ol>
+<li>
+<b>Absolute pathname of the file. </b>If the referenced file is an absolute
+pathname (begins with a slash -- '<tt>/</tt>'), then that absolute path
+is used and no search is performed.</li>
+
+<li>
+<b>The current working directory. </b>This directory is the directory from
+which the tool command (i.e. '<tt>mkinstall</tt>') was issued.</li>
+
+<li>
+<b>The "Fileset" directory within the current working directory. </b>The
+``Fileset'' directory is a subdirectory with the same name as the fileset.
+This name is the complete fileset name, not the last part of the name.
+The ``Fileset'' directory is only searched when looking for a source file
+for a particular fileset. It is not searched when looking for a source
+file for a product.</li>
+
+<li>
+<b>The directory containing the '.pd' file making the reference. </b>This
+'<tt>.pd</tt>' file may be ``included'' via a '<tt>#include</tt>' statement.
+If this situation is true, the directory searched is the directory of the
+actual file making the reference -- that is the one that was ``included'',
+<b>NOT</b> the one with the '<tt>#include</tt>' statement.</li>
+
+<li>
+<b>The "Fileset" directory in the directory from item 4). </b>The ``Fileset''
+directory is a subdirectory with the same name as the fileset. This name
+is the complete fileset name, not the last part of the name. The ``Fileset''
+directory is only searched when looking for a source file for a particular
+fileset. It is not searched when looking for a source file for a product.</li>
+
+<li>
+<b>Each directory listed in the 'input_path' field. </b>Each directory
+is searched in the order listed in the '<tt>input_path</tt>' variable.</li>
+</ol>
+
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">The <b><tt>input_path</tt></b> variable is an array variable.
+Its value does not look like the <b><tt>PATH</tt></b> environment variable
+or the <b><tt>ship_path</tt></b> field.</td>
+</tr>
+</table>
+
+<dl>
+<dt>
+&nbsp;</dt>
+
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FF6600">Caution:</td>
+
+<td WIDTH="92%">If any path found in the <b><tt>input_path</tt></b> field
+is not absolute (meaning that it does not begin with a slash ('<tt>/</tt>'),
+then that relative path is added to the search list as four directories.
+There are two directories under each of items <b>3)</b> and <b>4)</b> above.
+One of the pairs of directories is the directory listed in the '<tt>input_path</tt>'
+field. The other directory is only used when searching for <tt>Fileset</tt>
+based source files. This directory appends the full fileset name to the
+end of the directory in <b><tt>input_path</tt></b>.</td>
+</tr>
+</table>
+
+<p>If the requested file cannot be found in any of these directories, an
+error message is generated.
+<p>Methods <b>3)</b> and <b>4)</b> are what facilitate the directory separations
+discussed earlier in the section <b>Directory Structure Considerations</b>.
+<p>The <b><tt>input_path</tt></b> field is meant to provide flexibility
+in directory structure design and layout. It is used to augment the directory
+search list. It can be used to facilitate searching a directory structure
+similar to the AIX structure described in <b>Directory Structure Considerations</b>.
+However, one key use of the <b><tt>input_path</tt></b> field is to be able
+to have any <b>ODM add files</b> included in the primary product source
+tree, but still be found from the packaging tree when the package is created.
+<p>The ODM add files are really part of the product source code. However,
+they are not manipulated until the packaging stage. To allow developers
+to keep their ODM files with the executables that care about the contents
+of those files, the <b><tt>input_path</tt></b> field would have to contain
+the directory name where those add files reside.
+<p>An example may help explain things:
+<p>Suppose the directory structure is setup as follows --
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- pkgtools.core
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- packages/pkgtools/ -+- pkgtools.rte
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- pkgtools.doc
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- src/ -+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- oemtools/objrepos/ .. (src dir for ODM add files
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for project 'oemtools')
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp; build/ -+- ship_tree/ ... mirror of root here
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- obj/ -+- packages/pkgtools/</pre>
+Given this directory structure, the definition file for the <b><tt>pkgtools</tt></b>
+product would reside in the <b><tt>build/src/packages/pkgtools</tt></b>
+directory. All control files and inslists for the filesets are stored in
+the fileset's directory under <b><tt>build/src/packages/pkgtools</tt></b>.
+The package is built in the <b><tt>build/obj/packages/pkgtools</tt></b>
+directory. This package contains no ODM files.
+<p>In this scenario, the command to build the package would be '<tt>mkinstall
+../../../src/packages/pkgtools/pkgtools.pd</tt>' which is issued from directory
+<b><tt>build/obj/packages/pkgtools</tt></b>. There is no need to have an
+'<tt>input_path</tt>' field specified. The default search algorithm built
+into the toolset will find all necessary input files.
+<p>Now if the package contained some ODM add files and those ODM add files
+are kept in <b><tt>build/src/oemtools/objrepos</tt></b>, an <b><tt>input_field</tt></b>
+would be required in the <b><tt>pkgtools.pd</tt></b> file. The <b><tt>input_path</tt></b>
+field would have to look something like --
+<pre>&nbsp;&nbsp;&nbsp; input_path = [../../../src/oemtools/objrepos];</pre>
+Given that this field does exist, the same invocation of <b><tt>mkinstall</tt></b>
+from the previous example would build the new package and pick up the necessary
+ODM add files as well.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">Relative pathnames have been used. This mechanism has proven
+most effective in the Austin build environment for supporting multiple
+build trees. It is not a requirement. An absolute path could just as easily
+have been used in the '<tt>input_path</tt>' field.</td>
+</tr>
+</table>
+
+<hr>
+<h2>
+<a NAME="PackagingObjectTypes"></a><a href="#ToC_PackagingObjectTypes">Packaging
+Object Types</a></h2>
+There are currently three different object types, with a fourth one reserved
+for future use. Each of these types is described in the following sections.
+<br>
+<hr>
+<h3>
+<a NAME="ProductObject"></a><a href="#ToC_ProductObject">PRODUCT Object</a></h3>
+The <b><tt>product</tt></b> object is the object that pulls the pieces
+together and defines the installable image. A <b><tt>product</tt></b> relates
+directly to the <b>product</b> described in the <b><i>AIX_pkg_concepts</i></b>
+document.
+<p>The minimum set of fields for a buildable <b><tt>product</tt></b> definition
+contains:
+<blockquote>
+<pre>product example
+{
+&nbsp;&nbsp;&nbsp; image_name&nbsp; = example;
+&nbsp;&nbsp;&nbsp; description = "Provide a minimum product definition example";
+&nbsp;&nbsp;&nbsp; platform&nbsp;&nbsp;&nbsp; = R;
+&nbsp;&nbsp;&nbsp; filesets&nbsp;&nbsp;&nbsp; = [example.fileset1];
+&nbsp;&nbsp;&nbsp; version&nbsp;&nbsp;&nbsp;&nbsp; = 1;
+&nbsp;&nbsp;&nbsp; release&nbsp;&nbsp;&nbsp;&nbsp; = 1;
+&nbsp;&nbsp;&nbsp; maint_level = 0;
+&nbsp;&nbsp;&nbsp; fix_level&nbsp;&nbsp; = 0;
+}</pre>
+</blockquote>
+
+<hr>
+<h3>
+<a NAME="FilesetObject"></a><a NAME="FilesetObject"></a><a href="#ToC_FilesetObject">FILESET
+Object</a></h3>
+The <b>fileset</b> object relates directly to the <b>fileset</b> described
+in <b><i>AIX_pkg_concepts</i></b> manpage. This object defines the contents
+of the fileset to be created/included in a <b>product</b>.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">The <b>fileset</b> object does not identify the product
+to which it belongs. It is the '<tt>product</tt>' object that identifies
+which filesets belong to it, via the <b>filesets</b> field.</td>
+</tr>
+</table>
+
+<p>The minimum set of fields for a buildable <b><tt>product</tt> definition</b>
+contains:
+<blockquote>
+<pre>fileset example.fileset1
+{
+&nbsp;&nbsp;&nbsp; description = "Provide Minimum Fileset Definition Example";
+&nbsp;&nbsp;&nbsp; content&nbsp;&nbsp;&nbsp;&nbsp; = USR;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #&nbsp; USR, SHARE, or ROOT
+&nbsp;&nbsp;&nbsp; inslist&nbsp;&nbsp;&nbsp;&nbsp; = example.fileset1.il;
+&nbsp;&nbsp;&nbsp; boot_rqmt&nbsp;&nbsp; = No;
+}</pre>
+</blockquote>
+
+<hr>
+<h3>
+<a NAME="ShipfileObject"></a><a NAME="ShipfileObject"></a><a href="#ToC_ShipfileObject">SHIPFILE
+Object</a></h3>
+The <b><tt>shipfile</tt></b> object is currently defined as a record in
+an <b><i>inslist</i></b> file. All fields of the record are required to
+exist except the <b><tt>link/source/path</tt></b> field. There are some
+issues to consider when creating the <b><i>inslist</i></b> file. These
+issues are addressed in a later section in this document.
+<p>The following would be a valid set of <b><tt>shipfile</tt></b> objects
+to define a file.
+<blockquote>
+<pre>#
+# Parent directories should be defined before the files
+#&nbsp;&nbsp; that reside in them...
+D 2 2 755&nbsp;&nbsp;&nbsp;&nbsp; /usr/opt/pkgtools
+D 2 2 755&nbsp;&nbsp;&nbsp;&nbsp; /usr/opt/pkgtools/rte
+D 2 2 755&nbsp;&nbsp;&nbsp;&nbsp; /usr/opt/pkgtools/rte/bin
+F 2 2 555&nbsp;&nbsp;&nbsp;&nbsp; /usr/opt/pkgtools/rte/bin/mkinstall</pre>
+</blockquote>
+
+<hr>
+<h1>
+<a NAME="AppendixA"></a><a href="#ToC_AppendixA">Appendix A</a></h1>
+
+<hr>
+<h3>
+<a NAME="RelatedInformation"></a><b><a href="#ToC_RelatedInformation">Related
+Information</a></b></h3>
+Additional information can be found in the following documentation:
+<p><a href="http://w3.ode.raleigh.ibm.com/">ODE Home Page</a>
+<br>Documentation and Downloads for all versions of ODE.
+<br><b><i>http://w3.ode.raleigh.ibm.com</i></b>
+<p><a href="ODEPackagingReference.htm">ODE Packaging Reference</a>
+<br>This document is intended to give the information necessary for the
+reader to use the ODE packaging commands and packaging configuration files.
+<br><b><i>http://w3.ode.raleigh.ibm.com/ODEPkgReference.htm</i></b>
+<p><a href="http://w3.austin.ibm.com/projects/PKG/public_html/Update_Checklist.html">AIX
+V4 Update Checklist</a>
+<br>The intent of this document is to provide a checklist that can be used
+by developers and LPP Owners when generating an update. It describes different
+types of updates and lists the steps required to help ensure that the update
+is correctly created, packaged, and applied to the system. This document
+does not address the issue of building update images.
+<br><b><i>http://w3.austin.ibm.com/projects/PKG/public_html/Update_Checklist.html</i></b>
+<p><a href="http://w3.austin.ibm.com/projects/PKG/public_html/LPP_Owners_Guide.html">AIX
+Version 4 LPP Owner's Guide to Packaging</a>
+<br>The purpose of this document is to organize existing information into
+a "how to" format and provide a reference resource for AIX licensed program
+product (LPP) owners. This document is intended to assist developers in
+designing, creating, building, installing, and updating their LPP's.
+<br><b><i>http://w3.austin.ibm.com/projects/PKG/public_html/LPP_Owners_Guide.html</i></b></dl>
+
+<hr>
+<h1>
+<a NAME="AppendixB"></a><a href="#ToC_AppendixB">Appendix B</a></h1>
+
+<hr>
+<h2>
+<a NAME="TermsAndConcepts"></a><a href="#ToC_TermsAndConcepts">Introduction
+of Terms and Concepts</a></h2>
+Software packaging has its own set of terms. Unfortunately, this set of
+terms is not consistent from product to product, much less system to system.
+Therefore let's start with some AIX Version 4 packaging terminology. More
+detail about these terms and how they relate to each other is included
+in <b><i>AIX_pkg_design</i></b>manpage.
+<br>&nbsp;
+<br>&nbsp;
+<dl>
+<dt>
+<a NAME="item_ship"></a><b>ship file</b></dt>
+
+<dd>
+A <b><i>ship file</i></b> is a file that is installed onto the customer
+system. These files may be executables, include files, or even user configurable
+files. Some other systems use the term <b><i>parts</i></b> or <b><i>shippables</i></b>
+to refer to what AIX calls <b><i>ship files</i></b>.</dd>
+
+<p><br>It is a hard AIX packaging rule that each <i>ship file</i> belong
+to one and only one <i>fileset</i>!
+<dt>
+<a NAME="item_fileset"></a><b>fileset</b></dt>
+
+<dd>
+A <b><i>fileset</i></b> is the smallest individually installable entity
+for AIX. That means that everything associated with a fileset will be installed
+when the fileset is installed. A <b><i>fileset</i></b> is a part of a <i>product</i>
+(see below). The <b><i>fileset</i></b> is what really contains the <b><i>ship
+files</i></b> that will be installed onto the customer system.</dd>
+
+<p><br>Using multiple <i>filesets</i> in a <b><i>product</i></b> allows
+the customer to have more control over what gets installed -- and therefore
+how much disk space is used. An example of where multiple fileset might
+be used is in a product that has a run time environment and a development
+environment. Each might be able to be installed without the other being
+present, so there is no real need to have them combined into a single fileset.
+By having separate filesets, a customer that is not doing any development
+work with the product does not have to ``clutter'' up their disk with the
+development environment stuff.
+<dt>
+<a NAME="item_product"></a><b>product</b></dt>
+
+<dd>
+A <b><i>product</i></b> is the complete definition of the software system
+that can be installed on a customer's system. A <i>product</i> is comprised
+of one or more filesets. AIX does not require that the entire product be
+installed. If the product is comprised of multiple filesets, there is the
+possibility that only some of those filesets may be installed rather than
+all of them. <b><i>Products</i></b> are what end up in <b><i>install images</i></b>,
+which are defined below.</dd>
+
+<p><br>A <b><i>product</i></b> must have at least one fileset, but it may
+have several.
+<p>Also see the definition of <b><i>LPP</i></b>.
+<dt>
+<a NAME="item_LPP"></a><b>LPP</b></dt>
+
+<dd>
+An <b><i>LPP</i></b> is the complete product that is purchasable from IBM.
+<b><i>LPP</i></b> stands for <b>Licensed Program Product</b>. It is an
+IBM term. Each <b><i>LPP</i></b> can contain more than one installation
+image.</dd>
+
+<dt>
+<b>fileset requisites</b></dt>
+
+<dd>
+<b><i>Fileset requisites</i></b>, usually just called <b><i>requisites</i></b>,
+are pieces of information for the AIX <b><tt>installp</tt></b> program.
+They indicate requirements that one fileset has on another. It provides
+a mechanism to say ``fileset A cannot be installed without fileset B also
+being installed''.</dd>
+
+<p><br>An example where this facility may be used is an application that
+provides a GUI interface. The fileset for this application could include
+a requisite to <b><tt>X11.base.rte</tt></b>. The presence of the requisite
+would cause <tt>installp</tt> to check for the presence of <b><tt>X11.base.rte</tt></b>.
+If it were not installed, then the fileset that contained the <b><i>requisite</i></b>
+could not be installed.
+<dt>
+<a NAME="item_VRMF"></a><b>VRMF</b></dt>
+
+<dd>
+<b><i>VRMF</i></b> is a numbering mechanism used to version each fileset
+image. The AIX <b><tt>installp</tt></b> program will not install a fileset
+at a lower <b><i>VRMF</i></b>, if that same fileset is already installed
+at a higher <b><i>VRMF</i></b>.</dd>
+
+<dt>
+<a NAME="item_install"></a><b>install image</b></dt>
+
+<dd>
+The concepts of initial product installation and service updates are different
+in AIX. An <b><i>install image</i></b> is an AIX backup format file that
+contains the <i>product</i> in a format acceptable to the AIX <b><tt>installp</tt></b>
+program.</dd>
+
+<p><br>An AIX <b><i>install image</i></b> contains everything necessary
+to do a complete install of the product, or the partial product in the
+<b><i>install image</i></b>. Contrast this completeness with an <i>update
+image</i> defined below.
+<p>Other AIX related documentation refers to an <b><i>install image</i></b>
+as a <b><i>package</i></b> or a <b><i>BFF</i></b>. Typically, <b><i>package</i></b>
+and<b> <i>install image</i></b> can be used interchangeably. The <b>POSIX</b>
+spec for software maintenance uses <b><i>product</i></b>.
+<br>&nbsp;
+<table BORDER WIDTH="75%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">An <b>install image</b> does not have to contain the complete
+product definition. A complete product may be comprised of several install
+images.</td>
+</tr>
+</table>
+
+<dt>
+<a NAME="item_update"></a><b>update image</b></dt>
+
+<dd>
+An AIX <b><i>update image</i></b> is an AIX backup format file that contains
+a single fileset. It usually contains a subset of the ship files associated
+with the fileset being updated. AIX updates are <b><i>delta</i></b> modifications;
+meaning that only those <b><i>ship files</i></b> that have been modified
+are included in the update.</dd>
+
+<dt>
+<a NAME="item_Migration"></a><b>Migration</b></dt>
+
+<dd>
+AIX supports a concept of migrating a software product to a newer level.
+<b><i>Migration</i></b> is functionality in the <b><tt>installp</tt></b>
+command that uses full <b><i>install images</i></b> to upgrade all installed
+filesets for the software product. <b><i>Migration</i></b> is different
+than <b>updating</b> in that the entire fileset is reinstalled rather than
+just the files that have been fixed. <b><i>Migration</i></b> does attempt
+to preserve all user configurable files in all migrated filesets. Support
+<i>migration</i> in the best possible manner does take some thought in
+the packaging design stages. More information is provided in <b><i>AIX_pkg_design
+manpage</i></b>.</dd>
+
+<dt>
+<a NAME="item_ODM"></a><b>ODM "add" files</b></dt>
+
+<dd>
+AIX uses the <b>ODM</b> (Object Data Manager) databases to hold and manage
+its device configuration data. The <b>ODM</b> is also used to hold the
+<b>SMIT</b> menus. The information that goes into these repositories comes
+from <b><i>ODM add</i></b> files. These files are stanza files that are
+documented in the AIX online documentation (particularly in the discussions
+on writing device drivers).</dd>
+
+<p><br>These <b><i>ODM add</i></b> files must be handled specially during
+packaging since the entire database cannot be shipped in an install image
+(because each database holds information from several different filesets).
+There are tools that can be used to generate the appropriate scripts to
+manipulate the databases based upon the contents of the <b><i>ODM add</i></b>
+files.
+<dt>
+<a NAME="item_Control_Files"></a><b>Control Files</b></dt>
+
+<dd>
+AIX install <b><i>control files</i></b> are files that are run during the
+installation process for the fileset that contains the files. AIX install
+provides the ability to run a user (that is product developer) supplied
+program at various stages of installation, un-installation, update installation,
+and update rejection. More details are provided below and in <b><i>AIX_pkg_design
+manpage</i></b>.</dd>
+
+<dt>
+<a NAME="item_Installation"></a><b>Installation Areas</b></dt>
+
+<dd>
+AIX packaging has the ability to handle stand-alone installation as well
+as diskless installation. It even has the concept of architecture independent
+installations. These three different installation mechanism are called
+by several different names. The most common two are <b>parts</b> and <b>content</b>.
+In this documentation the term <b>content</b> is used since <i>parts</i>
+can get confusing due to its varied uses.</dd>
+
+<dt>
+<a NAME="item_SHARE Content"></a><b>SHARE Content</b></dt>
+
+<dd>
+<b><i>SHARE</i></b> content is for the things that are completely architecture
+independent. Items in this category are things that are not executable.
+Items such has man pages, data files, postscript files, etc. In AIX, <b><i>SHARE</i></b>
+content is installed into the <b><tt>/usr/share</tt></b> file system.</dd>
+
+<p><br>A fileset with <b><i>SHARE</i></b> content, cannot have any other
+content in it. Further more a product with a fileset that has <b><i>SHARE</i></b>
+content cannot also contain a fileset that has any other content type.
+<dt>
+<a NAME="item_USR Content"></a><b>USR Content</b></dt>
+
+<dd>
+<b><i>USR</i></b> content is for items that are tied to the <b>RS/6000</b>
+architecture, but can be shared across multiple machines. These items may
+be installed on a single <b>RS/6000</b> and then shared across several
+others. Items in this category are executables and libraries. In AIX, <b><i>USR</i></b>
+content is installed into the <b><tt>/usr</tt></b> file system.</dd>
+
+<p><br>A fileset with <b><i>USR</i></b> content may also have some items
+that are <b><i>ROOT</i></b> content.
+<dt>
+<a NAME="item_ROOT Content"></a><b>ROOT Content</b></dt>
+
+<dd>
+<b><i>ROOT</i></b> content is for items that are specific to a single machine,
+which is also an RS/6000. These items are usually user configurable things
+such as device configuration, system start up scripts, or daemon configuration
+files.. In AIX, <b><i>ROOT</i></b> content is installed into the <b><tt>/</tt></b>
+and <b><tt>/var</tt></b> file systems. <b><tt>/tmp</tt></b> is also considered
+to be <b><i>ROOT</i></b> content.</dd>
+
+<p><br>A fileset with <b><i>ROOT</i></b> content must also have some <b><i>USR</i></b>
+content. This situation happens automatically if there is not any user
+supplied <b><i>USR</i></b> content.</dl>
+
+</body>
+</html>

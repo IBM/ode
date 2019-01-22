@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<toc label="ODE Build Feature User Guide" topic="welcome.html">
+  <topic label="Figures" href="ODEBuildFeatureGuide03.html#wq2" />
+  <topic label="Tables" href="ODEBuildFeatureGuide04.html#wq3" />
+  <topic label="About this guide" href="ODEBuildFeatureGuide05.html#preface">
+    <topic label="Who should read this guide?" href="ODEBuildFeatureGuide06.html#whoshouldread" />
+    <topic label="What else should you read?" href="ODEBuildFeatureGuide07.html#whatelseread" />
+    <topic label="Terminology used in this guide" href="ODEBuildFeatureGuide08.html#terminology" />
+    <topic label="How to send your comments" href="ODEBuildFeatureGuide09.html#comments" />
+  </topic>
+  <topic label="Chapter 1. Prerequisites" href="ODEBuildFeatureGuide10.html#prerequisites">
+    <topic label="Supported WebSphere Studio Workbench products" href="ODEBuildFeatureGuide11.html#supportedworkbench">
+      <topic label="What is the WebSphere Studio Workbench?" href="ODEBuildFeatureGuide12.html#wswboverview" />
+      <topic label="Supported Workbench products and versions" href="ODEBuildFeatureGuide13.html#wswbproducts" />
+      <topic label="Workbench download sites" href="ODEBuildFeatureGuide14.html#downloadwswb" />
+    </topic>
+    <topic label="Supported ODE base application versions" href="ODEBuildFeatureGuide15.html#supportedodebase" />
+  </topic>
+  <topic label="Chapter 2. Installing, updating, or removing the ODE Build Feature" href="ODEBuildFeatureGuide16.html#installupdateremove">
+    <topic label="Installing the ODE Build Feature" href="ODEBuildFeatureGuide17.html#installing">
+      <topic label="Step 1. Open the Workbench Install/Update perspective" href="ODEBuildFeatureGuide18.html#installing1" />
+      <topic label="Step 2. Create a site bookmark for the SDWB download site" href="ODEBuildFeatureGuide19.html#installing2" />
+      <topic label="Step 3. Install the ODE Build Feature" href="ODEBuildFeatureGuide20.html#installing3" />
+    </topic>
+    <topic label="Installing feature updates" href="ODEBuildFeatureGuide21.html#updatingfeatures">
+      <topic label="Step 1. Check for available feature updates" href="ODEBuildFeatureGuide22.html#updating1" />
+      <topic label="Step 2. If updates are available, open your Workbench Install/Update perspective" href="ODEBuildFeatureGuide23.html#updating2" />
+      <topic label="Step 3. Install updates for the ODE Build Feature" href="ODEBuildFeatureGuide24.html#updating3" />
+    </topic>
+    <topic label="Removing features" href="ODEBuildFeatureGuide25.html#removingfeatures" />
+  </topic>
+  <topic label="Chapter 3. Getting started" href="ODEBuildFeatureGuide26.html#gettingstarted">
+    <topic label="Known limitations of the ODE Build Feature" href="ODEBuildFeatureGuide27.html#rgetstart1055388" />
+    <topic label="Setting global preferences and properties" href="ODEBuildFeatureGuide28.html#globalpreferences">
+      <topic label="Workbench preferences" href="ODEBuildFeatureGuide29.html#gphead1" />
+      <topic label="ODE Build Feature preferences" href="ODEBuildFeatureGuide30.html#gphead3" />
+      <topic label="ODE Build Feature properties" href="ODEBuildFeatureGuide31.html#gphead4" />
+    </topic>
+    <topic label="Using Workbench views to perform ODE Build Feature tasks" href="ODEBuildFeatureGuide32.html#views">
+      <topic label="Package Explorer view" href="ODEBuildFeatureGuide33.html#viewshead1" />
+      <topic label="C/C++ Project view" href="ODEBuildFeatureGuide34.html#viewshead2" />
+    </topic>
+    <topic label="Creating a new Java project" href="ODEBuildFeatureGuide35.html#rgetstart1019674" />
+  </topic>
+  <topic label="Chapter 4. ODE Build Feature tasks" href="ODEBuildFeatureGuide36.html#tasks">
+    <topic label="Generating makefiles" href="ODEBuildFeatureGuide37.html#generatingmakefiles">
+      <topic label="Prerequisites for generating makefiles" href="ODEBuildFeatureGuide38.html#tplugin1003254" />
+      <topic label="Generating makefiles for a Java project" href="ODEBuildFeatureGuide39.html#genmakefilesjavaproj" />
+      <topic label="Generating makefiles for a C/C++ project" href="ODEBuildFeatureGuide40.html#genmakefilec2b2bproj" />
+      <topic label="Generating makefiles for a project containing Java and C/C++ files" href="ODEBuildFeatureGuide41.html#genmakefilejavac2b2b" />
+      <topic label="Changing the file name of the makefiles" href="ODEBuildFeatureGuide42.html#settingnameofmakefiles" />
+      <topic label="Overwriting existing makefiles" href="ODEBuildFeatureGuide43.html#overwritingexistingmakefiles" />
+    </topic>
+    <topic label="Building a project using the ODE Build Feature" href="ODEBuildFeatureGuide44.html#buildproj">
+      <topic label="Prerequisites for building a project" href="ODEBuildFeatureGuide45.html#preparingodeplugin" />
+      <topic label="Building a full project" href="ODEBuildFeatureGuide46.html#wq68" />
+      <topic label="Building a package or a subdirectory" href="ODEBuildFeatureGuide47.html#buildingpackage" />
+      <topic label="Specifying the name of the jar file" href="ODEBuildFeatureGuide48.html#specifyingthenameofthejar" />
+      <topic label="Specifying the log file name" href="ODEBuildFeatureGuide49.html#specifyingthelogfile" />
+    </topic>
+    <topic label="Creating a project using an existing sandbox" href="ODEBuildFeatureGuide50.html#creatingaprojectusingexisting" />
+    <topic label="Viewing files in the sandbox chain" href="ODEBuildFeatureGuide51.html#viewing_files_in_the_sandbox_chain" />
+  </topic>
+  <topic label="Index" href="ODEBuildFeatureGuide52.html#wq76" />
+</toc>

@@ -1,0 +1,63 @@
+# Buildconf
+#
+# This file is read once for the backing build.  The
+# sandbox_base variable will therefore represent the
+# backing build for the duration of this file's
+# processing.
+
+# For UNIX systems a path seperator is a colon ':'.
+#
+replace setenv PATHSEP :
+replace setenv DIRSEP  /
+replace setenv CMDSEP  &&
+
+#
+# The comments on the DIRSEP lines are to prevent the backslash
+# from being treated as a continuation character.  This is preferable
+# to using double backslashes, since the old version of ODE didn't
+# treat them as escape chars.
+#
+on x86_os2_4 replace setenv PATHSEP ;
+on x86_os2_4 replace setenv DIRSEP  \     # don't remove this comment
+on x86_nt_4  replace setenv PATHSEP ;
+on x86_nt_4  replace setenv DIRSEP  \     # don't remove this comment
+on x86_nt_5  replace setenv PATHSEP ;
+on x86_nt_5  replace setenv DIRSEP  \     # don't remove this comment
+on x86_95_4  replace setenv PATHSEP ;
+on x86_95_4  replace setenv DIRSEP  \     # don't remove this comment
+
+# COMMAND.COM doesn't use the ampersand as a command separator.
+# Use a pipe symbol instead.  Users should override CMDSEP
+# if they use a better shell, such as 4DOS.COM.
+on x86_95_4  replace setenv CMDSEP  |
+
+setenv NPROC             1
+
+# Temporary local variables to be used as shortcuts later in this file.
+replace source_base ${sandbox_base}${DIRSEP}${ODESRCNAME}
+replace export_base ${sandbox_base}${DIRSEP}export${DIRSEP}${CONTEXT}
+
+# Miscellaneous directory/path-related environment variables
+replace setenv OBJECTDIR ..${DIRSEP}obj${DIRSEP}${CONTEXT}
+replace setenv EXPORTDIR ..${DIRSEP}export${DIRSEP}${CONTEXT}
+replace setenv MAKESYSPATH ${source_base}${DIRSEP}rules_mk
+replace setenv INCDIRS "-I${source_base}${DIRSEP}include"
+replace setenv LIBDIRS "-L${export_base}${DIRSEP}usr${DIRSEP}lib"
+replace setenv VPATH "${source_base}${DIRSEP}lib${DIRSEP}linkobjs${PATHSEP}${VPATH}"
+
+# These are Java class dependencies external to this build
+setenv EXTRACLASSES /ode/build/util/latest/src:/ode/tools/java/swing.jar
+on x86_nt_4 replace setenv EXTRACLASSES o:\build\util\latest\src;o:\tools\java\swing.jar
+on x86_nt_5 replace setenv EXTRACLASSES o:\build\util\latest\src;o:\tools\java\swing.jar
+on x86_os2_4 replace setenv EXTRACLASSES o:\build\util\latest\src;o:\tools\java\swing.jar
+
+# These are Java classes within this build
+# Source base should appear before export/classes in case Jikes is used
+replace setenv CLASSPATH ${source_base}${PATHSEP}${sandbox_base}${DIRSEP}export${DIRSEP}classes${PATHSEP}${CLASSPATH}${PATHSEP}${EXTRACLASSES}
+
+# CMVC Specific 
+replace setenv CMVC_BECOME  ${USER}
+replace setenv CMVC_RELEASE %RELEASE_NAME%
+replace setenv CMVC_FAMILY  spacmvc@spacmvc.raleigh.ibm.com@1359
+on x86_nt_4 replace setenv CMVC_BECOME ${USERNAME}
+on x86_nt_5 replace setenv CMVC_BECOME ${USERNAME}

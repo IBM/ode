@@ -1,0 +1,13 @@
+Buildconf
+Makeconf
+Makefile
+lib/io/version.cpp
+com/ibm/ode/lib/io/Version.java
+rules_mk/*.mk
+rules_mk/*.xsd
+doc/pubs/*.htm
+doc/pubs/base/*.htm
+doc/txts/readme.txt
+doc/txts/base/readme.txt
+cmf/ode_cmf.c
+scripts/perl/lib/OdeEnv.pm

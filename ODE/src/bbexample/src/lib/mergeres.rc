@@ -1,0 +1,38 @@
+
+#include "mergeres.h"
+
+#ifdef USE_OS2_RESOURCES
+
+//**************************************************************************
+// icon and bitmap resources                                               *
+//   Relate symbolic name to file containing main window icon.             *
+//**************************************************************************
+ICON WND_MAIN odeos2.ico
+
+//**************************************************************************
+// string resources                                                        *
+//   Relate symbolic names to literal text strings.                        *
+//**************************************************************************
+STRINGTABLE
+  BEGIN
+    STR_ODEMSG, "OS/2 resource example for simple ODE backing build."
+  END
+
+#else   // not OS2
+
+//**************************************************************************
+// icon and bitmap resources                                               *
+//   Relate symbolic name to file containing main window icon.             *
+//**************************************************************************
+WND_MAIN          ICON       odew32.ico
+
+//**************************************************************************
+// string resources                                                        *
+//   Relate symbolic names to literal text strings.                        *
+//**************************************************************************
+STRINGTABLE
+  BEGIN
+    STR_ODEMSG, "Win32 resource example for simple ODE backing build."
+  END
+
+#endif  // not OS2

@@ -1,0 +1,75 @@
+:BHXREF.HDR1ODEBuildFeatureGuide02.htmlwq1WQ1Contents"Contents"
+:BHXREF.HDR2ODEBuildFeatureGuide03.htmlwq2WQ2Figures"Figures"
+:BHXREF.HDR3ODEBuildFeatureGuide04.htmlwq3WQ3Tables"Tables"
+:BHXREF.HDR4ODEBuildFeatureGuide05.htmlprefacePREFACEAbout this guide"About this guide"
+:BHXREF.HDR5ODEBuildFeatureGuide06.htmlwhoshouldreadWHOSHOULDREADWho should read this guide?"Who should read this guide?"
+:BHXREF.HDR6ODEBuildFeatureGuide07.htmlwhatelsereadWHATELSEREADWhat else should you read?"What else should you read?"
+:BHXREF.HDR7ODEBuildFeatureGuide08.htmlterminologyTERMINOLOGYTerminology used in this guide"Terminology used in this guide"
+:BHXREF.HDR8ODEBuildFeatureGuide09.htmlcommentsCOMMENTSHow to send your comments"How to send your comments"
+:BHXREF.HDR9ODEBuildFeatureGuide10.htmlprerequisitesPREREQUISITESChapter 1. Prerequisites"Chapter 1. Prerequisites"
+:BHXREF.HDR10ODEBuildFeatureGuide11.htmlsupportedworkbenchSUPPORTEDWORKBENCHSupported WebSphere Studio Workbench products"Supported WebSphere Studio Workbench products"
+:BHXREF.HDR11ODEBuildFeatureGuide12.htmlwswboverviewWSWBOVERVIEWWhat is the WebSphere Studio Workbench?"What is the WebSphere Studio Workbench?"
+:BHXREF.HDR12ODEBuildFeatureGuide13.htmlwswbproductsWSWBPRODUCTSSupported Workbench products and versions"Supported Workbench products and versions"
+:BHXREF.HDR13ODEBuildFeatureGuide14.htmldownloadwswbDOWNLOADWSWBWorkbench download sites"Workbench download sites"
+:BHXREF.TBL1ODEBuildFeatureGuide14.htmlwq9WQ9Table 1. Download sites for WebSphere Studio productsTable 1
+:BHXREF.HDR14ODEBuildFeatureGuide15.htmlsupportedodebaseSUPPORTEDODEBASESupported ODE base application versions"Supported ODE base application versions"
+:BHXREF.HDR15ODEBuildFeatureGuide16.htmlinstallupdateremoveINSTALLUPDATEREMOVEChapter 2. Installing, updating, or removing the ODE Build Feature"Chapter 2. Installing, updating, or removing the ODE Build Feature"
+:BHXREF.HDR16ODEBuildFeatureGuide17.htmlinstallingINSTALLINGInstalling the ODE Build Feature"Installing the ODE Build Feature"
+:BHXREF.HDR17ODEBuildFeatureGuide18.htmlinstalling1INSTALLING1Step 1. Open the Workbench Install/Update perspective"Step 1. Open the Workbench Install/Update perspective"
+:BHXREF.FIG1ODEBuildFeatureGuide18.htmlwq11WQ11Figure 1. Opening the Workbench Install/Update PerspectiveFigure 1
+:BHXREF.HDR18ODEBuildFeatureGuide19.htmlinstalling2INSTALLING2Step 2. Create a site bookmark for the SDWB download site"Step 2. Create a site bookmark for the SDWB download site"
+:BHXREF.FIG2ODEBuildFeatureGuide19.htmlwq13WQ13Figure 2. Creating a new Site BookmarkFigure 2
+:BHXREF.FIG3ODEBuildFeatureGuide19.htmlfiguresitebookmarkFIGURESITEBOOKMARKFigure 3. Settings for the SDWB 5.0 download site bookmarkFigure 3
+:BHXREF.FIG4ODEBuildFeatureGuide19.htmlwq15WQ15Figure 4. SDWB Features Site BookmarkFigure 4
+:BHXREF.HDR19ODEBuildFeatureGuide20.htmlinstalling3INSTALLING3Step 3. Install the ODE Build Feature"Step 3. Install the ODE Build Feature"
+:BHXREF.FIG5ODEBuildFeatureGuide20.htmlwq17WQ17Figure 5. Available SDWB featuresFigure 5
+:BHXREF.FIG6ODEBuildFeatureGuide20.htmlwq18WQ18Figure 6. Install information for ODE Build FeatureFigure 6
+:BHXREF.HDR20ODEBuildFeatureGuide21.htmlupdatingfeaturesUPDATINGFEATURESInstalling feature updates"Installing feature updates"
+:BHXREF.HDR21ODEBuildFeatureGuide22.htmlupdating1UPDATING1Step 1. Check for available feature updates"Step 1. Check for available feature updates"
+:BHXREF.HDR22ODEBuildFeatureGuide23.htmlupdating2UPDATING2Step 2. If updates are available, open your Workbench Install/Update perspective"Step 2. If updates are available, open your Workbench Install/Update perspective"
+:BHXREF.FIG7ODEBuildFeatureGuide23.htmlwq20WQ20Figure 7. Opening the Workbench Install/Update PerspectiveFigure 7
+:BHXREF.HDR23ODEBuildFeatureGuide24.htmlupdating3UPDATING3Step 3. Install updates for the ODE Build Feature"Step 3. Install updates for the ODE Build Feature"
+:BHXREF.FIG8ODEBuildFeatureGuide24.htmlwq22WQ22Figure 8. Available SDWB featuresFigure 8
+:BHXREF.FIG9ODEBuildFeatureGuide24.htmlwq24WQ24Figure 9. Update information for ODE Build FeatureFigure 9
+:BHXREF.HDR24ODEBuildFeatureGuide25.htmlremovingfeaturesREMOVINGFEATURESRemoving features"Removing features"
+:BHXREF.HDR25ODEBuildFeatureGuide26.htmlgettingstartedGETTINGSTARTEDChapter 3. Getting started"Chapter 3. Getting started"
+:BHXREF.HDR26ODEBuildFeatureGuide27.htmlrgetstart1055388RGETSTART1055388Known limitations of the ODE Build Feature"Known limitations of the ODE Build Feature"
+:BHXREF.HDR27ODEBuildFeatureGuide28.htmlglobalpreferencesGLOBALPREFERENCES<span>Setting global preferences and properties</span>"<span>Setting global preferences and properties</span>"
+:BHXREF.HDR28ODEBuildFeatureGuide29.htmlgphead1GPHEAD1Workbench preferences"Workbench preferences"
+:BHXREF.FIG10ODEBuildFeatureGuide29.htmlwq29WQ29Figure 10. Workbench preferencesFigure 10
+:BHXREF.HDR29ODEBuildFeatureGuide30.htmlgphead3GPHEAD3ODE Build Feature preferences"ODE Build Feature preferences"
+:BHXREF.FIG11ODEBuildFeatureGuide30.htmlgpfig1GPFIG1Figure 11. Global preferences for the ODE Build FeatureFigure 11
+:BHXREF.TBL2ODEBuildFeatureGuide30.htmlwq30WQ30Table 2. Global preferences and descriptionsTable 2
+:BHXREF.HDR30ODEBuildFeatureGuide31.htmlgphead4GPHEAD4ODE Build Feature properties"ODE Build Feature properties"
+:BHXREF.FIG12ODEBuildFeatureGuide31.htmlwq36WQ36Figure 12. Setting ODE project propertiesFigure 12
+:BHXREF.FIG13ODEBuildFeatureGuide31.htmlrgetstart1011328RGETSTART1011328Figure 13. General properties for ODEFigure 13
+:BHXREF.TBL3ODEBuildFeatureGuide31.htmlrgetstart1011731RGETSTART1011731Table 3. General project properties: ODE Build FeatureTable 3
+:BHXREF.FIG14ODEBuildFeatureGuide31.htmlrgetstart1012565RGETSTART1012565Figure 14. Build Flags properties for ODEFigure 14
+:BHXREF.TBL4ODEBuildFeatureGuide31.htmlrgetstart1012209RGETSTART1012209Table 4. Build Flags project properties: ODE Build FeatureTable 4
+:BHXREF.FIG15ODEBuildFeatureGuide31.htmlrgetstart1012911RGETSTART1012911Figure 15. Other Build Options properties for ODEFigure 15
+:BHXREF.TBL5ODEBuildFeatureGuide31.htmlrgetstart1013066RGETSTART1013066Table 5. Other Build Options project properties: ODE Build FeatureTable 5
+:BHXREF.FIG16ODEBuildFeatureGuide31.htmlrgetstart1013476RGETSTART1013476Figure 16. Makefile Generation properties for ODEFigure 16
+:BHXREF.TBL6ODEBuildFeatureGuide31.htmlrgetstart1013653RGETSTART1013653Table 6. Makefile Generation project properties: ODE Build FeatureTable 6
+:BHXREF.HDR31ODEBuildFeatureGuide32.htmlviewsVIEWSUsing Workbench views to perform ODE Build Feature tasks"Using Workbench views to perform ODE Build Feature tasks"
+:BHXREF.HDR32ODEBuildFeatureGuide33.htmlviewshead1VIEWSHEAD1Package Explorer view"Package Explorer view"
+:BHXREF.HDR33ODEBuildFeatureGuide34.htmlviewshead2VIEWSHEAD2C/C++ Project view"C/C++ Project view"
+:BHXREF.HDR34ODEBuildFeatureGuide35.htmlrgetstart1019674RGETSTART1019674Creating a new Java project"Creating a new Java project"
+:BHXREF.HDR35ODEBuildFeatureGuide36.htmltasksTASKSChapter 4. ODE Build Feature tasks"Chapter 4. ODE Build Feature tasks"
+:BHXREF.HDR36ODEBuildFeatureGuide37.htmlgeneratingmakefilesGENERATINGMAKEFILESGenerating makefiles"Generating makefiles"
+:BHXREF.HDR37ODEBuildFeatureGuide38.htmltplugin1003254TPLUGIN1003254Prerequisites for generating makefiles"Prerequisites for generating makefiles"
+:BHXREF.HDR38ODEBuildFeatureGuide39.htmlgenmakefilesjavaprojGENMAKEFILESJAVAPROJGenerating makefiles for a Java project"Generating makefiles for a Java project"
+:BHXREF.HDR39ODEBuildFeatureGuide40.htmlgenmakefilec2b2bprojGENMAKEFILEC2B2BPROJGenerating makefiles for a C/C++ project"Generating makefiles for a C/C++ project"
+:BHXREF.HDR40ODEBuildFeatureGuide41.htmlgenmakefilejavac2b2bGENMAKEFILEJAVAC2B2BGenerating makefiles for a project containing Java and C/C++ files"Generating makefiles for a project containing Java and C/C++ files"
+:BHXREF.HDR41ODEBuildFeatureGuide42.htmlsettingnameofmakefilesSETTINGNAMEOFMAKEFILESChanging the file name of the makefiles"Changing the file name of the makefiles"
+:BHXREF.HDR42ODEBuildFeatureGuide43.htmloverwritingexistingmakefilesOVERWRITINGEXISTINGMAKEFILESOverwriting existing makefiles"Overwriting existing makefiles"
+:BHXREF.HDR43ODEBuildFeatureGuide44.htmlbuildprojBUILDPROJBuilding a project using the ODE Build Feature"Building a project using the ODE Build Feature"
+:BHXREF.HDR44ODEBuildFeatureGuide45.htmlpreparingodepluginPREPARINGODEPLUGINPrerequisites for building a project"Prerequisites for building a project"
+:BHXREF.HDR45ODEBuildFeatureGuide46.htmlwq68WQ68Building a full project"Building a full project"
+:BHXREF.FIG17ODEBuildFeatureGuide46.htmlwq70WQ70Figure 17. Building a full project using ODEFigure 17
+:BHXREF.HDR46ODEBuildFeatureGuide47.htmlbuildingpackageBUILDINGPACKAGEBuilding a package or a subdirectory"Building a package or a subdirectory"
+:BHXREF.HDR47ODEBuildFeatureGuide48.htmlspecifyingthenameofthejarSPECIFYINGTHENAMEOFTHEJARSpecifying the name of the jar file"Specifying the name of the jar file"
+:BHXREF.HDR48ODEBuildFeatureGuide49.htmlspecifyingthelogfileSPECIFYINGTHELOGFILESpecifying the log file name"Specifying the log file name"
+:BHXREF.HDR49ODEBuildFeatureGuide50.htmlcreatingaprojectusingexistingCREATINGAPROJECTUSINGEXISTINGCreating a project using an existing sandbox"Creating a project using an existing sandbox"
+:BHXREF.HDR50ODEBuildFeatureGuide51.htmlviewing_files_in_the_sandbox_chainVIEWING_FILES_IN_THE_SANDBOX_CHAINViewing files in the sandbox chain"Viewing files in the sandbox chain"
+:BHXREF.FIG18ODEBuildFeatureGuide51.htmlwq75WQ75Figure 18. Creating a sandbox file listingFigure 18
+:BHXREF.HDR51ODEBuildFeatureGuide52.htmlwq76WQ76Index"Index"

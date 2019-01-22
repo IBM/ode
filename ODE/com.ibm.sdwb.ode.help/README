@@ -1,0 +1,2 @@
+Before packaging this project, you must run build.xml with Ant.
+This creates the doc.zip file from the src/html contents.

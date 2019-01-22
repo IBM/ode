@@ -1,0 +1,113 @@
+#!/bin/ksh -e
+if [ $# != 2 ]; then
+  echo "ERROR: Must supply the build name "
+  echo "usage:   pubbld <release> <build_name>"
+  echo "example: pubbld 2.4 16"
+  exit 1
+fi
+_release=$1
+_buildsubdir=$2
+_curdir=`pwd`
+_dfsbase=/ode/build/$_release
+_nfsbase=/build/$_release
+_utilbase=/ode/build/util/latest
+_buildbase=${_dfsbase}/${_buildsubdir}
+_scriptbase=${_buildbase}/src/scripts
+_perljarfile=ode${_release}_b${_buildsubdir}_perl.jar
+_perltarfile=ode${_release}_b${_buildsubdir}_perl.tar
+r_acls="-m other_obj:r -m any_other:r"
+x_acls="-m other_obj:x -m any_other:x"
+rx_acls="-m other_obj:rx -m any_other:rx"
+
+################################################################################
+# Set acls for base
+#
+acl_edit ${_buildbase} $x_acls
+acl_edit ${_buildbase}/src $x_acls
+
+################################################################################
+# Set acls for Documentation
+#
+acl_edit ${_buildbase}/src/doc $x_acls
+chmod -R 755 ${_buildbase}/src/doc/pubs
+acl_edit ${_buildbase}/src/doc/pubs $rx_acls
+for _file in ${_buildbase}/src/doc/pubs/*.*; do acl_edit $_file $rx_acls; done
+
+chmod 755 ${_buildbase}/export
+chmod 755 ${_buildbase}/export/javadocs
+acl_edit ${_buildbase}/export/javadocs $rx_acls
+
+chmod -R 755 ${_buildbase}/export/javadocs/pkgapi
+acl_edit ${_buildbase}/export/javadocs/pkgapi $rx_acls
+for _file in ${_buildbase}/export/javadocs/pkgapi/*.*; do acl_edit $_file $rx_acls; done
+
+chmod -R 755 ${_buildbase}/export/javadocs/apitest
+acl_edit ${_buildbase}/export/javadocs/apitest $rx_acls
+for _file in ${_buildbase}/export/javadocs/apitest/*.*; do acl_edit $_file $rx_acls; done
+
+################################################################################
+# Set acls for perl scripts
+#
+chmod -R 755 ${_buildbase}/src/scripts/perl
+acl_edit ${_buildbase}/src/scripts $x_acls
+find ${_buildbase}/src/scripts/perl -exec acl_edit {} $rx_acls \;
+
+# Create jar file of all perl scripts for convenience
+cd ${_scriptbase}; jar -cfM ${_perljarfile} perl; cd -
+mv ${_scriptbase}/${_perljarfile} ${_scriptbase}/perl
+chmod 644 ${_scriptbase}/perl/${_perljarfile}
+acl_edit ${_scriptbase}/perl/${_perljarfile} $r_acls
+
+# Create tar file of all perl scripts for convenience
+cd ${_scriptbase}; tar -cf ${_perltarfile} perl; cd -
+mv ${_scriptbase}/${_perltarfile} ${_scriptbase}/perl
+chmod 644 ${_scriptbase}/perl/${_perltarfile}
+acl_edit ${_scriptbase}/perl/${_perltarfile} $r_acls
+
+#
+# NT and OS/2 can't set permissions of installed files themselves,
+# so do it for them now.
+#
+chmod 755 ${_buildbase}/inst.images/x86_nt_4/bin/*
+chmod 755 ${_buildbase}/inst.images/x86_os2_4/bin/*
+
+################################################################################
+# Set acls for Tools downloads
+#
+echo Setting permissions for $_release
+# Only in i2.3 and later do we publish ship directory and copy javadoc images
+cp /build/$_release/$_buildsubdir/inst.images/ship/*.zip $_buildbase/inst.images/ship/.
+chmod 755 ${_buildbase}/inst.images
+acl_edit ${_buildbase}/inst.images $rx_acls
+chmod -R 755 ${_buildbase}/inst.images/ship
+acl_edit ${_buildbase}/inst.images/ship $rx_acls
+for _file in ${_buildbase}/inst.images/ship/*; do acl_edit $_file $rx_acls; done
+cp -rf $_utilbase/src/images $_buildbase/export/javadocs/pkgapi
+cp -rf $_utilbase/src/images $_buildbase/export/javadocs/apitest
+chmod -R 755 ${_buildbase}/export/javadocs/pkgapi/images
+chmod -R 755 ${_buildbase}/export/javadocs/apitest/images
+acl_edit ${_buildbase}/export/javadocs/pkgapi/images $rx_acls
+acl_edit ${_buildbase}/export/javadocs/apitest/images $rx_acls
+for _file in ${_buildbase}/export/javadocs/apitest/images/*.*; do acl_edit $_file $rx_acls; done
+for _file in ${_buildbase}/export/javadocs/pkgapi/images/*.*; do acl_edit $_file $rx_acls; done
+
+#
+# Copy Sparc Solaris tools to NFS for sunmason1
+#
+_sparc_sol_binsubdir=${_buildsubdir}/inst.images/sparc_solaris_2/bin
+mkdir ${_nfsbase}/${_sparc_sol_binsubdir}
+cp ${_dfsbase}/${_sparc_sol_binsubdir}/* ${_nfsbase}/${_sparc_sol_binsubdir}
+
+chmod -R g+rx ${_nfsbase}/${_buildsubdir}
+
+echo Setting 'latest' links...
+
+# First DFS latest
+cd $_dfsbase
+ln -s -f $_buildsubdir latest
+
+# Now local latest
+cd /build/$_release
+ln -s -f $_buildsubdir latest
+cd $_curdir
+

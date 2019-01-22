@@ -1,0 +1,17 @@
+################################################################################
+#
+# Buildconf.exp
+#
+# This file is expanded at every level in the backing chain except the
+# backing build.  Buildconf is first expanded for the backing build level,
+# then this file is expanded for all the backing levels including the current
+# sandbox.  The sandbox_base variable reflects which sandbox is currently
+# being processed.
+#
+################################################################################
+
+replace source_base ${sandbox_base}${DIRSEP}${ODESRCNAME}
+
+replace setenv MAKESYSPATH ${source_base}${DIRSEP}rules_mk${PATHSEP}${MAKESYSPATH}
+replace setenv CLASSPATH ${source_base}${PATHSEP}${sandbox_base}${DIRSEP}export${DIRSEP}classes${PATHSEP}${CLASSPATH}
+

@@ -1,0 +1,11 @@
+********************************************************************************
+*** KNOWN PROBLEMS/LIMITATIONS ***
+
+Known limitations:
+  none
+
+Known defects:
+  none
+
+*** EOF ***
+

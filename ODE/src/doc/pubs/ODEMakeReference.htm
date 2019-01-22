@@ -1,0 +1,5518 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="updated" content="Tue, 17 Mar 1998 12:05:56">
+   <meta http-equiv="review" content="Wed, 17 Mar 1999 12:05:56">
+   <meta http-equiv="expires" content="Fri, 17 Mar 2000 12:05:56">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <meta name="Author" content="Steve Speicher">
+   <title>ODE Make Reference</title>
+</head>
+<body bgcolor="#FFFFFF">
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+ODE Make Reference</h1>
+Open Development Environment
+<br>Make Reference
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<p>
+<hr>
+<h2>
+<a NAME="ToC"></a>Table of Contents</h2>
+<a NAME="ToC_AboutDoc"></a><b><a href="#AboutDoc">About this document</a></b>
+<p><a NAME="ToC_18"></a><b><a href="#HDRMK">mk - maintain program dependencies</a></b>
+<ul>
+<li>
+<a NAME="ToC_19"></a><a href="#HDRMKSYN">Syntax</a></li>
+
+<li>
+<a NAME="ToC_19a"></a><a href="#mkrc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_20"></a><a href="#Header_20">Parameters</a></li>
+
+<li>
+<a NAME="ToC_Makeconf"></a><a href="#Makeconf">Makeconf and Makeconf.def
+files</a></li>
+
+<li>
+<a NAME="ToC_20a"></a><a href="#envmk">Environment variables used</a></li>
+</ul>
+<a NAME="ToC_81"></a><b><a href="#HDRMAKEDET">Makefile syntax</a></b>
+<menu>
+<li>
+<a NAME="ToC_82"></a><a href="#HDRDEP">File dependency specifications</a></li>
+
+<li>
+<a NAME="ToC_83"></a><a href="#HDRSHELL">Shell commands</a></li>
+
+<li>
+<a NAME="ToC_84"></a><a href="#HDRVAR">Variables</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_variableAssignment"></a><a href="#VariableAssignment">Variable
+assignment</a></li>
+
+<li>
+<a NAME="ToC_variablesUsed"></a><a href="#VariablesUsedbymk">Variables
+used by mk</a></li>
+
+<li>
+<a NAME="ToC_variableModifiers"></a><a href="#VARMODS">Variable modifiers</a></li>
+
+<menu>
+<li>
+<a href="#Amodifier">:A modifier</a></li>
+
+<li>
+<a href="#amodifier">:a modifier</a></li>
+
+<li>
+<a href="#Bmodifier">:B modifier</a></li>
+
+<li>
+<a href="#bmodifier">:b modifier</a></li>
+
+<li>
+<a href="#Cmodifier">:C modifier</a></li>
+
+<li>
+<a href="#Dmodifier">:D modifier</a></li>
+
+<li>
+<a href="#dmodifier">:d modifier</a></li>
+
+<li>
+<a href="#Emodifier">:E modifier</a></li>
+
+<li>
+<a href="#Fmodifier">:F modifier</a></li>
+
+<li>
+<a href="#Gmodifier">:G modifier</a></li>
+
+<li>
+<a href="#Hmodifier">:H modifier</a></li>
+
+<li>
+<a href="#imodifier">:i modifier</a></li>
+
+<li>
+<a href="#Lmodifier">:L modifier</a></li>
+
+<li>
+<a href="#lmodifier">:l modifier</a></li>
+
+<li>
+<a href="#Mmodifier">:M modifier</a></li>
+
+<li>
+<a href="#Mmodifier">:m modifier</a></li>
+
+<li>
+<a href="#Nmodifier">:N modifier</a></li>
+
+<li>
+<a href="#nmodifier">:n modifier</a></li>
+
+<li>
+<a href="#Pmodifier">:P modifier</a></li>
+
+<li>
+<a href="#pmodifier">:p modifier</a></li>
+
+<li>
+<a href="#Qmodifier">:Q modifier</a></li>
+
+<li>
+<a href="#Rmodifier">:R modifier</a></li>
+
+<li>
+<a href="#rmmodifier">:rm modifier</a></li>
+
+<li>
+<a href="#rrmodifier">:rr modifier</a></li>
+
+<li>
+<a href="#Smodifier">:S modifier</a></li>
+
+<li>
+<a href="#smodifier">:s modifier</a></li>
+
+<li>
+<a href="#Tmodifier">:T modifier</a></li>
+
+<li>
+<a href="#Umodifier">:U modifier</a></li>
+
+<li>
+<a href="#umodifier">:u modifier</a></li>
+
+<li>
+<a href="#Xmodifier">:X modifier</a></li>
+
+<li>
+<a href="#xmodifier">:x modifier</a></li>
+
+<li>
+<a href="#bangSignModifier">:! modifier</a></li>
+
+<li>
+<a href="#atSignModifier">:@ modifier</a></li>
+
+<li>
+<a href="#variableSubstitutionModifier">:old_string=new_string</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_wildcardsInModifiers"></a><a href="#Wildcards in Modifier">Wildcards
+in modifiers</a></li>
+
+<li>
+<a NAME="ToC_POSIXregularExpressions"></a><a href="#POSIX Regular Expressions">POSIX
+Regular Expressions</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_85"></a><a href="#HDRINC">Include statements</a></li>
+
+<li>
+<a NAME="ToC_89"></a><a href="#conditionalsandexpressions">Conditionals
+and expressions</a></li>
+
+<menu>
+<li>
+<a href="#staticconditionals">Static conditionals</a></li>
+
+<li>
+<a href="#runtimeconditionals">Run-time conditionals</a></li>
+
+<li>
+<a href="#runtimecommands">Run-time commands</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_86"></a><a href="#HDRCOMM">Comments</a></li>
+
+<li>
+<a NAME="ToC_87"></a><a href="#HDRSPECSRC">Special sources</a></li>
+
+<li>
+<a NAME="ToC_88"></a><a href="#HDRSPECTRG">Special targets</a></li>
+
+<li>
+<a NAME="ToC_89a"></a><u><a href="#HDRSUFFIXTRFMS">Suffix Transformations</a></u></li>
+
+<li>
+<a NAME="ToC_90"></a><u><a href="#HDRPATTERNRULES">Pattern Matching Rules</a></u></li>
+
+<li>
+<a NAME="ToC_91"></a><a href="#HDRFINDFILES">How Make finds files</a></li>
+
+<menu>
+<li>
+<a href="#HDRFINDTARGET">How Make finds target files</a></li>
+
+<li>
+<a href="#HDRFINDINCMAKE">How Make finds included makefiles</a></li>
+</menu>
+</menu>
+
+<hr>
+<h1>
+<a NAME="AboutDoc"></a><a href="#ToC_AboutDoc">About this document</a></h1>
+This document is intended to give the information necessary for the reader
+to use the <b>mk</b> command and syntax of makefiles it processes.
+<p>See the <i><a href="index.htm">ODE Documentation Index</a></i> for a
+complete list of ODE documents and their purposes.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="HDRMK"></a><a href="#ToC_18">mk - maintain program dependencies</a></h2>
+<b>mk</b> simplifies the maintenance of other programs. Its input consists
+of a list of specifications indicating the files on which other programs
+and files depend.
+<p>During normal execution, <b>mk</b> searches for the following specification
+files in the following order:
+<ul>
+<li>
+<b><a href="#Makeconf">Makeconf</a></b></li>
+</ul>
+then ...
+<ul>
+<li>
+<b>makefile.ode</b></li>
+
+<li>
+<b>Makefile.ode</b></li>
+
+<li>
+<b>makefile</b></li>
+
+<li>
+<b>Makefile</b></li>
+</ul>
+You can change which files are searched and the order in which they are
+searched with the <b>-f</b> <i>makefile</i> parameter.
+<p><a href="#HDRMAKEDET">"Makefile syntax"</a> contains a complete description
+of the contents of makefiles.
+<h3>
+<a NAME="HDRMKSYN"></a><a href="#ToC_19">Syntax</a></h3>
+
+<dl><b>mk</b> [<b>-abeiknstw</b>]&nbsp; [-<b>B</b><i>filename</i> ][<b>-D</b><i>variable</i>]&nbsp;
+[<b>-d</b><i>flags</i>]&nbsp; [<b>-f</b><i>makefile</i>] [<b>-I</b><i>directory</i>]&nbsp;
+[<b>-j</b><i>max_jobs</i>]&nbsp; [<b>-L</b><i>max_local_jobs</i>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<b>-R</b><i>remote_hostname</i>] [<b>-O&lt;0</b>|<b>1</b>|<b>2</b>|<b>3</b>[<b>,cache_limit=</b><i>limit</i>]>]
+[<b>-usage | -?</b>] [<b>-version | -rev | -v</b>] [<i>variable=value ...</i>]&nbsp;
+[<i>target...</i>]
+<br>&nbsp;
+<h3>
+<a NAME="mkrc"></a><a href="#ToC_19a">Return codes</a></h3>
+&nbsp;&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Processing error
+<br>&nbsp;&nbsp;&nbsp; <b>2</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Makefile error
+<br>&nbsp;&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="Header_20"></a><a href="#ToC_20">Parameters</a></h3>
+
+<dl>
+<dt>
+<b>-a</b></dt>
+
+<dd>
+Forces rebuilding of all targets even if they are up-to-date.</dd>
+
+<dt>
+<b>-b</b></dt>
+
+<dd>
+Finds both directories or files when searching the file system.&nbsp; Normally,
+<b>mk</b>
+will only find files, not directories.&nbsp; This provides the ability
+to use directories as targets or sources in makefiles. When searching for
+directories only, use the <a href="#HDRSPECSRC">.DIRS special source</a>.</dd>
+
+<dt>
+<b>-B</b> <b><i>filename</i></b></dt>
+
+<dd>
+Generates target-dependency specifications in regular make format and writes
+it to the Bill of Materials (BOM) file. Only those targets that are made
+and the sources that cause them to be made will be included in the file.&nbsp;
+When <b>mk</b> is run in a sandbox environment, this file will be created
+in the sandbox's <b>obj</b> directory tree if <b><i>filename</i></b> is
+a relative path (along with the compiled object files and executables),
+one file per directory.&nbsp; Subsequent calls to <b>mk</b> or recursive
+<b>mk</b>'s
+will not overwrite <b><i>filename </i></b>but instead will append to the
+end of <b><i>filename .&nbsp; </i></b>It is possible to reduce the amount
+of output by marking unwanted targets with the <a href="#HDRSPECSRC"><b>.INVISIBLE</b>
+special source</a>.&nbsp; The content of the BOM file may be modified by
+using the <a href="#ODEMAKE_BOMSHOWTIME">ODEMAKE_BOMSHOWTIME</a> and <a href="#ODEMAKE_BOMSHOWALL">ODEMAKE_BOMSHOWALL</a>
+environment variables.</dd>
+
+<dt>
+<b>-D <i>variable</i></b></dt>
+
+<dd>
+Defines <i>variable</i> to be a global variable with a value of 1.</dd>
+
+<dt>
+<b>-d <i>flags</i></b></dt>
+
+<dd>
+Turns on debugging, and specifies which portions of <b>mk</b> should print
+debugging information. <i>flags</i> can be one or more of the following:</dd>
+
+<dl>
+<dt>
+<b>A</b></dt>
+
+<dd>
+Print all possible debugging information. This is equivalent to specifying
+all of the debugging flags and setting verbose mode for library functions.</dd>
+
+<dt>
+<b>a</b></dt>
+
+<dd>
+Print debugging information about archive searching and caching.</dd>
+
+<dt>
+<b>c</b></dt>
+
+<dd>
+Print debugging information about conditional evaluation.</dd>
+
+<dt>
+<b>d</b></dt>
+
+<dd>
+Print debugging information about file searching and directory caching.</dd>
+
+<dt>
+<b>g1</b></dt>
+
+<dd>
+Print basic target graph information before the actual building of the
+targets.</dd>
+
+<dt>
+<b>g2</b></dt>
+
+<dd>
+Print basic target graph information after building the targets.</dd>
+
+<dt>
+<b>i</b></dt>
+
+<dt>
+<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>Print debugging
+information about including makefiles.</dt>
+
+<dt>
+<b>j</b></dt>
+
+<dd>
+Print debugging information about running multiple shells.</dd>
+
+<dt>
+<b>m</b></dt>
+
+<dd>
+Print debugging information about making targets, including modification
+dates.</dd>
+
+<dt>
+<b>p</b></dt>
+
+<dl>
+<dt>
+Print debugging information about pattern matching rules.</dt>
+</dl>
+
+<dt>
+<b>s</b></dt>
+
+<dd>
+Print debugging information about suffix-transformation rules.</dd>
+
+<dt>
+<b>t</b></dt>
+
+<dd>
+Print debugging information about target list maintenance.</dd>
+
+<dt>
+<b>V</b></dt>
+
+<dd>
+Print debugging information about variable expansion as the variable modifiers
+are applied in addition to the information given with <b>-dv</b>.</dd>
+
+<dt>
+<b>v</b></dt>
+
+<dd>
+Print debugging information about variable assignment, including which
+makefile defined the variable and the line number of that file where the
+variable assignment occurred.</dd>
+</dl>
+
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">
+<dl>
+<dt>
+<b>-dg1</b> and <b>-dg2</b> will print some "duplicate" information that
+is provided by <b>-dA</b>, so <b>-dA</b> does not include <b>-dg1</b> and
+<b>-dg2</b>.
+It will print the following information in the debug log:</dt>
+</dl>
+
+<dl>
+<dl>
+<dt>
+<tt>mk: All debugging options on, -dg1/-dg2 should be used separately</tt></dt>
+</dl>
+</dl>
+
+<dl>
+<dt>
+It is still possible to activate those options with <b>-dA</b> by including
+them explicitly to the command line:</dt>
+</dl>
+
+<dl>
+<dl>
+<dt>
+<tt>mk -dA -dg1 -dg2</tt></dt>
+</dl>
+</dl>
+</td>
+</tr>
+</table>
+
+<dl>
+<dt>
+&nbsp;</dt>
+</dl>
+
+<dt>
+<b>-e</b></dt>
+
+<dd>
+Specifies that environmental variables should override macro assignments
+within makefiles.</dd>
+
+<dt>
+<b>-f <i>makefile</i></b></dt>
+
+<dd>
+Specifies a makefile to be read, rather than using the default.</dd>
+
+<dt>
+<b>-I <i>directory</i></b></dt>
+
+<dd>
+Specifies a directory in which to search for system makefiles (files specified
+within less than( &lt; )/greater than( > ) signs by <a href="#HDRINC">.include
+or .tryinclude statements</a>). The system makefile directory is automatically
+included as part of this search list.</dd>
+
+<dt>
+<b>-i</b></dt>
+
+<dd>
+Ignore command errors.&nbsp; Causes nonzero exits of shell commands in
+the makefile to be ignored. This is equivalent to specifying a dash (<b>-)</b>
+in front of each command line in the makefile (see <a href="#HDRSHELL">Shell
+commands</a>).</dd>
+
+<dt>
+<b>-j <i>max_jobs</i></b></dt>
+
+<dd>
+Specifies the maximum total number of jobs (both local and remote) that
+<b>mk</b>
+can have running at any one time.&nbsp; See the <b>-L</b> flag for related
+information.</dd>
+
+<dt>
+<b>-k</b></dt>
+
+<dd>
+Keep processing independent targets on command error.&nbsp; Targets that
+do not depend (in any way) on a target that causes an error will continue
+being processed.&nbsp; The target that caused the error stops being processed
+(no more of its commands are run).&nbsp; All targets that depend on that
+target, either directly or indirectly, are not processed (their commands
+are not run), but other dependents they have <i>are</i> processed.</dd>
+
+<dt>
+<b>-L <i>max_local_jobs</i></b></dt>
+
+<dd>
+Specifies the maximum number of local jobs that <b>mk</b> can have running
+at any one time.&nbsp; When using both the <b>-j</b> and the <b>-L</b>
+options, if <b>-j</b> is greater than <b>-L</b>, remote jobs are run as
+described in the <a href="ODEBuildReference.htm#Header_110">Remote building</a>
+section. See <b>-R</b> for additional information.&nbsp; If <b>-j</b> is
+less than <b>-L</b>, then the <i>max_local_jobs</i> is set to the <b>-j</b>
+value.</dd>
+
+<dt>
+<b>-n</b></dt>
+
+<dd>
+Displays the commands that would have been executed, but does not actually
+execute them.</dd>
+
+<dt>
+<b>-O</b></dt>
+
+<dd>
+Sets <b>mk</b>'s optimization levels to control the performance of <b>mk</b>
+based on the user's need.&nbsp; This flag can only be used from the command
+line (or <a href="#VariablesUsedbymk"><b>MAKEFLAGS</b> environment variable</a>)
+and cannot be used from within a makefile using the <a href="#HDRSPECTRG"><b>.MAKEFLAGS</b>
+special target</a>.</dd>
+
+<dd>
+<b>0</b></dd>
+
+<dl>
+<dd>
+Do not use the internal file and directory cache, instead always access
+the file system directly to determine file information.&nbsp; This is the
+slowest option and wastes the most memory.&nbsp; It is most useful when
+debugging problems that may be introduced by caching algorithms.</dd>
+</dl>
+
+<dd>
+<b>1</b></dd>
+
+<dl>
+<dd>
+Only cache request files and directories into the internal file and directory
+cache.&nbsp; This could be used when there are many files in the directories
+that are searched but the current makefile only has a dependency on a small
+number of them.</dd>
+</dl>
+
+<dd>
+<b>2</b> (default)</dd>
+
+<dl>
+<dd>
+Cache the entire contents of a directory the first time a file in that
+directory is requested.&nbsp; This can be more time consuming that using
+option <b>-O1</b> if there are many files in directories that are searched
+but many of these files are not referenced from the current makefile.</dd>
+</dl>
+
+<dd>
+<b>3</b>[<b>,cache_limit=</b><i>limit</i>]</dd>
+
+<dl>
+<dd>
+Cache some of the contents of a directory the first time a file in that
+directory is requested but only up to <b>cache_limit</b> files in a directory.&nbsp;
+This option gets the benefit of option <b>-O2</b> without having to cache
+too many files.&nbsp; If a directory is partially cached, then the cache
+for that directory behaves as if the option <b>-O1</b> was given.&nbsp;
+If <b>cache_limit</b> is omitted, the default is <b>1</b> file per directory.</dd>
+</dl>
+
+<dt>
+<b>-R <i>remote_hostname</i></b></dt>
+
+<dd>
+This informs <b>mk</b> where to run remote commands (when <b>-j</b> is
+greater than <b>-L</b>). If this option is not used, <b>mk</b> checks for
+the environment variable ODEMAKE_RHOST. See <b>-L</b> for additional information.&nbsp;
+See the <a href="ODEBuildReference.htm#Header_110">Remote building</a>
+section for details on how remote building works.</dd>
+
+<dt>
+<b>-s</b></dt>
+
+<dd>
+Inhibits the echoing of commands as they are executed. This is equivalent
+to specifying <b><a href="#HDRSHELL">@</a></b> before each command line
+in the makefile.</dd>
+
+<dt>
+<b>-t</b></dt>
+
+<dd>
+Update (i.e., "touch") the out-of-date targets' modification times to make
+them appear up-to-date, instead of running the targets' commands as specified
+in the makefile. Does <b>not</b> create files if they do not exist.</dd>
+
+<dt>
+<b>-version, -rev, -v</b></dt>
+
+<dd>
+Prints version information, and exits.</dd>
+
+<dt>
+<b>-w</b></dt>
+
+<dd>
+Use whitespace characters (blanks or tabs) instead of tabs at the the beginning
+of <a href="#HDRSHELL">shell commands</a>. This is for use on OS/2 or Win32
+platforms where certain editors replace tabs with spaces. The option can
+be turned on for an entire build by adding the <b>-w</b> flag to the <a href="#HDRSPECTRG"><b>.MAKEFLAGS</b>
+special target</a> in the <b>Makeconf</b> file.</dd>
+
+<dt>
+<b>-usage, -?</b></dt>
+
+<dd>
+Prints information on how to use this command, and exits.</dd>
+
+<dt>
+<b><i>variable=value ...</i></b></dt>
+
+<dd>
+Designates one or more command-line variables to be created. This option
+sets the value of <i>variable</i> to <i>value</i>. This specification overrides
+variables with the same name in the environment or in the makefiles. Only
+the standard <b>=</b> operator may be used; the other assignment operators
+listed under <a href="#VariableAssignment">Variable assignments</a> cannot
+be used.</dd>
+
+<dt>
+<b><i>target ...</i></b></dt>
+
+<dd>
+Designates one or more specific targets to create, rather than using the
+default target.</dd>
+</dl>
+
+<h3>
+<a NAME="Makeconf"></a><a href="#ToC_Makeconf">The Makeconf and Makeconf.def
+files</a></h3>
+The<b> Makeconf </b>configuration file is located under the <b>src</b>
+directory and marks the top of source tree. Several built-in variables
+for the ODE <b>mk</b> command are defined based upon the location of this
+file and its relationship to the directory the <b>mk</b> command was invoked
+from. The format of the file is the same as a makefile, but only conditionals
+and variable assignments are recommended in this context.&nbsp; See the
+<a href="ODEAdminsGuide.htm#Header_13">backing
+build example</a> for a sample of a complete <b>Makeconf</b> file. A <a href="ODEAdminsGuide.htm#InstallConfigFiles">generic
+version</a> is also available for starting a new ODE project.
+<p>The <b>Makeconf</b> file may optionally include a file called <b>Makeconf.def</b>
+(a default version of this file is provided by ODE).&nbsp; This file is
+used to set default values of <b>_SUFF</b> type variables (such as <b>PROG_SUFF</b>)
+such that typical target-specific variable uses may be placed above the
+line at which the rules are included.&nbsp; This file should be placed
+in the <b>rules_mk</b> directory (along with your <b>${CONTEXT}.mk</b>
+and custom rules files) and included as follows:
+<p><tt>.include &lt;Makeconf.def></tt>
+<br>or
+<br><tt>.tryinclude &lt;Makeconf.def></tt>
+<h3>
+<a NAME="envmk"></a><a href="#ToC_20a">Environment variables used</a></h3>
+&nbsp;See <a href="#VariablesUsedbymk">Variables used by mk</a> section
+of <a href="#HDRMAKEDET">Makefile syntax</a> for environment variables
+used.
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">
+<dl>
+<dt>
+<b>mk</b> creates temporary directories/files for its use. These are created
+in the directories specified by the environment variables ODETEMP, TMPDIR,
+TMP, TEMP, in that order. If none of these variables are set then <b>mk</b>
+uses the current working directory.&nbsp;</dt>
+</dl>
+</td>
+</tr>
+</table>
+
+<p>
+<hr>
+<h1>
+<a NAME="HDRMAKEDET"></a><a href="#ToC_81">Makefile syntax</a></h1>
+This chapter provides detailed descriptions of makefiles. Makefile lines
+are described by these different types of syntax:
+<ul>
+<li>
+<a href="#HDRDEP">File dependency specifications</a></li>
+
+<li>
+<a href="#HDRSHELL">Shell Commands</a></li>
+
+<li>
+<a href="#HDRVAR">Variables</a></li>
+
+<li>
+<a href="#HDRINC">Include statements</a></li>
+
+<li>
+<a href="#conditionalsandexpressions">Conditionals and Expressions</a></li>
+
+<li>
+<a href="#HDRCOMM">Comments</a></li>
+
+<li>
+<a href="#HDRSPECSRC">Special sources</a></li>
+
+<li>
+<a href="#HDRSPECTRG">Special targets</a></li>
+
+<li>
+<a href="#HDRSUFFIXTRFMS">Suffix transformations</a></li>
+
+<li>
+<a href="#HDRPATTERNRULES">Pattern matching rules</a></li>
+</ul>
+Makefiles are processed in two stages:
+<blockquote>
+<li>
+As lines of the makefile are read, comments and lines with only whitespace
+are discarded, variables assignments are collected and some are evaluated,
+static conditionals and includes are processed (which can cause more makefiles
+to be read), and file dependencies and associated shell commands are collected.
+As file dependencies are read, the target part is processed, but the source
+dependents are not.</li>
+
+<li>
+Dependency lines are processed further to determine which targets and associated
+sources will be [re]created. At the time that a target is being created,
+its associated shell commands are processed.</li>
+</blockquote>
+You can signal the continuation of a makefile line by ending it with a
+backslash (\). The default action is to replace the backslash and the trailing
+new-line character with a space character.&nbsp; When the environment variable
+<a href="#ODEMAKE_NOCONTSPC">ODEMAKE_NOCONTSPC</a>&nbsp;
+is defined, the backslash and the trailing new-line character are not replaced
+with a space character.&nbsp; If the continuation backslash character does
+not exist within a quoted string, the whitespace between the lines is reduced
+to a single space character.&nbsp; When the continuation backslash character
+exists within a quoted string, then all the whitespace within the quotes
+is preserved.&nbsp; Comments cannot be continued to new lines in this way
+since the contents of comments are completely ignored.
+<hr>
+<h2>
+<a NAME="HDRDEP"></a><a href="#ToC_82">File dependency specifications</a></h2>
+Dependency lines consist of one or more targets, an operator, and no sources,
+or one or more sources. This construct creates a relationship between the
+targets and the sources; generally, the targets are created from the sources.
+For example, in the dependency statement, <b>helloworld.o: /proj/inc/helloworld.h</b>,
+<b>helloworld.o</b>
+is the target and <b>/proj/inc/helloworld.h</b> is the source. There are
+three operators that can be used between the target and the source:
+<dl>&nbsp;
+<table BORDER=2 WIDTH="100%" >
+<tr>
+<td WIDTH="2%"><b>:</b></td>
+
+<td WIDTH="98%">The target will be [re]created if any of its sources have
+been modified more recently than itself.&nbsp; If the target is a target
+on multiple dependency lines then the sources are accumulated from all
+of those dependency lines. The <b>.REPLSRCS</b> <a href="#HDRSPECSRC">special
+source</a> can affect the accumulation. The commands used to create the
+target are those associated with the first dependency line for that target
+which has commands.&nbsp; In the case of suffix transformations and pattern
+rules the commands from the last dependency line are used.&nbsp; The latter
+behavior can be modified using the <b>.PRECMDS</b>, <b>.POSTCMDS</b>, and
+<b>.REPLCMDS
+</b><a href="#HDRSPECSRC">special
+sources</a>.&nbsp; The target is removed from the list of targets to create
+if
+<b>mk</b> is interrupted (unless the <b>.PRECIOUS</b> special source
+is associated with the target).</td>
+</tr>
+
+<tr>
+<td WIDTH="2%"><b>!</b></td>
+
+<td WIDTH="98%">The target will always be [re]created, but only after all
+sources have been examined and [re]created as necessary. If the target
+is a target on multiple dependency lines then the sources are accumulated
+from all of those dependency lines.&nbsp; The <b>.REPLSRCS</b> <a href="#HDRSPECSRC">special
+source</a> can affect the accumulation. The commands used to [re]create
+the target are those associated with the first dependency line for that
+target which has commands.&nbsp; In the case of suffix transformations
+and pattern rules the commands from the last dependency line are used.&nbsp;
+The latter behavior can be modified using the
+<b>.PRECMDS</b>,
+<b>.POSTCMDS</b>,
+and
+<b>.REPLCMDS </b><a href="#HDRSPECSRC">special sources</a>. The target
+is removed from the list of targets to create if
+<b>mk</b> is interrupted
+(unless the <b>.PRECIOUS</b> special source is associated with the target).</td>
+</tr>
+
+<tr>
+<td WIDTH="2%"><b>::</b></td>
+
+<td WIDTH="98%">The target will be [re]created if any of the sources for
+the dependency line have been modified more recently than the target, by
+using the commands associated with the dependency line. If the target appears
+on multiple dependency lines, each dependency line is processed independently.
+Sources for a target do <i>not</i> accumulate over dependency lines; commands
+are specific to the sources with which they are associated. The target
+is <i>not</i> removed from the list of targets to create if <b>mk</b> is
+interrupted, much as if the target has the <b>.PRECIOUS</b> special source.</td>
+</tr>
+</table>
+</dl>
+Blanks are used to separate multiple sources or targets on a dependency
+line.&nbsp; For example:
+<dl><tt>a b: c d</tt></dl>
+specifies that both <b><tt>a</tt></b> and <b><tt>b</tt></b> are targets,
+and each of them is dependent on the two sources <b><tt>c</tt></b> and
+<b><tt>d</tt></b>.&nbsp;
+On Windows NT, use of filenames with embedded blanks is common.&nbsp; ODE
+has limited support for this, discussed in the
+<i><a href="ODEAdminsGuide.htm#SpacesInPaths">ODE
+Installation and Administration Guide</a></i>.&nbsp; For the Windows NT
+version of <b>mk</b>, dependency rules may have filenames with embedded
+blanks, provided that they are enclosed in double quotes.&nbsp; For example:
+<dl><tt>"a b": "c d"</tt></dl>
+would be interpreted to specify a single target with filename <b>a b</b>
+and a single source with filename <b>c d</b>.&nbsp; This behavior was not
+added to the non-Windows versions of <b>mk</b>.&nbsp;
+<hr>
+<h2>
+<a NAME="HDRSHELL"></a><a href="#ToC_83">Shell commands</a></h2>
+Each dependency line optionally may have associated with it a series of
+commands, collectively called a creation script. Normally, these commands
+create the target. The creation script optionally can begin with a command
+on the dependency line, following a semicolon. If there are succeeding
+command lines in the creation script then they must begin with a tab (if
+<b>mk</b>
+is not run with the <a href="#Header_20"><b>-w</b> flag</a>) or any whitespace
+character (if <b>mk</b> is run with the <a href="#Header_20"><b>-w</b>
+flag</a>). Blank lines and comment lines (with or without initial whitespace)
+do not end the creation script; they are ignored. The first non-comment
+line that does not begin with a tab (or whitespace, if <b>-w</b> was used)
+is the first line that is not a part of the command script.
+<p>If the first non-whitespace character of a command is a period, the
+command is assumed to be either a <a href="#runtimeconditionals">run-time
+conditional</a> or a <a href="#runtimecommands">run-time command</a>. Otherwise
+the command is scanned for variables, which are evaluated. After variable
+evaluation, if the resulting line is non-blank, the command is passed to
+a shell interpreter to be run as a command. Even if the variables on the
+line result in a blank line, the evaluation of the variables can produce
+useful side effects by using <a href="#VARMODS">variable modifiers</a>.
+Useful side effects include writing information to files or standard output
+(<a href="#Amodifier">:A</a> and <a href="#amodifier">:a</a> modifiers),
+creation of directories (<a href="#Cmodifier">:C</a>), and deletion of
+files and directories (<a href="#rmmodifier">:rm</a> and <a href="#rrmodifier">:rr</a>).
+<p>Appearance of the <b>@</b> (at sign) or <b>-</b> (dash) characters as
+the first one or two characters of a command line connote special treatment
+of the command. The <b>@</b> inhibits echoing of the command before execution.
+The <b>-</b> causes any nonzero return code status of the command line
+to be ignored.
+<p>The <a href="#ODEMAKE_SHELL">ODEMAKE_SHELL</a> environment variable
+can be used to control which shell interpreter is used.
+<br>
+<hr>
+<h2>
+<a NAME="HDRVAR"></a><a href="#ToC_84">Variables</a></h2>
+Variable names in the <b>mk</b> command can be either uppercase or lowercase
+letters. Uppercase variable names are recommended for a makefile programming
+convention.&nbsp; Variable names can consist of virtually any characters
+except <a href="#VariableAssignment">variable assignment operators</a>
+or an odd number of double quotes ("), but a name consisting of only a
+single dollar sign ($) or containing two dollar signs in sequence ($$)
+is not allowed.&nbsp; Variable values can consist of virtually any characters
+except pound signs (#); use the variable POUND to include the pound sign
+in a value.&nbsp; Values are only checked for validity when they are evaluated
+(see below for when evaluations occur).
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">
+<dl>
+<dt>
+Double quotes (") in variable values aren't treated specially as they are
+parsed, so they need not be closed.</dt>
+</dl>
+</td>
+</tr>
+</table>
+
+<p><b>mk</b> removes any spaces appearing before the assigned value. If
+a value is being appended, <b>mk</b> inserts a single space between the
+previous and the appended values.
+<p>It is possible to assign multiple variables in the one line to the same
+value.
+<dl>
+<dt>
+Example:</dt>
+
+<dd>
+<tt>TVAR1 TVAR2 TVAR3 = val</tt></dd>
+
+<dd>
+<tt>${TVAR1} -> "val"</tt></dd>
+
+<dd>
+<tt>${TVAR2} -> "val"</tt></dd>
+
+<dd>
+<tt>${TVAR3} -> "val"</tt></dd>
+</dl>
+Variable names consisting of spaces inside should be double quoted.
+<dl>
+<dt>
+Example:</dt>
+
+<dd>
+<tt>"TVAR1 TVAR2" TVAR3 = val</tt></dd>
+
+<dd>
+<tt>${"TVAR1 TVAR2"} -> "val"</tt></dd>
+
+<dd>
+<tt>${TVAR3} -> "val"</tt></dd>
+</dl>
+You can cause expansion of variables by enclosing the variable name in
+braces (<b>{}</b>) or parentheses (<b>()</b>), and preceding the enclosed
+variable name with a dollar sign (<b>$</b>). For example, <b>${HOME}</b>
+expands to the home directory. If the variable name contains only a single
+letter, the enclosing braces are not required; however, this shorter form
+is not recommended.&nbsp; If <b>ODEMAKE_DOLLARS</b> is defined, the shorter
+form ($ followed by a single letter) is not expanded and a name consisting
+of a single $ is allowed.
+<p>Variables are expanded only when needed. This may occur while the makefile
+is being parsed, or at some time afterwards.&nbsp; The following table
+shows when variables are expanded:
+<br>&nbsp;
+<table BORDER WIDTH="85%" >
+<tr VALIGN=CENTER>
+<td WIDTH="50%">
+<center><b>During Parsing</b></center>
+</td>
+
+<td WIDTH="50%">
+<center><b>After Parsing</b></center>
+</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td WIDTH="50%">
+<ul>
+<li>
+<font size=-1>target/dependency specifications</font></li>
+
+<li>
+<font size=-1>left hand side of all variable assignments (the variable
+name)</font></li>
+
+<li>
+<font size=-1>right hand side of the !=, :=, and %= variable assignments</font></li>
+
+<li>
+<font size=-1>conditional statements (.include, etc.)</font></li>
+</ul>
+</td>
+
+<td WIDTH="50%">
+<ul>
+<li>
+<font size=-1>variables that appear in a target's commands are expanded
+only at the time the command is actually executed</font></li>
+
+<li>
+<font size=-1>dependencies in a target/dependency specification are expanded
+a second time when mk is determining which targets are out-of-date (this
+is the only case where using delayed expansion [using two dollar signs
+to introduce variables] is meaningful, since no other usage causes a second
+expansion to occur)</font></li>
+</ul>
+</td>
+</tr>
+</table>
+
+<p>When <b>mk</b> needs a variable, four classes of variables are searched
+in the following order: local variables, command line variables, global
+variables, and environment variables. For example, if a variable is defined
+both on the command line and as an environment variable, the command line
+variable will be used. If the <b>mk</b> <b>-e</b> parameter is used, environment
+variables are searched before the global variables.
+<dl>
+<dt>
+&nbsp;<b>local variables</b></dt>
+
+<dd>
+Variables defined for a specific target.</dd>
+
+<dt>
+<b>command-line variables</b></dt>
+
+<dd>
+Variables defined as part of the <b>mk</b> command line</dd>
+
+<dt>
+<b>global variables</b></dt>
+
+<dd>
+Variables defined in the makefile or in included makefiles.</dd>
+
+<dt>
+<b>environment variables</b></dt>
+
+<dd>
+Variables defined as part of the <b>mk</b> environment.</dd>
+</dl>
+
+<h3>
+&nbsp;<a NAME="VariableAssignment"></a><a href="#ToC_variableAssignment">Variable
+assignments</a></h3>
+Except for the %= operator, all of the operators below assign values to
+global variables.
+<dl>
+<dt>
+<b>=</b></dt>
+
+<dd>
+Assigns the value to the variable. Any previous value is overridden.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>TVAR = value1</tt></dd>
+
+<dd>
+<tt>TVAR = value2</tt></dd>
+
+<dd>
+<tt>${TVAR} -> "value2"</tt></dd>
+</dl>
+
+<dt>
+<b>+=</b></dt>
+
+<dd>
+Appends the value to the current value of the variable.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>TVAR = value1</tt></dd>
+
+<dd>
+<tt>TVAR += value2</tt></dd>
+
+<dd>
+<tt>${TVAR} -> "value1 value2"</tt></dd>
+</dl>
+
+<dt>
+<b>?=</b></dt>
+
+<dd>
+Assigns the value to the variable only if no value has been defined for
+the variable.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>TVAR = value1</tt></dd>
+
+<dd>
+<tt>TVAR ?= value2</tt></dd>
+
+<dd>
+<tt>${TVAR} -> "value1"</tt></dd>
+</dl>
+
+<dt>
+<b>:=</b></dt>
+
+<dd>
+Assigns with expansion; that is, expand the value before assigning it to
+the variable. Normally, expansion is not performed until the variable is
+referenced.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>TVAR1 = value1</tt></dd>
+
+<dd>
+<tt>TVAR2 := ${TVAR1}</tt></dd>
+
+<dd>
+<tt>TVAR3 = ${TVAR1}</tt></dd>
+
+<dd>
+<tt>TVAR1 = value2</tt></dd>
+
+<dd>
+<tt>${TVAR2} -> "value1"</tt></dd>
+
+<dd>
+<tt>${TVAR3} -> "value2"</tt></dd>
+</dl>
+
+<dt>
+<b>%=</b></dt>
+
+<dd>
+Immediately expands the variable and assigns it as an environment variable.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>TVAR %= value1</tt></dd>
+
+<dd>
+<tt>${TVAR} -> "value1"</tt></dd>
+</dl>
+
+<dt>
+<b>!=</b></dt>
+
+<dd>
+Expands the value, passes it to the shell for execution, and assigns the
+result to the variable. Any new line characters in the result are replaced
+with spaces.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>TVAR != echo a</tt></dd>
+
+<dd>
+<tt>${TVAR} -> "a"</tt></dd>
+</dl>
+
+<dt>
+<b>.undef<i>variable</i></b></dt>
+
+<dd>
+Undefines the specified global variable. Only global variables may be undefined.</dd>
+
+<br>&nbsp;</dl>
+
+<h3>
+<a NAME="VariablesUsedbymk"></a><a href="#ToC_variablesUsed">Variables
+used by mk</a></h3>
+Reserved variables are those variables either read or set by <b>mk</b>.
+<p>The local variables only exist while processing the command script of
+the target that is being built. The local variables are:
+<dl>
+<dt>
+<b><i>.ALLSRC</i></b></dt>
+
+<dd>
+The list of all sources for this target (also known as <b>></b>).</dd>
+
+<dt>
+<b><i>.ARCHIVE</i></b></dt>
+
+<dd>
+The name of the archive file (also known as <b>!</b>).</dd>
+
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">Archive files exist on Unix operating systems, are typically
+created with the "ar" command and have a ".a" file extension.&nbsp;</td>
+</tr>
+</table>
+
+<dt>
+<b><i>.IMPSRC</i></b></dt>
+
+<dd>
+The name/path of the source from which the target is to be transformed
+(the implied source). This variable is also known as <b>&lt;</b>.</dd>
+
+<dt>
+<b><i>.MEMBER</i></b></dt>
+
+<dd>
+The name of the active member (also known as <b>%</b>).</dd>
+
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" HEIGHT="22" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%" HEIGHT="22">Archives contain members, when the target is
+a member of an archive, this variable is set to its name.&nbsp;</td>
+</tr>
+</table>
+
+<dt>
+<b><i>.OODATE</i></b></dt>
+
+<dd>
+The list of those sources for this target that were deemed out-of-date
+(also known as <b>?</b>).</dd>
+
+<dt>
+<b><i>.PREFIX</i></b></dt>
+
+<dd>
+The prefix of the target, consisting of only the file name; this variable
+contains no suffix. This variable is also known as <b>*</b>.</dd>
+
+<dt>
+<b><i>.TARGET</i></b></dt>
+
+<dd>
+The name of the target (also known as <b>@</b>).</dd>
+
+<dt>
+<b><i>.TARGETS</i></b></dt>
+
+<dd>
+This variable contains the <i>main</i> target(s) being made for the current
+invocation of <b>mk</b>, and does not change from target to target.&nbsp;
+When one or more targets are specified on the command line (e.g., <b><nobr>mk
+foo bar</nobr></b>), then those are the values in <b>.TARGETS </b>(e.g.,
+<b>foo
+bar</b>).&nbsp; When no targets are specified on the the command line (e.g.,
+<b>mk</b>),
+then whichever target <b>mk</b> determines is the main target in the makefile
+(normally the first target it finds) will be the value of <b>.TARGETS</b>
+(e.g., <b>build_all</b>).</dd>
+</dl>
+The shorter forms of the above variables (<b>></b>, <b>&lt;</b>, <b>?</b>,
+<b>*</b>,
+<b>@</b>,
+<b>!</b>,
+and <b>%</b>) are permitted, but are not recommended.
+<p>Because they expand to the proper value for each target on a dependency
+line, you can use four of the local variables in sources on dependency
+lines. These four are: <b>.TARGET</b>, <b>.PREFIX</b>, <b>.ARCHIVE</b>,
+and <b>.MEMBER</b>. However, when using these variables on a dependency
+line, you must use double dollar signs to delay the expansion. For example,
+"foo.o: $${.PREFIX}.c" is equivalent to "foo.o: foo.c".
+<p>In addition, <b>mk</b> sets, or has access to information on, the following
+variables:
+<dl>
+<dt>
+<b>$</b></dt>
+
+<dd>
+A single dollar sign (<b>$$</b> "expands" to a single dollar sign).</dd>
+
+<dt>
+<b><i>MAKE</i></b></dt>
+
+<dd>
+The name with which <b>mk</b> was executed (argv[0]).</dd>
+
+<dt>
+<b><i>CURDIR</i></b></dt>
+
+<dd>
+A path to the directory in which <b>mk</b> was executed.</dd>
+
+<dt>
+<b><i>MAKEFILE</i></b></dt>
+
+<dd>
+A variable that is set to the first makefile being processed. This value
+is not reset for included makefiles.</dd>
+
+<dt>
+<b><i>MAKEFLAGS</i></b></dt>
+
+<dd>
+An environmental variable that may contain anything specified on the <b>mk</b>
+command line. Any data specified on the <b>mk</b> command line is appended
+to the <b>MAKEFLAGS</b> variable; this value is then entered into the environment
+for programs executed by <b>mk</b>.</dd>
+
+<dt>
+<a NAME="VPATH"></a><b><i>VPATH</i></b></dt>
+
+<dd>
+A variable that indicates any directories to be appended to the search
+path. This variable is similar to the <a href="#spectarg_PATH"><b>.PATH</b>
+special target</a>, but without the ability to handle suffixes.&nbsp; The
+directories must be separated by path separator characters (not whitespace).&nbsp;
+See
+<a href="#HDRFINDFILES">How Make finds files</a>&nbsp; for more information.</dd>
+
+<dt>
+<b><i>.PATH[.suffix]</i></b></dt>
+
+<dd>
+The <a href="#spectarg_PATH"><b>.PATH</b> and <b>.PATH.suffix</b> special
+targets</a> can be used in a variable context, where their values will
+be the current values set for the special targets. <b>.PATH</b> and <b>.PATH.suffix</b>
+values should only be set by using them as special targets; they should
+not be set by using variable assignment.</dd>
+
+<dt>
+<b><i>MAKETOP</i></b></dt>
+
+<dd>
+A variable pointing to the top of the source area. For example, if you
+were in the <b>src/xx/yy</b> path, <b>MAKETOP</b> would contain <b>../../</b>.</dd>
+
+<dt>
+<b><i>MAKEDIR</i></b></dt>
+
+<dd>
+A variable showing subdirectories under the source directory. For example,
+if you were in the <b>src/xx/yy</b> path, <b>MAKEDIR</b> would contain
+<b>/xx/yy</b>.</dd>
+
+<dt>
+<b><i>MAKESUB</i></b></dt>
+
+<dd>
+A variable showing the subdirectories under the source tree. For example,
+if you were in the <b>src/xx/yy </b>path, <b>MAKESUB</b> would contain
+<b>xx/yy/</b>.</dd>
+
+<dt>
+<a NAME="MAKEOBJDIR"></a><b><i>MAKEOBJDIR</i></b></dt>
+
+<dd>
+This defines where mk will change directory to and generate targets.&nbsp;
+This may only be modified in the <b>Makeconf</b> file.&nbsp; The default
+value is <b>OBJECTDIR</b> which is defined in the <b>Buildconf</b> file.</dd>
+
+<dt>
+<a NAME="MAKESRCDIRPATH"></a><b><i>MAKESRCDIRPATH</i></b></dt>
+
+<dd>
+This only exists in the <b>Makeconf</b> file. It defines where mk will
+search for the primary makefile.&nbsp; See <a href="#HDRFINDFILES">How
+Make finds files</a>&nbsp; for more information.</dd>
+
+<dt>
+<b><i>MAKESYSPATH</i></b></dt>
+
+<dd>
+The default search path for the system <a href="#HDRINC">include statements</a>
+(any angle-bracketed <b>.include</b> or <b>.tryinclude</b> lines).</dd>
+
+<dt>
+<b><i>NPROC</i></b></dt>
+
+<dd>
+The maximum number of jobs <b>mk</b> can run in parallel, see -j and -L
+flags.</dd>
+
+<dt>
+<a NAME="ODEMAKE_BOMSHOWALL"></a><b><i>ODEMAKE_BOMSHOWALL</i></b></dt>
+
+<dl>
+<dt>
+Environment variable so the user can control the content of the Bill of
+Materials (BOM) file.&nbsp; If defined, mk will add all the sources of
+a target to the BOM file.&nbsp; The default is to display only those scources
+that caused the target to be recreated.</dt>
+</dl>
+
+<dt>
+<a NAME="ODEMAKE_BOMSHOWTIME"></a><b><i>ODEMAKE_BOMSHOWTIME</i></b></dt>
+
+<dl>
+<dt>
+Environment variable so the user can control the content of the Bill of
+Materials (BOM) file.&nbsp; If defined, mk will add a timestamp to all
+the targets listed in the BOM file.&nbsp; The default is to not display
+date and time information.</dt>
+</dl>
+
+<dt>
+<a NAME="ODEMAKE_DOLLARS"></a><b><i>ODEMAKE_DOLLARS</i></b></dt>
+
+<dl>
+<dt>
+Environment variable so the user can control how mk processes dollar signs
+(<b>$</b>).&nbsp; If defined, mk will not expand a dollar sign followed
+immediately by a character (<b>$c</b>).&nbsp; The dollar sign followed
+by a bracket ( <b>{</b> or <b>(</b> ) will still be expanded.&nbsp; Running
+the command&nbsp; "<b>mk -DODEMAKE_DOLLARS</b>" with a makefile that has
+<b>JavaClassA$9.class
+</b>as
+a target will have the expected results where the <b>$9</b> will not be
+expanded.&nbsp;&nbsp; The predefined single character variables&nbsp; (<b>></b>,
+<b>&lt;</b>,
+<b>?</b>,
+<b>*</b>,
+<b>@</b>,
+<b>!</b>,
+and <b>%</b>)&nbsp; will still be expanded.&nbsp; The default is to treat
+the single character following the dollar sign as a variable and expand
+it.</dt>
+</dl>
+
+<dt>
+<a NAME="ODEMAKE_NOCONTSPC"></a><b><i>ODEMAKE_NOCONTSPC</i></b></dt>
+
+<dd>
+Environment variable so the user can control how mk processes the continuation
+character (\) when parsing makefiles.&nbsp; If defined, mk will not replace
+the continuation character with a space character.&nbsp; The default is
+to replace the continuation character with a space character.</dd>
+
+<dt>
+<a NAME="ODEMAKE_SHELL"></a><b><i>ODEMAKE_SHELL</i></b></dt>
+
+<dl>
+<dt>
+Environment variable so the user can control the shell (and its flags)
+that mk uses to run commands.&nbsp; Will be tested for existence when ODE
+runs an external command (this does not apply to workon, which uses SHELL
+instead).&nbsp; If the variable exists, it is used to prepend the command
+executed.&nbsp; It must therefore include any necessary flags to make sure
+the shell will exit when finished.&nbsp; For example, the default setting
+of this variable on Windows NT would be "CMD.EXE /C".</dt>
+</dl>
+
+<dt>
+<a NAME="ODEMAKE_TFMFIRST"></a><b><i>ODEMAKE_TFMFIRST</i></b></dt>
+
+<dd>
+Environment variable so the user can control how mk searches for implied
+targets.&nbsp; The default operation of mk is to see if a target matches
+a pattern rule prior to checking the suffix transformations.&nbsp; This
+variable should be defined when it is desired that the suffix transformations
+should be checked before the pattern rules.</dd>
+
+<dt>
+<b><i>ODERELEASE</i></b></dt>
+
+<dd>
+The release number of the current <b>mk</b> command.</dd>
+
+<dt>
+<b><i>POUND</i></b></dt>
+
+<dd>
+Set to the '#' character to disable <b>mk</b> from commenting out strings
+in which a '#' is desired.</dd>
+
+<dt>
+<b><i>BACKED_SANDBOXDIR</i></b></dt>
+
+<dd>
+Environment variable containing the base directories of all sandboxes in
+the backing chain.</dd>
+</dl>
+See also the list of environment variables used for <a href="ODEBuildReference.htm#Header_110">Remote
+building</a>.
+<h3>
+<a NAME="VARMODS"></a><a href="#ToC_variableModifiers">Variable modifiers</a></h3>
+You can cause modification of variable expansion to select or modify each
+word of the variable value. A word is a sequence of characters delimited
+by a space. The general format of variable expansion is:
+<dl>${<i>variable</i>[:<i>modifier</i>[:...]]}</dl>
+The term <i>variable</i> value, or name, is used only as input to the sequence
+of modifiers; the variable content itself is not modified. Each modifier
+operates on the value coming from the variable or modifier preceding it.
+The result can be assigned to another variable or used directly.
+<p>Each modifier begins with a colon and one of the special characters
+listed below. You can cause an escape from the special-character sequence
+with a backslash (<b>\</b>).<p>You may use variable modifiers sequentially to
+continually modify a string, such as in the following example:
+<dl><tt>${VAR:T:R}</tt></dl>
+The above will first perform Tail (:T) on the value of VAR, and then perform
+Root (:R) on the output of :T.  So if the value of VAR was "/dir/file.c"
+then the completed output would be "file".  See the ODE rules for more complex
+examples.
+<dl>
+<dt>
+&nbsp;<a NAME="Amodifier"></a><b><a href="#ToC_variableModifiers">:A<i>filename</i></a></b></dt>
+
+<dd>
+Appends the current string to <i>filename</i> after erasing the contents
+of <i>filename</i>. If <i>filename</i> is &amp;STDOUT the current string
+is only appended to the standard output file. If <i>filename</i> is &amp;STDERR
+the current string is only appended to the standard error file. If <i>filename</i>
+does not exist, it is created.&nbsp; If the string is added successfully,
+the empty string is substituted. If there is no <i>filename</i> specified,
+mk exits with an error message. For other errors, the original string is
+returned. <b>A</b> represents <b>A</b>ppend.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>## assume user has write access to file1</tt></dd>
+
+<dd>
+<tt>TVAR=Text to add to file</tt></dd>
+
+<dd>
+<tt>${TVAR:Afile1} -> ""</tt></dd>
+
+<dd>
+<tt>## file1 is created and contains only the TVAR text.</tt></dd>
+
+<dd>
+<tt>${TVAR:A&amp;STDERR} -> ""</tt></dd>
+
+<dd>
+<tt>## The TVAR text is written to standard error</tt></dd>
+</dl>
+
+<dt>
+&nbsp;<a NAME="amodifier"></a><b><a href="#ToC_variableModifiers">:a<i>filename</i></a></b></dt>
+
+<dd>
+Appends the current string to <i>filename</i> without erasing the contents
+of <i>filename</i>. If <i>filename</i> is &amp;STDOUT the current string
+is appended to the standard output file. If <i>filename</i> is &amp;STDERR
+the current string is appended to the standard error file. If <i>filename</i>
+does not exist, it is created.&nbsp; If the string is added successfully,
+the empty string is substituted.&nbsp; If there is no <i>filename</i> specified,
+mk exits with an error message. For other errors, the original string is
+returned. The :a modifier is similar to the <b><a href="#Amodifier">A modifier</a></b>.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>## assume user has write access to file1</tt></dd>
+
+<dd>
+<tt>TVAR=More text to add to file</tt></dd>
+
+<dd>
+<tt>${TVAR:afile1} -> ""</tt></dd>
+
+<dd>
+<tt>## file1 is modified and contains the TVAR text as the last line.</tt></dd>
+
+<dd>
+<tt>${TVAR:a&amp;STDERR} -> ""</tt></dd>
+
+<dd>
+<tt>## The TVAR text is written to standard error</tt></dd>
+</dl>
+
+<dt>
+<a NAME="Bmodifier"></a><b><a href="#ToC_variableModifiers">:B<i>newval</i></a></b></dt>
+
+<dd>
+Tests if the current string is blank (undefined, empty or contains only
+whitespace).&nbsp; If so, <i>newval</i> is substituted.&nbsp; If not, the
+string is retained unmodified.&nbsp; <b>B</b> represents <b>B</b>lank.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>.undef TVAR</tt></dd>
+
+<dd>
+<tt>${TVAR:Bfoo.c} -> "foo.c"</tt></dd>
+
+<dd>
+<tt>TVAR=</tt></dd>
+
+<dd>
+<tt>${TVAR:Bfoo.c} -> "foo.c"</tt></dd>
+
+<dd>
+<tt>TVAR=fubar.o</tt></dd>
+
+<dd>
+<tt>${TVAR:Bfoo.c} -> "fubar.o"</tt></dd>
+</dl>
+
+<dt>
+&nbsp;<a NAME="bmodifier"></a><b><a href="#ToC_variableModifiers">:b<i>newval</i></a></b></dt>
+
+<dd>
+Like the <b><a href="#Bmodifier">B modifier</a></b>, tests if the current
+string is blank (undefined, empty or contains only whitespace).&nbsp; If
+so, the string is retained unmodified.&nbsp; If not, <i>newval</i> is substituted.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>.undef TVAR</tt></dd>
+
+<dd>
+<tt>${TVAR:bfoo.c} -> ""</tt></dd>
+
+<dd>
+<tt>TVAR=</tt></dd>
+
+<dd>
+<tt>${TVAR:bfoo.c} -> ""</tt></dd>
+
+<dd>
+<tt>TVAR=fubar.o</tt></dd>
+
+<dt>
+<tt>${TVAR:bfoo.c} -> "foo.c"</tt></dt>
+</dl>
+
+<dt>
+<a NAME="Cmodifier"></a><b><a href="#ToC_variableModifiers">:C[-]</a></b></dt>
+
+<dd>
+Creates a directory. The directory to create is represented by the string's
+contents. If the directory path is relative, it is created in the current
+working directory (for <b>mk</b>, remember that this is within the sandbox's
+obj tree).</dd>
+
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">The string may optionally consist of multiple directories
+separated by a space or the path separator character: ("<b>:</b>" on Unix
+platforms or "<b>;</b>" elsewhere) in which case all directories are created.&nbsp;</td>
+</tr>
+</table>
+
+<dd>
+If all directories are created successfully, the empty string is substituted.
+Directories that cannot be created are returned in the modified string.
+If a minus sign (-) appears after the modifier character, the empty string
+is ALWAYS substituted (i.e., errors are ignored). All directories that
+CAN be created WILL be created (the modifier continues trying to create
+directories in a list even if a previous creation failed).&nbsp; <b>C</b>
+represents <b>C</b>reate.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=/tmp/mydir:/bin/mydir:work/foo</tt></dd>
+
+<dd>
+<tt>## assume user doesn't have write access to /bin</tt></dd>
+
+<dd>
+<tt>${TVAR:C} -> "/bin/mydir"</tt></dd>
+
+<dd>
+<tt>${TVAR:C-} -> ""</tt></dd>
+
+<dd>
+<tt>## both /tmp/mydir and ./work/foo are created in each case</tt></dd>
+
+<dd>
+<tt>## now assume user has write access to all directories</tt></dd>
+
+<dd>
+<tt>${TVAR:C} -> ""</tt></dd>
+
+<dd>
+<tt>${TVAR:C-} -> ""</tt></dd>
+
+<dd>
+<tt>## all three directories are created in each case</tt></dd>
+</dl>
+
+<dt>
+<a NAME="Dmodifier"></a><b><a href="#ToC_variableModifiers">:D<i>newval</i></a></b></dt>
+
+<dd>
+If <i>variable</i> is defined, returns the value <i>newval</i>. If <i>variable
+</i>is
+not defined, returns the current contents of the modified string (e.g.,
+the empty string if it is the first modifier given). <b>D</b> represents
+<b>D</b>efined.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>.undef TVAR</tt></dd>
+
+<dd>
+<tt>${TVAR:Dfoo.c} -> ""</tt></dd>
+
+<dd>
+<tt>TVAR=fubar.o</tt></dd>
+
+<dd>
+<tt>${TVAR:Dfoo.c} -> "foo.c"</tt></dd>
+
+<dd>
+<tt>.undef TVAR</tt></dd>
+
+<dd>
+<tt>${TVAR:L:Dfoo.c} -> "TVAR"</tt></dd>
+</dl>
+
+<dd>
+In this example, when <i>TVAR</i> is first undefined, modification by <b>Dfoo.c</b>
+returns a null string. When <b>TVAR</b> is defined, modification by <b>Dfoo.c</b>
+returns <b>foo.c</b>. When <i>TVAR</i> is next undefined, modification
+by <b>Dfoo.c</b> returns the result of the <b>L</b> modifier, which is
+the name of the variable.</dd>
+
+<dd>
+Refer also to the description of the <b><a href="#Umodifier">U modifier</a></b>.</dd>
+
+<dt>
+<a NAME="dmodifier"></a><b><a href="#ToC_variableModifiers">:d</a></b></dt>
+
+<dd>
+Returns the full paths to the directories listed in the variable. Directories
+are searched in <b>mk</b>'s normal search path, which is described in detail
+in the section <a href="#HDRFINDFILES">How Make finds files</a>.&nbsp;
+If a directory cannot be found, no path is prepended to it; the directory
+name itself is returned. The standard shell <a href="#Wildcards in Modifier">wildcard
+characters</a> (<b>*</b>, <b>?</b>, and <b>[]</b>) may be used in the directory
+name. Only directories are searched for; the presence of the <b><a href="#Header_20">-b</a></b>
+command line parameter makes no difference.
+<b>d</b> represents <b>d</b>irectory.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>VAR1=dir1</tt></dd>
+
+<dd>
+<tt>dir1.x :</tt></dd>
+
+<dl compact>
+<dd>
+<tt>echo ${VAR1:d}</tt></dd>
+</dl>
+</dl>
+
+<dd>
+returns the full path for <b>dir1</b> (UNIX platform example, <b>/home/user/src/dir1</b>;
+non-UNIX platform example, <b>C:\home\user\src\dir1</b>).</dd>
+
+<dd>
+Multiple directories may be searched for at once by separating each with
+whitespace (assume <b>bar_dir</b> cannot be found and <b>snark_dir</b>
+can be found):</dd>
+
+<dl>
+<dd>
+<tt>VAR1=foo1 foo2 bar_dir</tt></dd>
+
+<dd>
+<tt>VAR2=foo* *_dir</tt></dd>
+
+<dd>
+<tt>${VAR1:d} -> "/home/user/sb/src/lib/foo1 /home/user/sb/obj/rios_aix_4/lib/foo2
+bar_dir"</tt></dd>
+
+<dd>
+<tt>${VAR2:d} -> "/home/user/sb/src/lib/foo1 /home/user/sb/obj/rios_aix_4/lib/foo2
+/home/user/sb/src/lib/snark_dir"</tt></dd>
+</dl>
+
+<dd>
+If a match is made to a directory contained in one search path directory,
+matches on that directory name are ignored in succeeding search path directories.
+Assuming that the backing build is <b>/project/bb2</b>, the directory <b>/project/bb2/src/lib/foo1</b>
+would not be returned in this example because <b>foo1</b> was found earlier
+in the search path.</dd>
+
+<dd>
+If the directory being searched for is absolute, then the search path is
+ignored.</dd>
+
+<dd>
+Example, given that directories <b>/home/bin/la</b> and <b>/home/prt/lmd</b>
+exist on the search path:</dd>
+
+<dl compact>
+<dd>
+<tt>VAR1=/home/*/l*</tt></dd>
+
+<dd>
+<tt>${VAR1:d} -> "/home/bin/la /home/prt/lmd"</tt></dd>
+</dl>
+
+<dd>
+Refer also to the description of the <b><a href="#pmodifier">p</a></b>
+and <b><a href="#Pmodifier">P</a></b> modifiers.</dd>
+
+<dt>
+<a NAME="Emodifier"></a><b><a href="#ToC_variableModifiers">:E</a></b></dt>
+
+<dd>
+Returns the suffix of the filename part of each word in <i>variable</i>.
+This is effectively all text starting with the last period in the filename
+part of each word (or a null string if there are no periods in a filename).
+<b>E</b>
+represents <b>E</b>xtension.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>TVAR=fubar.o bld.rules.mk dir.txt/file1 foo.</tt></dd>
+
+<dd>
+<tt>${TVAR:E} -> ".o .mk ."</tt></dd>
+</dl>
+
+<dd>
+In this example, <b>TVAR:E</b> returns the suffixes <b>.o</b>, <b>.mk</b>,
+and <b>.</b> (from the first, second, and fourth words in TVAR, respectively).
+It does not return <b>rules</b> because <b>rules</b> did not follow the
+last period. It does not return anything from <b>file1</b> because <b>file1</b>
+does not have a suffix.</dd>
+
+<dd>
+Refer also to the description of the <b><a href="#Rmodifier">R modifier</a></b>.</dd>
+</dl>
+
+<dl>
+<dt>
+<a NAME="Fmodifier"></a><b><a href="#ToC_variableModifiers">:F</a></b></dt>
+
+<dd>
+Returns the absolute path to the file name if found in the search path.
+If not found, then the empty string is returned. <a href="#Wildcards in Modifier">Wildcard
+characters</a> may be used in the file name. Only files are searched for,
+unless the <b><a href="#Header_20">-b</a></b> command line flag is used.
+<b>F</b>
+represents <b>F</b>ind.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=/usr/bin:/usr/local/bin</tt></dd>
+
+<dd>
+<tt>${TVAR:Fls} -> "/usr/bin/ls"</tt></dd>
+
+<dd>
+<tt>${TVAR:Fgnumake} -> ""</tt></dd>
+
+<dd>
+<tt>${TVAR:Fl*s*} -> "/usr/bin/ls /usr/bin/lpstat /usr/local/bin/lister"</tt></dd>
+</dl>
+
+<dd>
+If a match is made to a file in one directory on the search path, matches
+on that file are ignored in succeeding directories.&nbsp; <b>/usr/local/bin/ls</b>
+would not be returned in this example because <b>/usr/bin/ls</b> was found
+earlier in the search path. If the file being searched for is absolute,
+then the search path is ignored.</dd>
+
+<dd>
+Example, given that <b>/home/bin/ls</b> and <b>/home/prt/lpd</b> exist:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=/usr/bin:/usr/local/bin</tt></dd>
+
+<dd>
+<tt>${TVAR:F/home/bin/ls} -> "/home/bin/ls"</tt></dd>
+
+<dd>
+<tt>${TVAR:F/home/*/l*} -> "/home/bin/ls /home/prt/lpd"</tt></dd>
+</dl>
+
+<dt>
+<a NAME="Gmodifier"></a><b><a href="#ToC_variableModifiers">:G</a></b></dt>
+
+<dd>
+Generates paths in the same way as the <b>genpath</b> command. This modifier
+expects the current value of the string to contain <b>genpath</b> flags
+(NOT including the ODE and sandbox flags). See the <b><a href="ODEBuildReference.htm#HDRGENPATH">genpath</a></b>
+command for a list of valid flags. The resulting string is the same as
+the output of the <b>genpath</b> command when run with the specified flags.
+<b>G</b>
+represents <b>G</b>enpath.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>${-I/dir1 -I/dir2 -V:L:G} -> ":/dir1:/dir2"</tt></dd>
+
+<dd>
+<tt>## note the use of :L to use the variable name as the value</tt></dd>
+
+<dt>
+&nbsp;</dt>
+
+<dd>
+<tt>TVAR = -I/dir1 -I/dir2 -V</tt></dd>
+
+<dd>
+<tt>${TVAR:G} -> ":/dir1:/dir2"</tt></dd>
+
+<dd>
+<tt>## the above are equivalent to "TVAR != genpath -I/dir1 -I/dir2 -V"</tt></dd>
+</dl>
+
+<dt>
+<a NAME="Hmodifier"></a><b><a href="#ToC_variableModifiers">:H</a></b></dt>
+
+<dd>
+Returns all components but the last of each word in <i>variable</i>. In
+other words, this option discards a file name from a full path name. If
+no path delimiters exist, the current directory is used. If only a single
+path delimiter exists as the first character (that is, the root directory),
+a null string is returned. <b>H</b> represents <b>H</b>ead.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=/usr/bin/chown ../file1.c file2.0 /file3.c</tt></dd>
+
+<dd>
+<tt>${TVAR:H} -> "/usr/bin .. ."</tt></dd>
+</dl>
+
+<dd>
+In this example, <b>TVAR:H</b> returns the first two components (<b>/usr/bin</b>)
+from the first word, returns the first component (<b>..</b>) from the second
+word, returns a period from the third word because no path delimiters exist,
+and returns a null string from the fourth word because a single path delimiter
+exists as the first character. Refer also to the description of the <b><a href="#Tmodifier">T
+modifier</a></b>.</dd>
+
+<dt>
+<a NAME="imodifier"></a><b><a href="#ToC_variableModifiers">:i<i>num</i>[c]</a></b></dt>
+
+<dd>
+Returns the word (or character, if the <b>c</b> modifier is used) at index
+<i>num</i>.&nbsp; <i>num</i> is expected to be in the range 1..n (where
+n is the largest possible index for the given source string).&nbsp; If
+<i>num</i> is less than 1, it is treated as 1.&nbsp; If <i>num</i> is greater
+than the greatest possible valid index, it is treated as the greatest valid
+index.&nbsp; <b>i</b> represents <b>i</b>ndex.</dd>
+
+<dd>
+Examples:</dd>
+
+<dl>
+<dd>
+<tt>TVAR = one two three four five</tt></dd>
+
+<dd>
+<tt>INDEX = 10</tt></dd>
+
+<dd>
+<tt>${TVAR:i3}&nbsp; ->&nbsp; "three"</tt></dd>
+
+<dd>
+<tt>${TVAR:i${TEN}c}&nbsp; ->&nbsp; "h"</tt></dd>
+
+<dd>
+<tt>${TVAR:i0}&nbsp; ->&nbsp; "one"</tt></dd>
+
+<dd>
+<tt>${TVAR:i999}&nbsp; ->&nbsp; "five"</tt></dd>
+
+<dd>
+<tt>${TVAR:iabc}&nbsp; ->&nbsp; throws an exception (mk exits with error
+message)</tt></dd>
+</dl>
+
+<dt>
+<a NAME="Lmodifier"></a><b><a href="#ToC_variableModifiers">:L</a></b></dt>
+
+<dd>
+Returns the name of the variable itself. <b>L</b> represents <b>L</b>iteral.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=whatever</tt></dd>
+
+<dd>
+<tt>${TVAR:L} -> "TVAR"</tt></dd>
+</dl>
+
+<dd>
+In this example, <b>TVAR:L</b> returns <b>TVAR</b>, which is the name of
+the variable itself.</dd>
+
+<dt>
+&nbsp;<a NAME="lmodifier"></a><b><a href="#ToC_variableModifiers">:l</a></b></dt>
+
+<dd>
+Converts the string to lowercase.&nbsp; <b>l</b> represents <b>l</b>owercase.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>TVAR = FOO.C</tt></dd>
+
+<dd>
+<tt>${TVAR:l} -> "foo.c"</tt></dd>
+</dl>
+
+<dt>
+<a NAME="Mmodifier"></a><b><a href="#ToC_variableModifiers">:M<i>pattern</i></a></b></dt>
+
+<dd>
+Returns only the words that match <i>pattern</i>. You can use the standard
+shell <a href="#Wildcards in Modifier">wildcard characters</a> (<b>*</b>,
+<b>?</b>,
+and <b>[]</b>). The pattern may consist of multiple strings separated by
+whitespace, in which case words will be tested against each pattern and
+returned if any match is found. <b>M</b> represents <b>M</b>atching.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=file1.c foo.o main.c main.o</tt></dd>
+
+<dd>
+<tt>${TVAR:Mmain.o fo*} -> "foo.o main.o"</tt></dd>
+
+<dd>
+<tt>${TVAR:Mf*} -> "file.c foo.o"</tt></dd>
+
+<dd>
+<tt>${TVAR:Mmain.?} -> "main.c main.o"</tt></dd>
+
+<dd>
+<tt>${TVAR:M*.[oc]} -> "file.c foo.o main.c main.o"</tt></dd>
+</dl>
+
+<dd>
+In this example, <b>TVAR:Mf*</b> returns <b>file1.c foo.o</b> because the
+match is on a first character of <b>f</b> and anything else. <b>TVAR:Mmain.?</b>
+returns <b>main.c main.o</b> because the match is on <b>main</b> and any
+single-character suffix. <b>TVAR:M*.[oc]</b> returns all four files because
+the match is on any file name and any suffix of <b>o</b> or <b>c</b>.</dd>
+
+<dd>
+Refer also to the description of the <b><a href="#Nmodifier">N modifier</a></b>,
+<b><a href="#mmodifier">m
+modifier</a></b>, <b><a href="#nmodifier">n modifier</a></b>, and <b><a href="#xmodifier">x
+modifier</a></b>.</dd>
+
+<dt>
+<a NAME="mmodifier"></a><b><a href="#ToC_variableModifiers">:m<i>pattern</i></a></b></dt>
+
+<dd>
+Identical to the <b><a href="#Mmodifier">M</a></b> modifier, but does not
+break the string into words.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=file1.c foo.o main.c main.o</tt></dd>
+
+<dd>
+<tt>${TVAR:mmain.o fo*} -> ""</tt></dd>
+
+<dd>
+<tt>${TVAR:m*main.o*} -> "file1.c foo.o main.c main.o"</tt></dd>
+</dl>
+
+<dt>
+<a NAME="Nmodifier"></a><b><a href="#ToC_variableModifiers">:N<i>pattern</i></a></b></dt>
+
+<dd>
+This modifier is similar to <b>M</b>, but returns all words that do <b>not</b>
+match <i>pattern</i>. The pattern may consist of multiple strings separated
+by whitespace, in which case words will be tested against each pattern
+and returned only if none of the patterns match. <b>N</b> represents <b>N</b>onmatching.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=file1.c foo.o main.c main.o</tt></dd>
+
+<dd>
+<tt>${TVAR:Nmain.o fo*} -> "file1.c main.c"</tt></dd>
+
+<dd>
+<tt>${TVAR:Nf*} -> "main.c main.o"</tt></dd>
+
+<dd>
+<tt>${TVAR:Nmain.?} -> "file1.c foo.o"</tt></dd>
+
+<dd>
+<tt>${TVAR:N*.[oc]} -> ""</tt></dd>
+</dl>
+
+<dd>
+In this example, <b>TVAR:Nf*</b> returns <b>main.c main.o</b> because these
+are the two words whose first characters do not match that of the pattern.<b>TVAR:Nmain.?</b>
+returns <b>file1.c foo.o</b> because these are the two words whose prefixes
+do not match <b>main</b>. <b>TVAR:N*.[oc]</b> returns a null string everything
+matches: the prefixes all match because of the <b>*</b>, and each suffix
+ends in <b>o</b> or <b>c</b>.</dd>
+
+<dd>
+Refer also to the description of the <b><u><a href="#Mmodifier">M modifier</a></u></b>,
+<b><a href="#mmodifier">m
+modifier</a></b>, <b><a href="#nmodifier">n modifier</a></b>, and <b><a href="#xmodifier">x
+modifier</a></b>.</dd>
+
+<dt>
+<a NAME="nmodifier"></a><b><a href="#ToC_variableModifiers">:n<i>pattern</i></a></b></dt>
+
+<dd>
+Identical to the <b><a href="#Nmodifier">N</a></b> modifier, but does not
+break the string into words.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=file1.c foo.o main.c main.o</tt></dd>
+
+<dd>
+<tt>${TVAR:nmain.o fo*} -> "file1.c foo.o main.c main.o"</tt></dd>
+
+<dd>
+<tt>${TVAR:n*main.o*} -> ""</tt></dd>
+</dl>
+
+<dt>
+<a NAME="Pmodifier"></a><b><a href="#ToC_variableModifiers">:P</a></b></dt>
+
+<dd>
+Returns the full path of the file(s) with the same name as <i>variable</i>.
+Files are searched in <b>mk</b>'s normal search path, which is described
+in detail in the section <a href="#HDRFINDFILES">How Make finds files</a>.
+If a <b>.PATH<i>.suffix</i></b> path has been defined which is the same
+as the file suffix, that path is used instead. If a file cannot be found,
+no path is prepended to it; the filename itself is returned. The standard
+shell <a href="#Wildcards in Modifier">wildcard characters</a> (<b>*</b>,
+<b>?</b>,
+and <b>[]</b>) may be used in the file name. If a wildcard is used in a
+suffix, the search will be in the default path, not any potentially matching
+<b>.PATH<i>.suffix</i></b>
+path. Only files are searched for, unless the
+<b><a href="#Header_20">-b</a></b>
+is command line flag used, which causes searching for both files and directories.
+The use of the <a href="#HDRSPECSRC">.DIRS special source</a> makes no
+difference to what is searched for. <b>P</b> represents <b>P</b>ath.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>file1.o : file1.c</tt></dd>
+
+<dl compact>
+<dd>
+<tt>echo ${file1.c:P}</tt></dd>
+</dl>
+</dl>
+
+<dd>
+returns the full path for <b>file1.c</b> (UNIX platform example, <b>/home/user/src/file1.c</b>;
+non-UNIX platform example, <b>C:\home\user\src\file1.c</b>).</dd>
+
+<dd>
+Multiple files may be searched at once by separating each with whitespace
+(assume <b>bar.x</b> cannot be found and <b>snark.x</b> can be found):</dd>
+
+<dl>
+<dd>
+<tt>${foo.c foo.o bar.x:P}&nbsp; ->&nbsp; "/home/user/sb/src/lib/foo.c
+/home/user/sb/obj/rios_aix_4/lib/foo.o bar.x"</tt></dd>
+
+<dd>
+<tt>${foo.* *.x:P}&nbsp; ->&nbsp; "/home/user/sb/src/lib/foo.c /home/user/sb/obj/rios_aix_4/lib/foo.o
+/home/user/sb/src/lib/snark.x"</tt></dd>
+</dl>
+
+<dd>
+If a match is made to a file in one directory on the search path, matches
+on that file are ignored in succeeding directories. Assuming that the backing
+build is <b>/project/bb2</b>, the file <b>/project/bb2/src/lib/foo.c</b>
+would not be returned in this example because <b>foo.c</b> was found earlier
+in the search path.</dd>
+
+<dd>
+If the file being searched for is absolute, then the search path is ignored.</dd>
+
+<dd>
+Example, given that <b>/home/bin/ls</b> and <b>/home/prt/lpd</b> exist:</dd>
+
+<dl compact>
+<dd>
+<tt>${/home/*/l*:P} -> "/home/bin/ls /home/prt/lpd"</tt></dd>
+</dl>
+
+<dl>Refer also to the description of the <b><a href="#pmodifier">p</a></b>
+and <b><a href="#dmodifier">d</a></b> modifiers.</dl>
+
+<dt>
+<a NAME="pmodifier"></a><b><a href="#ToC_variableModifiers">:p</a></b></dt>
+
+<dd>
+Returns the full path to the file(s) listed in the variable.&nbsp; Identical
+to the <b><a href="#Pmodifier">P</a></b> modifier, but operates on the
+variable's contents rather than the variable's name.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>VAR1=foo.c</tt></dd>
+
+<dd>
+<tt>VAR2=${VAR1:p}</tt></dd>
+
+<dd>
+<tt>VAR3=${${VAR1}:P}</tt></dd>
+</dl>
+
+<dd>
+In this example VAR2 and VAR3 are the same (e.g., "/home/user/sb/src/lib/foo.c").</dd>
+
+<dd>
+Multiple files may be searched at once by separating each with whitespace
+(assume bar.x cannot be found):</dd>
+
+<dl>
+<dd>
+<tt>VAR1=foo1.c foo2.o bar.x</tt></dd>
+
+<dd>
+<tt>${VAR1:p}&nbsp; ->&nbsp; "/home/user/sb/src/lib/foo.c /home/user/sb/obj/rios_aix_4/lib/foo.o
+bar.x"</tt></dd>
+</dl>
+
+<dd>
+Refer also to the description of the <b><a href="#Pmodifier">P</a></b>
+and <b><a href="#dmodifier">d</a></b> modifiers.</dd>
+
+<dt>
+<a NAME="Qmodifier"></a><b><a href="#ToC_variableModifiers">:Q&lt;+|-></a></b></dt>
+
+<dd>
+Sorts a whitespace separated list&nbsp; The variable's contents will be
+lexicographically sorted in either ascending (+) or descending (-) order.
+<b>Q</b>
+represents <b>Q</b>uicksort.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=cba abc xyz abd</tt></dd>
+
+<dd>
+<tt>${TVAR:Q+} -> "abc abd cba xyz"</tt></dd>
+
+<dd>
+<tt>${TVAR:Q-} -> "xyz cba abd abc"</tt></dd>
+</dl>
+
+<dd>
+In this example, <b>TVAR:Q+</b> returns the list in ascending order, while
+<b>TVAR:Q-
+</b>returns
+the list in descending order.</dd>
+
+<dt>
+<a NAME="Rmodifier"></a><b><a href="#ToC_variableModifiers">:R</a></b></dt>
+
+<dd>
+Return everything but the suffix of the filename part of each word in <i>variable</i>.
+This is effectively all text preceding the last period in the filename
+part of each word (or the filename itself, if periods do not exist). <b>R</b>
+represents <b>R</b>oot.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=fubar.o bld.rules.mk dir.txt/file1 foo.</tt></dd>
+
+<dd>
+<tt>${TVAR:R} -> "fubar bld.rules file1 foo"</tt></dd>
+</dl>
+
+<dd>
+In this example, <b>TVAR:R</b> returns the file names without the period
+and the suffix. For <b>bld.rules.mk</b>, <b>R</b> strips away <b>.mk</b>.
+<b>file1</b>
+is returned in its entirety because it does not have a suffix.</dd>
+
+<dd>
+Refer also to the description of the <b><a href="#Emodifier">E</a> </b>modifier.</dd>
+
+<dt>
+<a NAME="rmmodifier"></a><b><a href="#ToC_variableModifiers">:rm[-]</a></b></dt>
+
+<dd>
+Removes files and/or directories.&nbsp; The files and directories to delete
+are represented by the string's contents. If a directory path is relative,
+it is deleted in the current working directory.&nbsp; If all files and
+directories are removed successfully, the empty string is substituted.
+Files and directories that cannot be removed are returned in the modified
+string.&nbsp; This modifier will not remove a directory if it contains
+files or subdirectories (see the <a href="#rrmodifier">rr</a> modifier).
+If a minus sign (-) appears after the modifier character, the empty string
+is ALWAYS substituted (i.e., errors are ignored). All files and directories
+that CAN be removed WILL be removed (the modifier continues trying to remove
+other items in the list even if a previous removal failed).&nbsp; <b>rm</b>
+represents
+<b>r</b>e<b>m</b>ove.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=/tmp/mydir workdir/foo.c workdir</tt></dd>
+
+<dd>
+<tt>## assume workdir has many files and subdirectories</tt></dd>
+
+<dd>
+<tt>${TVAR:rm} -> "workdir"</tt></dd>
+
+<dd>
+<tt>${TVAR:rm-} -> ""</tt></dd>
+
+<dd>
+<tt>## both the directory /tmp/mydir and the file ./workdir/foo.c are removed.</tt></dd>
+</dl>
+
+<dt>
+<a NAME="rrmodifier"></a><b><a href="#ToC_variableModifiers">:rr[-]</a></b></dt>
+
+<dd>
+Removes files and/or directories recursively.&nbsp; All files and subdirectories
+of a directory are removed.&nbsp; Files and directories to delete are represented
+by the string's contents. If the directory path is relative, it is deleted
+in the current working directory.&nbsp; If all files and directories are
+removed successfully, the empty string is substituted. Files and directories
+that cannot be removed are returned in the modified string.&nbsp;&nbsp;&nbsp;
+If a minus sign (-) appears after the modifier character, the empty string
+is ALWAYS substituted (i.e., errors are ignored). All files and directories
+that CAN be removed WILL be removed (the modifier continues trying to remove
+other items in the list even if a previous removal failed).&nbsp; <b>rr</b>
+represents
+<b>r</b>emove<b> r</b>ecursively.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=/tmp/mydir workdir/foo.c workdir</tt></dd>
+
+<dd>
+<tt>## assume workdir has many files and subdirectories</tt></dd>
+
+<dd>
+<tt>${TVAR:rr} -> ""</tt></dd>
+
+<dd>
+<tt>## both directories and the file ./workdir/foo.c are removed.</tt></dd>
+
+<dd>
+<tt>## now assume user does not have write access to workdir/subdir</tt></dd>
+
+<dd>
+<tt>${TVAR:rr} -> "workdir"</tt></dd>
+
+<dd>
+<tt>${TVAR:rr-} -> ""</tt></dd>
+
+<dl compact>
+<dt>
+<tt>## workdir can not be completely removed because of subdir.</tt></dt>
+</dl>
+</dl>
+
+<dt>
+<a NAME="Smodifier"></a><b><a href="#ToC_variableModifiers">:S/<i>old_pattern</i>/<i>new_pattern</i>/[f|w|g]</a></b></dt>
+
+<dd>
+Changes the first occurrence of <i>old_pattern</i> to <i>new_pattern</i>
+in the first matching word. If you append the <b>f</b> to the last slash
+of the pattern, the first occurrence in every word is replaced. If you
+append the <b>w</b> to the last slash of the pattern, all occurrences in
+the first word that has an occurrence are replaced. If you append the <b>g</b>
+to the last slash of the pattern, all occurrences in all words are replaced.
+If <i>old_pattern</i> begins with a caret (<b>^</b>), <i>old_pattern</i>
+must occur at the beginning of a word (called anchoring) for the substitution
+to take place. If <i>old_pattern</i> ends with a dollar sign (<b>$</b>),
+<i>old_pattern</i>
+must occur at the end of a word for the substitution to take place. Inside
+<i>new_pattern</i>,
+an ampersand (<b>&amp;</b>) is replaced by <i>old_pattern</i>. You can
+use any character as a delimiter for the parts of the modifier string (rather
+than a slash). You can escape from anchoring, ampersand, and delimiter
+characters with a backslash (<b>\</b>).&nbsp; Variable expansion occurs
+normally inside both <i>old_pattern</i> and <i>new_pattern</i> with one
+exception: a backslash is used to prevent the expansion of a dollar sign
+(<b>$</b>), instead of the usual preceding dollar sign. <b>S</b> represents
+<b>S</b>ubstitute.
+See the <b><a href="#xmodifier">:x</a></b> modifier for another substitution
+variable modifier.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR = abc aba bac</tt></dd>
+
+<dd>
+<tt>TVAR2 = cbc aba bac</tt></dd>
+
+<dd>
+<tt>${TVAR:S/c/X/} -> "abX aba bac"</tt></dd>
+
+<dd>
+<tt>${TVAR:S/^b/X/g} -> "abc aba Xac"</tt></dd>
+
+<dd>
+<tt>${TVAR:S/b/X/g} -> "aXc aXa Xac"</tt></dd>
+
+<dd>
+<tt>${TVAR:S/a/X/w} -> "Xbc Xba bXc"</tt></dd>
+
+<dd>
+<tt>${TVAR2:S/a/X/f} -> "cbc XbX bac"</tt></dd>
+</dl>
+
+<dd>
+In the first example, substitution of <b>X</b> for <b>c</b> takes place
+in the first word. In the second example, substitution of <b>X</b> for
+<b>b</b>
+occurs only in the last word because that is the only one in which
+<b>b</b>
+is the first character. In the third example, the <b>g</b> modifier causes
+substitution of <b>X</b> for <b>b</b> whenever <b>b</b> occurs. In the
+fourth example, the <b>w</b> modifier causes the substitution of <b>X</b>
+for the first
+<b>a</b> in each word. In the fifth example, the <b>f</b>
+modifier causes substitution of <b>X</b> for every <b>a</b> in the first
+word where <b>a</b> is found.</dd>
+
+<dt>
+&nbsp;<a NAME="smodifier"></a><b><a href="#ToC_variableModifiers">:s/<i>old_pattern</i>/<i>new_pattern</i>/[f|w|g]</a></b></dt>
+
+<dd>
+Identical to the <b><a href="#Smodifier">S</a></b> modifier, but does not
+break the string into multiple words.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR = abc aba bac</tt></dd>
+
+<dd>
+<tt>${TVAR:s/^a/X/g} -> "Xbc aba bac"</tt></dd>
+</dl>
+
+<dt>
+<a NAME="Tmodifier"></a><b><a href="#ToC_variableModifiers">:T</a></b></dt>
+
+<dd>
+Replaces each word in the variable with its last component. This essentially
+provides the filename portion of a full pathname. <b>T</b> represents <b>T</b>ail.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR = /usr/bin/chown ../file1.c file2.o /file3.c</tt></dd>
+
+<dd>
+<tt>${TVAR:T} -> "chown file1.c file2.o file3.c"</tt></dd>
+</dl>
+
+<dd>
+In this example, <b>chown</b> and <b>file1.c</b> are returned because they
+are the last components in their respective words. <b>file2.o</b> is returned
+because there are no components in the word. <b>file3.c</b> is returned
+because it is the only component in the word.</dd>
+
+<dd>
+Refer also to the description of the <b><a href="#Hmodifier">H</a></b>
+modifier.</dd>
+
+<dt>
+<a NAME="Umodifier"></a><b><a href="#ToC_variableModifiers">:U<i>newval</i></a></b></dt>
+
+<dd>
+If <i>variable</i> is undefined, return <i>newval</i>. Otherwise, return
+the current contents of the modified string.</dd>
+
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">
+<dl>
+<dt>
+Even if the value of <i>variable</i> is only whitespace or an empty string,
+it is still considered to be defined.&nbsp;</dt>
+</dl>
+</td>
+</tr>
+</table>
+
+<dd>
+<b>U</b> represents <b>U</b>ndefined.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>.undef TVAR</tt></dd>
+
+<dd>
+<tt>${TVAR:Ufoo.c} -> "foo.c"</tt></dd>
+
+<dd>
+<tt>TVAR=fubar.o</tt></dd>
+
+<dd>
+<tt>${TVAR:Ufoo.c} -> "fubar.o"</tt></dd>
+
+<dd>
+<tt>TVAR=</tt></dd>
+
+<dd>
+<tt>${TVAR:Ufoo.c} -> ""</tt></dd>
+</dl>
+
+<dd>
+In this example, when <b>TVAR</b>, is undefined, <b>TVAR:Ufoo.c</b> results
+in <b>foo.c</b>. If the value of <b>TVAR</b> is set to <b>fubar.o</b>,<b>TVAR:Ufoo.c</b>
+results in <b>fubar.o</b>. If the value of <b>TVAR</b> is set to an empty
+string, <b>TVAR:Ufoo.c</b> returns an empty string.</dd>
+
+<dd>
+Refer also to the description of the <b><a href="#Dmodifier">D</a></b>
+modifier.</dd>
+
+<dt>
+&nbsp;<a NAME="umodifier"></a><b><a href="#ToC_variableModifiers">:u</a></b></dt>
+
+<dd>
+Converts the string to uppercase.&nbsp; <b>u</b> represents <b>u</b>ppercase.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>TVAR = foo.c</tt></dd>
+
+<dd>
+<tt>${TVAR:u} -> "FOO.C"</tt></dd>
+</dl>
+
+<dt>
+&nbsp;<a NAME="Xmodifier"></a><b><a href="#ToC_variableModifiers">:X&lt;D|F|B></a></b></dt>
+
+<dd>
+Tests for file/directory existence.&nbsp; First, the string is split into
+separate paths (by both whitespace and the path separator character).&nbsp;
+Then, each path which exists is retained in the resulting string, while
+nonexistent paths are discarded.&nbsp; In the resulting string, each path
+is separated by a single space.&nbsp; The three legal uses are <b>XD</b>,
+<b>XF</b>,
+and <b>XB</b>.&nbsp; <b>XD</b> tests directories, <b>XF</b> tests files,
+and <b>XB</b> tests both directories and files.&nbsp; Files are searched
+throughout the backing chain, but directories are not (therefore it is
+recommended that only absolute paths are used for testing directory existence).
+<b>X</b>
+represents e<b>X</b>ists.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR = c:\config.sys;c:\windows;c:\ode\bin\workon.exe d:\foodir e:\foofile
+f:\foodir2</tt></dd>
+
+<dd>
+<tt>${TVAR:XD} -> "c:\windows d:\foodir"</tt></dd>
+
+<dd>
+<tt>${TVAR:XF} -> "c:\config.sys e:\foofile"</tt></dd>
+
+<dd>
+<tt>${TVAR:XB} -> "c:\windows d:\foodir c:\config.sys e:\foofile"</tt></dd>
+</dl>
+
+<dd>
+This example assumes c:\ode\bin\workon.exe and f:\foodir2 don't exist.</dd>
+
+<dt>
+<a NAME="xmodifier"></a><b><a href="#ToC_variableModifiers">:xM/<i>expression</i>/[<i>options</i>]</a></b></dt>
+
+<dt>
+<b>:xm/<i>expression</i>/[<i>options</i>]</b></dt>
+
+<dt>
+<b>:xN/<i>expression</i>/[<i>options</i>]</b></dt>
+
+<dt>
+<b>:xn/<i>expression</i>/[<i>options</i>]</b></dt>
+
+<dt>
+<b>:xS/<i>expression</i>/<i>new_value</i>/[<i>options</i>]</b></dt>
+
+<dt>
+<b>:xs/<i>expression</i>/<i>new_value</i>/[<i>options</i>]</b></dt>
+
+<dd>
+<b>:xM</b>, <b>:xm</b>, <b>:xN</b>, and <b>:xn</b> modifier forms do matching
+similar to <b><a href="#Mmodifier">M modifier</a></b>,
+<b><a href="#mmodifier">m
+modifier</a></b>, <b><a href="#Nmodifier">N modifier</a></b>, or <b><a href="#nmodifier">n
+modifier</a></b> but use <a href="#POSIX Regular Expressions">POSIX regular
+expression syntax</a> for the <i>expression</i>. Delimiters are represented
+here by '/'. Any character except newline may be used as a delimiter. For
+syntax consistency reasons, delimiters (represented here by '/') are used
+for the regular expression, unlike with <b>:M</b>, etc. This way '}' and
+')' do not have to be escaped if they are used in the
+<i>expression</i>.</dd>
+
+<dd>
+<b>:xS</b> and <b>:xs</b> modifier forms do substitution similar to the
+<b><a href="#Smodifier">S
+modifier</a></b> or <b><a href="#smodifier">s modifier</a></b> but use
+the <a href="#POSIX Regular Expressions">POSIX regular expression syntax</a>
+for the <i>expression</i>. Delimiters are represented here by '/'. Any
+character except newline may be used as a delimiter.</dd>
+
+<dd>
+Note that all Windows platforms utilize Henry Spencer's (Berkeley) implementation
+of the regex code.&nbsp; See the <a href="#POSIX Regular Expressions">POSIX
+regular expression syntax</a> section for details on the license.</dd>
+
+<dd>
+The <i>options</i> are zero or more of the following characters:</dd>
+
+<dl>
+<dt>
+<b>i</b></dt>
+
+<dd>
+Ignore case. For example, a letter Q in the <i>expression</i> will match
+either a Q or a q. At most one of <b>i</b> and <b>c</b> can be specified.
+If neither is specified, case is significant.</dd>
+
+<dt>
+<b>c</b></dt>
+
+<dd>
+Ignore case if on a platform where case is not significant in filenames.
+At most one of <b>i</b> and <b>c</b> can be specified. If neither is specified,
+case is significant.</dd>
+
+<dt>
+<b>e</b></dt>
+
+<dd>
+Use POSIX Extended Regular Expression syntax rather than the POSIX Basic
+Regular Expression syntax.</dd>
+
+<dt>
+<b>g</b></dt>
+
+<dd>
+This option, only valid for <b>:xS</b> and <b>:xs</b>, specifies that substitution
+does not stop with the first match, but continues for all matches of all
+words. At most one of <b>f</b>, <b>g</b>, and <b>w</b> can be specified.
+If none are specified, substitution is only done for the first match.</dd>
+
+<dt>
+<b>f</b></dt>
+
+<dd>
+This option, only valid for <b>:xS</b> and <b>:xs</b>, specifies that substitution
+only happens for the first match in each word. At most one of <b>f</b>,
+<b>g</b>,
+and <b>w</b> can be specified. If none are specified, substitution is only
+done for the first match.</dd>
+
+<dt>
+<b>w</b></dt>
+
+<dd>
+This option, only valid for <b>:xS</b> and <b>:xs</b>, specifies that substitution
+is done for all matches in the first word that has a match. At most one
+of <b>f</b>, <b>g</b>, and <b>w</b> can be specified. If none are specified,
+substitution is only done for the first match.</dd>
+
+<dt>
+Processing of <b>:xM</b>, <b>:xm</b>, <b>:xN</b>, and <b>:xn</b> is as
+follows:</dt>
+
+<dl>
+<li>
+Scan <i>expression</i> and substitute for ODE variables, which always begin
+with '$'. In general when an escape character '\' is followed by '$' or
+a delimiter, the escape character is removed and any special meaning of
+the following character is ignored; that is, an escaped '$' does not start
+a variable, and an escaped delimiter does not end the <i>expression</i>.
+The regular expression processor may treat the '$' or the delimiter in
+a special way once it gets a chance to process them in the next step. All
+other escape characters remain in the <i>expression</i>. This treatment
+of escape characters is different from the <b>M</b>, <b>m</b>, <b>N</b>,
+or <b>n</b> modifiers.</li>
+
+<li>
+For all four cases, all words are scanned for a match using the regular
+expression. <b>:xM</b> and <b>:xN</b> split the variable value into words
+at unquoted blanks, whereas <b>:xm</b> and <b>:xn</b> treat the variable
+value as a single word.
+<b>:xM</b> and
+<b>:xm</b> output the words that
+are matched. <b>:xN</b> and <b>:xn</b> output the words that are not matched.</li>
+</dl>
+
+<dt>
+Examples:</dt>
+
+<dd>
+<tt>TVAR = abc aba bac</tt></dd>
+
+<dd>
+<tt>${TVAR:xM/a.*c/} -> "abc bac"</tt></dd>
+
+<dd>
+<tt>${TVAR:xM/a.a/} -> "aba"</tt></dd>
+
+<dd>
+<tt>${TVAR:xM/..c/} -> "abc bac"</tt></dd>
+
+<dd>
+<tt>${TVAR:xm/..c/} -> "abc aba bac"</tt></dd>
+
+<dd>
+<tt>${TVAR:xN/b../} -> "abc aba"</tt></dd>
+
+<dd>
+<tt>${TVAR:xM/b(a|c)\$/e} -> "abc aba"</tt></dd>
+
+<dt>
+Processing of <b>:xs</b> and <b>:xS</b> is as follows:</dt>
+
+<dl>
+<li>
+Scan <i>expression</i> and substitute for ODE variables, which always begin
+with '$'. In general when an escape character '\' is followed by '$' or
+a delimiter, the escape character is removed and any special meaning of
+the following character is ignored; that is, an escaped '$' does not start
+a variable, and an escaped delimiter does not end the <i>expression</i>.
+The regular expression processor may treat the '$' or the delimiter in
+a special way once it gets a chance to process them in the final step.
+All other escape characters remain in the <i>expression</i>. This treatment
+of escape characters is different from the <b>S</b> modifier or the <b>s</b>
+modifier.</li>
+
+<li>
+Scan <i>new_value</i> and substitute for ODE variables. In general when
+an escape character '\' is followed by '$', '&amp;', or a delimiter, it
+is removed and any special meaning of the following character is ignored.
+An escaped '$' does not start a variable, and an escaped delimiter does
+not end the <i>new_value</i>. All other escape characters are left untouched.
+Each time a non-escaped '&amp;' is found, it is replaced by the <i>expression</i>
+that resulted from the previous step.</li>
+
+<li>
+Split the variable value into words at unquoted blanks, if it is the <b>:xS</b>
+modifier, otherwise the variable value is treated as a single word.</li>
+
+<li>
+Scan each word for a match, using <i>expression</i> as a POSIX regular
+expression. Once a match is found, <i>new_value</i> replaces the matching
+substring. Depending upon whether <b>:xs</b> or <b>:xS</b> was specified,
+and whether a <b>g</b>,
+<b>f</b>, or <b>w</b> followed the last delimiter,
+scanning may resume in the same word or next word or scanning may be complete.
+If scanning resumes in the same word, it resumes with the first character
+after the matched substring. The portion which has been scanned and substituted
+is not rescanned.</li>
+</dl>
+</dl>
+
+<dl>
+<dt>
+Examples:</dt>
+
+<dd>
+<tt>TVAR = abc aba bac</tt></dd>
+
+<dd>
+<tt>${TVAR:xS/c/X/} -> "abX aba bac"</tt></dd>
+
+<dd>
+<tt>${TVAR:xS/^a/X/g} -> "Xbc Xba bac"</tt></dd>
+
+<dd>
+<tt>${TVAR:xS/a/X/f} -> "Xbc Xba bXc"</tt></dd>
+
+<dd>
+<tt>${TVAR:xs/^a/X/g} -> "Xbc aba bac"</tt></dd>
+
+<dd>
+<tt>${TVAR:xS/b/X/g} -> "aXc aXa Xac"</tt></dd>
+
+<dd>
+<tt>${TVAR:xS/^A/X/gi} -> "Xbc Xba bac"</tt></dd>
+
+<dd>
+<tt>${TVAR:xs/^A/X/gi} -> "Xbc aba bac"</tt></dd>
+
+<dd>
+<tt>${TVAR:xs/b(a|c)/X/ew} -> "aX aX Xc"</tt></dd>
+</dl>
+
+<dt>
+<a NAME="bangSignModifier"></a><b><a href="#ToC_variableModifiers">:!<i>command</i>![ei]</a></b></dt>
+
+<dd>
+Returns the output of running <i>command</i> in a shell. If the <b>e</b>
+option is specified, the <i>command</i> is echoed to standard output; otherwise
+the <i>command</i> is not echoed.&nbsp; If the <b>i </b>option is specified,
+any error return codes from <i>command </i>are ignored.</dd>
+
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">This modifier does not use <i>variable</i> in any way,
+and therefore can be used on any variable with identical results.&nbsp;</td>
+</tr>
+</table>
+
+<dt>
+&nbsp;</dt>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>${DUMMY:!date!} -> "Tue Apr 15 16:03:42 1997"</tt></dd>
+</dl>
+
+<dd>
+In this example, <b>DUMMY</b> is disregarded. <b>!date!</b> returns the
+current date and time.</dd>
+
+<dt>
+<b>&nbsp;<a NAME="atSignModifier"></a><a href="#ToC_variableModifiers">:@<i>tmpvar</i>@<i>newval</i>@</a></b></dt>
+
+<dd>
+Successively assigns each word in <i>variable</i> to a temporary variable
+<i>tmpvar</i>,
+and returns <i>newval</i> in turn. The result of <b>@<i>tmpvar</i>@<i>newval</i>@</b>
+is the series of <i>newval</i> values separated by blanks.&nbsp; If <i>tmpvar</i>
+is found when evaluating <i>newval</i>, the value that is temporarily assigned
+to <i>tmpvar</i> is substituted.&nbsp; Since <i>tmpvar</i>'s previous value
+is restored after completion of the action of this modifier, it is safe
+to use an existing variable name for <i>tmpvar</i>.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>WORD=foo.c</tt></dd>
+
+<dd>
+<tt>VAR=file1 file2</tt></dd>
+
+<dd>
+<tt>${VAR:@WORD@${WORD}.o@} -> "file1.o file2.o"</tt></dd>
+
+<dd>
+<tt>${WORD} -> "foo.c" # old value is preserved</tt></dd>
+</dl>
+
+<dd>
+In this example, the variable <b>WORD</b> is temporarily appropriated to
+contain <b>file1</b> and <b>file2</b> from <b>VAR</b>. The suffix <b>.o</b>
+is added to <b>file1</b> and <b>file2</b>. After completion of the statement,
+the original value of <b>WORD</b> (<b>foo.c</b>) is restored.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>WORD=foo.c</tt></dd>
+
+<dd>
+<tt>VAR=file1 file2</tt></dd>
+
+<dd>
+<tt>ADDO=${WORD}.o</tt></dd>
+
+<dd>
+<tt>${VAR:@WORD@${ADDO}@} -> "file1.o file2.o"</tt></dd>
+
+<dd>
+<tt>${WORD} -> "foo.c" # old value is preserved</tt></dd>
+</dl>
+
+<dd>
+This example is only slightly different from the previous one, and produces
+the same results in the same way.&nbsp; When <i>newval</i> is evaluated,
+<b>ADDO</b>
+is evaluated, which contains the <i>tmpvar</i> <b>WORD</b>.
+<b>WORD=file1</b>
+produces <i>newval</i> <b>file1.o</b>, and <b>WORD=file2</b> produces <i>newval
+</i><b>file2.o</b>.</dd>
+
+<dt>
+<a NAME="variableSubstitutionModifier"></a><b><a href="#ToC_variableModifiers">:<i>old_string=new_string</i></a></b></dt>
+
+<dd>
+This is the System V style variable substitution. This must be the last
+modifier specified. Since substitution can occur only at the end of each
+word, only suffixes or entire words can be replaced. This modifier is equivalent
+to <b>S</b><i>/old_string</i><b>$</b><i>/new_string/</i><b>g</b>, which
+is a recommended alternative. Using this '=' modifier may cause conflicts
+with future variable modifiers, which is why it is not recommended.</dd>
+
+<dd>
+Example:</dd>
+
+<dl compact>
+<dd>
+<tt>TVAR=file1.c file2.c</tt></dd>
+
+<dd>
+<tt>${TVAR:c=o} -> "file1.o file2.o"</tt></dd>
+</dl>
+
+<dd>
+In this example, <b>TVAR:c=o</b> replaces the <b>.c</b> suffix in each
+word with <b>.o</b>.</dd>
+</dl>
+
+<h3>
+<a NAME="Wildcards in Modifier"></a><a href="#ToC_wildcardsInModifiers">Wildcards
+in Modifiers</a></h3>
+Shell-like wildcard characters can be used in several variable modifiers:<b><a href="#dmodifier">:d</a></b>,
+<b><a href="#Fmodifier">:F</a></b>,
+<b><a href="#Mmodifier">:M</a></b>,
+<b><a href="#mmodifier">:m</a></b>,
+<b><a href="#Nmodifier">:N</a></b>,
+<b><a href="#nmodifier">:n</a></b>,
+<b><a href="#Pmodifier">:P</a></b>,
+and <b><a href="#pmodifier">:p</a></b>. The following characters are wildcards:
+<dl>
+<dt>
+<b>*</b></dt>
+
+<dd>
+<b>*</b> matches zero or more characters.</dd>
+
+<dt>
+<b>?</b></dt>
+
+<dd>
+<b>?</b> matches exactly one character.</dd>
+
+<dt>
+<b>[ ]</b></dt>
+
+<dd>
+Square brackets match exactly one character. The character must be one
+of those specified inside the <b>[ ]</b> pair. The characters can be anything
+except commas or blanks, which are ignored, or the <b>-</b>, which specifies
+a range of characters. For example, <b>[A-F, a-f, 0-9]</b> would match
+exactly one hexadecimal digit. <b>[579xyz]</b> would match exactly one
+of the characters <b>579xyz</b>.</dd>
+
+<dt>
+<b>\</b></dt>
+
+<dd>
+<b>\</b> is an escape character both inside and outside <b>[ ]</b> pairs.
+When encountered, it is deleted and the character that follows it is treated
+as an ordinary character. For example, the pattern <b>ab*[X\,.\ ]</b> will
+match data beginning with <b>ab</b> followed by an arbitrary number of
+characters followed by either an <b>X</b>, a comma, a period, or a blank.</dd>
+</dl>
+
+<h3>
+<a NAME="POSIX Regular Expressions"></a><a href="#ToC_POSIXregularExpressions">POSIX
+Regular Expressions</a></h3>
+This section provides a summary of the syntax for regular expressions that
+are used in the <a href="#xmodifier"><b>:x</b> variable modifier</a>.
+<p>On all Windows platforms (NT/2000/95/98/etc.), the following license
+information applies:
+<p>
+<hr WIDTH="100%">
+<pre>Copyright 1992, 1993, 1994 Henry Spencer.&nbsp; All rights reserved.
+This software is not subject to any license of the American Telephone
+and Telegraph Company or of the Regents of the University of California.
+
+Permission is granted to anyone to use this software for any purpose on
+any computer system, and to alter it and redistribute it, subject
+to the following restrictions:
+
+1. The author is not responsible for the consequences of use of this
+&nbsp;&nbsp; software, no matter how awful, even if they arise from flaws in it.
+
+2. The origin of this software must not be misrepresented, either by
+&nbsp;&nbsp; explicit claim or by omission.&nbsp; Since few users ever read sources,
+&nbsp;&nbsp; credits must appear in the documentation.
+
+3. Altered versions must be plainly marked as such, and must not be
+&nbsp;&nbsp; misrepresented as being the original software.&nbsp; Since few users
+&nbsp;&nbsp; ever read sources, credits must appear in the documentation.
+
+4. This notice may not be removed or altered.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+/*-
+&nbsp;* Copyright (c) 1994
+&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The Regents of the University of California.&nbsp; All rights reserved.
+&nbsp;*
+&nbsp;* Redistribution and use in source and binary forms, with or without
+&nbsp;* modification, are permitted provided that the following conditions
+&nbsp;* are met:
+&nbsp;* 1. Redistributions of source code must retain the above copyright
+&nbsp;*&nbsp;&nbsp;&nbsp; notice, this list of conditions and the following disclaimer.
+&nbsp;* 2. Redistributions in binary form must reproduce the above copyright
+&nbsp;*&nbsp;&nbsp;&nbsp; notice, this list of conditions and the following disclaimer in the
+&nbsp;*&nbsp;&nbsp;&nbsp; documentation and/or other materials provided with the distribution.
+&nbsp;* 3. All advertising materials mentioning features or use of this software
+&nbsp;*&nbsp;&nbsp;&nbsp; must display the following acknowledgement:
+&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This product includes software developed by the University of
+&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; California, Berkeley and its contributors.
+&nbsp;* 4. Neither the name of the University nor the names of its contributors
+&nbsp;*&nbsp;&nbsp;&nbsp; may be used to endorse or promote products derived from this software
+&nbsp;*&nbsp;&nbsp;&nbsp; without specific prior written permission.
+&nbsp;*
+&nbsp;* THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+&nbsp;* ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+&nbsp;* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+&nbsp;* ARE DISCLAIMED.&nbsp; IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+&nbsp;* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+&nbsp;* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+&nbsp;* OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+&nbsp;* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+&nbsp;* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+&nbsp;* OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+&nbsp;* SUCH DAMAGE.
+&nbsp;*
+&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @(#)COPYRIGHT&nbsp;&nbsp; 8.1 (Berkeley) 3/16/94
+&nbsp;*/</pre>
+
+<hr WIDTH="100%">
+<p>Regular expressions come in many flavors and varieties, depending upon
+the tools that use them and the operating system that the tools run on.
+All the varieties, subtleties, and differences are covered in detail in
+"Mastering Regular Expressions", by Jeffrey E. F. Friedl, published by
+O'Reilly &amp; Associates, Inc.
+<p>The POSIX standard has two regular expression standards: Basic Regular
+Expressions (BRE) and Extended Regular Expressions (ERE). POSIX also defines
+Pattern Matching Notation, which has a variation used to represent file
+paths and file names in command shells, and a variation for case statements
+in command shells. The first variation takes into account conventions about
+an initial '.' for filenames, substitution of environment variables, the
+practice of breaking a path into its components separated by '/' before
+processing the components as a series of regular expressions, and other
+matters. Not all implementations support the complete POSIX standard; the
+GNU version is said to not include national language locale features, although
+this may have been fixed in some versions. On some platforms ODE may be
+built with the GNU libraries.
+<p>The <a href="#xmodifier"><b>:x</b> variable modifier</a> implements
+BRE and ERE. BRE is used unless option <b>e</b> is specified. The only
+variations from pure POSIX syntax are during the parsing of a regular expression
+before it is seen by the regular expression processor:
+<ul>
+<li>
+ODE variable substitution is done if a non-escaped '$' is found. Thus if
+the '$' is used as an end-of-line anchor in the regular expression, it
+must be preceded by '\' and the '\' will be removed in such a case before
+the regular expression processor can see it.</li>
+
+<li>
+The regular expression is enclosed in a pair of delimiter characters, which
+can be any character except a newline. If it is desired to pass the delimiter
+as a part of the regular expression, it must be preceded by the escape
+character and the '\' will be removed in such a case before the regular
+expression processor can see it.</li>
+
+<li>
+Regular expression documentation usually refers to '^' and '$' as beginning-of-line
+and end-of-line anchor characters. For the <b>:x</b> variable modifier,
+these anchors refer to the beginning and end of a "word".</li>
+</ul>
+The syntax summaries below assume that the regular expression has already
+been parsed.
+<h4>
+Basic Regular Expression Summary</h4>
+Ordinary characters match themselves. If case is being ignored (option
+<b>e</b>),
+an ordinary character can match a version of itself in a different case.
+Some special characters are special only in certain contexts; outside of
+those contexts they are treated like ordinary characters.
+<dl>
+<dt>
+Special characters for Basic Regular Expressions:</dt>
+
+<dd>
+<tt><b>.</b> [ \ * ^ $</tt></dd>
+</dl>
+
+<table BORDER WIDTH="100%" >
+<caption>Basic Regular Expression Special Characters and Groups of Characters</caption>
+
+<tr>
+<td><b>&nbsp;.</b></td>
+
+<td>Period is special except when used in a bracket expression. It matches
+any character except newline.</td>
+</tr>
+
+<tr>
+<td>&nbsp;[&nbsp; ]</td>
+
+<td>'[' is special except when it is used inside a <a href="#Bracket Expression">bracket
+expression</a>. [ ] encloses a bracket expression, for example [abAB].
+A bracket expression matches one character from a set of characters.</td>
+</tr>
+
+<tr>
+<td>&nbsp;\</td>
+
+<td>Special except when used in a bracket expression. Makes any character
+that follows be an ordinary character, except for the characters ( ) {
+} 1 2 3 4 5 6 7 8 9</td>
+</tr>
+
+<tr>
+<td>&nbsp;*</td>
+
+<td>Not special if first in a BRE. A BRE that matches a single character
+followed by * is a BRE that matches zero or more of that BRE. The pair
+<b>.</b>*
+matches zero or more of any characters except newline. [AB]* matches a
+string of zero or more A or B characters.</td>
+</tr>
+
+<tr>
+<td>&nbsp;^</td>
+
+<td>Special when used as first character of a BRE, matching the beginning
+of a "word". When ^ is the first character of a bracket expression, the
+bracket expression specifies a list of non-matching characters. For example
+[^abAB] matches any character except a, b, A, B, or newline.</td>
+</tr>
+
+<tr>
+<td>&nbsp;$</td>
+
+<td>Special when used as last character of a BRE, matching the end of a
+"word".</td>
+</tr>
+
+<tr>
+<td>&nbsp;\(&nbsp;&nbsp; \)</td>
+
+<td>A BRE inside these two pairs of characters matches the same as if there
+were no \( \).</td>
+</tr>
+
+<tr>
+<td>&nbsp;\1 to \9</td>
+
+<td>Repeats the substring recognized by the n-th subexpression enclosed
+in \(&nbsp; \) characters. \([AB]\)x*\1 will match A or B followed by zero
+or more x's followed by whatever was matched by [AB]. AxxA or BxxB would
+be matched, but AxxB would not be matched.</td>
+</tr>
+
+<tr>
+<td>&nbsp;\{&nbsp; \}</td>
+
+<td>If a BRE that matches a single character is followed by \{<i>m</i>\},
+\{<i>m</i>,\}, or \{<i>m</i>,<i>n</i>\}, where <i>m</i> and <i>n</i> can
+be from 0 through 255, then the \{ \} construct matches <i>m</i> repeated
+occurrences of the BRE, <i>m</i> or more occurrences, or <i>m</i> to <i>n</i>
+occurrences, respectively. * is equivalent to \{0,\}.</td>
+</tr>
+</table>
+
+<h4>
+Extended Regular Expression Summary</h4>
+Ordinary characters match themselves. If case is being ignored (option
+<b>e</b>),
+an ordinary character can match a version of itself in a different case.
+Some special characters are special only in certain contexts; outside of
+those contexts they are treated like ordinary characters.
+<dl>
+<dt>
+Special characters for Extended Regular Expressions:</dt>
+
+<dd>
+<tt><b>.</b> [ \ ( ) * + ? $ |</tt></dd>
+</dl>
+
+<table BORDER WIDTH="100%" >
+<caption>Extended Regular Expression Special Characters and Groups of Characters</caption>
+
+<tr>
+<td><b>&nbsp;.</b></td>
+
+<td>A period is special except when used in a bracket expression. It matches
+any character except newline.</td>
+</tr>
+
+<tr>
+<td>&nbsp;[&nbsp; ]</td>
+
+<td>'[' is special except when it is used in a <a href="#Bracket Expression">bracket
+expression</a>. [ ] encloses a bracket expression, for example [abAB].
+A bracket expression matches one character from a set of characters.</td>
+</tr>
+
+<tr>
+<td>&nbsp;\</td>
+
+<td>Special except when used in a bracket expression. Makes any character
+that follows be an ordinary character</td>
+</tr>
+
+<tr>
+<td>&nbsp;*</td>
+
+<td>When * follows an ERE that matches a single character or a parenthesized
+concatenation of EREs, * is an ERE that matches zero or more of the ERE
+before the * character. When there is a choice the longest leftmost string
+is matched. The pair <b>.</b>* matches zero or more of any characters except
+newline. [AB]* matches a string of zero or more A or B characters.</td>
+</tr>
+
+<tr>
+<td>&nbsp;+</td>
+
+<td>When + follows an ERE that matches a single character or a parenthesized
+concatenation of EREs, + is an ERE that matches one or more of the EREs
+before the + character. It attempts to match the longest leftmost string.
+In abcbcbcd the expression (bc)+ will match bcbcbc.&nbsp;</td>
+</tr>
+
+<tr>
+<td>&nbsp;?</td>
+
+<td>When ? follows an ERE that matches a single character or a parenthesized
+concatenation of EREs, ? is an ERE that matches zero or one occurrence
+of the ERE before the ? character. When there is a choice, the longest
+leftmost string is matched.</td>
+</tr>
+
+<tr>
+<td>&nbsp;^</td>
+
+<td>Matches (anchors) the beginning of a "word". ^ab will match the ab
+in abcdef but not the ab in xabcdef. When ^ is the first character of a
+bracket expression, the bracket expression specifies a list of non-matching
+characters. For example [^abAB] matches any character except a, b, A, B,
+or newline.</td>
+</tr>
+
+<tr>
+<td>&nbsp;$</td>
+
+<td>Matches (anchors) the end of a "word".</td>
+</tr>
+
+<tr>
+<td>&nbsp;(&nbsp;&nbsp; )</td>
+
+<td>Used to group regular expressions.</td>
+</tr>
+
+<tr>
+<td>&nbsp;{&nbsp; }</td>
+
+<td>If an ERE that matches a single character is followed by {<i>m</i>},
+{<i>m</i>,}, or {<i>m</i>,<i>n</i>}, where <i>m</i> and <i>n</i> can be
+from 0 through 255, then the {} construct matches <i>m</i> repeated occurrences
+of the ERE, <i>m</i> or more occurrences, or <i>m</i> to <i>n</i> occurrences,
+respectively. * is equivalent to{0,}, + is equivalent to {1,}, and ? is
+equivalent to {0,1}.&nbsp;</td>
+</tr>
+
+<tr>
+<td>&nbsp;|</td>
+
+<td>The | character denotes alteration. ab|cd says to match either ab or
+cd. Since | has lower priority than concatenation, ab|cd means (ab)|(cd)
+rather than a(b|c)d.</td>
+</tr>
+</table>
+
+<br>&nbsp;
+<table BORDER WIDTH="100%" >
+<caption>Precedence Order from High to Low</caption>
+
+<tr>
+<td><tt>&nbsp;[ ]</tt></td>
+
+<td>square brackets</td>
+</tr>
+
+<tr>
+<td><tt>&nbsp;* + ?</tt></td>
+
+<td>asterisk, plus sign, question mark</td>
+</tr>
+
+<tr>
+<td><tt>&nbsp;^ $</tt></td>
+
+<td>anchoring</td>
+</tr>
+
+<tr>
+<td>&nbsp;</td>
+
+<td>concatenation of EREs</td>
+</tr>
+
+<tr>
+<td><tt>&nbsp;|</tt></td>
+
+<td>alteration</td>
+</tr>
+</table>
+
+<h4>
+<a NAME="Bracket Expression"></a>Bracket Expression Syntax</h4>
+The syntax of bracket expressions is the same for both basic and extended
+regular expressions. A bracket expression is one or more bracket expression
+elements delimited by [ ] characters, for example [abAB]. A bracket expression
+matches one character from a set of characters, except a newline. The set
+can contain individual characters, ranges of characters, character classes,
+equivalence classes, or collating symbols.
+<p>']' does not end the bracket expression if it is the first character
+in the expression or if it is the second character following '^' as the
+first character. '[' represents itself inside a bracket expression except
+when it begins a character class, an equivalence class, or a collating
+symbol. Thus [][] is a single bracket expression that will match either
+a ']' or a '[' character. [^][(){}] will match any character except the
+six characters { } [ ] ( ) or a newline.
+<br>&nbsp;
+<table BORDER WIDTH="100%" >
+<caption>Syntax of Bracket Expression Elements</caption>
+
+<tr>
+<td><i>c</i></td>
+
+<td>Any ordinary character <i>c</i> or special character that is treated
+as ordinary inside a bracket expression represents itself. For BREs this
+includes special characters <tt><b>.</b>[\*^$</tt>&nbsp; and for EREs this
+includes special characters <tt><b>.</b>[\()*+?$|</tt></td>
+</tr>
+
+<tr>
+<td><i>x</i>-<i>y</i></td>
+
+<td>This range denotes a sequence of characters from <i>x</i> through <i>y</i>.
+a-c-e is equivalent to a-cc-e. A literal '-' can be the first character
+of a bracket expression, optionally following an initial '^', or it can
+be the last character of a bracket expression.</td>
+</tr>
+
+<tr>
+<td>[:<i>class</i>:]</td>
+
+<td>Inside bracket expressions this form denotes a character of some <a href="#Character Classes">character
+class</a>. For example, the bracket expression [[:digit:]<b>.</b>$] recognizes
+any digit or a period or a '$'.</td>
+</tr>
+
+<tr>
+<td>[.<i>seq</i>.]</td>
+
+<td>Inside bracket expressions this denotes the <i>seq</i> multi-character
+collating element of the current locale, for example [.ll.] in Spanish.</td>
+</tr>
+
+<tr>
+<td>[=<i>ec</i>=]</td>
+
+<td>Inside bracket expressions this form denotes a character from the <i>ec</i>
+equivalent class such as [=A=] for all characters equivalent to A in the
+current national language locale.</td>
+</tr>
+</table>
+
+<br>&nbsp;
+<table BORDER WIDTH="100%" >
+<caption><a NAME="Character Classes"></a>Character Classes Guaranteed to
+be Implemented in POSIX</caption>
+
+<tr>
+<td>[:alpha:]</td>
+
+<td>letters</td>
+</tr>
+
+<tr>
+<td>[:upper:]</td>
+
+<td>upper-case letters</td>
+</tr>
+
+<tr>
+<td>[:lower:]</td>
+
+<td>lower-case letters</td>
+</tr>
+
+<tr>
+<td>[:digit:]</td>
+
+<td>decimal digits</td>
+</tr>
+
+<tr>
+<td>[:xdigit:]</td>
+
+<td>hexidecimal digits</td>
+</tr>
+
+<tr>
+<td>[:alnum:]</td>
+
+<td>letters or decimal digits</td>
+</tr>
+
+<tr>
+<td>[:punct:]</td>
+
+<td>punctuation characters</td>
+</tr>
+
+<tr>
+<td>[:blank:]</td>
+
+<td>blank characters (space and tab)</td>
+</tr>
+
+<tr>
+<td>[:space:]</td>
+
+<td>whitespace characters in displayed text ([:blank:], newline, carriage
+return)</td>
+</tr>
+
+<tr>
+<td>[:graph:]</td>
+
+<td>any visible characters (does not include [:space:])</td>
+</tr>
+
+<tr>
+<td>[:print:]</td>
+
+<td>printing characters (includes [:graph:] and [:space:])</td>
+</tr>
+
+<tr>
+<td>[:cntrl:]</td>
+
+<td>control characters</td>
+</tr>
+</table>
+
+<h4>
+Comparison of Basic and Extended Regular Expression Syntaxes</h4>
+&nbsp;
+<table BORDER WIDTH="100%" >
+<tr>
+<td><b>BRE</b></td>
+
+<td><b>ERE</b></td>
+
+<td><b>Description</b></td>
+</tr>
+
+<tr>
+<td><tt><b>.</b>[\*^$</tt></td>
+
+<td><tt><b>.</b>[\()*+?$|</tt></td>
+
+<td>Special characters</td>
+</tr>
+
+<tr>
+<td><b>&nbsp;<tt>.</tt></b></td>
+
+<td><b>&nbsp;<tt>.</tt></b></td>
+
+<td>Matches exactly one of any character</td>
+</tr>
+
+<tr>
+<td>&nbsp;*</td>
+
+<td>&nbsp;*</td>
+
+<td>Matches zero or more of the preceding RE</td>
+</tr>
+
+<tr>
+<td></td>
+
+<td>&nbsp;?</td>
+
+<td>Matches zero or one of the preceding ERE</td>
+</tr>
+
+<tr>
+<td></td>
+
+<td>&nbsp;+</td>
+
+<td>Matches one or more of the preceding ERE</td>
+</tr>
+
+<tr>
+<td>&nbsp;\(&nbsp; \)</td>
+
+<td>&nbsp;(&nbsp; )</td>
+
+<td>Grouping</td>
+</tr>
+
+<tr>
+<td>&nbsp;\{<i>m</i>,<i>n</i>\}</td>
+
+<td>&nbsp;{<i>m</i>,<i>n</i>}</td>
+
+<td>Matches <i>m</i> to <i>n</i> of the previous RE</td>
+</tr>
+
+<tr>
+<td>&nbsp;\{<i>m</i>,\}</td>
+
+<td>&nbsp;{<i>m</i>,}</td>
+
+<td>Matches <i>m</i> or more of the previous RE</td>
+</tr>
+
+<tr>
+<td>&nbsp;\{<i>m</i>\}</td>
+
+<td>&nbsp;{<i>m</i>}</td>
+
+<td>Matches exactly <i>m</i> of the previous RE</td>
+</tr>
+
+<tr>
+<td>&nbsp;^</td>
+
+<td>&nbsp;^</td>
+
+<td>If beginning of bracket expression, it denotes a list of non-matching
+characters. Matches the beginning of a "word" only if at beginning of BRE.
+Matches beginning of a "word" in ERE if not in a bracket expression.</td>
+</tr>
+
+<tr>
+<td>&nbsp;$</td>
+
+<td>&nbsp;$</td>
+
+<td>Matches the end of a "word" if at end of BRE. Matches the end of a
+"word" in ERE if not in a bracket expression.</td>
+</tr>
+
+<tr>
+<td>&nbsp;\1 to \9</td>
+
+<td></td>
+
+<td>Repeats matched string from n-th \(&nbsp; \) pair.</td>
+</tr>
+
+<tr>
+<td></td>
+
+<td>&nbsp;|</td>
+
+<td>Specifies alternate subexpressions such as (a|bb)</td>
+</tr>
+
+<tr>
+<td>&nbsp;\</td>
+
+<td>&nbsp;\</td>
+
+<td>Outside of bracket expression, it escapes any character that follows,
+except for characters 1 2 3 4 5 6 7 8 9 ( ) { } in BRE.</td>
+</tr>
+
+<tr>
+<td>&nbsp;[&nbsp; ]</td>
+
+<td>&nbsp;[&nbsp; ]</td>
+
+<td>Encloses <a href="#Bracket Expression">bracket expressions</a>.</td>
+</tr>
+
+<tr>
+<td>&nbsp;<i>x-y</i></td>
+
+<td>&nbsp;<i>x-y</i></td>
+
+<td>Inside bracket expressions it denotes a sequence of characters from
+<i>x</i>
+through <i>y</i>. a-c-e is equivalent to a-cc-e.</td>
+</tr>
+
+<tr>
+<td>[:<i>class</i>:]</td>
+
+<td>[:<i>class</i>:]</td>
+
+<td>Inside bracket expressions it denotes a character of some <i><a href="#Character Classes">class</a></i>
+such as [:digit:]</td>
+</tr>
+
+<tr>
+<td>[.<i>seq</i>.]</td>
+
+<td>[.<i>seq</i>.]</td>
+
+<td>Inside bracket expressions it denotes the <i>seq</i> multi-character
+collating element such as [.ll.] in Spanish.</td>
+</tr>
+
+<tr>
+<td>[=<i>ec</i>=]</td>
+
+<td>[=<i>ec</i>=]</td>
+
+<td>Inside bracket expressions it denotes a character from the <i>ec</i>
+equivalent class such as [=A=] for all characters equivalent to A.</td>
+</tr>
+</table>
+
+<h4>
+Further information on POSIX regular expressions</h4>
+
+<ul>
+<li>
+The Open Group version of the POSIX standard can be found starting with
+<a href="http://www.opengroup.org/publications/catalog/t912.htm">"Single
+UNIX Specification V2 (UNIX 98)"</a>. You may need to register when you
+follow the link for the html online version. After registering, you can
+go to <a href="http://www.opengroup.org/onlinepubs/007908799/xbd/re.html">The
+Open Group "Regular Expressions"</a> page.</li>
+
+<li>
+"Mastering Regular Expressions", by Jeffrey E. F. Friedl, published by
+O'Reilly &amp; Associates, Inc. has very detailed explanations of regular
+expressions and their many variations, including the POSIX versions.</li>
+</ul>
+
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">The [:class:], [.seq.], and [=ec=] forms and character
+ranges are supposed to depend upon POSIX national language locale settings.
+However, on some platforms the regular expression code that was used to
+create mk (notably GNU based libraries) may not have this support.&nbsp;</td>
+</tr>
+</table>
+
+<hr>
+<h2>
+<a NAME="HDRINC"></a><a href="#ToC_85">Include statements</a></h2>
+<b>mk</b> provides makefile inclusion and conditional statements characteristic
+of the C programming language.
+<p>All such structures are identified by a line beginning with a single
+dot (<i>.</i>). You can use the following formats to include files: <b>.include</b>
+&lt;<i>file</i>>, <b>.include</b>&nbsp; "<i>file</i>", <b>.tryinclude</b><i>&lt;file></i>,
+or <b>.tryinclude</b> "<i>file</i>". <b>.tryinclude</b> performs the same
+function as <b>.include</b> except that if the file to be included can't
+be found, the situation is not treated as an error, and processing continues.
+Variables between the less-than/greater-than signs or double quotes are
+expanded to form the file name. If less-than/greater-than signs are used,
+<b>mk</b>
+expects the included makefile to be in the system makefile directory or
+in any of the directories specified by the <b>-I</b> flag. If double quotes
+are used, the including makefile's directory is searched, along with any
+directories found in the <b>VPATH</b> environment variable, or specified
+in the <b>.PATH</b> special target (assuming <b>.PATH</b> appeared earlier
+in the makefile than <b>.include</b>/<b>.tryinclude</b>).
+<p>If the environment variable <b>MAKEINCLUDECOMPAT</b> is defined, the
+<b>&lt;
+></b> and "" behave in the same way.&nbsp; First it will search in the
+normal "" search path, then it will search in the &lt;> search path.
+<p>
+<hr>
+<h2>
+<a NAME="conditionalsandexpressions"></a><b><a href="#ToC_89">Conditionals
+and expressions</a></b></h2>
+There are static conditionals and run-time conditionals. In conditional
+structures, the operator can be a logical AND (<b>&amp;&amp;</b>) or a
+logical OR (<b>||</b>).
+<p><i>expression</i> may be an arithmetic or string comparison, with the
+left-hand side being a variable expansion. The standard C relational operators
+are all supported, with the normal number/base conversion performed. Octal
+numbers are not supported. If the right-hand value of a == or != operator
+begins with a quotation mark ("), a string comparison is performed between
+the expanded variable and the characters between the quotation marks. If
+no relational operator is given, <b>mk</b> assumes that the expanded variable
+is compared against non-zero ("zero" in this context means undefined, empty,
+whitespace, or numeric zero values), as in "variable != 0".
+<p>When <b>mk</b> evaluates a conditional expression and encounters a word
+it does not recognize, either the <b>make</b> or <b>defined</b> expression
+is applied, depending on the form of the conditional. If the form is <b>.ifdef</b>
+or <b>.ifndef</b>, <b>mk</b> applies the <b>defined</b> expression. If
+the form is <b>.ifmake</b> or <b>ifnmake</b>, <b>mk</b> applies the <b>make</b>
+expression.
+<p>If the conditional evaluates to TRUE, parsing of the makefile continues.
+If the conditional evaluates to FALSE, <b>mk</b> skips the following lines.
+In both cases, processing continues until an <b>.else</b> or <b>.endif</b>
+variable is found.
+<h3>
+<a NAME="staticconditionals"></a><a href="#ToC_89">Static conditionals</a></h3>
+Static conditionals, also known as parse-time conditionals, are evaluated
+at the time the makefile is parsed for the first time. During parse-time,
+run-time variables don't exist. For example, <b>.TARGET</b> doesn't exist
+during parse-time.
+<p>Valid static conditional statements are:
+<dl>
+<dt>
+<b>.if[!]<i>expression [operator&nbsp; expression ...]</i></b></dt>
+
+<dd>
+Tests if <i>expression</i> is true.</dd>
+
+<dt>
+<b>.ifdef[!]<i>variable [operator&nbsp; variable ...]</i></b></dt>
+
+<dd>
+Tests if <i>variable</i> is defined.</dd>
+
+<dt>
+<b>.ifndef[!]<i>variable [operator&nbsp; variable ...]</i></b></dt>
+
+<dd>
+Tests if <i>variable</i> is not defined.</dd>
+
+<dt>
+<b>.ifmake[!]<i>target [operator&nbsp; target ...]</i></b></dt>
+
+<dd>
+Tests if <i>target</i> is being built.</dd>
+
+<dt>
+<b>.ifnmake[!]<i>target [operator&nbsp; target ...]</i></b></dt>
+
+<dd>
+Tests if <i>target</i> is not being built.</dd>
+
+<dt>
+<b>.else</b></dt>
+
+<dd>
+Reverses the sense of the last conditional.</dd>
+
+<dt>
+<b>.elif[!]<i>expression [operator&nbsp; expression ...]</i></b></dt>
+
+<dd>
+A combination of <b>.else</b> followed by <b>.if</b></dd>
+
+<dt>
+<b>.elifdef[!]<i>variable [operator&nbsp; variable ...]</i></b></dt>
+
+<dd>
+A combination of <b>.else</b> followed by <b>ifdef</b>.</dd>
+
+<dt>
+<b>.elifndef[!]<i>variable [operator&nbsp; variable ...]</i></b></dt>
+
+<dd>
+A combination of <b>.else</b> followed by <b>ifndef</b>.</dd>
+
+<dt>
+<b>.elifmake[!]<i>target[operator&nbsp; target ...]</i></b></dt>
+
+<dd>
+A combination of <b>.else</b> followed by <b>ifmake</b>.</dd>
+
+<dt>
+<b>.elifnmake[!]<i>target[operator&nbsp; target ...]</i></b></dt>
+
+<dd>
+A combination of <b>.else</b> followed by <b>ifnmake</b>.</dd>
+
+<dt>
+<b>.endif</b></dt>
+
+<dd>
+Ends the body of the conditional.</dd>
+</dl>
+As in the C programming language, <b>mk</b> evaluates a conditional only
+as far as necessary to determine its value. Parentheses may be used to
+change the order of evaluation. You can use the NOT Boolean operator <b>!</b>
+to logically negate an entire conditional. The <b>!</b> is of higher precedence
+than the logical AND (<b>&amp;&amp;</b>).&nbsp; For readability purposes,
+these conditionals may be indented with white space.
+<p>The value of the expression can be:
+<dl>
+<dt>
+<b>defined<i>(variable)</i></b></dt>
+
+<dd>
+Takes a variable name as an argument and evaluates to TRUE if the variable
+has been defined.</dd>
+
+<dt>
+<b>make<i>(target)</i></b></dt>
+
+<dd>
+Takes a target name as an argument and evaluates to TRUE if the target
+was specified as part of <b>mk's</b> command line, or was previously implicitly
+or explicitly declared the default target (see <b>.MAIN</b> variable under
+<a href="#HDRSPECTRG">"Special
+targets"</a>).</dd>
+
+<dt>
+<b>empty<i>(variable)</i></b></dt>
+
+<dd>
+Takes a variable, with modifiers, if present, and evaluates to TRUE if
+the expansion of the variable would result in an empty string. This includes
+the case in which <i>variable</i> is not defined.</dd>
+
+<dt>
+<b>exists<i>(file)</i></b></dt>
+
+<dd>
+Takes a file name as an argument and evaluates to true if the file exists.
+<b>mk</b>
+searches for the file on the system search path (see <b>.PATH</b> variable
+under <a href="#HDRSPECTRG">"Special targets"</a>).</dd>
+
+<dt>
+<b>target<i>(target)</i></b></dt>
+
+<dl>
+<dt>
+Takes a target name as an argument and evaluates to TRUE if the target
+has been defined.</dt>
+
+<dt>
+</dt>
+</dl>
+
+<dt>
+Example:</dt>
+
+<dd>
+<tt># Begin sample static conditional makefile</tt></dd>
+
+<dd>
+<tt># Static conditionals may be nested and indented.</tt></dd>
+
+<dd>
+<tt>targ :</tt></dd>
+
+<dd>
+<tt>.ifdef Bob</tt></dd>
+
+<dd>
+<tt>&nbsp; .ifdef Spanish</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp; @echo Buenos dias Bob</tt></dd>
+
+<dd>
+<tt>&nbsp; .else</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp; @echo Good morning Bob</tt></dd>
+
+<dd>
+<tt>&nbsp; .endif</tt></dd>
+
+<dd>
+<tt>.else</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp; @echo Hello world</tt></dd>
+
+<dd>
+<tt>.endif</tt></dd>
+
+<dd>
+<tt># end sample</tt></dd>
+
+<dd>
+<tt>Run1: mk targ -DBob</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; "Good morning Bob"</tt></dd>
+
+<dd>
+<tt>Run2: mk targ -DBob -DSpanish</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; "Buenos dias Bob"</tt></dd>
+
+<dd>
+<tt>Run3: mk targ</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; "Hello world"</tt></dd>
+
+<dd>
+</dd>
+</dl>
+
+<h3>
+<a NAME="runtimeconditionals"></a><a href="#ToC_89">Run-time conditionals</a></h3>
+Run-time conditionals are evaluated at the time a target is being brought
+up-to-date. This gives greater flexibility in defining conditional statements
+that the condition isn't know until the time the commands are being executed
+to bring a target up-to-date.&nbsp; Run-time conditionals follow the same
+indentation restrictions as do <a href="#HDRSHELL">Shell Commands</a>,
+that is they have to be indented along with the commands.&nbsp; It is possible
+to combine static and run-time conditionals, static conditionals will be
+processed first, then run-time conditionals.
+<p>Valid run-time conditional statements are:
+<dl>
+<dt>
+<b>.rif[!]<i>expression [operator expression ...]</i></b></dt>
+
+<dd>
+Tests if expression is true.</dd>
+
+<dt>
+<b>.relse</b></dt>
+
+<dd>
+Reverses the sense of the last conditional.</dd>
+
+<dt>
+<b>.relif[!]<i>expression [operator expression ...]</i></b></dt>
+
+<dd>
+A combination of <b>.relse</b> followed by <b>.rif</b></dd>
+
+<dt>
+<b>.rendif</b></dt>
+
+<dd>
+Ends the body of the conditional.</dd>
+
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">
+<dl>
+<dt>
+<i>expression</i> and <i>operator</i> for run-time conditionals are the
+same as for static conditionals.&nbsp;</dt>
+</dl>
+</td>
+</tr>
+</table>
+
+<dt>
+Example:</dt>
+
+<dd>
+<tt># Begin sample run-time conditional makefile</tt></dd>
+
+<dd>
+<tt>${TGT} :</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rif ${.TARGET} == "all"</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @echo Hello world</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .relse</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @echo Hello ${USER}</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rendif</tt></dd>
+
+<dd>
+<tt># end sample</tt></dd>
+
+<dd>
+<tt>Run1: mk TGT=bob</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; "Hello bob"</tt></dd>
+
+<dd>
+<tt>Run2: mk TGT=all</tt></dd>
+
+<dt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Hello world"</tt></dt>
+
+<dt>
+<b>.rfor <i>variable = &lt;value [...] | integer1 - integer2></i></b></dt>
+
+<dl>
+<dt>
+For statement that iterates the space separated values indicated.&nbsp;
+If the integer format is used, <b>integer2</b> must be greater than or
+equal to <b>integer1</b>.&nbsp; Use different <b>variable</b> names whenever
+possible.&nbsp; Conflicts may arise if multiple targets have <b>.rfor</b>
+statements with the same variable name and multiple jobs (Ex: <b>mk -j
+4</b>) are running.</dt>
+</dl>
+
+<dt>
+<b>.rendfor</b></dt>
+
+<dd>
+Ends the body of the for statement.</dd>
+
+<dt>
+Example:</dt>
+
+<dd>
+<tt># Begin sample run-time for statement</tt></dd>
+
+<dd>
+<tt>targ :</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rfor VAR1 = A B</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .rfor VAR2 = 1 - 3</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @echo ${VAR1}${VAR2}</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .rendfor</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rendfor</tt></dd>
+
+<dd>
+<tt># end sample</tt></dd>
+
+<dd>
+<tt>Run: mk targ</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; "A1"</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; "A2"</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; "A3"</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; "B1"</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; "B2"</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; "B3"</tt></dd>
+
+<dd>
+</dd>
+</dl>
+
+<h3>
+<a NAME="runtimecommands"></a><a href="#ToC_89">Run-time Commands</a></h3>
+Run-time commands are like <a href="#HDRSHELL">Shell Commands</a>, but
+they are built into mk. Run-time commands are run at the time a target
+is being brought up-to-date. Run-time commands follow the same indentation
+restrictions as do shell commands. That is, they have to be indented along
+with the commands.
+<dl>
+<dt>
+<b>.rcp&nbsp;&nbsp; <i>sourceFile[...] target</i></b></dt>
+
+<dl>
+<dt>
+This is a run-time copy command and is similar to the unix <b>cp</b> command.&nbsp;
+If there is more than one <b>sourceFile</b>, then <b>target</b> must be
+a directory.&nbsp; If there is only one <b>sourceFile</b>, then <b>target</b>
+may be a file or directory.&nbsp; Consider the following example.</dt>
+
+<dd>
+<tt>${TGT} :</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rcp fileA fileB</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rcp fileX fileY dirSave1</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rcp ${*.java:P} dirSave2</tt></dd>
+
+<dt>
+The first <b>.rcp</b> command copies <b>fileA</b> to<b> fileB</b>.&nbsp;&nbsp;
+The second <b>.rcp</b> command copies both <b>fileX</b> and <b>fileY</b>
+to the directory named <b>dirSave1</b>.&nbsp; The third <b>.rcp</b> command
+copies all files with a "<b>.java</b>" extension to the directory named
+<b>dirSave2</b>.&nbsp;&nbsp;
+Wildcard characters are not supported but combining the <b>.rcp</b> command
+with variable modifiers should be sufficient.</dt>
+</dl>
+
+<dl>
+<dt>
+</dt>
+</dl>
+
+<dt>
+<b>.rmkdep</b></dt>
+
+<dd>
+This run-time command is the same as the <a href="ODEBuildReference.htm#HDRMKDEP">mkdep
+command</a>, except that it is not a program separate from mk. It takes
+the same arguments as the mkdep command, except for the ODE options</dd>
+
+<dl>
+<dt>
+<b>[-normal | -quiet | -verbose | -debug] [-usage | -version | -rev] [-info]
+[-auto]</b></dt>
+
+<dt>
+</dt>
+</dl>
+
+<dt>
+<b>.rmv&nbsp;&nbsp; <i>sourceFile[...] target</i></b></dt>
+
+<dl>
+<dt>
+This is a run-time move command and is similar to the unix <b>mv</b> command.&nbsp;
+If there is more than one <b>sourceFile</b>, then <b>target</b> must be
+a directory.&nbsp; If there is only one <b>sourceFile</b>, then <b>target</b>
+may be a file or directory.&nbsp; Consider the following example.</dt>
+
+<dd>
+<tt>${TGT} :</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rmv fileA fileB</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rmv fileX fileY dirSave1</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rmv ${*.java:P} dirSave2</tt></dd>
+
+<dt>
+The first <b>.rmv</b> command moves (renames) <b>fileA</b> to<b> fileB</b>.&nbsp;&nbsp;
+The second <b>.rmv</b> command moves both <b>fileX</b> and <b>fileY</b>
+to the directory named <b>dirSave1</b>.&nbsp; The third <b>.rmv</b> command
+moves all files with a "<b>.java</b>" extension to the directory named
+<b>dirSave2</b>.&nbsp;&nbsp;
+Wildcard characters are not supported but combining the <b>.rmv</b> command
+with variable modifiers should be sufficient.</dt>
+
+<dt>
+</dt>
+</dl>
+
+<dt>
+<b>.rrm&nbsp;&nbsp; <i>arg[...]</i></b></dt>
+
+<dl>
+<dt>
+This is a run-time remove command and is similar to the unix <b>rm</b>
+command.&nbsp; The arguments may be files and/or directories.&nbsp; The
+directories must be empty.&nbsp; Consider the following example.</dt>
+
+<dd>
+<tt>${TGT} :</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rrm fileA fileB dirSave1</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp;&nbsp; .rrm ${*.java:P}</tt></dd>
+
+<dt>
+The first <b>.rrm</b> command removes <b>fileA, fileB, </b>and the directory
+named <b>dirSave1</b>.&nbsp;&nbsp; The second <b>.rmv</b> command removes
+all files with a "<b>.java</b>" extension.&nbsp; Wildcard characters are
+not supported but combining the <b>.rrm</b> command with variable modifiers
+should be sufficient.</dt>
+</dl>
+
+<dd>
+</dd>
+</dl>
+
+<hr>
+<h2>
+<a NAME="HDRCOMM"></a><a href="#ToC_86">Comments</a></h2>
+Comments begin with a pound sign (<b>#</b>), which can be anywhere except
+on a shell command line; the comment continues to the end of the line.&nbsp;
+There is also the predefined makefile variable POUND which is set to #
+to allow usage of the # character in makefiles.
+<p>
+<hr>
+<h2>
+<a NAME="HDRSPECSRC"></a><a href="#ToC_87">Special sources</a></h2>
+
+<dl>
+<dt>
+<b>.DIRS</b></dt>
+
+<dl>
+<dt>
+Indicates the target should be looked up <i>only</i> as a directory as
+opposed to the standard lookup order for the files only.</dt>
+</dl>
+
+<dt>
+<b>.FORCEBLD</b></dt>
+
+<dd>
+Indicates the target should always be recreated.&nbsp; This is useful when
+the target has been previously defined with the <a href="#HDRDEP">colon
+(:)</a> operator.</dd>
+
+<dt>
+<b>.INVISIBLE</b></dt>
+
+<dd>
+If this target is used as a source in another target, the other target
+does not include it in its <b>.ALLSRC</b> or <b>.OODATE</b> local variables.&nbsp;
+It is also not included in the <b>-B</b> output.</dd>
+
+<dt>
+<b>.LINKS</b></dt>
+
+<dl>
+<dt>
+Indicates that the target is a symbolic link rather than a physical file.</dt>
+</dl>
+
+<dt>
+<a NAME="SpecSrcLINKTARGS"></a><b>.LINKTARGS</b></dt>
+
+<dd>
+Indicates that all the targets listed in the pattern matching rule will
+be generated by the commands, and therefore the commands will only be executed
+once.&nbsp; This special source is only valid when used with a pattern
+rule that has multiple targets.&nbsp; This is similar to the special target
+<a href="#SpecTargLINKTARGS">.LINKTARGS</a>
+and for more information and an example, see <a href="#HDRPATTERNRULES">Pattern
+Matching Rules</a>.</dd>
+
+<dt>
+<b>.MAKE</b></dt>
+
+<dd>
+Executes the commands associated with this target even if the <b>-n</b>
+or <b>-t</b> flags were specified. Also, update the targets one at a time
+that are marked with this special source.&nbsp; Normally, this option is
+used to mark recursive <b>mk</b>'s.&nbsp; See also <b>.PMAKE</b>.</dd>
+
+<dt>
+<b>.NOREMOTE</b></dt>
+
+<dd>
+Runs the associated commands <b>locally</b></dd>
+
+<dt>
+<b>.NORMTARG</b></dt>
+
+<dl>
+<dt>
+Indicates that the target is a normal target rather than a suffix transformation.&nbsp;
+This is only needed in the special case when the target may appear to be
+a suffix transformation.</dt>
+</dl>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>.SUFFIXES: .a .b</tt></dd>
+
+<dd>
+<tt>.a.b:</tt></dd>
+
+<dl>
+<dd>
+<tt>&lt;commands to generate a *.b file from a *.a file></tt></dd>
+
+<dt>
+<tt>.b.a: .NORMTARG</tt></dt>
+
+<dl>
+<dt>
+<tt>&lt;commands for .b.a target></tt></dt>
+</dl>
+</dl>
+
+<dt>
+<tt>Note that <b>.a.b</b> is a suffix transformation and <b>.b.a</b> is
+a normal target.</tt></dt>
+</dl>
+
+<dt>
+<b>.NOTMAIN</b></dt>
+
+<dd>
+Prevents the target from being selected as the default target. Normally,
+if no target was specified, <b>mk</b> selects the first target it encounters
+as the default target to be built.</dd>
+
+<dt>
+<b>.PASSES</b></dt>
+
+<dd>
+Enables implementing passes within the make code as opposed to the previous
+makefile definition of passes.&nbsp;&nbsp;&nbsp; The new makefile for a
+pass will look like:</dd>
+
+<dl>
+<dd>
+<tt>build_all: BUILD</tt></dd>
+
+<dd>
+<tt>BUILD: <b>.</b>PASSES EXPINC EXPLIB STANDARD</tt></dd>
+
+<dd>
+<tt>_EXPINC_SUBDIRS_=include</tt></dd>
+
+<dd>
+<tt>_EXPLIB_SUBDIRS_=lib</tt></dd>
+
+<dd>
+<tt>_STANDARD_SUBDIRS_=bin</tt></dd>
+
+<dd>
+<tt>_BUILD_EXPINC_TARGETS_=${INCLUDE}</tt></dd>
+
+<dd>
+<tt>_BUILD_EXPLIB_TARGETS_=${LIBRARIES}</tt></dd>
+
+<dd>
+<tt>_BUILD_STANDARD_TARGETS_=${PROGRAMS}</tt></dd>
+</dl>
+
+<dd>
+Thus the format is:</dd>
+
+<dl>
+<dd>
+&lt;TARGET>: <b>.PASSES</b> &lt;PASS1> &lt;PASS2> ... &lt;PASSn></dd>
+
+<dd>
+_&lt;PASSk>_SUBDIRS_=&lt;subdir>&nbsp; or &lt;subdir1/subdir2/subdir3></dd>
+
+<dd>
+_&lt;TARGET>_&lt;PASSk>_TARGETS_=&lt;targets></dd>
+</dl>
+
+<dt>
+<b>.PMAKE</b></dt>
+
+<dd>
+This is identical to the <b>.MAKE</b> special source with one exception:
+it does not cause targets to be updated one at a time.&nbsp; This is normally
+used to mark recursive <b>mk</b>'s when <a href="ODECommonMakefiles.htm#concurrent_dirs">building
+subdirectories concurrently</a> (in <b>p</b>arallel, hence the "<b>P</b>"
+in <b>.PMAKE</b>).</dd>
+
+<dt>
+<b>.PRECIOUS</b></dt>
+
+<dd>
+Prevents the target from being removed in the case of an interruption to
+<b>mk</b>.
+Normally, when <b>mk</b> is interrupted, it removes any partially-made
+targets.</dd>
+
+<dt>
+<a NAME="PRECMDS"></a><b>.PRECMDS</b></dt>
+
+<dd>
+Specifies that the commands associated with this target are to be prepended
+to the commands that are already associated with it.&nbsp; If used with
+the first occurrence of a target, no special effect is had.&nbsp; If <b>.POSTCMDS</b>
+is used simultaneously, the given commands are both prepended and appended.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>foo : src1</tt></dd>
+
+<dl>
+<dd>
+<tt>echo cmd1</tt></dd>
+
+<dd>
+<tt>echo cmd2</tt></dd>
+</dl>
+
+<dd>
+<tt>foo : src2 .PRECMDS</tt></dd>
+
+<dl>
+<dd>
+<tt>echo cmd3</tt></dd>
+
+<dd>
+<tt>echo cmd4</tt></dd>
+</dl>
+
+<dd>
+<tt>foo : .POSTCMDS</tt></dd>
+
+<dl>
+<dd>
+<tt>echo cmd5</tt></dd>
+</dl>
+
+<dd>
+<tt>foo : .PRECMDS .POSTCMDS</tt></dd>
+
+<dl>
+<dd>
+<tt>echo cmd6</tt></dd>
+
+<dd>
+<tt>echo cmd7</tt></dd>
+</dl>
+</dl>
+
+<dd>
+<tt>The above combination is identical to the following:</tt></dd>
+
+<dl>
+<dd>
+<tt>foo : src1 src2</tt></dd>
+
+<dl>
+<dd>
+<tt>echo cmd6</tt></dd>
+
+<dd>
+<tt>echo cmd7</tt></dd>
+
+<dd>
+<tt>echo cmd3</tt></dd>
+
+<dd>
+<tt>echo cmd4</tt></dd>
+
+<dd>
+<tt>echo cmd1</tt></dd>
+
+<dd>
+<tt>echo cmd2</tt></dd>
+
+<dd>
+<tt>echo cmd5</tt></dd>
+
+<dd>
+<tt>echo cmd6</tt></dd>
+
+<dd>
+<tt>echo cmd7</tt></dd>
+</dl>
+</dl>
+
+<dt>
+<a NAME="POSTCMDS"></a><b>.POSTCMDS</b></dt>
+
+<dd>
+Specifies that the commands associated with this target are to be appended
+to the commands that are already associated with it.&nbsp; If used with
+the first occurrence of a target, no special effect is had.&nbsp; If <b>.PRECMDS</b>
+is used simultaneously, the given commands are both prepended and appended.&nbsp;
+See <b>.PRECMDS</b> for example usage.</dd>
+
+<dt>
+<a NAME="REPLCMDS"></a><b>.REPLCMDS</b></dt>
+
+<dd>
+Specifies that the commands associated with this target will replace the
+commands that were previously associated with it.&nbsp; If used with the
+first occurrence of a target, no special effect is had.&nbsp; If no commands
+are specified with the target, the previous commands are simply removed.
+If <b>.PRECMDS</b> and/or <b>.POSTCMDS</b> are used simultaneously, they
+are silently ignored (only <b>.REPLCMDS</b> is used).</dd>
+
+<dt>
+<b>.REPLSRCS</b></dt>
+
+<dl>
+<dt>
+Specifies that the explicit sources associated with this target will replace
+the explicit sources that were previously associated with it.&nbsp;&nbsp;
+If used with the first occurrence of a target, no special effect is had.&nbsp;
+If no explicit sources are specified with the target, the previous explicit
+sources&nbsp; are simply removed.&nbsp; Special sources (listed in this
+section) are not replaced.</dt>
+</dl>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>targ: src1 .PRECIOUS</tt></dd>
+
+<dl>
+<dd>
+<tt>&lt;commands to generate targ></tt></dd>
+
+<dt>
+<tt>targ: src2 src3 .REPLSRCS</tt></dt>
+</dl>
+
+<dt>
+Note that src2 and src3 will replace src1.&nbsp; However, the special source
+.PRECIOUS is preserved.</dt>
+</dl>
+
+<dt>
+<b>.SPECTARG</b></dt>
+
+<dd>
+Indicates that the target is a special target. This generally means that
+the target is not a physical file or link. It prevents the target from
+being touched when the <b>-t</b> flag is given. The target is also not
+selected as the default main target, <b>.NOTMAIN</b> is implied.</dd>
+
+<table BORDER WIDTH="84%" >
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">All of the <b>Special targets</b> implicitly inherit this
+source.&nbsp;</td>
+</tr>
+</table>
+</dl>
+
+<h2>
+
+<hr></h2>
+
+<h2>
+<a NAME="HDRSPECTRG"></a><a href="#ToC_88">Special targets</a></h2>
+Special targets cannot be specified together with other targets on the
+same line.
+<dl>
+<dt>
+<b>.BEGIN</b></dt>
+
+<dd>
+Command lines attached to this target are executed before any other action.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>.BEGIN:</tt></dd>
+
+<dl>
+<dd>
+<tt>echo "We are starting the build"</tt></dd>
+</dl>
+</dl>
+
+<dt>
+<b>.END</b></dt>
+
+<dd>
+Any command lines attached to this target are executed after all other
+actions (but before <b>.EXIT</b>), as long as no errors or interruptions
+occurred.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>.END:</tt></dd>
+
+<dl>
+<dd>
+<tt>echo "We have successfully finished"</tt></dd>
+</dl>
+</dl>
+
+<dt>
+<b>.ERROR</b></dt>
+
+<dd>
+This target is executed if any of the commands <b>mk</b> runs return with
+a non-zero exit code.&nbsp; Parse errors in makefiles do not cause this
+target to be run.&nbsp; Interruptions (Ctrl-C) are not considered errors.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>.ERROR:</tt></dd>
+
+<dl>
+<dd>
+<tt>echo "We have had an error!"</tt></dd>
+</dl>
+</dl>
+
+<dt>
+<b>.EXIT</b></dt>
+
+<dd>
+This target is executed after the <b>.END</b>, <b>.ERROR</b>, or <b>.INTERRUPT</b>
+targets.&nbsp; The commands for this target always get executed unless
+there is a makefile parsing error.&nbsp; <b>NOTE</b>: This special target
+is used by default in the ODE rules to run <b>mkdep</b>.&nbsp; You may
+use the <b>.POSTCMDS</b>,<b> .PRECMDS</b>, or<b> .REPLCMDS</b> special
+sources with this target to achieve the desired effect, or consider using
+the <b>.END</b> special target instead of <b>.EXIT</b>.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>.EXIT:</tt></dd>
+
+<dl>
+<dd>
+<tt>echo "We are exiting"</tt></dd>
+</dl>
+</dl>
+
+<dt>
+<b>.INTERRUPT</b></dt>
+
+<dd>
+If <b>mk</b> is interrupted (Ctrl-C), this target is executed.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>.INTERRUPT:</tt></dd>
+
+<dl>
+<dd>
+<tt>echo "We have been interrupted"</tt></dd>
+</dl>
+</dl>
+
+<dt>
+<a NAME="SpecTargLINKTARGS"></a><b>.LINKTARGS</b></dt>
+
+<dd>
+For each group of sources that is specified with this target, all sources
+are assumed to be created from the same set of commands simultaneously.&nbsp;
+Thus you can express a relationship in which one set of commands outputs
+several files, and all of them will be considered up-to-date when any one
+in the group is updated.&nbsp; In the event that different commands are
+associated with targets before <b>.LINKTARGS
+</b>is used, the commands
+associated with the first target listed in <b>.LINKTARGS</b> are used.&nbsp;
+If none of the targets have commands at the time <b>.LINKTARGS</b> is used,
+then the first commands declared for any of the linked targets will be
+applied to all of the linked targets.</dd>
+
+<dd>
+Example1:</dd>
+
+<dl>
+<dd>
+<tt>all:&nbsp; foo.suff1&nbsp; foo.suff2</tt></dd>
+
+<dd>
+<tt>foo.suff1&nbsp; foo.suff2:&nbsp; foo.suff3</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; fooCommand&nbsp; foo.suff3</tt></dd>
+
+<dd>
+<tt>.LINKTARGS: foo.suff1&nbsp; foo.suff2</tt></dd>
+
+<dd>
+</dd>
+</dl>
+
+<dd>
+Using the above makefile will cause <b>mk </b>to assume that both foo.suff1
+and foo.suff2 are generated from fooCommand.&nbsp; The fooCommand will
+be executed only once when the target all is updated.&nbsp;&nbsp; If the
+<b>.LINKTARGS</b>
+special target was absent from this example, then fooCommand would be executed
+twice when the target all is updated.</dd>
+
+<dd>
+Example2:</dd>
+
+<dl>
+<dd>
+<tt>targ2:</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; echo targ2</tt></dd>
+
+<dd>
+<tt>targ1:</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; echo targs 1, 2, 3, and 6</tt></dd>
+
+<dd>
+<tt>.LINKTARGS: targ1 targ2 targ3</tt></dd>
+
+<dd>
+<tt>.LINKTARGS: targ5 targ4</tt></dd>
+
+<dd>
+<tt>.LINKTARGS: targ1 targ6</tt></dd>
+
+<dd>
+<tt>targ4:</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; echo targ4</tt></dd>
+
+<dd>
+<tt>targ5:</tt></dd>
+
+<dd>
+<tt>&nbsp;&nbsp; echo targ5</tt></dd>
+
+<dd>
+</dd>
+</dl>
+
+<dd>
+Using the above makefile will cause <b>mk </b>to assume that targ1, targ2,
+targ3, and targ6 are generated from a single identical set of commands
+(note that <b>.LINKTARGS</b> is transitive with respect to linkage, so
+targ6 is implicitly linked with targ2 and targ3 since targ1 is linked with
+each of them), in this case the command associated with targ1.&nbsp; The
+command for targ2 is ignored because targ1 appears before targ2 in the
+<b>.LINKTARGS</b>
+source list.&nbsp; It also causes <b>mk</b> to assume that targ4 and targ5
+are both generated by a single set of commands.&nbsp; In this case the
+targets are linked without commands.&nbsp;&nbsp; Later, when the command
+for targ4 is defined,&nbsp; its commands are added to all linked targets
+(targ4 and targ5).&nbsp; The command for targ5 is ignored because targ5
+already has a command at this point.&nbsp; The command defined for targ5
+could be incorporated if it were associated with a special source such
+as <a href="#PRECMDS">.PRECMDS</a> , <a href="#POSTCMDS">.POSTCMDS</a>
+, or&nbsp; <a href="#REPLCMDS">.REPLCMDS</a> .&nbsp; Using one of these
+special sources with a linked target causes the commands to be applied
+to all the linked targets.</dd>
+
+<dt>
+<b>.MAIN</b></dt>
+
+<dd>
+If no target is specified when <b>mk</b> is invoked, the sources of this
+target designate the targets to create (instead of the default).</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>.MAIN: build_all</tt></dd>
+</dl>
+
+<dt>
+<b>.MAKEFLAGS</b></dt>
+
+<dd>
+The sources to this special target are flags that could have been specified
+at the command line or with the MAKEFLAGS environment variable. Those flags
+will not update the MAKEFLAGS environment variable. The command line options
+-D, -f, -I, -j, -L, -R and variable=value assignment are not allowed in
+this special target. The command line options -B and -e are allowed to
+be used with <b>.MAKEFLAGS</b> only in the <b>Makeconf</b> file.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt># Allow spaces where tabs were required before</tt></dd>
+
+<dd>
+<tt>.MAKEFLAGS: -w</tt></dd>
+</dl>
+
+<dt>
+<b>.NOTPARALLEL</b></dt>
+
+<dd>
+This is equivalent to specifying <b>-j1</b> on the command line (only one
+job can run at a time).&nbsp; Sources given to this target are ignored.</dd>
+
+<dt>
+<b>.ORDER</b></dt>
+
+<dd>
+Specifies the order in which targets will be processed.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>.ORDER: a b</tt></dd>
+
+<dd>
+<tt>all: a b</tt></dd>
+
+<dd>
+<tt>a b:</tt></dd>
+
+<dl>
+<dd>
+<tt>echo ${.TARGET}</tt></dd>
+
+<dd>
+<tt>sleep1</tt></dd>
+</dl>
+</dl>
+
+<dd>
+Running "<b>mk -j2</b>" will reveal that `b' is not updated until `a' is
+done.</dd>
+
+<dt>
+<a NAME="spectarg_PATH"></a><b>.PATH[<i>.suffix</i>]</b></dt>
+
+<dd>
+Specifies sources that are directories to be searched for files not found
+in the current directory. If no sources are specified, any previously specified
+directories are deleted. Sources must be separated by whitespace (not path
+separators).&nbsp; You may append a suffix to designate directories in
+which files with the specified <i>suffix</i> can be found. The suffix used
+must appear in a .SUFFIXES target beforehand.</dd>
+
+<dd>
+Example:</dd>
+
+<dl>
+<dd>
+<tt>.SUFFIXES : .tar</tt></dd>
+
+<dd>
+<tt>.PATH&nbsp;&nbsp;&nbsp;&nbsp; : /bb/src/common /bb/src/other</tt></dd>
+
+<dd>
+<tt>.PATH.tar : /bb/export/rios_aix_4/tars /bb/src/tars</tt></dd>
+
+<dd>
+</dd>
+</dl>
+
+<dd>
+In this example, the <b>.PATH.tar</b> target is used to notify <b>mk</b>
+where to look for files with the <b>.tar</b> suffix.&nbsp; The <b>.PATH</b>
+target is used to notify <b>mk</b> where to look for files with any other
+suffix. These directories are merged into <b>mk</b>'s search path, which
+is described in detail in the section <a href="#HDRFINDFILES">How Make
+finds files</a>.</dd>
+
+<dt>
+<b>.PRECIOUS</b></dt>
+
+<dl>
+<dt>
+Prevents the specified source from being removed if <b>mk</b> is interrupted.
+If no sources are specified, the <b>.PRECIOUS</b> attribute is applied
+to every target in the file.</dt>
+</dl>
+
+<dt>
+<a NAME="spectarg_SUFFIXES"></a><b>.SUFFIXES</b></dt>
+
+<dl>
+<dt>
+Defines suffixes for search paths and implicit transformations. If empty,
+all previous suffix entries will be cleared. To define suffix transformations
+the suffixes need to be listed as sources to this special target.</dt>
+
+<dt>
+Example: (to generate .h files from .mc files)</dt>
+
+<dl>
+<dt>
+<tt>.SUFFIXES: .h .mc</tt></dt>
+
+<dt>
+<tt>.mc.h:</tt></dt>
+
+<dl>
+<dt>
+<tt>mc ${.IMPSRC}</tt></dt>
+</dl>
+</dl>
+</dl>
+</dl>
+
+<dl>
+<dd>
+See <a href="#HDRSUFFIXTRFMS">Suffix Transformations</a> for more information.</dd>
+
+<dl>
+<dl>
+<dd>
+</dd>
+</dl>
+</dl>
+</dl>
+
+<h2>
+<a NAME="HDRSUFFIXTRFMS"></a><a href="#ToC_89a">Suffix Transformations</a></h2>
+Suffix transformations can be used to provide commands for creating one
+file type from another. The suffix transformation rule is of the form:
+<blockquote><b><tt>[&lt;sourceDir>]sourceSuffix[|][&lt;targetDir>][targetSuffix]:&nbsp;
+[dependents]</tt></b></blockquote>
+The directories are not needed for a general suffix transformation rule.&nbsp;
+Consider the following example that uses a suffix transformation to generate
+.h files from .mc files.
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .SUFFIXES: .h .mc</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: foo.h</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .mc.h:</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mc ${.IMPSRC}</tt>
+<br>The implied source for the target <b>foo.h</b> is <b>foo.mc</b>.
+<p>To separate suffixes with multiple dots ('.') in them use the vertical
+line (pipe, '|') to mark the separation.&nbsp; Consider the following example
+that uses a suffix transformation to generate a compressed tar file (.tar.Z)
+from a tar file (.tar).
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .SUFFIXES: .tar.Z .tar</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: V2.5/ga.tar.Z</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .tar|.tar.Z:</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; compress
+${.IMPSRC}</tt>
+<br>The implied source for the target <b>V2.5/ga.tar.Z</b> is <b>V2.5/ga.tar</b>.&nbsp;
+Notice that the directory<b> V2.5 </b>was added to the implied source.&nbsp;
+This is true only when both the source directory and target directory are
+not defined in the suffix transformation.
+<p>Directories may be used in the suffix transformation rule when the target
+is in a different location than the source.&nbsp; Consider the following
+example that uses a suffix transformation to generate <b>.h</b> files in
+the <b>there</b> directory from <b>.mc</b> files in the <b>here</b> directory.
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .SUFFIXES: .h .mc</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: there/foo.h</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; &lt;here>.mc&lt;there>.h:</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mc ${.IMPSRC}</tt>
+<br>The implied source for the target <b>there/foo.h</b> is <b>here/foo.mc</b>.&nbsp;
+Notice that source directory defined in the suffix transformation is the
+directory used for the implied source.
+<p>A single suffix transformation rule may be used when the desired target
+has no suffix.&nbsp; In this case the target suffix is omitted from the
+suffix transformation rule.&nbsp; Consider the following example that uses
+a single suffix rule and mkdep to generate a file with no suffix.
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .SUFFIXES: .u</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: foo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .u :</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .rmkdep
+${.IMPSRC} -file ${.TARGET}</tt>
+<br>The implied source for the target<b> foo</b> is <b>foo.u</b>.&nbsp;
+A vertical line (pipe, '|') is required when a source with multiple dots
+is used with a single suffix rule.&nbsp; Consider the following example.
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .SUFFIXES: .s.r.c</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: foo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .s.r.c| :</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .rcp ${.IMPSRC}
+${.TARGET}</tt>
+<br>The implied source for the target<b> foo</b> is <b>foo.s.r.c</b>.
+<p>The ordering of the suffixes listed in the <b>.SUFFIXES</b> special
+target dictates the priority used when there is an ambiguity.&nbsp; Ambiguity
+may exist when there are multiple suffix transformations with the same
+target suffix.&nbsp; Consider the following example that uses suffix transformations
+to generate <b>.x</b> files from <b>.a</b> or <b>.b</b> files.
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .SUFFIXES: .a .b .x</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: foo.x</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .b.x:</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cp ${.IMPSRC}
+${.TARGET}</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .a.x:</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cp ${.IMPSRC}
+${.TARGET}</tt>
+<br>The <b>.a.x:</b> suffix transformation will be attempted first because
+the <b>.a</b> suffix is defined before the <b>.b</b> suffix in the <b>.SUFFIXES</b>
+special target.&nbsp; If <b>foo.a</b> does not exist and there are no rules
+to create it, then the <b>.b.x:</b> suffix transformation will be attempted.
+<p>Further ambiguity may exist after considering the <b>.SUFFIXES</b> special
+target.&nbsp; In this case the order the suffix transformations appear
+in the makefile determine the order they are considered.&nbsp;&nbsp; Consider
+the following example that uses multiple suffix transformations to generate
+<b>.x</b>
+files from <b>.a</b> files.
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .SUFFIXES: .a .b .x</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: tdir/foo.x</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; .b&lt;tdir>.x:</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cp ${.IMPSRC}
+${.TARGET}</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; &lt;sdir1>.a&lt;tdir>.x:</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cp ${.IMPSRC}
+${.TARGET}</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; &lt;sdir2>.a&lt;tdir>.x:</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${DummyText:L:A${.TARGET}}</tt>
+<br>The suffix <b>.a</b> is the first one listed in the <b>.SUFFIXES</b>
+special target but there are two different suffix transformations that
+generate <b>.x</b> files from <b>.a</b> files.&nbsp; The <b>&lt;sdir1>.a&lt;tdir>.x:</b>
+suffix transformation will be considered first because its definition occurs
+before the <b>&lt;sdir2>.a&lt;tdir>.x:</b> suffix transformation in the
+sample.
+<p>Following are the priorities used when <b>mk </b>determines which suffix
+transformation to use when an ambiguous scenario exists.&nbsp; The first
+priority is the order defined via the<b> .SUFFIXES</b> special target.&nbsp;
+The second priority is determined by the order the suffix transformations
+are defined in the makefile.&nbsp; Also, consider that the default operation
+of <b>mk</b> is to consider <a href="#HDRPATTERNRULES">Pattern Matching
+Rules</a> prior to suffix transformations.&nbsp; The variable <a href="#ODEMAKE_TFMFIRST">ODEMAKE_TFMFIRST</a>
+can be defined to force <b>mk</b> to consider suffix transformations first.
+<h2>
+<a NAME="HDRPATTERNRULES"></a><a href="#ToC_90">Pattern Matching Rules</a></h2>
+Pattern matching rules are a more sophisticated and flexible implied rule
+when compared to suffix transformations.&nbsp; Multiple targets and implied
+sources may exist in pattern rules and the wildcard representation may
+be anything and not just the filename root as in suffix transformations.&nbsp;
+The pattern matching rule is of the form:
+<blockquote><b><tt>targ[...] : [impSrc ...] [expSrc ...]</tt></b></blockquote>
+Each target (<b>targ</b>) must contain exactly one percent (%) sign.&nbsp;
+Each implied source (<b>impSrc</b>) must contain one or more percent signs.&nbsp;
+Explicit sources (<b>expSrc</b>) may be special sources or normal explicitly
+defined sources.&nbsp; The percent sign may represent zero or more characters.
+<p>Consider the following example that uses a pattern matching rule to
+generate
+<b>.h</b> files from <b>.mc</b> files.
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: foo.h</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; %.h: %.mc</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mc ${.ALLSRC}</tt>
+<br>The implied source for the target <b>foo.h</b> is <b>foo.mc</b>.&nbsp;
+This example is equivalent to the <b>.mc.h: </b>suffix transformation example
+in the <a href="#HDRSUFFIXTRFMS">Suffix Transformations</a> section.
+<p>Consider the following example that uses a pattern matching rule to
+generate
+<b>.h</b> files in the <b>there</b> directory from <b>.mc</b>
+files in the <b>here</b> directory.
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: there/foo.h</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; th%.h : h%.mc</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mc ${.ALLSRC}</tt>
+<br>The % is matched with "<b>ere/foo</b>" and thus the implied source
+for the target <b>there/foo.h</b> is <b>here/foo.mc</b>.&nbsp; Notice that
+the source directory defined in the pattern rule is the directory used
+for the implied source. This example is similar to the <b>&lt;here>.mc&lt;there>.h:</b>
+suffix transformation example in the <a href="#HDRSUFFIXTRFMS">Suffix Transformations</a>
+section.
+<p>Consider the following example that illustrates the flexibility of pattern
+matching rules.
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: foo.out1 foo.out2</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; %out1 %out2 : %src&nbsp; %%src&nbsp; explicit.src
+.LINKTARGS</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;cmds></tt>
+<br>The % is matched with "<b>foo.</b>" and thus the targets are <b>foo.out1</b>
+and <b>foo.out2</b>.&nbsp; The implied sources are <b>foo.src</b> and <b>foo.foo.src</b>.&nbsp;
+Notice that more than one % can be present in implied sources only.&nbsp;
+The explicit source is <b>explicit.src</b>.&nbsp; The special source <a href="#SpecSrcLINKTARGS">.LINKTARGS</a>
+is used so that the commands are only run once.
+<p>Unlike explicitly defined targets,&nbsp; the second occurrence of a
+pattern rule replaces the previously defined commands and thus the special
+source <a href="#REPLCMDS">.REPLCMDS</a> is not needed.&nbsp; The special
+sources <a href="#POSTCMDS">.POSTCMDS</a> and <a href="#PRECMDS">.PRECMDS</a>
+can be used to preserve the previously defined commands.&nbsp; Consider
+the following example.
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: foo.out</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; %.out: %.src</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .rcp ${.ALLSRC}
+${.TARGET}</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp; %.out: %.src</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .rmv ${.ALLSRC}
+${.TARGET}</tt>
+<br>The % is matched with "<b>foo</b>" and thus the target is <b>foo.out
+</b>and
+the implied source is <b>foo.src</b>.&nbsp; Notice that the "move" command
+replaces the previously defined "copy" command.
+<p>When more than one pattern rule is valid for a given target,&nbsp; the
+first one defined is the one <b>mk </b>will use.&nbsp; Consider the following
+example:
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; all: foo.out</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; foo%.out: foo%.src1</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .rcp ${.ALLSRC}
+${.TARGET}</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp; %out: %src2</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .rmv ${.ALLSRC}
+${.TARGET}</tt>
+<br>If <b>foo.src1 </b>exists or can be updated, then the pattern rule
+"<tt><b>foo%.out: foo%.src1</b>" </tt>will be used.&nbsp; If <b>foo.src1</b>
+can not be updated, then <b>m</b>k will attempt to use the "<b><tt>%out:
+%src2</tt></b>" pattern rule.
+<br>&nbsp;
+<p><a NAME="HDRFINDFILES"></a><font size=+2><a href="#ToC_91">How Make
+finds files</a></font>
+<br>Make maintains an internal search path which it uses to find target
+files.&nbsp; The directories in this search path and their order are determined
+by a number of factors.&nbsp; This section will attempt to explain how
+these factors affect the search path.&nbsp; Make also uses this search
+path when the variable modifiers&nbsp; <a href="#dmodifier">:d</a> , <a href="#Xmodifier">:X</a>
+, <a href="#Pmodifier">:P</a> and <a href="#pmodifier">:p</a> are used.&nbsp;
+To view the actual search path Make traverses when searching for files,&nbsp;
+use the<b> </b><a href="#Header_20">-dd</a> command line option.
+<br>&nbsp;
+<p><a NAME="HDRFINDTARGET"></a><font size=+1><a href="#ToC_91">How Make
+finds target files</a></font>
+<p><font color="#000000">Consider a typical sandbox environment on a Windows
+NT machine.&nbsp; Assume we are working in the <b>src </b>directory of
+a sandbox whose base directory is <b>c:\sandbox</b>.&nbsp; Furthermore,
+assume that it is backed by the backing build base directory
+<b>d:\backbld
+</b>and
+the makefile includes the <b>rules.mk</b> file.&nbsp; Make will search
+for targets in the following order:</font>
+<ul>
+<li>
+<b><font color="#000000">c:\sandbox\obj\x86_nt_4</font></b></li>
+
+<li>
+<b><font color="#000000">c:\sandbox\src</font></b></li>
+
+<li>
+<b><font color="#000000">d:\backbld\obj\x86_nt_4</font></b></li>
+
+<li>
+<b><font color="#000000">d:\backbld\src</font></b></li>
+</ul>
+<font color="#000000">This search path can be shown by executing
+</font><b><a href="ODEBuildReference.htm#HDRGENPATH">genpath
+-I.</a></b><font color="#000000"> in the current directory.&nbsp; If we
+have sandboxes backed by sandboxes, then the search path is longer with
+two lines added for each additional sandbox in the backing chain.&nbsp;
+The search order will start with the top most sandbox and continue until
+the backing build is reached.&nbsp; This way, any updated files in our
+sandbox will be found before files in the backing build.&nbsp; An <b>obj</b>
+directory and <b>src</b> directory for each sandbox or backing build is
+added.&nbsp; The <b>obj</b> directory will be searched before the <b>src</b>
+directory so that generated files will be found first.</font>
+<br>&nbsp;
+<p><font color="#000000">C</font>onsider a <a href="#VPATH">VPATH</a> variable
+set to both a relative and absolute path such as the following.
+<br><b>VPATH = relvpath;c:\absvpath</b>
+<br>Make will now search for targets with the following search path:
+<ul>
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4</font></b></li>
+
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4</font>\relvpath</b></li>
+
+<li>
+<b>c:\sandbox\src</b></li>
+
+<li>
+<b>c:\sandbox\src\relvpath</b></li>
+
+<li>
+<b>d:\backbld\obj\<font color="#000000">x86_nt_4</font></b></li>
+
+<li>
+<b>d:\backbld\obj\<font color="#000000">x86_nt_4\</font>relvpath</b></li>
+
+<li>
+<b>d:\backbld\src</b></li>
+
+<li>
+<b>d:\backbld\src\relvpath</b></li>
+
+<li>
+<b>c:\absvpath</b></li>
+</ul>
+Make takes each element of the existing search path and appends the relative
+vpath to it.&nbsp; Make then inserts this new path element immediately
+after the original element. Absolute vpath's are considered less important
+and are added to the end of the search path.
+<p>The <b><a href="#spectarg_PATH">.PATH</a></b> special target in a makefile
+will also affect the search path.&nbsp; Consider the following <b>.PATH</b>
+special target that contains both a relative path and an absolute path:
+<br><b>.PATH: relpath;c:\abspath</b>
+<br>To be effective, this statement must follow the line that includes
+<b>rules.mk</b>.&nbsp;
+This is because <b>std.mk</b> (included via <b>rules.mk</b>) resets the
+<b>.PATH</b>
+special target.&nbsp; This statement will modify the original search path
+and result in:
+<ul>
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4</font></b></li>
+
+<li>
+<b>c:\sandbox\src</b></li>
+
+<li>
+<b>d:\backbld\obj\<font color="#000000">x86_nt_4</font></b></li>
+
+<li>
+<b>d:\backbld\src</b></li>
+
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4</font>\relpath</b></li>
+
+<li>
+<b>c:\sandbox\src\relpath</b></li>
+
+<li>
+<b>d:\backbld\obj\x86_nt_4\relpath</b></li>
+
+<li>
+<b>d:\backbld\src\relpath</b></li>
+
+<li>
+<b>c:\abspath</b></li>
+</ul>
+In this case the relative paths are appended to <a href="#MAKESRCDIRPATH">MAKESRCDIRPATH</a>
+and then appended to the end of&nbsp; the search path with any absolute
+directories coming at the end.&nbsp; The variable MAKESRCDIRPATH is set
+in the <b>Makeconf</b> file and it is typically the same as the original
+search path.&nbsp; MAKESRCDIRPATH for this example is:
+<ul>
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4</font></b></li>
+
+<li>
+<b>c:\sandbox\src</b></li>
+
+<li>
+<b>d:\backbld\obj\x86_nt_4</b></li>
+
+<li>
+<b>d:\backbld\src</b></li>
+</ul>
+
+<p><br>Consider a combination of a VPATH variable and a <b>.PATH</b> special
+target simultaneously.
+<br><b>VPATH = relvpath;c:\absvpath</b>
+<br><b>.PATH: relpath;c:\abspath</b>
+<br>The combination of both of these will cause the search path to be:
+<ul>
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4</font></b></li>
+
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4</font>\relvpath</b></li>
+
+<li>
+<b>c:\sandbox\src</b></li>
+
+<li>
+<b>c:\sandbox\src\relvpath</b></li>
+
+<li>
+<b>d:\backbld\obj\<font color="#000000">x86_nt_4</font></b></li>
+
+<li>
+<b>d:\backbld\obj\<font color="#000000">x86_nt_4</font>\relvpath</b></li>
+
+<li>
+<b>d:\backbld\src</b></li>
+
+<li>
+<b>d:\backbld\src\relvpath</b></li>
+
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4</font>\relpath</b></li>
+
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4\</font>relpath\relvpath</b></li>
+
+<li>
+<b>c:\sandbox\src\relpath</b></li>
+
+<li>
+<b>c:\sandbox\src\relpath\relvpath</b></li>
+
+<li>
+<b>d:\backbld\obj\x86_nt_4\relpath</b></li>
+
+<li>
+<b>d:\backbld\obj\x86_nt_4\relpath\relvpath</b></li>
+
+<li>
+<b>d:\backbld\src\relpath</b></li>
+
+<li>
+<b>d:\backbld\src\relpath\relvpath</b></li>
+
+<li>
+<b>c:\abspath</b></li>
+
+<li>
+<b>c:\abspath\relvpath</b></li>
+
+<li>
+<b>c:\absvpath</b></li>
+</ul>
+Note that the <b>.PATH</b> special target gets first precedence.&nbsp;
+The VPATH processing will be done last.
+<br>&nbsp;
+<p>The previous examples refer to Make's general search path that it uses
+to search for files in the general case.&nbsp; If it is desired for files
+of certain extensions to have a unique search path, then we could use the
+<b><a href="#spectarg_SUFFIXES">.SUFFIXES</a></b>and
+<b><a href="#spectarg_PATH">.PATH[<i>suffix</i>]</a></b>
+special targets in our makefile.&nbsp; Consider these two lines in a makefile.
+<br><b>.SUFFIXES:&nbsp; .abc</b>
+<br><b>.PATH.abc:&nbsp;&nbsp; abcdir c:\abcdir</b>
+<br>The first line identifies .abc as a file extension.&nbsp; The second
+line specifies where Make should look to find files with the .abc extension.&nbsp;
+Note that it contains both a relative and absolute directory.&nbsp; If
+we consider again the original sandbox environment above,&nbsp; the search
+path for .abc files will be:
+<ul>
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4</font>\abcdir</b></li>
+
+<li>
+<b>c:\sandbox\src\abcdir</b></li>
+
+<li>
+<b>d:\backbld\obj\x86_nt_4\abcdir</b></li>
+
+<li>
+<b>d:\backbld\src\abcdir</b></li>
+
+<li>
+<b>c:\abcdir</b></li>
+
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4</font></b></li>
+
+<li>
+<b>c:\sandbox\src</b></li>
+
+<li>
+<b>d:\backbld\obj\<font color="#000000">x86_nt_4</font></b></li>
+
+<li>
+<b>d:\backbld\src</b></li>
+</ul>
+Observe that the original search path is at the end and the new entries
+generated via the <b>.PATH.abc</b> special target come first.&nbsp; The
+relative directories are appended to all elements of MAKESRCDIRPATH.&nbsp;
+Any absolute directories are added and then the whole set is prepended
+to the existing search path.
+<br>&nbsp;
+<p><font color="#000000">The variable</font> <a href="#MAKEOBJDIR">MAKEOBJDIR</a><font color="#000000">
+can be used to modify the obj directories of the search path.&nbsp; Consider
+the following command added to the <b>Makeconf</b> file.</font>
+<br><b><font color="#000000">MAKEOBJDIR=..\obj</font></b>
+<br><font color="#000000">The original search path will be modified to
+be:</font>
+<ul>
+<li>
+<b><font color="#000000">c:\sandbox\obj</font></b></li>
+
+<li>
+<b><font color="#000000">c:\sandbox\src</font></b></li>
+
+<li>
+<b><font color="#000000">d:\backbld\obj</font></b></li>
+
+<li>
+<b><font color="#000000">d:\backbld\src</font></b></li>
+</ul>
+
+<p><br><a NAME="HDRFINDINCMAKE"></a><font size=+1><a href="#ToC_91">How
+Make finds included makefiles</a></font>
+<p>Files may be included by a makefile via the <a href="#HDRINC">.include</a>
+command.&nbsp; Consider the following two lines added to a makefile.
+<br><b>.include "fileA.mk"</b>
+<br><b>.include &lt;fileB.mk></b>
+<br>Make will use the search path as described above to look for <b>"fileA.mk"</b>
+because it is contained in double quotes.&nbsp; Of course, any VPATH variable
+or <b>.PATH</b> special target will affect this search path.&nbsp; Make
+will use MAKESYSPATH to look for <b>&lt;fileB.mk></b> because it is contained
+in brackets.&nbsp;&nbsp; MAKESYSPATH is defined in <b>Buildconf</b> and
+<b>Buildconf.exp</b>.&nbsp;
+Using the same environment as above, <b>&lt;fileB.mk></b> will be searched
+for in the following order:
+<ul>
+<li>
+<b>c:\sandbox\src\rules_mk</b></li>
+
+<li>
+<b>d:\backbld\src\rules_mk</b></li>
+</ul>
+MAKESYSPATH is not affected by VPATH or .PATH special targets, however
+the <b>-I</b> command line option does affect it.&nbsp; Consider the following
+command.
+<br><b>mk -I.\relpathI</b>
+<br>Now when searching for <b>&lt;fileB.mk></b>, the order will be:
+<ul>
+<li>
+<b>c:\sandbox\src\rules_mk</b></li>
+
+<li>
+<b>d:\backbld\src\rules_mk</b></li>
+
+<li>
+<b>c:\sandbox\obj\<font color="#000000">x86_nt_4\</font>relPathI</b></li>
+
+<li>
+<b>c:\sandbox\src\relPathI</b></li>
+
+<li>
+<b>d:\backbld\obj\x86_nt_4\relPathI</b></li>
+
+<li>
+<b>d:\backbld\src\relPathI</b></li>
+</ul>
+Notice that the <b>-I</b> processing gets applied to the MAKESRCDIRPATH
+and gets appended to the original MAKESYSPATH.&nbsp; The <b>-I</b> command
+line option does not affect the search path used to search for <b>"fileA.mk".</b>
+<p><a NAME="Bot_Of_Page"></a>
+</body>
+</html>

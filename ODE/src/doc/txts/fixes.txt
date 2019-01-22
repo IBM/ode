@@ -1,0 +1,45 @@
+********************************************************************************
+***
+*** This file lists all fixes and enhancements that have been
+*** performed in each build.  The first column shows the component
+*** name, as described below, and the remainder of each line is the
+*** fix/enhancement description.
+***
+*** Components:
+***   odepkg   - work involving packaging functionality
+***   odemk    - work involving the mk tool
+***   odebld   - work involving the "build" tools (build, mkdep, gendep, etc.)
+***   odesb    - work involving the "sandbox" tools (mksb, sbinfo, sbls, etc.)
+***   odelib   - work involving the library code
+***   oderules - work involving the makefile rules
+***   odedoc   - work involving the documentation
+***   odeex    - work involving the bbexample
+***   odemkmk  - work involving MakeMake
+***   ode      - miscellaneous changes
+***
+*** FIXES PER BUILD ***
+
+Fixes in ODE5.0 build 20040610.0700:
+  odedoc     Need to add the RecoveryGuide.htm file to the makefile
+  odedoc     Updated Service Packaging docs
+  odemk      various .rfor bugs
+  oderules   create a Makeconf.def file (REQ 1737)
+  oderules   Ordering problem with USE_FILEFIND vars
+  oderules   problem with mk clean_all when JAVA_CLASSES_DIRS set
+  oderules   Set the default for B390_AUTO_DELETE_DRIVER to NO
+
+Fixes in ODE5.0 build 20040315.0300:
+  odedoc     Admin Guide: Supported OS section should list Linux for IA-64
+  odedoc     ODE 5.0 GA will not be supporting a native package installation
+  odedoc     Shouldn't use SOURCEBASE variable in documentation
+  odemk      Problem with .LINKTARGS
+
+Fixes in ODE5.0 build 20031202.0300:
+  odedoc     Make documentation changes for deleteing a release
+  odepkg     Change delete release process from DELETEDRIVER to DELETERELEASE
+  odepkg     Make changes to the UPD file to handle deleted files properly
+
+Fixes in ODE5.0 build 20031028.0906:
+  odemk      Add enhancements to the TSOBUILD process
+
+*** EOF ***

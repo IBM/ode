@@ -1,0 +1,18 @@
+# Buildconf.exp
+#
+# This file is read once for every sandbox in the chain (not
+# including the backing build, for which only Buildconf is
+# read).  The sandbox_base variable reflects which sandbox is
+# currently being processed.
+
+# Temporary local variables to be used as shortcuts later in this file.
+replace source_base ${sandbox_base}${DIRSEP}${ODESRCNAME}
+replace export_base ${sandbox_base}${DIRSEP}export${DIRSEP}${CONTEXT}
+
+replace setenv MAKESYSPATH ${source_base}${DIRSEP}rules_mk${PATHSEP}${MAKESYSPATH}
+replace setenv INCDIRS "-I${source_base}${DIRSEP}include ${INCDIRS}"
+replace setenv LIBDIRS "-L${export_base}${DIRSEP}usr${DIRSEP}lib ${LIBDIRS}"
+replace setenv VPATH "${source_base}${DIRSEP}lib${DIRSEP}linkobjs${PATHSEP}${VPATH}"
+replace setenv CLASSPATH ${source_base}${PATHSEP}${sandbox_base}${DIRSEP}export${DIRSEP}classes${PATHSEP}${CLASSPATH}
+
+

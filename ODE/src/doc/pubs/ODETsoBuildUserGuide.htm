@@ -1,0 +1,2268 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="default">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>ODE TSO Build User's Guide</title>
+</head>
+<body>
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490>
+<br>&nbsp;
+<h1>
+ODE TSO Build User's Guide</h1>
+SDWB
+<br>ODE TSO Build User's Guide
+<br>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<p>
+<hr>
+<h2>
+Table of Contents</h2>
+<a NAME="Toc_AboutDoc"></a><a href="#AboutDoc">About this Document</a>
+<br><a NAME="Toc_Introduction"></a><a href="#Introduction">Introduction</a>
+<br><a NAME="Toc_GettingStarted"></a><a href="#GettingStarted">Getting
+Started</a>
+<ul>
+<li>
+<a NAME="Toc_ValidTSOUseridPassword"></a><a href="#ValidTSOUseridPassword">Valid
+TSO Userid and Password</a></li>
+
+<li>
+<a NAME="TOC_SetClasspath"></a><a href="#SetClasspath">Set Classpath</a></li>
+
+<li>
+<a NAME="TOC_PrerequisiteForDependencyGeneration"></a><a href="#PrereqForDependencyGeneration">Prerequisite
+for Dependency Generation</a></li>
+
+<li>
+<a NAME="Toc_JobCard"></a><a href="#JobCard">JobCard</a></li>
+
+<li>
+<a NAME="Toc_NETRC"></a><a href="#NETRC">NETRC</a></li>
+
+<li>
+<a NAME="Toc_DefineMakefileVariables"></a><a href="#DefineMakefileVariables">Define
+Makefile Variables</a></li>
+
+<li>
+<a NAME="Toc_UserDefinedRules"></a><a href="#UserDefinedRules">User-Defined
+Rules</a></li>
+</ul>
+<a NAME="Toc_JCLInformation"></a><a href="#JCLInformation">JCL Information</a>
+<ul>
+<li>
+<a NAME="Toc_ODEJCLTemplates"></a><a href="#ODEJCLTemplates">ODE JCL Templates</a></li>
+
+<ul>
+<li>
+<a href="#ASMTemplate">ASM Template</a></li>
+
+<li>
+<a href="#COBOLTemplate">COBOL Template</a></li>
+
+<li>
+<a href="#PLSTemplate">PLS Template</a></li>
+
+<li>
+<a href="#PLXTemplate">PLX Template</a></li>
+</ul>
+
+<li>
+<a NAME="Toc_NONODEJCLTemplates"></a><a href="#NONODEJCLTemplates">NON-ODE
+JCL Templates</a></li>
+</ul>
+<a NAME="Toc_ODETSOBuildProcess"></a><a href="#ODETSOBuildProcess">ODE
+TSO Build Process</a>
+<ul>
+<li>
+<a NAME="Toc_mvsbuildlist"></a><a href="#MVSBuildList">MVS Build List</a></li>
+
+<li>
+<a NAME="Toc_JCLExamples"></a><a href="#JCLExamples">JCL Examples</a></li>
+
+<ul>
+<li>
+<a href="#copy2tso.jcl">copy2tso.jcl</a></li>
+
+<li>
+<a href="#compile1.jcl">compile1.jcl</a></li>
+
+<li>
+<a href="#copy2hfs.jcl">copy2hfs.jcl</a></li>
+
+<li>
+<a href="#non-ode compile1.jcl">non-ode compile1.jcl</a></li>
+</ul>
+</ul>
+<a NAME="Toc_DependencyGeneration"></a><a href="#DependencyGeneration">Dependency
+Generation</a>
+<br><a NAME="Toc_MultipleCompileJobs"></a><a href="#MultipleCompileJobs">Multiple
+Compile Jobs</a>
+<br><a NAME="Toc_ConditionCodes"></a><a href="#ConditionCodes">Condition
+Codes</a>
+<p>
+<hr>
+<h2>
+<a NAME="AboutDoc"></a><a href="#Toc_AboutDoc">About this Document</a></h2>
+This document is intended to give the reader the necessary information
+to build ASM, COBOL, PLS and PLX parts on the Time-Sharing Option (TSO)
+side of a z/OS System using Open Development Environment (ODE).&nbsp; TSO
+is the shell, or user interface, by which users interact with the operating
+system.
+<p><b><font color="#FF6666">Note:</font></b>&nbsp; The current ODE TSO
+build process only works in a z/OS USS ODE environment.
+<p>See the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/index.htm">ODE
+Documentation Index</a> for a complete list of ODE documents and their
+purposes. It is recommended that the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEConcepts.htm">ODE
+Build Concepts</a> and <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEBuildReference.htm">ODE
+Build Reference</a> documents be read before running the TSO build process..
+<p>Once a build is done, one or more ODE passes can be used to create a
+package.&nbsp; More information about packaging can be found in the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEPackagingReference.htm">ODE
+Packaging Reference</a>, as well as the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEPkgTutorial.htm">ODE
+Packaging Tutorial</a>.
+<p>
+<hr>
+<h2>
+<a NAME="Introduction"></a><a href="#Toc_Introduction">Introduction</a></h2>
+ODE primarily has been the build tool of choice for z/OS USS based products.
+It supports building and packaging of C/C++ and Java code in the z/OS USS
+environment. It is conceivable that some USS based products may contain
+code that need to be built in the TSO environment. ODE currently supports
+the building of parts on the TSO side of a z/OS system for ASM, COBOL,
+PLS and PLX.
+<p>
+<hr>
+<h2>
+<a NAME="GettingStarted"></a><a href="#Toc_GettingStarted">Getting Started</a></h2>
+This section describes what an ODE user will need do inorder to perform
+TSO builds.&nbsp; To start using the TSO build feature of ODE, there are
+several things that need to be done like verifying access to the remote
+machine, modifying the makefiles, establishing any user-defined rules for
+the build_all targets and creating a netrc dataset on the remote machine.
+<p><b>Note:</b>&nbsp; The TSO build rules are not turned on during the
+normal ODE build process, unless specified by the user. Therefore, the
+variable USE_TSO_RULES is not on by default.&nbsp; If the user wants to
+perform TSO builds on the z/OS system, then the variable must be set (.i.e.
+<b>USE_TSO_RULES=1</b>).&nbsp;
+If&nbsp; the variable is undefined, empty (i.e. <b>USE_TSO_RULES=</b> )
+or set to zero&nbsp; (i.e. <b>USE_TSO_RULES=0</b>),&nbsp; the TSO build
+rules will not be utilized and TSO builds can't be performed.
+<p><b>Note:</b>&nbsp; To run the TSO build process with the <b>BBEXAMPLE</b>
+backing build provided by ODE, please add the following line to <b>Buildconf</b>
+in the bbexample/src directory:
+<p>&nbsp;&nbsp;&nbsp; replace setenv SOURCEBASE ${source_base}
+<br>&nbsp;
+<h3>
+<a NAME="ValidTSOUseridPassword"></a><a href="#Toc_ValidTSOUseridPassword">Valid
+TSO Userid and Password</a></h3>
+The user must have a valid TSO userid and password on the remote machine
+inorder to request the use of its resources.&nbsp; This information is
+also used to submit Job Control Language (JCL) jobs and to copy data via
+FTP between the two machines.&nbsp; If you don't have a TSO userid&nbsp;
+and/or password at this time, have your TSO administrator assign one to
+you.
+<br>&nbsp;
+<h3>
+<a NAME="SetClasspath"></a><a href="#TOC_SetClasspath">Set Classpath</a></h3>
+An additional step must be taken to set up the environment for building
+TSO parts.&nbsp; The ODE jar file (i.e. <b>ode5.0_b4_tools.jar</b>) must
+be added to the CLASSPATH variable, for instance on Unix systems, enter
+the following:
+<p>&nbsp; export CLASSPATH=/ode/classes/ode5.0_bnum_tools.jar:$CLASSPATH
+<p>where /ode/classes is the location of the tools jar file on your system,
+and <b>num</b> is the build number.
+<br>&nbsp;
+<h3>
+<a NAME="PrereqForDependencyGeneration"></a><a href="#TOC_PrerequisiteForDependencyGeneration">Prerequisite
+for Dependency Generation</a></h3>
+The dependency information will come from the information provided by the
+compiler.&nbsp; This information is interpreted and used to produce the
+correct ODE format (.u file) on the HFS filesystem.&nbsp; Depending on
+the language (i.e. ASM), the user will have to identify the appropriate
+Monitor Exit (i.e. SDYNASM Exit) for dependency generation.&nbsp; The user
+will also need to define the variable <b>DEPENDENCIES</b> in their makefile,
+if they want to have this capability turned on.
+<p><b><font color="#FF6666">Note:</font></b>&nbsp; ODE does not currently
+produce any dependencies for COBOL due to the lack of dependency information
+generated by the compiler (no Monitor Exit capability).&nbsp; The following
+message will appear during file dependency phase:
+<p><tt>****************************************************</tt>
+<br><tt>* Dependencies for Cobol - not currently supported *</tt>
+<br><tt>****************************************************</tt>
+<p>Therefore, all COBOL files in the traversed directory will be recompiled.
+<br>&nbsp;
+<h3>
+<a NAME="JobCard"></a><a href="#Toc_JobCard">JobCard</a></h3>
+A local job card file (see the example below) used to provide job submission
+information to MVS, must be present on the system that the build is to
+run on.&nbsp; Consult your MVS documentation for more information on the
+creation and use of job cards.&nbsp; The sub-parameters are positional,
+to omit one sub-parameter, the positional comma after that sub-parameter
+must be coded.
+<p><font color="#00CC00">/<tt>/WMATHIS1 JOB (349077,,,,10,N),</tt></font>
+<br><tt><font color="#00CC00">//&nbsp; 'WMATHIS',TIME=1440,NOTIFY=WMATHIS,</font></tt>
+<br><tt><font color="#00CC00">//&nbsp; MSGCLASS=O,</font></tt>
+<br><tt><font color="#00CC00">//&nbsp; MSGLEVEL=(1,1)</font></tt>
+<br><tt><font color="#00CC00">//*MAIN SYSTEM=MVSC,ORG=ANYLOCAL,</font></tt>
+<br><tt><font color="#00CC00">//*CLASS=VPRLS,</font></tt>
+<br><tt><font color="#00CC00">//*USER=WMATHIS,HOLD=NO</font></tt>
+<br><tt><font color="#00CC00">//*IBM INTERNAL USE ONLY</font></tt>
+<p><b>Note:</b>&nbsp; If the computer operating system determines that
+either the time or lines estimates will be exceeded, it will abend the
+job with a system completion code.
+<br>&nbsp;
+<h3>
+<a NAME="NETRC"></a><a href="#Toc_NETRC">NETRC</a></h3>
+On the remote machine, create a dataset called NETRC under your userid.&nbsp;
+If the variable BLD_NETRC_FILE is set (i.e. <b>BLD_NETRC_FILE=WMATHIS.FTP(NETRC)</b>
+), then it will be used by FTP for automatic login on the remote host.
+For each remote host, the file contains an entry that describes the login
+data for the user on that host.&nbsp; The NETRC dataset is used to hide
+the userid and password during the FTP process.&nbsp; However, some users
+may want to bypass the NETRC file setup.&nbsp; Therefore by default, ODE
+does not require the user to have this variable BLD_NETRC_FILE set.&nbsp;
+If this variable is not set, then the user's id and password from the makefile
+variables will be utilized for the FTP process.
+<p><b>Note:</b>&nbsp; Bypassing the NETRC setup is not recommended by ODE
+for security reasons.&nbsp; Without the NETRC setup, the user's id and
+password will be visible in the JCL located in the obj directory.
+<p>The first part of the NETRC is filled up with host-definitions. Although
+there are others, the following tokens (machine, login and password) are
+all that is needed for the dataset and they may be separated by spaces,
+tabs, or new-lines.
+<p>This is an example of a NETRC dataset:
+<p>WMATHIS.FTP(NETRC) contains:
+<p><tt><font color="#00CC00">machine raljes3c.raleigh.ibm.com login wmathis
+password xxxxxxxx</font></tt>
+<br><tt><font color="#00CC00">machine raljes3c login wmathis password xxxxxxxx</font></tt>
+<p>What it is saying now is nothing more than "If you connect to raljes3c
+or raljes3c.raleigh.ibm.com, login as wmathis and use xxxxxxxx as password."
+<b>Note:</b>&nbsp;
+If a user specify <b>BLD_REMOTE_HOST = raljes3c</b> in the makefile, that
+short hostname should appear in the NETRC file also.&nbsp; If omitted,
+the user may encounter a login and/or password error that causes the FTPFILE
+step to fail.
+<h3>
+<a NAME="DefineMakefileVariables"></a><a href="#Toc_DefineMakefileVariables">Define
+Makefile Variables</a></h3>
+The following makefile variables are used in the TSO Build process. Some
+of these variables are required and some are optional. These makefile variables
+could be either defined in a makefile or on the command line itself.
+<br>&nbsp;
+<table BORDER CELLSPACING=0 CELLPADDING=0 >
+<tr BGCOLOR="#999999">
+<td><b>Makefile Variable</b></td>
+
+<td><b>Definition</b></td>
+
+<td><b>Required/</b>
+<br><b>Optional</b></td>
+</tr>
+
+<tr>
+<td><b>USE_TSO_RULES</b></td>
+
+<td>This makefile variable allows the user to utilized the TSO Build rules,
+needed to perform the TSO Build Process.&nbsp; This variable must be set
+(i.e. USE_TSO_RULES =1) inorder to run the TSO build process.&nbsp;
+<br><b>Note:</b> This variable is not turned on by default.</td>
+
+<td>Required</td>
+</tr>
+
+<tr>
+<td><b>USE_ODE_TEMPLATES</b></td>
+
+<td>This makefile variable denotes whether or not the ODE templates are
+utilized for the TSO build process. The default value is YES.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>USE_MY_TEMPLATES</b></td>
+
+<td>This makefile variable denotes whether or not the user's (non-ODE)
+templates are utilized for the TSO build process.&nbsp; If this variable
+is set to YES,&nbsp; it overrides the USE_ODE_TEMPLATES variable.&nbsp;
+The default value is NO.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>LANGS_FOR_MY_TEMPLATES</b></td>
+
+<td>This makefile variable denotes the languages to use with the user's
+(non-ODE) templates.&nbsp;
+<br>The default value is ASM, COBOL, PLS and PLX
+<p><b>Note:</b> The user may choose to run their template for COBOL and
+utilize the ODE templates for ASM, PLS and PLX.&nbsp;
+<br>(e.g. USE_ODE_TEMPLATES=YES&nbsp; USE_MY_TEMPLATES=YES and
+<br>LANGS_FOR_MY_TEMPLATES=COBOL.)</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_HLQ</b></td>
+
+<td>This makefile variable contains the High Level Qualifier, which identifies
+where the temproary datasets for the build process are temporarily stored.&nbsp;
+<br>The default value will be the userid.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>MVS_USERID</b></td>
+
+<td>This makefile variable contains the MVS user ID under which the job
+should run.&nbsp;</td>
+
+<td>Required</td>
+</tr>
+
+<tr>
+<td><b>MVS_PASSWORD</b></td>
+
+<td>This makefile variable contains the password for the MVS user ID.&nbsp;</td>
+
+<td>Required</td>
+</tr>
+
+<tr>
+<td><b>BLD_USING_ALLOC_REXXEXEC</b></td>
+
+<td>This makefile variable denotes whether or not the ODE REXX executable
+script is to be utilized to allocate the Partitioned Data Sets (PDS). The
+default value is NO.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>MVS_EXEC_DATASET</b></td>
+
+<td>This makefile variable contains the dataset name where the REXX (allocation)
+executable script is installed on the MVS host.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>MVS_JOBMONITOR_TIME</b></td>
+
+<td>This makefile variable contains the time, in minutes, to wait between
+job status queries. The default value is 1 minute.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>MVS_SAVE_OUTPUT_FILE</b></td>
+
+<td>This makefile variable denotes whether or not the output file from
+a remote job should be saved on the USS side after job completion. The
+default value for this variable is NO, which specifies that the output
+file will be deleted.&nbsp; To save the output files from remote jobs,
+assign the value of this variable to be YES.&nbsp; The default location
+for the output files will be where the objects are stored.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>MVS_DELETE_OUTPUT</b></td>
+
+<td>This makefile variable denotes whether or not the output from any remote
+jobs should be should be deleted on the MVS host after the job has completed.
+The default value for this variable is YES, which specifies that the output
+will be deleted. To retain the job output on the host after the job has
+completed, assign the value of this variable to be NO.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>MVS_JOBCARD</b></td>
+
+<td>This makefile variable contains the fully-qualified file name in HFS
+that contains the MVS job card.</td>
+
+<td>Required</td>
+</tr>
+
+<tr>
+<td><b>NUM_OF_FILES_PER_JOB</b></td>
+
+<td>This makefile variable contains the number of files to compile in a
+single JCL job.&nbsp;
+<br>The default causes all the files to be compiled in one job.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_REMOTE_HOST</b></td>
+
+<td>This makefile variable contains the name of the remote machine that
+will be compiling the parts.
+<br><b>Note:</b> No IP address allowed</td>
+
+<td>Required</td>
+</tr>
+
+<tr>
+<td><b>BLD_ASM_PROGRAM_NAME</b></td>
+
+<td>This makefile variable contains the name of the program to execute
+for ASM parts.</td>
+
+<td>Required
+<br>(if compiling ASM parts using the ode template)</td>
+</tr>
+
+<tr>
+<td><b>BLD_CBL_PROGRAM_NAME</b></td>
+
+<td>This makefile variable contains the name of the program to execute
+for COBOL parts.</td>
+
+<td>Required
+<br>(if compiling COBOL parts using the ode template)</td>
+</tr>
+
+<tr>
+<td><b>BLD_PLS_PROGRAM_NAME</b></td>
+
+<td>This makefile variable contains the name of the program to execute
+for PLS parts.</td>
+
+<td>Required
+<br>(if compiling PLS parts using the ode template)</td>
+</tr>
+
+<tr>
+<td><b>BLD_PLX_PROGRAM_NAME</b></td>
+
+<td>This makefile variable contains the name of the program to execute
+for PLX parts.</td>
+
+<td>Required
+<br>(if compiling PLX parts using the ode template)</td>
+</tr>
+
+<tr>
+<td><b>BLD_ASM_STEPLIB</b></td>
+
+<td>This makefile variable specifies the product library where the ASM
+Compiler is installed.</td>
+
+<td>Required
+<br>(if compiling ASM parts using the ode template)</td>
+</tr>
+
+<tr>
+<td><b>BLD_CBL_STEPLIB</b></td>
+
+<td>This makefile variable specifies the product library where the COBOL
+Compiler is installed.</td>
+
+<td>Required
+<br>(if compiling COBOL parts using the ode template)</td>
+</tr>
+
+<tr>
+<td><b>BLD_PLS_STEPLIB</b></td>
+
+<td>This makefile variable specifies the product library where the PLX
+Compiler is installed.</td>
+
+<td>Required
+<br>(if compiling PLS parts using the ode template)</td>
+</tr>
+
+<tr>
+<td><b>BLD_PLX_STEPLIB</b></td>
+
+<td>This makefile variable specifies the product library where the PLX
+Compiler is installed.</td>
+
+<td>Required
+<br>(if compiling PLX parts using the ode template)</td>
+</tr>
+
+<tr>
+<td><b>PRODUCT_ASM_SYSLIB</b></td>
+
+<td>This makefile variable specifies special product libraries needed for
+ASM parts.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>PRODUCT_CBL_SYSLIB</b></td>
+
+<td>This makefile variable specifies special product libraries needed for
+COBOL parts.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>PRODUCT_PLS_SYSLIB</b></td>
+
+<td>This makefile variable specifies special product libraries needed for
+PLS parts.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>PRODUCT_PLX_SYSLIB</b></td>
+
+<td>This makefile variable specifies special product libraries needed for
+PLX parts.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>STANDARD_SYSLIB</b></td>
+
+<td>This makefile variable specifies the standard system libraries for
+compiling.</td>
+
+<td>Required</td>
+</tr>
+
+<tr>
+<td><b>BLD_NETRC_FILE</b></td>
+
+<td>This makefile variable contains the name of a dataset called <a href="http://publib16.boulder.ibm.com/pseries/en_US/files/aixfiles/netrc.htm">(NETRC)</a>
+, which is used to keep the user ID and password safe when connecting to
+remote host.
+<br><b>Note:</b> It is the responsiblility of the user to create this dataset
+on the remote machine.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_SPACE_TYPE</b></td>
+
+<td>This makefile variable contains the unit used to allocate datasets.&nbsp;
+<br>CYLINDER or CYL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TRACK or TRK
+<br>The default value is TRACK.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_PRIMARY_QTY</b></td>
+
+<td>This makefile variable contains the amount of space to be initially
+allocated for the dataset. The default value is 34.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_SECONDARY_QTY</b></td>
+
+<td>This makefile variable contains the amount of additional space to be
+reserved if the primary allocation is not enough. The default value is
+4.&nbsp;</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_DIRECTORY_BLKS</b></td>
+
+<td>This makefile variable specifies the number of directory blocks used
+by a PDS. The default value is 30.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_BLOCK_SIZE</b></td>
+
+<td>This makefile variable specifies the maximum length of a block.&nbsp;
+The default value is 32720.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_LSTING_SPACE_TYPE</b></td>
+
+<td>This makefile variable contains the unit used to allocate the Listing
+PDS.
+<br>CYLINDER or CYL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TRACK or TRK
+<br>The default value is CYLINDER.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_LSTING_PRIMARY_QTY</b></td>
+
+<td>This makefile variable contains the amount of space to be initially
+allocated for the Listing PDS. The default value is 81.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_LSTING_SECOND_QTY</b></td>
+
+<td>This makefile variable contains the amount of additional space to be
+reserved if the primary allocation is not enough for the Listing PDS. The
+default value is 9.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_LSTING_DIR_BLKS</b></td>
+
+<td>This makefile variable specifies the number of directory blocks used
+by the Listing PDS. The default value is 10.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_LSTING_BLK_SIZE</b></td>
+
+<td>This makefile variable specifies the maximum length of a block for
+the Listing PDS.&nbsp; The default value is 13030.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>BLD_REGION_SIZE</b></td>
+
+<td>This makefile variable specifies the amount of storage a Job Step can
+use. The default value is 0M.</td>
+
+<td>Optional</td>
+</tr>
+
+<tr>
+<td><b>ASMCFLAGS</b></td>
+
+<td>This makefile variable contains the string of the compile flags for
+ASM parts.</td>
+
+<td>Required
+<br>(if compiling ASM parts using the ode template)</td>
+</tr>
+
+<tr>
+<td><b>CBLCFLAGS</b></td>
+
+<td>This makefile variable contains the string of the compile flags for
+COBOL parts.</td>
+
+<td>Required
+<br>(if compiling COBOL parts using the ode template)</td>
+</tr>
+
+<tr>
+<td><b>PLSCFLAGS</b></td>
+
+<td>This makefile variable contains the string of the compile flags for
+PLS parts.</td>
+
+<td>Required
+<br>(if compiling PLS parts using the ode template)</td>
+</tr>
+
+<tr>
+<td><b>PLXCFLAGS</b></td>
+
+<td>This makefile variable contains the string of the compile flags for
+PLX parts.</td>
+
+<td>Required
+<br>(if compiling PLX parts using the ode template)</td>
+</tr>
+</table>
+
+<p><b><font size=+1>Important:</font></b>&nbsp; If <b>STANDARD_SYSLIB</b>,
+<b>PRODUCT_ASM_SYSLIB</b>,<b>
+PRODUCT_CBL_SYSLIB, PRODUCT_PLS_SYSLIB</b> or<b> PRODUCT_PLX_SYSLIB</b>
+contain multiple entries (i.e. <tt><b><font color="#FF6666">SYS1.MACLIB
+SYS1.MODGEN</font></b><font color="#000000">), then t</font></tt>he string
+format must be separated by a blank space.
+<p>An example src/<b>Makeconf</b> file:
+<p>Makefile variables used in the TSO Build process are below:
+<p><tt><font color="#00CC00">#Generate Dependencies for ASM, PLS and PLX</font></tt>
+<br><tt><font color="#00CC00">DEPENDENCIES&nbsp;&nbsp; =</font></tt>
+<p><tt><font color="#00CC00"># TSO Build Variables</font></tt>
+<br><tt><font color="#00CC00">USE_TSO_RULES = 1</font></tt>
+<br><tt><font color="#00CC00">USE_ODE_TEMPLATES = YES</font></tt>
+<br><tt><font color="#00CC00">USE_MY_TEMPLATES = YES</font></tt>
+<br><tt><font color="#00CC00">LANGS_FOR_MY_TEMPLATES = COBOL</font></tt>
+<br><tt><font color="#00CC00">NUM_OF_FILES_PER_JOB = 22</font></tt>
+<br><tt><font color="#00CC00">BLD_HLQ =</font></tt>
+<br><tt><font color="#00CC00">BLD_USING_ALLOC_REXXEXEC = n</font></tt>
+<br><tt><font color="#00CC00">BLD_SPACE_TYPE = track</font></tt>
+<br><tt><font color="#00CC00">BLD_PRIMARY_QTY = 34</font></tt>
+<br><tt><font color="#00CC00">BLD_SECONDARY_QTY = 4</font></tt>
+<br><tt><font color="#00CC00">BLD_DIRECTORY_BLOCKS = 30</font></tt>
+<br><tt><font color="#00CC00">BLD_BLOCK_SIZE = 32720</font></tt>
+<br><tt><font color="#00CC00">BLD_LSTING_SPACE_TYPE =</font></tt>
+<br><tt><font color="#00CC00">BLD_LSTING_PRIMARY_QTY =</font></tt>
+<br><tt><font color="#00CC00">BLD_LSTING_SECONDARY_QTY =</font></tt>
+<br><tt><font color="#00CC00">BLD_LSTING_DIR_BLKS =</font></tt>
+<br><tt><font color="#00CC00">BLD_LSTING_BLK_SIZE =</font></tt>
+<br><tt><font color="#00CC00">BLD_REMOTE_HOST = RALJES3C.RALEIGH.IBM.COM</font></tt>
+<br><tt><font color="#00CC00">BLD_ASM_PROGRAM_NAME = ASMA90</font></tt>
+<br><tt><font color="#00CC00">BLD_CBL_PROGRAM_NAME = IGYCRCTL</font></tt>
+<br><tt><font color="#00CC00">BLD_PLS_PROGRAM_NAME = akhplx</font></tt>
+<br><tt><font color="#00CC00">BLD_PLX_PROGRAM_NAME = AKHPLX</font></tt>
+<br><tt><font color="#00CC00">BLD_REGION_SIZE = 0M</font></tt>
+<br><tt><font color="#00CC00">BLD_ASM_STEPLIB = SWGSDWB.ODETSO.LOAD</font></tt>
+<br><tt><font color="#00CC00">BLD_CBL_STEPLIB = SYS1.IGY.SIGYCOMP</font></tt>
+<br><tt><font color="#00CC00">BLD_PLS_STEPLIB = sys1.protect.v2r1m2.load</font></tt>
+<br><tt><font color="#00CC00">BLD_PLX_STEPLIB = SYS1.PROTECT.V2R1M2.LOAD</font></tt>
+<br><tt><font color="#00CC00">PROD_ASM_SYSLIB = wlm.cs14.prd.maclib CEE.SCEEMAC</font></tt>
+<br><tt><font color="#00CC00">PROD_CBL_SYSLIB =</font></tt>
+<br><tt><font color="#00CC00">PROD_PLS_SYSLIB =</font></tt>
+<br><tt><font color="#00CC00">PROD_PLX_SYSLIB =</font></tt>
+<br><tt><font color="#00CC00">STANDARD_SYSLIB = sys1.maclib sys1.modgen</font></tt>
+<br><tt><font color="#00CC00">BLD_NETRC_FILE = WMATHIS.FTP(NETRC)</font></tt>
+<br><tt><font color="#00CC00">MVS_USERID = wmathis</font></tt>
+<br><tt><font color="#00CC00">MVS_PASSWORD = xxxxxxx</font></tt>
+<br><tt><font color="#00CC00">MVS_JOBCARD&nbsp; = /u/wmathis/jobcard/jobcard</font></tt>
+<br><tt><font color="#00CC00">MVS_JOBMONITOR_TIME = 1</font></tt>
+<br><tt><font color="#00CC00">MVS_EXEC_DATASET = wmathis.sted.rexx</font></tt>
+<br><tt><font color="#00CC00">MVS_DELETE_OUTPUT =Y</font></tt>
+<br><tt><font color="#00CC00">MVS_SAVE_OUTPUT_FILE = YES</font></tt>
+<p><tt><font color="#00CC00"># Flags needed, when building for TSO</font></tt>
+<br><tt><font color="#00CC00">PLSCFLAGS = MACPARM(''MVS/ESA670''),NODOBARS,OBJECT,MONITOR,IDR,IMPLICIT,CONV,F</font></tt>
+<br><tt><font color="#00CC00">LAG(I),SEC(IC),LC(55)</font></tt>
+<br><tt><font color="#00CC00">PLXCFLAGS = MACPARM(''MVS/ESA670''),NODOBARS,OBJECT,MONITOR,IDR,IMPLICIT,CONV,F</font></tt>
+<br><tt><font color="#00CC00">LAG(I),SEC(IC),LC(55)</font></tt>
+<br><tt><font color="#00CC00">ASMCFLAGS = OBJECT,NODECK,LIST,NORENT,SYSPARM(''Y
+IPC 0100 IPC-199 2''),EXIT(LIBEXIT(SDYNASM))</font></tt>
+<br><tt><font color="#00CC00">CBLCFLAGS = OBJECT,APOST,LIB,MAP,NOSEQ,BUFSIZE(30K),LIST,NORENT</font></tt>
+<h3>
+<a NAME="UserDefinedRules"></a><a href="#Toc_UserDefinedRules">User-Defined
+Rules</a></h3>
+This section describes how to override and/or enhance rules established
+in the ODE rules files. The files in src\rules_mk establish all of the
+rules that ODE incorporates. However, if it is intended to override one
+of the rules or variable settings specified in these files, it can be accomplished
+by creating user-defined rules files myproj.rules.mk and (sometimes) myproj.passes.mk.
+<p>&nbsp;&nbsp; 1.In the src/Makeconf file, a variable PROJECT_NAME is
+defined to be myproj. This variable can be specified by editing Makeconf
+and modifying the value of PROJECT_NAME. Assume for this example that
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PROJECT_NAME
+= myproj
+<br>&nbsp;&nbsp; 2.In the src/rules_mk directory, create a file myproj.rules.mk.
+<br>&nbsp;&nbsp; 3.Add any rules or variable definitions to myproj.rules.mk.
+This file will be processed last by ODE, allowing rules to be redefined
+and variables to be overridden or appended to, without changing any of
+the ODE-delivered rules files.
+<br>&nbsp;&nbsp; 4.If new passes or actions are created by the user, some
+rules also have to be put in the myproj.passes.mk file.&nbsp; This file
+is processed just after ODE defines the predefined actions and passes.
+<p>See the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODETutorial.htm#Adding Another Pass">Adding
+Another Pass</a> section for an example of modifying the myproj.rules.mk
+and myproj.passes.mk files.&nbsp; The <a href="http://w3.sdwb.ibm.com/ode/4.0/doc/pubs/ODECommonMakefiles.htm#AddingAnotherPass">ODE
+Common Makefiles</a> document also has information about adding passes.
+<br>&nbsp;
+<p>
+<hr>
+<h2>
+<a NAME="JCLInformation"></a><a href="#Toc_JCLInformation">JCL Information</a></h2>
+This section describes the utilization of the JCL Templates by ODE.&nbsp;
+ODE generates dynamic JCLs from JCL templates shipped with ODE. These dynamic
+JCLs are submitted via FTP to the user's remote machine and the jobs perform
+the following task:&nbsp; dataset allocation, file copying, compilation
+and dataset deletion.&nbsp; To facilitate the build on the TSO side of
+an MVS system, the user can permit the default option (<b>BLD_USING_ALLOC_REXXEXEX=NO</b>)
+to create multiple Partitioned Data Sets using IEFBR14 or allow the ODE
+REXX script to drive the allocation functions by setting the variable <b>BLD_USING_ALLOC_REXXEXEX=YES</b>.
+<p><b>Note:</b>&nbsp; The ODE REXX script must be installed per the instructions
+detailed in the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEAdminsGuide.htm#MVSOE_INSTALL">Installation
+and Adminstration Guide</a>.
+<p>A set of temporary libraries will be created and deleted during the
+TSO Build process.&nbsp; The user's TSO userid will be used as the HLQ
+of the libraries, if the variable BLD_HLQ is not set.&nbsp; The following
+libraries will be created:
+<p>If&nbsp; BLD_HLQ is set , then&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+If&nbsp; BLD_HLQ is null or set to the TSO userid , then
+<p><tt>&nbsp; <font color="#00CC00">HLQ.USERID.SBOXNAME.SRC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+USERID.SBOXNAME.SRC</font></tt>
+<br><tt><font color="#00CC00">&nbsp; HLQ.USERID.SBOXNAME.MACLOCAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+USERID.SBOXNAME.MACLOCAL</font></tt>
+<br><tt><font color="#00CC00">&nbsp; HLQ.USERID.SBOXNAME.MACEXPT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+USERID.SBOXNAME.MACEXPT</font></tt>
+<br><tt><font color="#00CC00">&nbsp; HLQ.USERID.SBOXNAME.O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+USERID.SBOXNAME.O</font></tt>
+<br><tt><font color="#00CC00">&nbsp; HLQ.USERID.SBOXNAME.LISTING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+USERID.SBOXNAME.LISTING</font></tt>
+<br><tt><font color="#00CC00">&nbsp; HLQ.USERID.SBOXNAME.CLRPRINT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+USERID.SBOXNAME.CLRPRINT</font></tt>
+<br><tt><font color="#00CC00">&nbsp; HLQ.USERID.SBOXNAME.UNIDATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+USERID.SBOXNAME.UNIDATA</font></tt>
+<p>Partitioned Data Sets:
+<br><tt>&nbsp; <b>SRC</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- contains the source code</tt>
+<br><tt>&nbsp; <b>MACLOCAL</b>&nbsp;&nbsp;&nbsp; - contains the local macros</tt>
+<br><tt>&nbsp; <b>MACEXPT</b>&nbsp;&nbsp;&nbsp;&nbsp; - contains the export
+macros</tt>
+<br><tt>&nbsp; <b>O</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- contains the compile objects</tt>
+<br><tt>&nbsp; <b>LISTING</b>&nbsp;&nbsp;&nbsp;&nbsp; - contains the compile
+listings</tt>
+<br><tt>&nbsp; <b>CLRPRINT</b>&nbsp;&nbsp;&nbsp; - contains the dependencies
+for the PLS and PLX objects</tt>
+<br><tt>&nbsp; <b>UNIDATA</b>&nbsp;&nbsp;&nbsp;&nbsp; - contains the dependencies
+for the ASM objects</tt>
+<br>&nbsp;
+<h3>
+<a NAME="ODEJCLTemplates"></a><a href="#Toc_ODEJCLTemplates">ODE JCL Templates</a></h3>
+Currently, there are four JCL Templates (ASM, COBOL, PLS and PLX) utilized
+by ODE during the TSO build process.&nbsp; ODE reads these templates, incorporates
+information from the source response file (mvssrclist.rsp) into the build
+control file (mvsbldlist.rsp) and utilizes the appropriate default or user
+specified makefile variable information inorder to create the dynamic JCLs.&nbsp;
+The templates are as follows:
+<p><a NAME="ASMTemplate"></a><a href="#Toc_ODEJCLTemplates">ASM Template</a>
+<p><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp; (c) Copyright International Business Machines Corp. 2003</tt>
+<br><tt>//*&nbsp; All Rights Reserved</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp;&nbsp; ASM COMPILE</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//ASM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=ASMA90,REGION=&amp;REGION,</tt>
+<br><tt>//&nbsp; PARM=&amp;ASMCFLAGS</tt>
+<br><tt>//* PARM=('OBJECT,NODECK,LIST,NORENT',</tt>
+<br><tt>//*&nbsp;&nbsp;&nbsp;&nbsp; 'SYSPARM(''Y IPC 0100 IPC-199 2''),EXIT(LIBEXIT(SDYNASM))'),</tt>
+<br><tt>//*</tt>
+<br><tt>//STEPLIB&nbsp; DD &amp;ASM_STEPLIB,DISP=SHR</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSPRINT DD DSN=&amp;&amp;ASMLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD UNIT=VIO,SPACE=(CYL,(5,1))</tt>
+<br><tt>//*</tt>
+<br><tt>//ASM.SYSIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD
+DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.NAME.HERE</tt>
+<br><tt>//ASM.SYSLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACLOCAL.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACEXPT.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=CEE.SCEEMAC,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//ASM.SYSLIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=(NEW,PASS),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(1,10)),UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=&amp;&amp;OBJ</tt>
+<br><tt>//LIST&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=IEBGENER,COND=(20,LE,ASM)</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;ASMLIST,UNIT=SYSDA</tt>
+<br><tt>//LST.SYSUT2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DSN=&amp;&amp;LST,DISP=(NEW,PASS),SPACE=(CYL,(2,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp; DD DUMMY</tt>
+<br><tt>//SYSPRINT DD DUMMY</tt>
+<br><tt>//*</tt>
+<p><a NAME="COBOLTemplate"></a><a href="#Toc_ODEJCLTemplates">COBOL Template</a>
+<p><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp; (c) Copyright International Business Machines Corp. 2003</tt>
+<br><tt>//*&nbsp; All Rights Reserved</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp;&nbsp; COBOL COMPILE</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//COBOL&nbsp;&nbsp;&nbsp; EXEC PGM=IGYCRCTL,REGION=&amp;REGION,</tt>
+<br><tt>//&nbsp; PARM=&amp;CBLCFLAGS</tt>
+<br><tt>//* PARM='APOST,LIB,MAP,NOSEQ,BUFSIZE(30K),LIST,NORENT'</tt>
+<br><tt>//*</tt>
+<br><tt>//STEPLIB&nbsp; DD &amp;CBL_STEPLIB,DISP=SHR</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSPRINT DD DSN=&amp;&amp;CBLLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD&nbsp; UNIT=SYSDA,SPACE=(CYL,(1,1))</tt>
+<br><tt>//SYSUT2&nbsp;&nbsp; DD&nbsp; UNIT=SYSDA,SPACE=(CYL,(1,1))</tt>
+<br><tt>//SYSUT3&nbsp;&nbsp; DD&nbsp; UNIT=SYSDA,SPACE=(CYL,(1,1))</tt>
+<br><tt>//SYSUT4&nbsp;&nbsp; DD&nbsp; UNIT=SYSDA,SPACE=(CYL,(1,1))</tt>
+<br><tt>//SYSUT5&nbsp;&nbsp; DD&nbsp; UNIT=SYSDA,SPACE=(CYL,(1,1))</tt>
+<br><tt>//SYSUT6&nbsp;&nbsp; DD&nbsp; UNIT=SYSDA,SPACE=(CYL,(1,1))</tt>
+<br><tt>//SYSUT7&nbsp;&nbsp; DD&nbsp; UNIT=SYSDA,SPACE=(CYL,(1,1))</tt>
+<br><tt>//COB.SYSIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD
+DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.NAME.HERE</tt>
+<br><tt>//COB.SYSLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACLOCAL.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACEXPT.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.SRC.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//COB.SYSLIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=(NEW,PASS),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=3200),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(1,10)),UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=&amp;&amp;OBJ</tt>
+<br><tt>//LIST&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=IEBGENER,COND=(20,LE,COBOL)</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;CBLLIST,UNIT=SYSDA</tt>
+<br><tt>//LST.SYSUT2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DSN=&amp;&amp;LST,DISP=(NEW,PASS),SPACE=(CYL,(2,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp; DD DUMMY</tt>
+<br><tt>//SYSPRINT DD DUMMY</tt>
+<br><tt>//*</tt>
+<p><a NAME="PLSTemplate"></a><a href="#Toc_ODEJCLTemplates">PLS Template</a>
+<p><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp; (c) Copyright International Business Machines Corp. 2003</tt>
+<br><tt>//*&nbsp; All Rights Reserved</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp;&nbsp; PLS COMPILE</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//PLS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=AKHPLX,REGION=&amp;REGION,</tt>
+<br><tt>//&nbsp; PARM=&amp;PLSCFLAGS</tt>
+<br><tt>//* PARM=('MACPARM(''MVS/ESA670''),NODOBARS,OBJECT,MONITOR,IDR',</tt>
+<br><tt>//*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'IMPLICIT,CONV,FLAG(I),SEC(IC),LC(55),'),</tt>
+<br><tt>//*</tt>
+<br><tt>//STEPLIB&nbsp; DD &amp;PLS_STEPLIB,DISP=SHR</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSPRINT DD DSN=&amp;&amp;PLSLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//UNIDATA&nbsp; DD SYSOUT=H</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(4,4))</tt>
+<br><tt>//SYSUT2&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT3&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT4&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT5&nbsp;&nbsp; DD DISP=(,DELETE),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5,5)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=12960)</tt>
+<br><tt>//ASMPRINT DD DSN=&amp;&amp;ASMLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//ASMUT1&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,10))</tt>
+<br><tt>//*</tt>
+<br><tt>//PLS.SYSIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD
+DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.NAME.HERE</tt>
+<br><tt>//PLS.SYSLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACLOCAL.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACEXPT.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//PLS.ASMLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACLOCAL.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACEXPT.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//PLS.ASMLIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=(NEW,PASS),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=3200),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(1,10)),UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=&amp;&amp;OBJ</tt>
+<br><tt>//LIST&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=IEBGENER,COND=(20,LE,PLS)</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;PLSLIST,UNIT=SYSDA</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;ASMLIST,UNIT=SYSDA</tt>
+<br><tt>//LST.SYSUT2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DSN=&amp;&amp;LST,DISP=(NEW,PASS),SPACE=(CYL,(2,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp; DD DUMMY</tt>
+<br><tt>//SYSPRINT DD DUMMY</tt>
+<br><tt>//*</tt>
+<p><a NAME="PLXTemplate"></a><a href="#Toc_ODEJCLTemplates">PLX Template</a>
+<p><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp; (c) Copyright International Business Machines Corp. 2003</tt>
+<br><tt>//*&nbsp; All Rights Reserved</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp;&nbsp; PLX COMPILE</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//PLX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=AKHPLX,REGION=&amp;REGION,</tt>
+<br><tt>//&nbsp; PARM=&amp;PLXCFLAGS</tt>
+<br><tt>//* PARM=('MACPARM(''MVS/ESA670''),NODOBARS,OBJECT,MONITOR,IDR',</tt>
+<br><tt>//*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'IMPLICIT,CONV,FLAG(I),SEC(IC),LC(55),'),</tt>
+<br><tt>//*</tt>
+<br><tt>//STEPLIB&nbsp; DD &amp;PLX_STEPLIB,DISP=SHR</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSPRINT DD DSN=&amp;&amp;PLXLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//UNIDATA&nbsp; DD SYSOUT=H</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(4,4))</tt>
+<br><tt>//SYSUT2&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT3&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT4&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT5&nbsp;&nbsp; DD DISP=(,DELETE),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5,5)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=12960)</tt>
+<br><tt>//ASMPRINT DD DSN=&amp;&amp;ASMLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//ASMUT1&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,10))</tt>
+<br><tt>//*</tt>
+<br><tt>//PLX.SYSIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD
+DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.NAME.HERE</tt>
+<br><tt>//PLX.SYSLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACLOCAL.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACEXPT.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//PLX.ASMLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACLOCAL.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=DATASET.MACEXPT.HERE</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//PLX.ASMLIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=(NEW,PASS),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=3200),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(1,10)),UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=&amp;&amp;OBJ</tt>
+<br><tt>//LIST&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=IEBGENER,COND=(20,LE,PLX)</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;PLXLIST,UNIT=SYSDA</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;ASMLIST,UNIT=SYSDA</tt>
+<br><tt>//LST.SYSUT2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DSN=&amp;&amp;LST,DISP=(NEW,PASS),SPACE=(CYL,(2,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp; DD DUMMY</tt>
+<br><tt>//SYSPRINT DD DUMMY</tt>
+<br><tt>//*</tt>
+<p><a NAME="NONODEJCLTemplates"></a><a href="#Toc_NONODEJCLTemplates">NON-ODE
+JCL Templates</a>
+<p>A user may request to utilize their own JCL Templates (ASM, COBOL, PLS
+or PLX) during the TSO build process.&nbsp; ODE reads the templates, incorporates
+the additional JCL information, places the data from the source response
+file (mvssrclist.rsp) into the build control file (mvsbldlist.rsp) and
+utilizes the appropriate default or user specified syslib makefile variables
+information to create the dynamic JCLs.
+<p><b><font color="#FF6666">Note:</font></b>&nbsp; To utilize your JCL
+templates,&nbsp; the templates need to be rename to one of the following:
+<ul>
+<li>
+<b>usrasm.jcl</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (This is the new
+User ASM Template name)</li>
+
+<li>
+<b>usrcobol.jcl</b>&nbsp;&nbsp;&nbsp;&nbsp; (This is the new User COBOL
+Template name)</li>
+
+<li>
+<b>usrpls.jcl</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (This
+is the&nbsp; new User PLS Template name)</li>
+
+<li>
+<b>usrplx.jcl</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (This
+is the new User PLX Template name)</li>
+</ul>
+and placed in the <b>rules_mk</b> directory.
+<p>An example of a PLX Template (<b>myPLXtemplate.jcl</b>) created and
+renamed by the user.
+<br>The PLX Template renamed in the rules_mk directory to:&nbsp; <b>usrplx.jcl</b>
+<p><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp; (c) Copyright International Business Machines Corp. 2003</tt>
+<br><tt>//*&nbsp; All Rights Reserved</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp;&nbsp; PLX COMPILE</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//PLX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=AKHPLX,REGION=0M,</tt>
+<br><tt>//&nbsp; PARM=('MACPARM(''MVS/ESA670''),NODOBARS,OBJECT,MONITOR,IDR',</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'IMPLICIT,CONV,FLAG(I),SEC(IC),LC(55)')</tt>
+<br><tt>//*</tt>
+<br><tt>//STEPLIB&nbsp; DD DSN=SYS1.PROTECT.V2R1M2.LOAD,DISP=SHR</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSPRINT DD DSN=&amp;&amp;PLXLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(4,4))</tt>
+<br><tt>//SYSUT2&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT3&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT4&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT5&nbsp;&nbsp; DD DISP=(,DELETE),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5,5)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=12960)</tt>
+<br><tt>//*</tt>
+<br><tt>//LIST&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=IEBGENER,COND=(20,LE,PLX)</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;PLXLIST,UNIT=SYSDA</tt>
+<br><tt>//LST.SYSUT2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DSN=&amp;&amp;LST,DISP=(NEW,PASS),SPACE=(CYL,(2,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp; DD DUMMY</tt>
+<br><tt>//SYSPRINT DD DUMMY</tt>
+<br><tt>//*</tt>
+<p>
+<hr>
+<h2>
+<a NAME="ODETSOBuildProcess"></a><a href="#Toc_ODETSOBuildProcess">ODE
+TSO Build Process</a></h2>
+This section describes the ODE TSO Build Process.&nbsp; In performing a
+build, files to be compiled are in subdirectories in the src area of a
+sandbox. The build places the build control file, the object, listing and
+jcl files in the obj area of the sandbox.
+<p>A typical build process involves creating a sandbox, populating the
+sandbox with the files which need to be compiled and then running the <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEMakeReference.htm#HDRMK">mk</a>
+or <a href="http://w3.sdwb.ibm.com/ode/5.0/doc/pubs/ODEBuildReference.htm#HDRBUILD">build</a>
+command.&nbsp;&nbsp; This pass builds the modified source files.
+<p>The mk or build command builds the default target, which is build_all.
+The build_all target then triggers the targets export_all and comp_all,
+which first does the export and then the compilation.
+<p>Below is an example of a makefile for building PLX parts.
+<p>Contents of <b>makefile.ode</b> in the /u/wmathis/sted/test/d13839/src/plxExample
+directory
+<p><tt><font color="#00CC00"># Include PLX macros</font></tt>
+<br><tt><font color="#00CC00">TSO_INCLUDES = a.mac</font></tt>
+<br><tt><font color="#00CC00">EXPDIR = /usr/incls390/</font></tt>
+<p><tt><font color="#00CC00"># The objects that PROGRAMS are made of and
+depend on.</font></tt>
+<br><tt><font color="#00CC00">OBJECTS = \</font></tt>
+<br><tt><font color="#00CC00">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; test${OBJ_SUFF}
+\</font></tt>
+<br><tt><font color="#00CC00">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; test2${OBJ_SUFF}</font></tt>
+<p><tt><font color="#00CC00">.include &lt;${RULES_MK}></font></tt>
+<p>To build the changes made to the source file, the command <b>mk</b>
+is run, if the user is in the <a href="http://w3.sdwb.ibm.com/ode/4.0/doc/pubs/ODEBuildReference.htm#HDRWORKON">workon</a>
+session. This command will initially search for all of the necessary source
+files in the sandbox. If the required source files do not exist in the
+sandbox, they are accessed from the backing build. New object files are
+then generated in the sandbox obj directory.&nbsp; In this example, two
+PLX files (<b>test.plx</b> and <b>test2.plx</b>, ) and the include macro
+(<b>a.mac</b>) reside locally in the sandbox.&nbsp; The export directory
+contains the include macro (<b>d.mac</b>).
+<p><tt>[RALJES3C] WMATHIS:/u/wmathis/sted/test/d13839/src/plxExample</tt>
+<br><tt>=> ls</tt>
+<br><tt>a.mac&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; makefile.ode&nbsp;
+test.plx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; test2.plx</tt>
+<p><tt>[RALJES3C] WMATHIS:/u/wmathis/sted/test/d13839/export/mvs390_oe_2/usr/incls390</tt>
+<br><tt>=> ls</tt>
+<br><tt>d.mac</tt>
+<p>In the makefile (<b>makefile.ode</b>), the user set <b>TSO_INCLUDES
+=</b> <b>a.mac</b> and <b><font color="#000000">EXPDIR = /usr/incls390/</font></b>
+,which causes the macro (<b>a.mac</b>)&nbsp; to be included in the export
+directory during the build process..
+<p><tt>[RALJES3C] WMATHIS:/u/wmathis/sted/test/d13839/src/plxExample</tt>
+<br><tt>=> mk</tt>
+<br><tt>cd ../obj/mvs390_oe_2</tt>
+<br><tt>ln -f -s ../../../../src/plxExample/a.mac ../../../export/mvs390_oe_2/usr/incls390/a.mac</tt>
+<br><tt>rm -f compile*.jcl</tt>
+<br><tt>cp -m mvssrclist.rsp mvsbldlist.rsp</tt>
+<br><tt>java -DSRCBASE=/u/wmathis/sted/test/d13839/src -DSBOX=d13839 -DBLD_NUM_OF_FILES=22</tt>
+<br><tt>&nbsp;-DSRCPATH=/plxExample -DSRCFULL=/u/wmathis/sted/test/d13839/src/plxExample
+-DTGT</tt>
+<br><tt>PATH=/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxExample
+-DTARGET=mvsbl</tt>
+<br><tt>dlist.rsp -DEXPPATH=../export/mvs390_oe_2 -DBLD_WITH_REXXEXEC=n
+-DBLD_SPACE_TYPE</tt>
+<br><tt>=track -DBLD_PRIMARY_QTY=34 -DBLD_SECONDARY_QTY=4 -DBLD_DIRECTORY_BLKS=30
+-DBLD_</tt>
+<br><tt>BLK_SIZE=32720 -DBLD_LST_SPACE_TYPE= -DBLD_LST_PRIMARY_QTY= -DBLD_LST_SECONDARY_</tt>
+<br><tt>QTY=4 -DBLD_LST_DIR_BLKS= -DBLD_LST_BLK_SIZE= -DBLD_REMOTEHOST=RALJES3C.RALEIGH.</tt>
+<br><tt>IBM.COM -DBLD_ASMPGM=ASMA90 -DBLD_CBLPGM=IGYCRCTL -DBLD_FTRNPGM=
+-DBLD_PLSPGM=ak</tt>
+<br><tt>hplx -DBLD_PLXPGM=AKHPLX -DBLD_REGION=0M -DNETRC_FILE="WMATHIS.FTP(NETRC)"
+-DASM</tt>
+<br><tt>FLAGS="OBJECT,NODECK,LIST,NORENT,SYSPARM(''Y IPC 0100 IPC-199 2''),EXIT(LIBEXIT(</tt>
+<br><tt>SDYNASM))" -DCBLFLAGS="OBJECT,APOST,LIB,MAP,NOSEQ,BUFSIZE(30K),LIST,NORENT"
+-DFT</tt>
+<br><tt>RNFLAGS="" -DPLSFLAGS="MACPARM(''MVS/ESA670''),NODOBARS,OBJECT,MONITOR,IDR,IMPLI</tt>
+<br><tt>CIT,CONV,FLAG(I),SEC(IC),LC(55)" -DPLXFLAGS="MACPARM(''MVS/ESA670''),NODOBARS,OB</tt>
+<br><tt>JECT,MONITOR,IDR,IMPLICIT,CONV,FLAG(I),SEC(IC),LC(55)" -DASM_STEPLIB=SWGSDWB.ODE</tt>
+<br><tt>TSO.LOAD -DCBL_STEPLIB=SYS1.IGY.SIGYCOMP -DFTRN_STEPLIB= -DPLS_STEPLIB=sys1.prot</tt>
+<br><tt>ect.v2r1m2.load -DPLX_STEPLIB=SYS1.PROTECT.V2R1M2.LOAD -DPROD_ASM_SYSLIB="wlm.cs</tt>
+<br><tt>14.prd.maclib CEE.SCEEMAC" -DPROD_CBL_SYSLIB="" -DPROD_FTRN_SYSLIB=""
+-DPROD_PLS</tt>
+<br><tt>_SYSLIB="" -DPROD_PLX_SYSLIB="" -DSTANDARD_SYSLIB="sys1.maclib
+sys1.modgen" -DUS</tt>
+<br><tt>E_ODE_TEMPLATES=YES -DUSE_MY_TEMPLATES=YES -DLANGS_FOR_MY_TEMPLATES="COBOL"
+-DHL</tt>
+<br><tt>Q= -DMVS_USERID=wmathis -DMVS_PASSWORD=xxxxxxx -DMVS_EXEC_DATASET=wmathis.sted.r</tt>
+<br><tt>exx -DMVS_DELETE_OUTPUT=Y -DMVS_JOBMONITOR_TIME=1 -DMVS_SAVE_OUTPUT_FILE=YES
+-DM</tt>
+<br><tt>VS_JOBCARD=/u/wmathis/jobcard/jobcard com.ibm.ode.bin.bldMvs.RunMvsBld</tt>
+<p><tt>Build control file is /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxExam</tt>
+<br><tt>ple/</tt><b><a href="#MVSBuildList">mvsbldlist.rsp</a></b>
+<br><tt>-----------------------------------------</tt>
+<br><tt>*** 2 PLX File(s) will be compiled ***</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; using the ODE PLX template</tt>
+<br><tt>-----------------------------------------</tt>
+<br><tt>Generating Allocation and FTP File jobstream</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxExample/</tt><b><a href="#copy2tso.jcl">copy2tso.jcl</a></b>
+<br><tt>&nbsp; Job name is WMATHIS1</tt>
+<br><tt>&nbsp; Generated allocation step in 3 ms</tt>
+<br><tt>&nbsp; Generated ftp file step in 28 ms</tt>
+<br><tt>Generating Compile jobstream</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxExample/</tt><b><a href="#compile1.jcl">compile1.jcl</a></b>
+<br><tt>&nbsp; Job name is WMATHIS1</tt>
+<br><tt>&nbsp; Generated compile step(s) in 144 ms</tt>
+<br><tt>Generating FTP File jobstream</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxExample/</tt><b><a href="#copy2hfs.jcl">copy2hfs.jcl</a></b>
+<br><tt>&nbsp; Job name is WMATHIS1</tt>
+<br><tt>&nbsp; Generated ftp file step in 20 ms</tt>
+<p><tt>All JCL generation complete</tt>
+<br><tt>Entering job management phase</tt>
+<br><tt>Job status will be checked every 1 minutes</tt>
+<br><tt>Performing job management at 20:53:18 EST Thu Mar 06</tt>
+<br><tt>Submitting WMATHIS1 from /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxE</tt>
+<br><tt>xample/copy2tso.jcl</tt>
+<br><tt>&nbsp; Submit successful: job number is JOB06674</tt>
+<br><tt>Submitting WMATHIS1 from /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxE</tt>
+<br><tt>xample/compile1.jcl</tt>
+<br><tt>&nbsp; Submit successful: job number is JOB06676</tt>
+<br><tt>Submitting WMATHIS1 from /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxE</tt>
+<br><tt>xample/copy2hfs.jcl</tt>
+<br><tt>&nbsp; Submit successful: job number is JOB06677</tt>
+<p><tt>Performing job management at 20:54:25 EST Thu Mar 06</tt>
+<br><tt>Checking status of job JOB06674</tt>
+<br><tt>&nbsp; Job status is OUTPUT</tt>
+<br><tt>Retrieving output for job JOB06674</tt>
+<br><tt>&nbsp; Successfully retrieved job output</tt>
+<br><tt>Checking status of job JOB06676</tt>
+<br><tt>&nbsp; Job status is OUTPUT</tt>
+<br><tt>Retrieving output for job JOB06676</tt>
+<br><tt>&nbsp; Successfully retrieved job output</tt>
+<br><tt>Checking status of job JOB06677</tt>
+<br><tt>&nbsp; Job status is OUTPUT</tt>
+<br><tt>Retrieving output for job JOB06677</tt>
+<br><tt>&nbsp; Successfully retrieved job output</tt>
+<p><tt>Ending job management phase</tt>
+<p><tt>Execution summary for all jobs:</tt>
+<p><tt>Execution summary for job WMATHIS1 (JOB06674):</tt>
+<br><tt>Step&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Max RC&nbsp; Actual RC&nbsp;
+Step Description</tt>
+<br><tt>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------&nbsp; ---------&nbsp;
+----------------</tt>
+<br><tt><a href="#copy2tso.jcl">ALLOCLIB</a>&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Allocate distribution
+libraries</tt>
+<br><tt><a href="#copy2tso.jcl">FTPFILE</a>&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Copy HFS files
+to PDS</tt>
+<br><tt>>>> Job was successful</tt>
+<p><tt>Execution summary for job WMATHIS1 (JOB06676):</tt>
+<br><tt>Step&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Max RC&nbsp; Actual RC&nbsp;
+Step Description</tt>
+<br><tt>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------&nbsp; ---------&nbsp;
+----------------</tt>
+<br><tt><a href="#compile1.jcl">TEST</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt><a href="#compile1.jcl">TEST2</a>&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Compile process</tt>
+<br><tt>>>> Job was successful</tt>
+<p><tt>Execution summary for job WMATHIS1 (JOB06677):</tt>
+<br><tt>Step&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Max RC&nbsp; Actual RC&nbsp;
+Step Description</tt>
+<br><tt>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------&nbsp; ---------&nbsp;
+----------------</tt>
+<br><tt><a href="#copy2hfs.jcl">FTPFILE</a>&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Copy PDS members
+to HFS files</tt>
+<br><tt><a href="#copy2hfs.jcl">DELPDS</a>&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Delete Temporary
+PDS</tt>
+<br><tt>>>> Job was successful</tt>
+<p><tt>Saving job output file at: /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/pl</tt>
+<br><tt>xExample/JOB06674.out</tt>
+<p><tt>Saving job output file at: /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/pl</tt>
+<br><tt>xExample/JOB06676.out</tt>
+<p><tt>Saving job output file at: /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/pl</tt>
+<br><tt>xExample/JOB06677.out</tt>
+<p><tt>BUILD process....................completed successfully</tt>
+<br><tt>-----------------------------------------</tt>
+<br><tt>Generating File Dependencies.....</tt>
+<br><tt>File Dependencies................done</tt>
+<br><tt>-----------------------------------------</tt>
+<br><tt>.rmkdep -rm -top -elxdep .</tt>
+<br>&nbsp;
+<h3>
+<a NAME="MVSBuildList"></a><a href="#Toc_mvsbuildlist">MVS Build List</a></h3>
+When the mk command runs, it generates a file called <b><i>mvsbldlist.rsp</i></b>
+that contains the source files that need to be built and all the macros
+from the current directory and the export directory.&nbsp; This build control
+file is read by the java program during the build process.
+<p>Contents of <b>mvsbldlist.rsp</b> in /u/wmathis/sted/test/d13839/obj/mvs390_oe_2/plxExample
+directory:
+<blockquote><tt><font color="#00CC00">/u/wmathis/sted/test/d13839/src/plxExample/test.plx</font></tt>
+<br><tt><font color="#00CC00">/u/wmathis/sted/test/d13839/src/plxExample/test2.plx</font></tt>
+<br><tt><font color="#00CC00">/u/wmathis/sted/test/d13839/src/plxExample/a.mac</font></tt>
+<br><tt><font color="#00CC00">/u/wmathis/sted/test/d13839/export/mvs390_oe_2/usr/incls390/a.mac</font></tt>
+<br><tt><font color="#00CC00">/u/wmathis/sted/test/d13839/export/mvs390_oe_2/usr/incls390/d.mac</font></tt></blockquote>
+
+<h3>
+<a NAME="JCLExamples"></a><a href="#Toc_JCLExamples">JCL Examples</a></h3>
+Below are dynamically generated JCLs for the PLX parts (<b>test.plx</b>
+and <b>test2.plx</b>).
+<p><a NAME="copy2tso.jcl"></a><a href="#Toc_JCLExamples">copy2tso.jcl</a>
+<p><tt>//WMATHIS1 JOB (349077,,,,10,N),</tt>
+<br><tt>//&nbsp; 'WMATHIS',TIME=1440,NOTIFY=ODE,</tt>
+<br><tt>//&nbsp; MSGCLASS=O,</tt>
+<br><tt>//&nbsp; MSGLEVEL=(1,1)</tt>
+<br><tt>//*MAIN SYSTEM=MVSC,ORG=ANYLOCAL,</tt>
+<br><tt>//*CLASS=VPRLS,</tt>
+<br><tt>//*USER=WMATHIS,HOLD=NO</tt>
+<br><tt>//*IBM INTERNAL USE ONLY</tt>
+<br><tt>//*</tt>
+<br><tt>//*---------------------------------------------------------------------</tt>
+<br><tt>//* Allocate distribution libraries</tt>
+<br><tt>//*---------------------------------------------------------------------</tt>
+<br><tt>//ALLOCLIB EXEC PGM=IEFBR14</tt>
+<br><tt>//OUTSRC&nbsp; DD DISP=(NEW,CATLG),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=32720),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(TRK,(34,4,30)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.SRC</tt>
+<br><tt>//LOCMAC&nbsp; DD DISP=(NEW,CATLG),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=32720),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(TRK,(34,4,30)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACLOCAL</tt>
+<br><tt>//EXPTMAC DD DISP=(NEW,CATLG),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=32720),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(TRK,(34,4,30)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACEXPT</tt>
+<br><tt>//OBJECT&nbsp; DD DISP=(NEW,CATLG),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=32720),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(TRK,(34,4,30)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.O</tt>
+<br><tt>//LISTING DD DISP=(NEW,CATLG),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=VBA,LRECL=137,BLKSIZE=13030),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(81,4,10)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.LISTING</tt>
+<br><tt>//CLRPRNT DD DISP=(NEW,CATLG),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBA,LRECL=133,BLKSIZE=32718),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(TRK,(34,4,30)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.CLRPRINT</tt>
+<br><tt>//UNIDATA DD DISP=(NEW,CATLG),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=32720),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(TRK,(34,4,30)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.UNIDATA</tt>
+<br><tt>//SYSPRINT DD SYSOUT=*</tt>
+<br><tt>/*</tt>
+<br><tt>//*---------------------------------------------------------------------</tt>
+<br><tt>//* Ftp File step to copy HFS files to PO data sets</tt>
+<br><tt>//*---------------------------------------------------------------------</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IF (RC=0) THEN</tt>
+<br><tt>//FTPFILE&nbsp; EXEC PGM=FTP,PARM='RALJES3C (EXIT=16'</tt>
+<br><tt>//NETRC DD DISP=SHR,DSN=WMATHIS.FTP(NETRC)</tt>
+<br><tt>//SYSPRINT&nbsp; DD SYSOUT=*</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp;&nbsp; DD *</tt>
+<br><tt>ASCII</tt>
+<br><tt>PUT /u/wmathis/sted/test/d13839/src/plxExample/test.plx +</tt>
+<br><tt>'WMATHIS.D13839.SRC(TEST)'</tt>
+<br><tt>PUT /u/wmathis/sted/test/d13839/src/plxExample/test2.plx +</tt>
+<br><tt>'WMATHIS.D13839.SRC(TEST2)'</tt>
+<br><tt>PUT /u/wmathis/sted/test/d13839/src/plxExample/a.mac +</tt>
+<br><tt>'WMATHIS.D13839.MACLOCAL(A)'</tt>
+<br><tt>PUT /u/wmathis/sted/test/d13839/export/mvs390_oe_2/usr/incls390/a.mac
++</tt>
+<br><tt>'WMATHIS.D13839.MACEXPT(A)'</tt>
+<br><tt>PUT /u/wmathis/sted/test/d13839/export/mvs390_oe_2/usr/incls390/d.mac
++</tt>
+<br><tt>'WMATHIS.D13839.MACEXPT(D)'</tt>
+<br><tt>QUIT</tt>
+<br><tt>/*</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ENDIF</tt>
+<p><a NAME="compile1.jcl"></a><a href="#Toc_JCLExamples">compile1.jcl</a>
+<p><tt>//WMATHIS1 JOB (349077,,,,10,N),</tt>
+<br><tt>//&nbsp; 'WMATHIS',TIME=1440,NOTIFY=ODE,</tt>
+<br><tt>//&nbsp; MSGCLASS=O,</tt>
+<br><tt>//&nbsp; MSGLEVEL=(1,1)</tt>
+<br><tt>//*MAIN SYSTEM=MVSC,ORG=ANYLOCAL,</tt>
+<br><tt>//*CLASS=VPRLS,</tt>
+<br><tt>//*USER=WMATHIS,HOLD=NO</tt>
+<br><tt>//*IBM INTERNAL USE ONLY</tt>
+<br><tt>//*</tt>
+<br><tt>//SP1 SET PLXPGM=AKHPLX,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp; REGION=0M,</tt>
+<br><tt>// PLXFLAGS=('MACPARM(''MVS/ESA670''),NODOBARS,OBJECT,MONITOR,IDR',</tt>
+<br><tt>//&nbsp; 'IMPLICIT,CONV,FLAG(I),SEC(IC),LC(55),'),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp; STEPXLIB=DSN=SYS1.PROTECT.V2R1M2.LOAD</tt>
+<br><tt>//*---------------------------------------------</tt>
+<br><tt>//* Execute the compile process</tt>
+<br><tt>//*---------------------------------------------</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp; (c) Copyright International Business Machines Corp. 2003</tt>
+<br><tt>//*&nbsp; All Rights Reserved</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp;&nbsp; PLX COMPILE</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//TEST&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=&amp;PLXPGM,REGION=&amp;REGION,</tt>
+<br><tt>//&nbsp; PARM=&amp;PLXFLAGS</tt>
+<br><tt>//*</tt>
+<br><tt>//STEPLIB&nbsp; DD &amp;STEPXLIB,DISP=SHR</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSPRINT DD DSN=&amp;&amp;PLXLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//UNIDATA&nbsp; DD SYSOUT=H</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(4,4))</tt>
+<br><tt>//SYSUT2&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT3&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT4&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT5&nbsp;&nbsp; DD DISP=(,DELETE),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5,5)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=12960)</tt>
+<br><tt>//ASMPRINT DD DSN=&amp;&amp;ASMLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//ASMUT1&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,10))</tt>
+<br><tt>//*</tt>
+<br><tt>//PLX.SYSIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD
+DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.SRC(TEST)</tt>
+<br><tt>//* These are standard system libraries</tt>
+<br><tt>//* for the PLX Compile</tt>
+<br><tt>//PLX.SYSLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACLOCAL</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACEXPT</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//PLX.ASMLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACLOCAL</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACEXPT</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//PLX.ASMLIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.O(TEST)</tt>
+<br><tt>//PLX.CLRPRINT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.CLRPRINT(TEST)</tt>
+<br><tt>//*------------------------------------------------------------</tt>
+<br><tt>//*</tt>
+<br><tt>//* Combine the ASM and PLX Listing into one</tt>
+<br><tt>//*</tt>
+<br><tt>//*------------------------------------------------------------</tt>
+<br><tt>//LIST&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=IEBGENER,COND=(20,LE,TEST)</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;PLXLIST,UNIT=SYSDA</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;ASMLIST,UNIT=SYSDA</tt>
+<br><tt>//LIST.SYSUT2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.LISTING(TEST)</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp; DD DUMMY</tt>
+<br><tt>//SYSPRINT DD DUMMY</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp; (c) Copyright International Business Machines Corp. 2003</tt>
+<br><tt>//*&nbsp; All Rights Reserved</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp;&nbsp; PLX COMPILE</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//TEST2&nbsp;&nbsp;&nbsp; EXEC PGM=&amp;PLXPGM,REGION=&amp;REGION,</tt>
+<br><tt>//&nbsp; PARM=&amp;PLXFLAGS</tt>
+<br><tt>//*</tt>
+<br><tt>//STEPLIB&nbsp; DD &amp;STEPXLIB,DISP=SHR</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSPRINT DD DSN=&amp;&amp;PLXLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//UNIDATA&nbsp; DD SYSOUT=H</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(4,4))</tt>
+<br><tt>//SYSUT2&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT3&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT4&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT5&nbsp;&nbsp; DD DISP=(,DELETE),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5,5)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=12960)</tt>
+<br><tt>//ASMPRINT DD DSN=&amp;&amp;ASMLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//ASMUT1&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,10))</tt>
+<br><tt>//*</tt>
+<br><tt>//PLX.SYSIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD
+DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.SRC(TEST2)</tt>
+<br><tt>//* These are standard system libraries</tt>
+<br><tt>//* for the PLX Compile</tt>
+<br><tt>//PLX.SYSLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACLOCAL</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACEXPT</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//PLX.ASMLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACLOCAL</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACEXPT</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//PLX.ASMLIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DSN=WMATHIS.D13839.O(TEST2)</tt>
+<br><tt>//PLX.CLRPRINT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.CLRPRINT(TEST2)</tt>
+<br><tt>//*------------------------------------------------------------</tt>
+<br><tt>//*</tt>
+<br><tt>//* Combine the ASM and PLX Listing into one</tt>
+<br><tt>//*</tt>
+<br><tt>//*------------------------------------------------------------</tt>
+<br><tt>//LIST1&nbsp;&nbsp;&nbsp; EXEC PGM=IEBGENER,COND=(20,LE,TEST2)</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;PLXLIST,UNIT=SYSDA</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;ASMLIST,UNIT=SYSDA</tt>
+<br><tt>//LIST.SYSUT2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.LISTING(TEST2)</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp; DD DUMMY</tt>
+<br><tt>//SYSPRINT DD DUMMY</tt>
+<br><tt>//*</tt>
+<p><a NAME="copy2hfs.jcl"></a><a href="#Toc_JCLExamples">copy2hfs.jcl</a>
+<p><tt>//WMATHIS1 JOB (349077,,,,10,N),</tt>
+<br><tt>//&nbsp; 'WMATHIS',TIME=1440,NOTIFY=ODE,</tt>
+<br><tt>//&nbsp; MSGCLASS=O,</tt>
+<br><tt>//&nbsp; MSGLEVEL=(1,1)</tt>
+<br><tt>//*MAIN SYSTEM=MVSC,ORG=ANYLOCAL,</tt>
+<br><tt>//*CLASS=VPRLS,</tt>
+<br><tt>//*USER=WMATHIS,HOLD=NO</tt>
+<br><tt>//*IBM INTERNAL USE ONLY</tt>
+<br><tt>//*</tt>
+<br><tt>//*---------------------------------------------------------------------</tt>
+<br><tt>//* Ftp File step to copy PO data sets to HFS files</tt>
+<br><tt>//*---------------------------------------------------------------------</tt>
+<br><tt>//FTPFILE&nbsp; EXEC PGM=FTP,PARM='RALJES3C (EXIT=16'</tt>
+<br><tt>//NETRC DD DISP=SHR,DSN=WMATHIS.FTP(NETRC)</tt>
+<br><tt>//SYSPRINT&nbsp; DD SYSOUT=*</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp;&nbsp; DD *</tt>
+<br><tt>BINARY</tt>
+<br><tt>GET 'WMATHIS.D13839.O(TEST)' +</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxExample/test.o
++</tt>
+<br><tt>&nbsp;(REPLACE</tt>
+<br><tt>ASCII</tt>
+<br><tt>GET 'WMATHIS.D13839.LISTING(TEST)' +</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxExample/test.lst
++</tt>
+<br><tt>&nbsp;(REPLACE</tt>
+<br><tt>GET 'WMATHIS.D13839.CLRPRINT(TEST)' +</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxExample/test.tmp
++</tt>
+<br><tt>&nbsp;(REPLACE</tt>
+<br><tt>BINARY</tt>
+<br><tt>GET 'WMATHIS.D13839.O(TEST2)' +</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxExample/test2.o
++</tt>
+<br><tt>&nbsp;(REPLACE</tt>
+<br><tt>ASCII</tt>
+<br><tt>GET 'WMATHIS.D13839.LISTING(TEST2)' +</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxExample/test2.lst
++</tt>
+<br><tt>&nbsp;(REPLACE</tt>
+<br><tt>GET 'WMATHIS.D13839.CLRPRINT(TEST2)' +</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/plxExample/test2.tmp
++</tt>
+<br><tt>&nbsp;(REPLACE</tt>
+<br><tt>QUIT</tt>
+<br><tt>/*</tt>
+<br><tt>//*---------------------------------------------------------------------</tt>
+<br><tt>//* Delete Temporary PDS</tt>
+<br><tt>//*---------------------------------------------------------------------</tt>
+<br><tt>//DELPDS&nbsp;&nbsp; EXEC PGM=IDCAMS,COND=(20,LE,FTPFILE)</tt>
+<br><tt>//SYSPRINT DD SYSOUT=*</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp; DD *</tt>
+<br><tt>&nbsp; DELETE 'WMATHIS.D13839.SRC'</tt>
+<br><tt>&nbsp; DELETE 'WMATHIS.D13839.MACLOCAL'</tt>
+<br><tt>&nbsp; DELETE 'WMATHIS.D13839.MACEXPT'</tt>
+<br><tt>&nbsp; DELETE 'WMATHIS.D13839.O'</tt>
+<br><tt>&nbsp; DELETE 'WMATHIS.D13839.CLRPRINT'</tt>
+<br><tt>&nbsp; DELETE 'WMATHIS.D13839.LISTING'</tt>
+<br><tt>&nbsp; DELETE 'WMATHIS.D13839.UNIDATA'</tt>
+<br><tt>/*</tt>
+<br>&nbsp;
+<p><a NAME="non-ode compile1.jcl"></a><a href="#Toc_JCLExamples">non-ode
+compile1.jcl</a>
+<p><tt>//WMATHIS1 JOB (349077,,,,10,N),</tt>
+<br><tt>//&nbsp; 'WMATHIS',TIME=1440,NOTIFY=ODE,</tt>
+<br><tt>//&nbsp; MSGCLASS=O,</tt>
+<br><tt>//&nbsp; MSGLEVEL=(1,1)</tt>
+<br><tt>//*MAIN SYSTEM=MVSC,ORG=ANYLOCAL,</tt>
+<br><tt>//*CLASS=VPRLS,</tt>
+<br><tt>//*USER=WMATHIS,HOLD=NO</tt>
+<br><tt>//*IBM INTERNAL USE ONLY</tt>
+<br><tt>//*</tt>
+<br><tt>//*---------------------------------------------</tt>
+<br><tt>//* Execute the compile process</tt>
+<br><tt>//*---------------------------------------------</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp; (c) Copyright International Business Machines Corp. 2003</tt>
+<br><tt>//*&nbsp; All Rights Reserved</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//*&nbsp;&nbsp; PLX COMPILE</tt>
+<br><tt>//*</tt>
+<br><tt>//*******************************************************************</tt>
+<br><tt>//*</tt>
+<br><tt>//TEST&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=AKHPLX,REGION=0M,</tt>
+<br><tt>//&nbsp; PARM=('MACPARM(''MVS/ESA670''),NODOBARS,OBJECT,MONITOR,IDR',</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'IMPLICIT,CONV,FLAG(I),SEC(IC),LC(55)')</tt>
+<br><tt>//*</tt>
+<br><tt>//STEPLIB&nbsp; DD DSN=SYS1.PROTECT.V2R1M2.LOAD,DISP=SHR</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSPRINT DD DSN=&amp;&amp;FILELIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//UNIDATA&nbsp; DD SYSOUT=H</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(4,4))</tt>
+<br><tt>//SYSUT2&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT3&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT4&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5))</tt>
+<br><tt>//SYSUT5&nbsp;&nbsp; DD DISP=(,DELETE),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,5,5)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FB,LRECL=80,BLKSIZE=12960)</tt>
+<br><tt>//*</tt>
+<br><tt>//ASMPRINT DD DSN=&amp;&amp;ASMLIST,DISP=(NEW,PASS),SPACE=(CYL,(1,15)),</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DCB=(RECFM=FBM,LRECL=121),UNIT=SYSDA</tt>
+<br><tt>//ASMUT1&nbsp;&nbsp; DD UNIT=SYSDA,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SPACE=(CYL,(5,10))</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.SRC(TEST)</tt>
+<br><tt>//SYSLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACLOCAL</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACEXPT</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//ASMLIB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACLOCAL</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.MACEXPT</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MACLIB,DISP=SHR</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DD DSN=SYS1.MODGEN,DISP=SHR</tt>
+<br><tt>//PLX.ASMLIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.O(TEST)</tt>
+<br><tt>//PLX.CLRPRINT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.CLRPRINT(TEST)</tt>
+<br><tt>//*------------------------------------------------------------</tt>
+<br><tt>//*</tt>
+<br><tt>//* Listing</tt>
+<br><tt>//*</tt>
+<br><tt>//*------------------------------------------------------------</tt>
+<br><tt>//LIST&nbsp;&nbsp;&nbsp;&nbsp; EXEC PGM=IEBGENER,COND=(20,LE,TEST)</tt>
+<br><tt>//*</tt>
+<br><tt>//SYSUT1&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;FILELIST,UNIT=SYSDA</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=(OLD,DELETE),DSN=&amp;&amp;ASMLIST,UNIT=SYSDA</tt>
+<br><tt>//LIST.SYSUT2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DD DISP=SHR,</tt>
+<br><tt>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DSN=WMATHIS.D13839.LISTING(TEST)</tt>
+<br><tt>//SYSIN&nbsp;&nbsp;&nbsp; DD DUMMY</tt>
+<br><tt>//SYSPRINT DD DUMMY</tt>
+<br><tt>//*</tt>
+<p>
+<hr>
+<h2>
+<a NAME="DependencyGeneration"></a><a href="#Toc_DependencyGeneration">Dependency
+Generation</a></h2>
+This section describes the dependency generation for the TSO Build process.
+Dependencies are automatically created when mk is called, if the variable
+<b>DEPENDENCIES
+</b>is
+defined and the Monitor Exit is utilized for the appropriate language.
+In the <b>Makeconf</b> file shown previously in this document, <b>DEPENDENCIES</b>
+is defined. The Monitor Exit is used to generated the dependency file for
+each compiled source part.&nbsp; Each temp (i.e. test.tmp and test2.tmp)
+file is copied to HFS and used to create the ODE dependency file (<b>depend.mk</b>).&nbsp;
+Note:&nbsp; The temp (i.e. test.tmp and test2.tmp) files are deleted after
+the depend.mk file is generated.
+<p>To verify that the dependencies were generated properly, examine the
+contents of the depend.mk file.
+<p>Contents of <b>depend.mk</b> in the /u/wmathis/sted/test/d13839/obj/mvs390_oe_2/plxExample
+directory:
+<p><tt><font color="#00CC00">#</font></tt>
+<br><tt><font color="#00CC00"># dependents of test2.o:</font></tt>
+<br><tt><font color="#00CC00">test2.o:&nbsp; ${MAKETOP}plxExample/test2.plx</font></tt>
+<br><tt><font color="#00CC00">test2.o:&nbsp; ${MAKETOP}../export/mvs390_oe_2/usr/incls390/d.mac</font></tt>
+<br><tt><font color="#00CC00">#</font></tt>
+<br><tt><font color="#00CC00"># dependents of test.o:</font></tt>
+<br><tt><font color="#00CC00">test.o:&nbsp; ${MAKETOP}plxExample/test.plx</font></tt>
+<br><tt><font color="#00CC00">test.o:&nbsp; ${MAKETOP}/plxExample/a.mac</font></tt>
+<p>This will cause ODE to compare all of the appropriate files' timestamps
+to determine which source files need to be recompiled.&nbsp; The mk command
+will check the files in the sandbox(es) and the backing build automatically.
+<p><b>Note:</b>&nbsp; Currently, ODE is not able to generate a dependency
+file for COBOL because of the lack of a Monitor Exit to generate the dependencies.
+<p>When a developer needs to add or delete source files to/from the project,
+the makefile.ode file in those directories will have to be changed to add
+or remove the filenames appropriate variables.
+<p>
+<hr>
+<h2>
+<a NAME="MultipleCompileJobs"></a><a href="#Toc_MultipleCompileJobs">Multiple
+Compile Jobs</a></h2>
+This section describes how to create multiple compile jobs.&nbsp; The variable
+(<b>NUM_OF_FILES_PER_JOB</b>) allows the user to specify the number of
+files to compile in a single JCL job. Assume there are 74 source files
+to compile in the current directory.&nbsp; The user can specify to have
+22 files built in one JCL, therefore the process will create just 4 compile
+jobs instead of 74 compile jobs.
+<p>In Makeconf:&nbsp;&nbsp;&nbsp;&nbsp; <b><tt>NUM_OF_FILES_PER_JOB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 22</tt></b>
+<p>Output of running mk:
+<p><tt>cd asm &amp;&amp; mk MAKEFILE_PASS=OBJECTS build_all</tt>
+<br><tt>cp -m mvssrclist mvsbldlist</tt>
+<br><tt>java -DSRCBASE=/u/wmathis/sted/test/d13839/src -DSBOX=d13839 <b>-DBLD_NUM_OF_FILES=</b></tt>
+<br><tt><b>22</b> -DSRCPATH=/asm -DSRCFULL=/u/wmathis/sted/test/d13839/src/asm
+-D</tt>
+<br><tt>TGTPATH=/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm
+-DTARGET=m</tt>
+<br><tt>vsbldlist.rsp -DEXPPATH=../export/mvs390_oe_2/usr/incls390/ -DBLD_WITH_REXXEXEC=</tt>
+<br><tt>n -DBLD_SPACE_TYPE=track -DBLD_PRIMARY_QTY=34 -DBLD_SECONDARY_QTY=4
+-DBLD_DIRECT</tt>
+<br><tt>ORY_BLKS=30 -DBLD_BLK_SIZE=32720 -DBLD_LST_SPACE_TYPE= -DBLD_LST_PRIMARY_QTY=
+-D</tt>
+<br><tt>BLD_LST_SECONDARY_QTY=4 -DBLD_LST_DIR_BLKS= -DBLD_LST_BLK_SIZE=
+-DBLD_REMOTEHOST</tt>
+<br><tt>=raljes3c -DBLD_ASMPGM=ASMA90 -DBLD_PLSPGM=akhplx -DBLD_PLXPGM=AKHPLX
+-DBLD_REGI</tt>
+<br><tt>ON=0M -DNETRC_FILE="WMATHIS.FTP(NETRC)" -DASMFLAGS="OBJECT,NODECK,LIST,NORENT,SY</tt>
+<br><tt>SPARM(''Y IPC 0100 IPC-199 2''),EXIT(LIBEXIT(SDYNASM))" -DPLSFLAGS="MACPARM(''MV</tt>
+<br><tt>S/ESA670''),NODOBARS,OBJECT,MONITOR,IDR,IMPLICIT,CONV,FLAG(I),SEC(IC),LC(55)"
+-D</tt>
+<br><tt>PLXFLAGS="MACPARM(''MVS/ESA670''),NODOBARS,OBJECT,MONITOR,IDR,IMPLICIT,CONV,FLAG</tt>
+<br><tt>(I),SEC(IC),LC(55)" -DASM_STEPLIB=SWGSDWB.ODETSO.LOAD -DPLS_STEPLIB=sys1.protect</tt>
+<br><tt>.v2r1m2.load -DPLX_STEPLIB=SYS1.PROTECT.V2R1M2.LOAD -DPROD_ASM_SYSLIB="wlm.cs14.</tt>
+<br><tt>prd.maclib CEE.SCEEMAC" -DPROD_PLS_SYSLIB="" -DPROD_PLX_SYSLIB=""
+-DSTANDARD_SYS</tt>
+<br><tt>LIB="sys1.maclib sys1.modgen" -DHLQ= -DMVS_USERID=wmathis -DMVS_PASSWORD=xxxxxx</tt>
+<br><tt>x -DMVS_EXEC_DATASET=wmathis.sted.rexx -DMVS_DELETE_OUTPUT=Y -DMVS_JOBMONITOR_TI</tt>
+<br><tt>ME=1 -DMVS_SAVE_OUTPUT_FILE=YES -DMVS_JOBCARD=/u/wmathis/jobcard/jobcard
+com.ibm</tt>
+<br><tt>.ode.bin.bldMvs.RunMvsBld</tt>
+<p><tt>Build control file is /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/mvs</tt>
+<br><tt>bldlist.rsp</tt>
+<br><tt>-----------------------------------------</tt>
+<br><tt>*** 74 ASM File(s) will be compiled ***</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; using the ODE ASM template</tt>
+<br><tt>-----------------------------------------</tt>
+<br><tt>Generating Allocation and FTP File jobstream</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/copy2tso.jcl</tt>
+<br><tt>&nbsp; Job name is WMATHIS1</tt>
+<br><tt>&nbsp; Generated allocation step in 12 ms</tt>
+<br><tt>&nbsp; Generated ftp file step in 346 ms</tt>
+<br><tt>Generating Compile jobstream</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/compile1.jcl</tt>
+<br><tt>&nbsp; Job name is WMATHIS1</tt>
+<br><tt>&nbsp; Generated compile step(s) in 2032 ms</tt>
+<br><tt>Generating Compile jobstream</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/compile2.jcl</tt>
+<br><tt>&nbsp; Job name is WMATHIS1</tt>
+<br><tt>&nbsp; Generated compile step(s) in 1927 ms</tt>
+<br><tt>Generating Compile jobstream</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/compile3.jcl</tt>
+<br><tt>&nbsp; Job name is WMATHIS1</tt>
+<br><tt>&nbsp; Generated compile step(s) in 1770 ms</tt>
+<br><tt>Generating Compile jobstream</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/compile4.jcl</tt>
+<br><tt>&nbsp; Job name is WMATHIS1</tt>
+<br><tt>&nbsp; Generated compile step(s) in 707 ms</tt>
+<br><tt>Generating FTP File jobstream</tt>
+<br><tt>/u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/copy2hfs.jcl</tt>
+<br><tt>&nbsp; Job name is WMATHIS1</tt>
+<br><tt>&nbsp; Generated ftp file step in 672 ms</tt>
+<br><tt>All JCL generation complete</tt>
+<p><tt>Entering job management phase</tt>
+<br><tt>Job status will be checked every 1 minutes</tt>
+<br><tt>Performing job management at 21:00:51 EST Thu Mar 06</tt>
+<br><tt>Submitting WMATHIS1 from /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/</tt>
+<br><tt>copy2tso.jcl</tt>
+<br><tt>&nbsp; Submit successful: job number is JOB06694</tt>
+<br><tt>Submitting WMATHIS1 from /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/</tt>
+<br><tt>compile1.jcl</tt>
+<br><tt>&nbsp; Submit successful: job number is JOB06695</tt>
+<br><tt>Submitting WMATHIS1 from /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/</tt>
+<br><tt>compile2.jcl</tt>
+<br><tt>&nbsp; Submit successful: job number is JOB06696</tt>
+<br><tt>Submitting WMATHIS1 from /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/</tt>
+<br><tt>compile3.jcl</tt>
+<br><tt>&nbsp; Submit successful: job number is JOB06698</tt>
+<br><tt>Submitting WMATHIS1 from /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/</tt>
+<br><tt>compile4.jcl</tt>
+<br><tt>&nbsp; Submit successful: job number is JOB06699</tt>
+<br><tt>Submitting WMATHIS1 from /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/asm/</tt>
+<br><tt>copy2hfs.jcl</tt>
+<br><tt>&nbsp; Submit successful: job number is JOB06700</tt>
+<p><tt>Performing job management at 21:02:05 EST Thu Mar 06</tt>
+<br><tt>Checking status of job JOB06694</tt>
+<br><tt>&nbsp; Job status is OUTPUT</tt>
+<br><tt>Retrieving output for job JOB06694</tt>
+<br><tt>&nbsp; Successfully retrieved job output</tt>
+<br><tt>Checking status of job JOB06695</tt>
+<br><tt>&nbsp; Job status is OUTPUT</tt>
+<br><tt>Retrieving output for job JOB06695</tt>
+<br><tt>&nbsp; Successfully retrieved job output</tt>
+<br><tt>Checking status of job JOB06696</tt>
+<br><tt>&nbsp; Job status is OUTPUT</tt>
+<br><tt>Retrieving output for job JOB06696</tt>
+<br><tt>&nbsp; Successfully retrieved job output</tt>
+<br><tt>Checking status of job JOB06698</tt>
+<br><tt>&nbsp; Job status is OUTPUT</tt>
+<br><tt>Retrieving output for job JOB06698</tt>
+<br><tt>&nbsp; Successfully retrieved job output</tt>
+<br><tt>Checking status of job JOB06699</tt>
+<br><tt>&nbsp; Job status is OUTPUT</tt>
+<br><tt>Retrieving output for job JOB06699</tt>
+<br><tt>&nbsp; Successfully retrieved job output</tt>
+<br><tt>Checking status of job JOB06700</tt>
+<br><tt>&nbsp; Job status is ACTIVE</tt>
+<p><tt>Performing job management at 21:06:51 EST Thu Mar 06</tt>
+<br><tt>Checking status of job JOB06700</tt>
+<br><tt>&nbsp; Job status is OUTPUT</tt>
+<br><tt>Retrieving output for job JOB06700</tt>
+<br><tt>&nbsp; Successfully retrieved job output</tt>
+<p><tt>Ending job management phase</tt>
+<p><tt>Execution summary for all jobs:</tt>
+<p><tt>Execution summary for job WMATHIS1 (JOB06694):</tt>
+<br><tt>Step&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Max RC&nbsp; Actual RC&nbsp;
+Step Description</tt>
+<br><tt>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------&nbsp; ---------&nbsp;
+----------------</tt>
+<br><tt>ALLOCLIB&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Allocate distribution libraries</tt>
+<br><tt>FTPFILE&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Copy HFS files to PDS</tt>
+<br><tt>>>> Job was successful</tt>
+<p><tt>Execution summary for job WMATHIS1 (JOB06695):</tt>
+<br><tt>Step&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Max RC&nbsp; Actual RC&nbsp;
+Step Description</tt>
+<br><tt>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------&nbsp; --------- ----------------</tt>
+<br><tt>NETSHSTI&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHCRT&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHELW&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHPST&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHWAI&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHWTO&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHSTK&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NCSMSHC1&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NCSMSHCP&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NCSMSHDP&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>...</tt>
+<br><tt>NCSMSHG8&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NCSMUFRE&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHAAB&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>>>> Job was successful</tt>
+<p><tt>Execution summary for job WMATHIS1 (JOB06696):</tt>
+<br><tt>Step&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Max RC&nbsp; Actual RC&nbsp;
+Step Description</tt>
+<br><tt>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------&nbsp; ---------&nbsp;
+----------------</tt>
+<br><tt>NETSHACC&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHACL&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHACN&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHADE&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHADI&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHAFL&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHALL&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHALO&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHARK&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHARS&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHARY&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHASA&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHAST&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHATT&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHAWA&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>...</tt>
+<br><tt>NETSHOPS&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHPRA&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHPRB&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHRCL&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>>>> Job was successful</tt>
+<p><tt>Execution summary for job WMATHIS1 (JOB06698):</tt>
+<br><tt>Step&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Max RC&nbsp; Actual RC&nbsp;
+Step Description</tt>
+<br><tt>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------&nbsp; ---------&nbsp;
+----------------</tt>
+<br><tt>NETSHREA&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHREW&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHROP&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHRRC&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHRRQ&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHRST&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHSCP&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHSCW&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHSEA&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHSEB&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHSRC&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NETSHTPE&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHACC&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHACN&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>...</tt>
+<br><tt>NAUSHADI&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHALL&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHARK&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHARY&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHARX&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHASA&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHAST&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>>>> Job was successful</tt>
+<p><tt>Execution summary for job WMATHIS1 (JOB06699):</tt>
+<br><tt>Step&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Max RC&nbsp; Actual RC&nbsp;
+Step Description</tt>
+<br><tt>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------&nbsp; ---------&nbsp;
+----------------</tt>
+<br><tt>NAUSHSEA&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHSEB&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHSEC&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHPRA&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHPRB&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHPRC&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHREA&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>NAUSHREB&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile process</tt>
+<br><tt>>>> Job was successful</tt>
+<p><tt>Execution summary for job WMATHIS1 (JOB06700):</tt>
+<br><tt>Step&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Max RC&nbsp; Actual RC&nbsp;
+Step Description</tt>
+<br><tt>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------&nbsp; ---------&nbsp;
+----------------</tt>
+<br><tt>FTPFILE&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Copy PDS members to HFS files</tt>
+<br><tt>DELPDS&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Delete Temporary
+PDS</tt>
+<br><tt>>>> Job was successful</tt>
+<p><tt>Saving job output file at: /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/as</tt>
+<br><tt>m/JOB06694.out</tt>
+<p><tt>Saving job output file at: /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/as</tt>
+<br><tt>m/JOB06695.out</tt>
+<p><tt>Saving job output file at: /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/as</tt>
+<br><tt>m/JOB06696.out</tt>
+<p><tt>Saving job output file at: /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/as</tt>
+<br><tt>m/JOB06698.out</tt>
+<p><tt>Saving job output file at: /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/as</tt>
+<br><tt>m/JOB06699.out</tt>
+<p><tt>Saving job output file at: /u/wmathis/sted/test/d13839/src/../obj/mvs390_oe_2/as</tt>
+<br><tt>m/JOB06700.out</tt>
+<p><tt>BUILD process....................completed successfully</tt>
+<br><tt>-----------------------------------------</tt>
+<br><tt>Generating File Dependencies.....</tt>
+<br><tt>File Dependencies................done</tt>
+<br><tt>-----------------------------------------</tt>
+<br><tt>.rmkdep -rm -top -elxdep .</tt>
+<p>
+<hr>
+<h2>
+<a NAME="ConditionCodes"></a><a href="#Toc_ConditionCodes">Condition Codes</a></h2>
+This section describes some return values a user may encounter during the
+TSO build process:
+<blockquote><tt>&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; No diagnostic messages
+issued.</tt>
+<br><tt>&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp; Warning messages issued,
+successful execution probable.</tt>
+<br><tt>&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;&nbsp; Error messages issued, execution
+may fail.</tt>
+<br><tt>&nbsp; 12&nbsp;&nbsp;&nbsp;&nbsp; Severe&nbsp; error&nbsp; messages&nbsp;
+issued, compilation&nbsp; may&nbsp; be&nbsp; completed, successful execution
+improbable.</tt>
+<br><tt>&nbsp; 16&nbsp;&nbsp;&nbsp;&nbsp; Terminal error&nbsp; messages
+issued,&nbsp; compilation failed,&nbsp; successful execution impossible.</tt>
+<br><tt>&nbsp;&nbsp; ?&nbsp;&nbsp;&nbsp;&nbsp; Could not be determined
+from job output</tt>
+<br><tt>&nbsp;&nbsp; *&nbsp;&nbsp;&nbsp;&nbsp; Step was not executed</tt>
+<br><tt>&nbsp;&nbsp; Sxxx&nbsp; System abend code</tt>
+<br><tt>&nbsp;&nbsp; Uxxxx User abend code</tt></blockquote>
+
+</body>
+</html>

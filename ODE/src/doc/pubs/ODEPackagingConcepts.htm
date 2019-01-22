@@ -1,0 +1,167 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="updated" content="Tue, 17 Mar 1998 11:52:28">
+   <meta http-equiv="review" content="Wed, 17 Mar 1999 11:52:28">
+   <meta http-equiv="expires" content="Fri, 17 Mar 2000 11:52:28">
+   <meta name="GENERATOR" content="Mozilla/4.72 [en] (WinNT; U) [Netscape]">
+   <meta name="Author" content="Chad Holliday">
+   <title>ODE Packaging Concepts</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+<img SRC="bannerx.gif" ALT="IBM Books" BORDER=0 height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+ODE Packaging Concepts</h1>
+Open Development Environment
+<br>Packaging Concepts
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<p>
+<hr>
+<h2>
+<a NAME="ToC"></a>Table of Contents</h2>
+<a NAME="ToC_1"></a><b><a href="#Header_1">About this Document</a></b>
+<p><a NAME="ToC_2"></a><b><a href="#HDRINTRO">Introduction</a></b>
+<p><a NAME="ToC_overview"></a><b><a href="#overview">Packaging Overview</a></b>
+<p><a NAME="ToC_targets"></a><b><a href="#targets">ODE Packaging Targets</a></b>
+<p><a NAME="ToC_links"></a><b><a href="#links">Related Packaging Links</a></b>
+<p>
+<hr>
+<h1>
+<a NAME="Header_1"></a><a href="#ToC_1">About this Document</a></h1>
+This document is intended to give the information necessary for the reader
+to understand the concepts of ODE packaging.
+<p>See the <i><a href="index.htm">ODE Documentation Index</a></i> for a
+complete list of ODE documents and their purposes. It is recommended that
+the <a href="ODEConcepts.htm">ODE Concepts</a> document be read and understood
+before continuing with <i>ODE Packaging Concepts</i>.
+<br>
+<hr WIDTH="100%">
+<h1>
+<a NAME="HDRINTRO"></a><a href="#ToC_2">Introduction</a></h1>
+The IBM Open Development Environment (ODE) provides a method for developers
+to prepare programs for installation, known as packaging, as part of a
+development environment.
+<p>
+<hr>
+<h1>
+<a NAME="overview"></a><a href="#ToC_overview">Packaging Overview</a></h1>
+ODE supports the creation of platform-specific installable images as part
+of a build within a development environment. Typically, each platform has
+its own set of package-creation tools that require a particular set of
+input files to generate the package. ODE handles the creation of these
+input files, the collection of all installable files in one location, and
+the execution of the platform's packaging tools, to generate a product
+package.&nbsp; It is possible to use ODE to create packages for any of
+the supported installation tools from any platform, in that the default
+packaging tool used for any platform can be redefined by the user.&nbsp;
+This is beneficial when creating packages for multiple installation tools
+from the same platform.
+<p><b>Common Metadata File (CMF)</b>
+<blockquote>The Common Metadata File, or CMF, is a platform-independent
+text file that contains the necessary information needed to specify the
+contents of a product package. This file is parsed by the ODE packaging
+tools, which will in turn generate the platform-specific set of packaging
+control files used by each platform's packaging tools. The CMF supports
+a series of InstallEntity and File stanzas, which allows complex product
+hierarchies to be represented in the final package. See the <a href="ODEPackagingReference.htm#HDRCMF">ODE
+Packaging Reference</a> for more detail on the specifications of the CMF.</blockquote>
+<b>Types of Packaging</b>
+<blockquote>ODE supports two main types of packaging; initial product packaging
+(IPP) and service packaging. IPP is a full and complete package, containing
+the entire contents of a product. Service packaging is generally a partial,
+or incremental set of files used to update or refresh an existing software
+installation. The most important difference between initial product packaging
+and service packaging is that not all parts are necessarily included in
+a service package; therefore, the determination and collection of the shippable
+parts is required for service packaging. These features are all supported
+by ODE. See the <a href="ODEServicePackagingReference.htm">ODE Service
+Packaging Reference</a> for more detail on the specifications of the service
+packaging.</blockquote>
+
+<hr ALIGN=LEFT WIDTH="100%">
+<h1>
+<a NAME="targets"></a><a href="#ToC_targets">ODE Packaging Targets</a></h1>
+ODE packaging is performed in several steps. These steps are handled by
+makefile targets defined in the set of common makefiles delivered with
+ODE.&nbsp; Executing the ODE command <b>mk</b> or <b>build</b>, with one
+of these predefined targets will perform the specified packaging task.
+<p><b>build_all</b>
+<blockquote>ODE packaging requires that the parts to be shipped be built
+first. This can be accomplished with the target <b>build_all</b>.</blockquote>
+<b>gather_all</b>
+<blockquote>Once all the files to be packaged have been built, the next
+step is to gather all of the files to be shipped in one location. This
+is generally accomplished by specifying the following variables in a makefile:
+<blockquote><b>TOSTAGE</b> - the top-level directory where all shippable
+files are to be copied
+<br><b>ILIST</b> - a list of files to be copied from the current directory
+<br><b>IDIR</b> - the location, specified as a directory relative to <b>TOSTAGE</b>,
+where the list of files specified by <b>ILIST</b> will be copied</blockquote>
+This gathering of shippable files is performed by the<i> </i><b>gather_all</b>
+target. For packaging on all platforms, this target will execute the standard
+ODE <b>install_all</b> target, which copies all files specified by <b>ILIST</b>
+to the directory <b>TOSTAGE/IDIR</b>. For packaging on USS, this target
+will perform an additional task, which can be run independently by running
+the <b>installmvs_all</b> target, and handles the copying of shippable
+files from the USS side of an MVS/OE system to a location on the TSO side,
+where they can be subsequently packaged.&nbsp; Note that in service packaging,
+a separate target,<b> instdep_all,</b> runs during gather_all that performs
+a similar task as install_all, but only copies the <i>changed</i> shippable
+files in a user's sandbox to the ship tree.</blockquote>
+<b>parse_all</b>
+<blockquote>Another step that must be completed after all of the files
+have been built is to generate the platform-specific control files used
+by each platform's packaging tools. The target <b>parse_all</b> can be
+used to perform this task. This target facilitates a call to the packaging
+tool <a href="ODEPackagingReference.htm#ParserGeneratorInitiator">ParserGeneratorInitiator</a>,
+which first parses the CMF, and then generates the packaging control files
+based on the contents of CMF.</blockquote>
+<b>runpkgtool_all</b>
+<blockquote>The last step in creating the package is to call the platform-specific
+packaging tools to create the actual install images, using the control
+files generated by the <b>parse_all</b> target, and the shippable files
+installed by the <b>gather_all</b> target. This can be accomplished with
+the <b>runpkgtool_all </b>target, which invokes the relevant package-creation
+tools to generate the package. For packaging on USS, a call to the packaging
+tool <a href="ODEPackagingReference.htm#RunMvsPkg">RunMvsPkg</a> is made,
+which will initiate JCL jobs to call the package-creation tools on the
+TSO side of the MVS system.
+<p>On all platforms except USS, if <b><a href="ODECommonMakefiles.htm#ToC_UsingPackagingPassesandTools">PKG_GEN_DIST_FILE</a></b>
+is defined when <b>runpkgtool_all</b> is invoked a single archive file,
+which consists of the contents of the package files, will be created.&nbsp;
+Use of a single file makes distributing the package simpler.&nbsp; The
+<a href="ODEAdminsGuide.htm#Packaging">Packaging Support</a> table in the
+ODE Installation and Administration guide illustrates which install tools
+are needed on each platform to install the one-file image created.&nbsp;
+Note that this creation of a single distribution file is not supported
+for Service Packaging.</blockquote>
+<b>package_all</b>
+<blockquote>To combine the actions of the previously mentioned packaging
+targets, the <b>package_all</b> target can be used. On all platforms except
+MVS/USS, this target will execute the commands for the following targets,
+in order;
+<b>gather_all</b>, <b>parse_all</b>, <b>runpkgtool_all</b> and
+on MVS/USS (IPP only), the order is<b> parse_all</b>, <b>gather_all</b>,
+<b>runpkgtool_all</b><i>.</i></blockquote>
+<b>buildandpackage_all</b>
+<blockquote>To further combine the actions of the previously mentioned
+packaging targets, the <b>buildandpackage_all</b> target can be used. On
+all platforms except MVS/USS, this target will execute the commands for
+the following targets, in order; <b>build_all, gather_all, parse_all, runpkgtool_all</b>
+and on MVS/USS (IPP only), the order is <b>build_all, parse_all, gather_all,
+runpkgtool_all</b><i>.</i></blockquote>
+
+<hr ALIGN=LEFT WIDTH="100%">
+<h1>
+<a NAME="links"></a><a href="#ToC_links">Related Packaging Links</a></h1>
+<a href="ODEPackagingReference.htm">ODE Packaging Reference</a>
+<br><a href="ODEServicePackagingReference.htm">ODE Service Packaging Reference</a>
+<br><a href="ODECommonMakefiles.htm#PackagingRules">ODE Common Makefiles
+- Packaging Rules</a>
+<br><a href="ODEAdminsGuide.htm#Hardware_and_Software_Req">ODE Installation
+and Administration Guide</a>
+<br><a href="ODEPkgTutorial.htm">ODE Packaging Tutorial</a>
+</body>
+</html>

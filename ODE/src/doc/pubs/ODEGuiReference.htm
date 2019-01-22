@@ -1,0 +1,751 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="updated" content="Tue, 17 Mar 1998 12:05:56">
+   <meta http-equiv="review" content="Wed, 17 Mar 1999 12:05:56">
+   <meta http-equiv="expires" content="Fri, 17 Mar 2000 12:05:56">
+   <meta name="GENERATOR" content="Mozilla/4.75 [en] (WinNT; U) [Netscape]">
+   <meta name="Author" content="Allen Springer">
+   <title>ODEGuiReference</title>
+</head>
+<body bgcolor="#FFFFFF">
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+ODE Graphic User Interface Reference</h1>
+Open Development Environment
+<br>Graphic User Interface Reference
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<p>
+<hr>
+<h2>
+<a NAME="ToC"></a>Table of Contents</h2>
+<a NAME="ToC_AboutDoc"></a><b><a href="#AboutDoc">About this document</a></b>
+<br><a NAME="ToC_SoftwareRequirements"></a><b><a href="#Requirements">Software
+Requirements</a></b>
+<br><a NAME="ToC_StartingTheODEGUI"></a><b><a href="#StartingTheODEGUI">Starting
+the ODE Graphic User Interface</a></b>
+<blockquote>
+<li>
+<a NAME="Toc_Syntax"></a><b><a href="#Syntax">Syntax</a></b></li>
+
+<li>
+<a NAME="Toc_Parameters"></a><b><a href="#Parameters">Parameters</a></b></li>
+
+<li>
+<a NAME="ToC_ODEOptions"></a><b><a href="#OdeOptions">ODE Options</a></b></li>
+
+<li>
+<a NAME="ToC_ReturnCodes"></a><b><a href="#ReturnCodes">Return Codes</a></b></li>
+
+<li>
+<a NAME="ToC_Examples"></a><b><a href="#Examples">Examples</a></b></li>
+</blockquote>
+<a NAME="ToC_UsingTheSandboxListWindow"></a><b><a href="#UsingTheSandboxListWindow">Using
+the Sandbox List window</a></b>
+<blockquote>
+<li>
+<a NAME="ToC_SandboxListWindowFormat"></a><b><a href="#SandboxListWindowFormat">Sandbox
+List window format</a></b></li>
+
+<li>
+<a NAME="ToC_SandboxListWindowMenus"></a><b><a href="#SandboxListWindowMenus">Sandbox
+List window menus</a></b></li>
+
+<blockquote>
+<li>
+<a NAME="ToC_SandboxListFileMenu"></a><b><a href="#SandboxListFileMenu">File
+menu</a></b></li>
+
+<li>
+<a NAME="ToC_SandboxListSandboxMenu"></a><b><a href="#SandboxListSandboxMenu">Sandbox
+menu</a></b></li>
+
+<li>
+<a NAME="ToC_SandboxListHelpMenu"></a><b><a href="#SandboxListHelpMenu">Help
+menu</a></b></li>
+</blockquote>
+</blockquote>
+<a NAME="ToC_UsingTheSandboxFilesWindow"></a><b><a href="#UsingTheSandboxFilesWindow">Using
+the Sandbox Files window</a></b>
+<blockquote>
+<li>
+<a NAME="ToC_SandboxFilesWindowFormat"></a><b><a href="#SandboxFilesWindowFormat">Sandbox
+Files window format</a></b></li>
+
+<li>
+<a NAME="ToC_SandboxFilesWindowMenus"></a><b><a href="#SandboxFilesWindowMenus">Sandbox
+Files window menus</a></b></li>
+
+<blockquote>
+<li>
+<a NAME="ToC_SandboxFilesSandboxMenu"></a><b><a href="#SandboxFilesSandboxMenu">Sandbox
+menu</a></b></li>
+
+<li>
+<a NAME="ToC_SandboxFilesFilesMenu"></a><b><a href="#SandboxFilesFilesMenu">Files
+menu</a></b></li>
+
+<li>
+<a NAME="ToC_SandboxFilesHelpMenu"></a><b><a href="#SandboxFilesHelpMenu">Help
+menu</a></b></li>
+</blockquote>
+</blockquote>
+<a NAME="ToC_MouseOperations"></a><b><a href="#MouseOperations">Mouse operations</a></b>
+<br><a NAME="ToC_KeyboardOperations"></a><b><a href="#KeyboardOperations">Keyboard
+Operations</a></b>
+<br><a NAME="ToC_EnvironmentVariablesUsed"></a><b><a href="#EnvironmentVariablesUsed">Environment
+variables used</a></b>
+<p>
+<hr>
+<h2>
+<a NAME="AboutDoc"></a><a href="#ToC_AboutDoc">About this document</a></h2>
+This document gives the information necessary for the reader to use the
+ODE Graphic User Interface.
+<p>See the <i><a href="index.htm">ODE Documentation Index</a></i> for a
+complete list of ODE documents and their purposes.
+<h2>
+<a NAME="Requirements"></a><a href="#ToC_SoftwareRequirements">Software
+Requirements</a></h2>
+
+<ul>
+<li>
+The Java JDK 1.1.8 or JRE 1.1.8 or later must be installed in order to
+run the ODE Graphic User Interface.&nbsp; Higher versions (1.2 or 1.3)
+are recommended if unusual behavior occurs with JDK 1.1.</li>
+
+<li>
+The ODE tools.jar file (<b>%release_name%_b<i>num</i>_tools.jar</b>, where
+<i>num</i>
+is the build number) is required and must be added to the CLASSPATH environment
+variable.</li>
+
+<li>
+The Java Swing library <b>swing.jar</b> is required for JDK1.1, and must
+be added to the CLASSPATH environment variable.&nbsp; It is available as
+part of the JFC package here: <a href="http://java.sun.com/products/jfc/download-103.html">http://java.sun.com/products/jfc/download-103.html</a>.&nbsp;
+The Swing class library is bundled with JDK 1.2 and higher as part of the
+default runtime class library (e.g., in jre/lib/rt.jar), so if you have
+a current release of the Java SDK or JRE, you should not need to download
+anything further.</li>
+
+<li>
+If you use Exceed as your X server, version 6.2 or higher is recommended;
+older versions have problems on certain platforms.</li>
+
+<li>
+On AIX, due to security restrictions with xterm, you will need to create
+a shell script called <b>odeguirun</b> with read/execute permission and
+put it in a directory that is in your PATH environment variable.&nbsp;
+This script is needed to reset LIBPATH to the ODE installation directory,
+since xterm will clear the contents of that variable upon startup.&nbsp;
+Below is a sample of the contents of this script, but you can customize
+it as desired.</li>
+
+<ul>
+<pre>#!/bin/ksh</pre>
+
+<pre># This script needs to do a minimum of two things:</pre>
+
+<pre># 1. set the LIBPATH environment variable</pre>
+
+<pre># 2. run the command passed to it, which may contain shell characters</pre>
+
+<pre>#&nbsp;&nbsp;&nbsp; (so it must be passed to a new shell invocation and quoted)</pre>
+
+<pre>export LIBPATH=/ode/aix</pre>
+
+<pre>/bin/ksh -c "$*"</pre>
+</ul>
+</ul>
+
+<h2>
+<a NAME="StartingTheODEGUI"></a><a href="#ToC_StartingTheODEGUI">Starting
+the ODE Graphic User Interface</a></h2>
+The ODE Graphic User Interface is a graphical front end to a number of
+ODE commands, including <b>mkbb</b>, <b>mksb</b>, <b>build</b>, <b>workon</b>,
+and <b>sbls</b> which are described in the <a href="ODEBuildReference.htm">ODE
+Build Reference</a>. The ODE Graphic User Interface command displays a
+<a href="#UsingTheSandboxListWindow">Sandbox
+List window</a> containing information about sandboxes based on the contents
+of an <b><i>rcfile</i></b>. The sandboxes are selectable as operands for
+various operations including: create, delete, workon, build, and show sandbox
+files. Information about sandbox files is displayed in a <a href="#UsingTheSandboxFilesWindow">Sandbox
+Files window</a>. The files may be selected for editing.
+<h3>
+<a NAME="Syntax"></a><a href="#Toc_Syntax">Syntax</a></h3>
+<b>java com.ibm.ode.gui [-rc <i>rcfile</i>] [-ed <i>editor</i>] [</b><i>ODE-options</i><b>]</b>
+<p><i>ODE options:</i>&nbsp; [<b>-quiet | -normal | -verbose | -debug</b>]
+[<b>-usage | -version | -rev</b>] [<b>-info</b>] [<b>-auto</b>]
+<br>&nbsp;
+<h3>
+<a NAME="Parameters"></a><b><a href="#Toc_Parameters">Parameters</a></b></h3>
+
+<dl>
+<dt>
+<b>-rc <i>rcfile</i></b></dt>
+
+<dd>
+Causes the Graphic User Interface to use the file named <b><i>rcfile</i></b>
+to obtain information about the sandboxes. If this option is not specified,
+it uses the <b>SANDBOXRC</b> environment variable if set, if not set then
+it uses the <b>$HOME/.sandboxrc</b> file to obtain this information.</dd>
+
+<dt>
+<b>-ed <i>editor</i></b></dt>
+
+<dd>
+An editor to use with files in the <a href="#UsingTheSandboxFilesWindow">Sandbox
+Files window</a>. If none is specified, a default editor will be provided
+in the edit dialog box based upon the platform that the Graphic User Interface
+is running on. The user may change this selection in the edit dialog box.</dd>
+</dl>
+
+<h3>
+<a NAME="OdeOptions"></a><a href="#ToC_ODEOptions">ODE Options</a></h3>
+
+<dl>
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Provides information on what the Graphical User Interface would do if it
+were executed. The actual command is not performed.</dd>
+
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+This option does not affect responses in the dialog boxes that the Graphical
+User Interface displays. Some dialog windows may have default options already
+selected with the user having the ability to change them, or options may
+have a default behavior if no user entry is made.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Controls the amount of message text you receive. <b>-quiet</b> is the most
+succinct; you receive only essential information, including all FATAL ERROR
+messages.&nbsp; <b>-normal</b> is the default level; it causes display
+of information on the significant steps the program is taking, and warnings.
+<b>-normal</b>
+also provides all messages displayed by <b>-quiet</b>.
+<b>-verbose</b>
+causes display of detailed information on the steps the program is taking,
+and all diagnostic errors. It also provides all messages displayed by <b>-quiet</b>
+and <b>-normal</b>.&nbsp; <b>-debug</b> provides the highest level of detail
+available, which may be helpful if a problem is suspected. Some <b>-debug</b>
+message text may be displayed in the command window where the Graphic User
+Interface is started. In most cases errors and warnings are displayed in
+dialog windows.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+</dl>
+
+<h3>
+<a NAME="ReturnCodes"></a><a href="#ToC_ReturnCodes">Return Codes</a></h3>
+&nbsp;&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp; System errors
+<h3>
+<a NAME="Examples"></a><a href="#ToC_Examples">Examples</a></h3>
+<b>java com.ibm.ode.gui</b>
+<p>This command runs the Graphic User Interface with the default <b><i>rcfile</i></b>.
+If the file exists and lists sandboxes, they will be displayed in the Sandbox
+List window; otherwise an empty window will be shown which will provide
+options for creating sandboxes in the default <b><i>rcfile</i></b>.
+<p><b>java com.ibm.ode.gui -rc /project/.projsbrc</b>
+<p>This command runs the Graphic User Interface with a non default <b><i>rcfile</i>/project/.projsbrc</b>.
+If <b>/project/.projsbrc</b> exists and lists sandboxes, they will be displayed
+in the Sandbox List window; otherwise an empty window will be shown which
+will provide options for creating sandboxes in the <b>/project/.projsbrc</b>
+file.
+<h2>
+<a NAME="UsingTheSandboxListWindow"></a><a href="#ToC_UsingTheSandboxListWindow">Using
+the Sandbox List window</a></h2>
+This window lists sandbox information in tabular format, one sandbox per
+row. The information is displayed in several columns. There window has
+several menus and menu options, which are described below.
+<h3>
+<a NAME="SandboxListWindowFormat"></a><a href="#ToC_SandboxListWindowFormat">Sandbox
+List window format</a></h3>
+The columns of the Sandbox List window are described below. The information
+in the Sandbox, Base, Variable Base, and Default columns also can be seen
+in the output of <b><a href="ODEBuildReference.htm#HDRMKSB">mksb -list</a></b>.
+The Backing Build and Status information comes from running <b><a href="ODEBuildReference.htm#HDRCURRSB">currentsb
+-chain</a></b> for each sandbox. The columns and rows of the window may
+be manipulated by <a href="#MouseOperations">mouse operations</a> or <a href="#KeyboardOperations">keyboard
+operations</a>.
+<dl>
+<dt>
+<b>Sandbox</b></dt>
+
+<dd>
+This column has the sandbox name.</dd>
+
+<dt>
+<b>Base</b></dt>
+
+<dd>
+This column has the absolute path of the directory that contains the sandbox.</dd>
+
+<dt>
+<b>Variable Base</b></dt>
+
+<dd>
+If ODE variables were used to define the sandbox base when the sandbox
+was created, this column has the base before the variables are expanded.
+The Base column has the result after variable expansion. If no variables
+were used, the Variable Base column is blank.</dd>
+
+<dt>
+<b>Backing Build</b></dt>
+
+<dd>
+If this column is checked, the sandbox is a backing build.</dd>
+
+<dt>
+<b>Default</b></dt>
+
+<dd>
+If this column is checked, it indicates that the sandbox is the default
+sandbox.</dd>
+
+<dt>
+<b>Status</b></dt>
+
+<dd>
+This column indicates whether WARNING or ERROR messages can happen when
+attempting a <b>workon</b> of the sandbox. The normal status is OK. If
+the status is ERROR, a <b>workon</b> generally will not succeed. ERROR
+can indicate that the sandbox is missing or a backing build of the sandbox
+is missing, among other things. A WARNING status may indicate a minor problem,
+such as a missing <b>Buildconf</b> or <b>Buildconf.exp</b> file. This will
+be the normal situation when a backing build is first created, before the
+user creates such files. A WARNING status should not prevent a <b>workon</b>.</dd>
+</dl>
+
+<h3>
+<a NAME="SandboxListWindowMenus"></a><a href="#ToC_SandboxListWindowMenus">Sandbox
+List window menus</a></h3>
+The menus and menu options are described. They may be selected by <a href="#MouseOperations">mouse
+operations</a> or <a href="#KeyboardOperations">keyboard operations</a>.
+Some of the options require you to select one or more sandboxes (rows of
+the table) using the mouse or keyboard. If there are no sandboxes displayed
+in the window, some options will be grayed out.
+<h4>
+<a NAME="SandboxListFileMenu"></a><a href="#ToC_SandboxListFileMenu">File
+menu</a></h4>
+
+<dl>
+<dt>
+Refresh</dt>
+
+<dd>
+This option refreshes the view of the sandboxes. The information in the
+Sandbox List window is recreated and the sandboxes are displayed in the
+order that <b>mksb -list</b> would display them. Some Sandbox List operations
+(create or delete) will cause an automatic refresh. However, if the user
+creates or deletes sandboxes in separate command windows, the ODE Graphic
+User Interface will not detect that changes have occurred. The refresh
+option is useful to bring the window up to date in this case.</dd>
+
+<dt>
+Exit</dt>
+
+<dd>
+This option terminates the Sandbox List window. If the ODE Graphic User
+Interface has started independent windows, such as build, workon, or Sandbox
+Files windows, they will continue to run.</dd>
+</dl>
+
+<h4>
+<a NAME="SandboxListSandboxMenu"></a><a href="#ToC_SandboxListSandboxMenu">Sandbox
+menu</a></h4>
+
+<dl>
+<dt>
+Create Backing Build...</dt>
+
+<dd>
+This option displays a dialog window for creating a sandbox that will be
+a backing build. This option is a front end to the <b><a href="ODEBuildReference.htm#HDRMKBB">mkbb</a></b>
+command.</dd>
+
+<dt>
+Create Sandbox...</dt>
+
+<dd>
+This option displays a dialog window for creating a sandbox that will be
+backed by another sandbox. This option is a front end to the <b><a href="ODEBuildReference.htm#HDRMKSB">mksb</a></b>
+command.</dd>
+
+<dt>
+Workon...</dt>
+
+<dd>
+This option displays a dialog window for starting a <b><a href="ODEBuildReference.htm#HDRWORKON">workon</a></b>
+command for a selected sandbox. If the <b>workon</b> successfully starts,
+it will be running as an independent process in a command window.</dd>
+
+<dt>
+Build...</dt>
+
+<dd>
+This option displays a dialog window for starting the <b>mk</b> command
+for a selected sandbox. If the build starts successfully, it will be running
+as an independent process in a command window in a <b>workon</b> environment.
+When the build ends, the command window still will be in a <b>workon</b>
+environment so the user may view the tail of the output and enter more
+shell commands if desired. The user may choose the directory of the sandbox
+to build in, and the operands to pass to the <b>mk</b> command.</dd>
+
+<dt>
+Show Files...</dt>
+
+<dd>
+This option displays a dialog window for starting a Sandbox Files window
+for a selected sandbox. Once the Sandbox Files window starts it will run
+as an independent process. See the <a href="#UsingTheSandboxFilesWindow">Sandbox
+Files window</a> description for details.</dd>
+
+<dt>
+Delete</dt>
+
+<dd>
+This option deletes the selected sandboxes. This option is a front end
+for <b><a href="ODEBuildReference.htm#HDRMKBB">mkbb -undo</a></b> and <b><a href="ODEBuildReference.htm#HDRMKSB">mksb
+-undo</a></b>. If multiple sandboxes are selected, they are deleted in
+the order they are shown in a confirmation dialog.</dd>
+</dl>
+
+<h4>
+<a NAME="SandboxListHelpMenu"></a><a href="#ToC_SandboxListHelpMenu">Help
+menu</a></h4>
+
+<dl>
+<dt>
+Help contents</dt>
+
+<dd>
+This option displays some online help.</dd>
+
+<dt>
+Documentation</dt>
+
+<dd>
+This option displays where documentation is to be found.</dd>
+
+<dt>
+About</dt>
+
+<dd>
+This options displays the version and build of the ODE Graphic User Interface</dd>
+</dl>
+
+<h2>
+<a NAME="UsingTheSandboxFilesWindow"></a><a href="#ToC_UsingTheSandboxFilesWindow">Using
+the Sandbox Files window</a></h2>
+The ODE Graphic User Interface Sandbox Files window lists file information
+in tabular format, one file per row. Unless otherwise specified, the term
+"file" can also refer to a directory. The information is displayed in several
+columns. There window has several menus and menu options, which are described
+below.
+<p>The Sandbox Files window is started from the Sandbox List window and
+runs as an independent process. The Sandbox List window uses the <b><a href="ODEBuildReference.htm#HDRSBLS">sbls</a></b>
+command to find the files to display for a selected sandbox. The dialog
+that starts this window provides several options for the user. The user
+may specify a subdirectory of the sandbox whose files are to be displayed;
+the default is the <b>src</b> directory of the sandbox. There is an field
+for optional file specifications for the <b>sbls</b> command. If no file
+specification is entered, it is "<b>.</b>" by default, the current directory.
+The current directory in this case is either the <b>src</b> directory or
+the optional subdirectory if the user supplies it. The user has a choice
+of whether or not recursion into subdirectories is done. The user has a
+choice of whether files are displayed from just the sandbox or from the
+sandbox and all its backing chain sandboxes.
+<p>If the user specified more than one file specification, it is possible
+to have duplicate files when using <b>sbls</b>. The Sandbox Files window
+eliminates duplicates. It is possible to give file specifications that
+refer to files outside of the sandbox.
+<h3>
+<a NAME="SandboxFilesWindowFormat"></a><a href="#ToC_SandboxFilesWindowFormat">Sandbox
+Files window format</a></h3>
+The columns of the Sandbox Files window are described below. The columns
+and rows of the window may be manipulated by <a href="#MouseOperations">mouse
+operations</a> or <a href="#KeyboardOperations">keyboard operations</a>.
+<dl>
+<dt>
+<b>Base</b></dt>
+
+<dd>
+The sandbox base, or blank if the file is not in the sandbox. If the base
+and path are concatenated, the result is the absolute path to the file.
+Breaking apart the absolute path into base and path allows the user to
+sort by sandbox or by file path irrespective of what sandbox the files
+are in.</dd>
+
+<dt>
+<b>Path</b></dt>
+
+<dd>
+The path of the file from the base including root and suffix. If the file
+is not in the sandbox, the path is its absolute path.</dd>
+
+<dt>
+<b>Date</b></dt>
+
+<dd>
+The date and time the file was last modified, in a sortable format.</dd>
+
+<dt>
+<b>Size</b></dt>
+
+<dd>
+Size of the file in bytes.</dd>
+
+<dt>
+<b>Filename</b></dt>
+
+<dd>
+Root and suffix of the file, so that it is a separately sortable item.</dd>
+
+<dt>
+<b>Suffix</b></dt>
+
+<dd>
+Suffix of the file, so it is a separately sortable item.</dd>
+
+<dt>
+<b>Type</b></dt>
+
+<dd>
+This indicates whether it is a directory, file, or other object in the
+file system. For example, some objects stored in /dev on UNIX might not
+be recognized as either a directory or a file.</dd>
+
+<dt>
+<b>Pos</b></dt>
+
+<dd>
+A number indicating the position on backing chain. If the file is not in
+any sandbox of the backing chain, the value is 0. If it is in the sandbox
+itself, the value is 1. If it is a file in the sandbox immediately backing
+the sandbox, the value is 2, and so on.</dd>
+</dl>
+
+<h3>
+<a NAME="SandboxFilesWindowMenus"></a><a href="#ToC_SandboxFilesWindowMenus">Sandbox
+Files window menus</a></h3>
+The menus and menu options are described. They may be selected by <a href="#MouseOperations">mouse
+operations</a> or <a href="#KeyboardOperations">keyboard operations</a>.
+Some of the options may require you to select one or more files (rows of
+the table) using the mouse or keyboard. If there are no files displayed
+in the window, some options will be grayed out.
+<h4>
+<a NAME="SandboxFilesSandboxMenu"></a><a href="#ToC_SandboxFilesSandboxMenu">Sandbox
+menu</a></h4>
+
+<dl>
+<dt>
+Refresh</dt>
+
+<dd>
+This option refreshes the view of the files. The information in the Sandbox
+Files window is recreated and the files are displayed in the order that
+<b><a href="ODEBuildReference.htm#HDRSBLS">sbls</a></b>
+would display them, except that duplicates will not be shown twice. However,
+if the user creates, edits, or deletes files in separate command windows,
+the ODE Graphic User Interface will not detect that changes have occurred.
+The refresh option is useful to bring the window up to date in this case.</dd>
+
+<dt>
+Exit</dt>
+
+<dd>
+This option terminates the Sandbox Files window. If the ODE Graphic User
+Interface has started independent windows, such as file edit windows, they
+will continue to run.</dd>
+</dl>
+
+<h4>
+<a NAME="SandboxFilesFilesMenu"></a><a href="#ToC_SandboxFilesFilesMenu">Files
+menu</a></h4>
+
+<dl>
+<dt>
+Edit...</dt>
+
+<dd>
+This option starts the editor of your choice in a command window, with
+selected file(s) if there are any. There is an option to start the edit
+process in a directory of your choice. The edit will be run in an independent
+process. The editor may be specified with the Graphic User Interface <b>-ed
+<i>editor</i></b>
+command line option. If the editor is not specified then a default initial
+value will be provided in the editor field of the dialog box based upon
+the type of platform the Graphic User Interface is running on. You may
+modify the editor in the dialog box before starting the edit.</dd>
+</dl>
+
+<dl>
+<h4>
+<a NAME="SandboxFilesHelpMenu"></a><a href="#ToC_SandboxFilesHelpMenu">Help
+menu</a></h4>
+
+<dt>
+Help contents</dt>
+
+<dd>
+This option displays some online help.</dd>
+
+<dt>
+Documentation</dt>
+
+<dd>
+This option displays where documentation is to be found.</dd>
+
+<dt>
+About</dt>
+
+<dd>
+This options displays the version and build of the ODE Graphic User Interface</dd>
+</dl>
+
+<h2>
+<a NAME="MouseOperations"></a><a href="#ToC_MouseOperations">Mouse operations</a></h2>
+These mouse operations apply to both the <a href="#UsingTheSandboxListWindow">Sandbox
+List</a> and the <a href="#UsingTheSandboxFilesWindow">Sandbox Files</a>
+windows.
+<dl>
+<dt>
+Column manipulation</dt>
+
+<dd>
+The columns may be rearranged by using a mouse on the column labels with
+a mouse button pressed. They may also be adjusted in width by moving the
+separators between the column labels with a button pressed. Movement of
+a particular separator adjusts the sizes of the column immediately to the
+left, and all columns to the right. The total width and height of the window
+may be adjusted by the standard method of the system that the program is
+running on, usually by manipulating the window frame.</dd>
+
+<dt>
+Sorting</dt>
+
+<dd>
+Sorting by column contents can be done with mouse clicks on the column
+labels. A click sorts in ascending order, and shift-click sorts in descending
+order. The Refresh menu option can be used to restore the original order.</dd>
+
+<dt>
+Row selection</dt>
+
+<dd>
+A single row may be selected with a left button click. To select or deselect
+nonadjacent lines press the control key while clicking with the left button.</dd>
+</dl>
+
+<h2>
+<a NAME="KeyboardOperations"></a><a href="#ToC_KeyboardOperations">Keyboard
+Operations</a></h2>
+If a <a href="#UsingTheSandboxListWindow">Sandbox List</a> or <a href="#UsingTheSandboxFilesWindow">Sandbox
+Files</a> window has keyboard focus then the following operations are available.
+<dl>
+<dt>
+Menu keys</dt>
+
+<dd>
+The alt key combined with certain other keys can select any menu and certain
+specific menu items. For example alt-h selects the help menu, alt-x selects
+the exit menu item, and alt-r selects the refresh menu item. If a menu
+has focus, there is a key that can be used to select each menu item. An
+underlined character indicates which key may be used to select a menu item.
+If a menu item can be selected at any time when combined with the alt key,
+that information is shown in the menu. The arrow keys may also be used
+to move focus among the menus and menu items. If a menu item has focus,
+the enter key can be used to activate the selected action.</dd>
+
+<dt>
+Selections</dt>
+
+<dd>
+The up and down arrow keys will change the selection. Adjacent rows may
+be selected by combining the shift and arrow keys.</dd>
+</dl>
+
+<h2>
+<a NAME="EnvironmentVariablesUsed"></a><a href="#ToC_EnvironmentVariablesUsed">Environment
+variables used</a></h2>
+
+<dl>&nbsp;
+<center><table BORDER WIDTH="100%" >
+<tr>
+<td><b>CONTEXT</b></td>
+
+<td>This variable designates the machine for which a build would be intended.
+If a machine name is specified in the build dialog window (<b>-m</b> option),
+else if the <b>MACHINE</b> environment variable is already set, then <b>CONTEXT</b>
+is set to that machine name (for example <b>x86_nt_4</b>,
+<b>rios_aix_4</b>,
+etc.). If nothing has been specified then the default value is the name
+of the machine that the tool is executing on.</td>
+</tr>
+
+<tr>
+<td><b>MACHINE</b></td>
+
+<td>This always holds name of the machine that the tool is executing on
+(for example, <b>rios_aix_4</b>, <b>x86_os2_4</b>, etc.). It may be set
+by the user although it is normally not necessary or recommended.</td>
+</tr>
+
+<tr>
+<td><b>SANDBOXRC</b></td>
+
+<td>If set, the specified file is used instead of default .<b>sandboxrc</b>
+file.</td>
+</tr>
+
+<tr>
+<td><b>BUILD_LIST</b></td>
+
+<td>If set, this specifies the <b>build_list</b> file that has a list of
+all the backing builds.</td>
+</tr>
+
+<tr>
+<td><b>ODERCFNAME</b></td>
+
+<td>Control files that define a sandbox (<b>sb.conf</b>) are stored in
+a directory within the sandbox. If the environment variable <b>ODERCFNAME</b>
+is defined then the ODE commands use its value for the directory; otherwise,
+the default directory is <b>rc_files</b>.</td>
+</tr>
+
+<tr>
+<td><b>ODESRCNAME</b></td>
+
+<td>If the environment variable <b>ODESRCNAME</b> is defined then the ODE
+commands use its value for the directory within the sandbox where source
+files are stored; otherwise, the default directory is <b>src</b>.</td>
+</tr>
+</table></center>
+</dl>
+
+</body>
+</html>

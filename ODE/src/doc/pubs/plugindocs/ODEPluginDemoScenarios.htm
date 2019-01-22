@@ -1,0 +1,248 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Generator" content="Lotus Word Pro">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <meta name="Author" content="Anil Ambati">
+   <meta name="Description" content="Scenarios for the ODE plug-in demo on 09/18/02 to Tool Council">
+   <meta name="KeyWords" content="ODE,  Eclipse, WSWB, plug-in">
+   <title>ODE Plug-in Demo Scenarios</title>
+</head>
+<body bgcolor="#FFFFFF" vlink="#800000">
+
+<center>
+<h1>
+ODE Plug-in Demo Scenarios</h1></center>
+
+<center>
+<hr width="100%" size="1" noshade="noshade"></center>
+
+<h2>
+Target users for the following scenarios(1,2,3,4):</h2>
+
+<ul type="disc">
+<li>
+Current users of ODE that are planning to use or using Eclipse/WSWB for
+their development.</li>
+
+<li>
+Users who want to use ODE for nightly/release builds and for packaging,
+but developers want to use Eclipse/WSWB for code development and local
+builds.</li>
+</ul>
+
+<h2>
+Scenario 1 (Setup &amp; Configure)</h2>
+<b>Pre conditions</b>:
+<ul type="disc">
+<li>
+ODE 4.0 is installed on the client machine. The location of the ODE tools
+is added to the <b>PATH</b> environment variable.</li>
+
+<li>
+WSWB 2.0 or higher version is installed on the client machine</li>
+</ul>
+<b>Actions</b>:
+<ul type="disc">
+<li>
+Install the ODE Plug-in</li>
+
+<ul type="disc">
+<li>
+Select the <tt>Help > Software Updates > Update Manager</tt> menu item</li>
+
+<li>
+In the <tt>Install/Update</tt> perspective</li>
+
+<li>
+Add the ODE plug-in site by selecting <tt>New > Site Bookmark</tt> context
+menu item of the <tt>Feature Updates</tt> view. The URL for the ODE Plugin
+Install/Update site is <a href="http://w3.sdwb.ibm.com/plugins/sdwb/install" target="_top">http://w3.sdwb.ibm.com/plugins/sdwb/install</a></li>
+
+<li>
+Select the ODE Plugin 4.8.20021120 feature and click the <tt>Install</tt>
+button in the <tt>Preview</tt> view. This opens a wizard that is self descriptive.</li>
+</ul>
+
+<li>
+Configure the ODE Plug-in</li>
+
+<ul type="disc">
+<li>
+Uncheck the <tt>Perform build automatically on resource modification </tt>check
+box in the <tt>Workbench Preferences</tt> window.</li>
+
+<li>
+Specify the path to the bin directory of ODE installation in the<i> </i><tt>ODE
+Tools Directory </tt>text field of the <tt>ODE Preferences</tt> window.</li>
+</ul>
+</ul>
+<b>Post conditions</b>:
+<ul type="disc">
+<li>
+ODE Plugin prototype is installed and configured.</li>
+</ul>
+
+<h2>
+Scenario 2 (Generate Makefiles)</h2>
+<b>Assumption</b>:
+<p>The project contains entire code for a product.
+<p><b>Pre conditions</b>:
+<ul type="disc">
+<li>
+Scenario 1 is completed</li>
+
+<li>
+A Java/C/C++ project is created</li>
+
+<li>
+In case of a Java project</li>
+
+<ul>
+<li>
+The <tt>Use source folders contained in the project</tt> option is selected,
+a source directory is defined and the <tt>Build output folder</tt> is set
+for the above java project.</li>
+
+<ul type="disc">
+<li>
+To do this open <tt>Properties</tt> window for the java project, select
+<tt>Java Build Path</tt> category, select <tt>Source</tt> tab, select <tt>Use
+source folders contained in the project</tt> option, click <tt>Create New
+Folder</tt> button to specify "<i><tt>src</tt></i>" as the source folder
+and optionally enter "<i><tt>&lt;project name>/export/classes</tt></i>"
+in the <tt>Build output folder</tt> text field.</li>
+</ul>
+
+<li>
+A package is created; Java source files are created in the package and
+are ready for compilation.</li>
+</ul>
+
+<li>
+If a backing build does not exist, then a backing build is created at the
+location specified in the <tt>Backing Build Path</tt> field by clicking
+<tt>Create Backing Build</tt> button in the <tt>ODE </tt>page of <tt>Properties
+</tt>window.</li>
+
+<li>
+If a backing build exists then the <tt>Backing Build Path</tt> field in
+the <tt>ODE </tt>page of properties window is set to the root directory
+of the backing build.</li>
+
+<li>
+Sandbox environment is created for the project by clicking <tt>Create Sandbox</tt>
+button in the <tt>ODE </tt>page of <tt>Properties </tt>window.</li>
+</ul>
+<b>Actions:</b>
+<ul type="disc">
+<li>
+Select the makefile targets that need to be generated in the <tt>Makefile
+targets to generate</tt> group box in the <tt>ODE </tt>page of <tt>Properties
+</tt>window.</li>
+
+<li>
+In the <tt>Package Explorer</tt> or <tt>Navigator </tt>view, select the
+project, select <tt>ODE > Generate Makefiles</tt> from the context menu.</li>
+</ul>
+<b>Post conditions</b>:
+<ul type="disc">
+<li>
+The makefiles are created for each directory</li>
+
+<li>
+Each makefile contains one or more targets selected in the <tt>ODE </tt>page
+of <tt>Properties </tt>window.</li>
+</ul>
+
+<h2>
+Scenario 3 (Build a Project)</h2>
+<b>Assumption</b>:
+<p>The project contains entire code for a product.
+<p><b>Pre conditions</b>:
+<ul type="disc">
+<li>
+Scenario 2 is completed</li>
+</ul>
+<b>Actions:</b>
+<ul type="disc">
+<li>
+In the <tt>Package Explorer</tt> or <tt>Navigator </tt>view, select the
+project, select <tt>ODE > Build Project</tt> from the context menu.</li>
+</ul>
+<b>Post conditions</b>:
+<ul type="disc">
+<li>
+A sandbox is created and the project is built</li>
+</ul>
+
+<h2>
+Scenario 4 (Using Existing ODE Sandbox)</h2>
+<b>Pre conditions:</b>
+<ul type="disc">
+<li>
+Scenario 1 is completed</li>
+</ul>
+<b>Actions:</b>
+<ul type="disc">
+<li>
+Create a Java project based on an existing sandbox</li>
+
+<li>
+Select <tt>File > New > Project</tt> menu item</li>
+
+<li>
+Select <tt>Java > Java Project</tt> in the <tt>New Project</tt> wizard,
+click <tt>Next</tt> button</li>
+
+<li>
+Enter a project name, uncheck the <tt>Use default</tt> check box and enter
+the root directory of the existing sandbox<b>, </b>click <tt>Next</tt>
+button</li>
+
+<li>
+Click Yes on the message that appears, this creates a project</li>
+
+<li>
+In the <tt>Source</tt> tab, select <tt>Use source folders contained in
+the project</tt> option, click <tt>Add Existing Folders</tt> button to
+specify "<i><tt>src</tt></i>" as the source folder and enter "<i><tt>&lt;project
+name>/export/classes</tt></i>" in the <tt>Build output folder</tt> text
+field.</li>
+
+<li>
+Specify the location of the sandbox RC file and backing build in the ODE
+project properties window.</li>
+
+<li>
+In the <tt>Package Explorer</tt> or <tt>Navigator</tt> view, select the
+project, select <tt>ODE > Build Project</tt> from the context menu.</li>
+</ul>
+<b>Post conditions:</b>
+<ul type="disc">
+<li>
+The project is built.</li>
+</ul>
+
+<h2>
+Limitations on the source folder:</h2>
+
+<ul>
+<li>
+MUST be only one source folder per project (WSWB allows you to have many)</li>
+
+<li>
+MUST be explicitly given (cannot use the project itself as the source folder)</li>
+
+<li>
+MUST be a single directory under the project (i.e., a source folder like
+"<tt>foo/bar/src</tt>" is not allowed)</li>
+
+<li>
+MUST be called "<tt>src</tt>"</li>
+</ul>
+
+<br>&nbsp;
+</body>
+</html>

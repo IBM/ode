@@ -1,0 +1,15 @@
+Before packaging this project, you must:
+
+(A) populate the base directory with the confs.zip and rules.zip files
+    (e.g., ode5.0_b20041004.0550_confs.zip).
+    The full names are referenced in build.properties, which you must
+    edit appropriately if using newer versions of these files.  Note
+    that these files must only end in "confs.zip" and "rules.zip", so
+    you do not have to use the full names; however, it is suggested
+    to use the same version as the tools (see (B) below) and use the
+    full filenames such that the release/build is knowable at a glance.
+    
+(B) populate the linux and win32 subdirectories with the contents of
+    their respective ODE tools files
+    (e.g., the contents of ode5.0_b20041004.0550_x86_linux_2.zip for
+    the linux directory).

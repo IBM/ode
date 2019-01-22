@@ -1,0 +1,4 @@
+LIBRARY INITINSTANCE
+EXPORTS
+	printmsg
+	printnl

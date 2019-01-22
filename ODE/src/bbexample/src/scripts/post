@@ -1,0 +1,3 @@
+mkdir /opt/odehello/links
+ln -s /opt/odehello/bin/server /opt/odehello/links/server
+ln -s /opt/odehello/bin/logger /opt/odehello/links/logger

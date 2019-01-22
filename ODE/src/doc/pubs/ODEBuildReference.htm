@@ -1,0 +1,5230 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="updated" content="Tue, 17 Mar 1998 12:05:56">
+   <meta http-equiv="review" content="Wed, 17 Mar 1999 12:05:56">
+   <meta http-equiv="expires" content="Fri, 17 Mar 2000 12:05:56">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <meta name="Author" content="Steve Speicher">
+   <title>ODE Build Reference</title>
+</head>
+<body bgcolor="#FFFFFF">
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+ODE Build Reference</h1>
+Open Development Environment
+<br>Build Reference
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<br>
+<hr>
+<h2>
+<a NAME="ToC"></a>Table of Contents</h2>
+<a NAME="ToC_AboutDoc"></a><b><a href="#AboutDoc">About this document</a></b>
+<br><a NAME="ToC_2"></a><b><a href="#HDRCOMMAND">ODE build commands</a></b>
+<ul>
+<li>
+<a NAME="ToC_3"></a><a href="#HDRBUILD"><b>build </b>- Perform a build</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_4"></a><a href="#Header_4">Syntax</a></li>
+
+<li>
+<a NAME="ToC_4a"></a><a href="#buildrc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_5"></a><a href="#Header_5">Parameters</a></li>
+
+<li>
+<a NAME="ToC_6"></a><a href="#Header_6">ODE options</a></li>
+
+<li>
+<a NAME="ToC_7"></a><a href="#Header_7">mk options</a></li>
+
+<li>
+<a NAME="ToC_7a"></a><a href="#envbuild">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_8"></a><a href="#Header_8">Examples</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_crlfcon"></a><a href="#crlfcon"><b>crlfcon</b> - Convert text
+file formats</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_crlfcon_syntax"></a><a href="#crlfcon_syntax">Syntax</a></li>
+
+<li>
+<a NAME="ToC_crlfcon_rc"></a><a href="#crlfcon_rc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_crlfcon_param"></a><a href="#crlfcon_param">Parameters</a></li>
+
+<li>
+<a NAME="ToC_crlfcon_env"></a><a href="#crlfcon_env">Environment variables
+used</a></li>
+
+<li>
+<a NAME="ToC_crlfcon_example"></a><a href="#crlfcon_example">Example</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_9"></a><a href="#HDRCURRSB"><b>currentsb</b> - List the current
+sandbox</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_10"></a><a href="#Header_10">Syntax</a></li>
+
+<li>
+<a NAME="ToC_10a"></a><a href="#currentsbrc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_11"></a><a href="#Header_11">Parameters</a></li>
+
+<li>
+<a NAME="ToC_12"></a><a href="#Header_12">ODE options</a></li>
+
+<li>
+<a NAME="ToC_12a"></a><a href="#envcurrentsb">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_13"></a><a href="#Header_13">Examples</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_91"></a><a href="#HDRGENDEP"><b>gendep</b> - Generate makefile
+dependencies</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_92"></a><a href="#gendepsyn">Syntax</a></li>
+
+<li>
+<a NAME="ToC_93"></a><a href="#gendeprc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_94"></a><a href="#gendeppar">Parameters</a></li>
+
+<li>
+<a NAME="ToC_94a"></a><a href="#Header_94a">ODE options</a></li>
+
+<li>
+<a NAME="ToC_95"></a><a href="#envgendep">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_96"></a><a href="#gendepex">Examples</a></li>
+
+<li>
+<a NAME="ToC_97"></a><a href="#gendeplim">Known limitations</a></li>
+
+<li>
+<a NAME="ToC_97a"></a><a href="#gendepPlatformSpecific">Platform-specific
+gendep behavior</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_14"></a><a href="#HDRGENPATH"><b>genpath</b> - Expand a flag
+specification</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_15"></a><a href="#Header_15">Syntax</a></li>
+
+<li>
+<a NAME="ToC_15a"></a><a href="#genpathrc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_16"></a><a href="#Header_16">Parameters</a></li>
+
+<li>
+<a NAME="ToC_16b"></a><a href="#Header_16b">ODE options</a></li>
+
+<li>
+<a NAME="ToC_16a"></a><a href="#envgenpath">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_17"></a><a href="#Header_17">Examples</a></li>
+
+<li>
+<a NAME="ToC_17a"></a><a href="#genpathPlatformSpecific">Platform-specfic
+genpath behavior</a></li>
+
+<br>&nbsp;</menu>
+
+<li>
+<a NAME="ToC_gui"></a><a href="ODEGuiReference.htm"><b>gui</b> - Graphic
+user interface to ODE commands (See ODE Graphic User Interface Reference)</a></li>
+
+<br>&nbsp;
+<li>
+<a NAME="ToC_jikes"></a><a href="ODECommonMakefiles.htm#JavaDependencyGeneration"><b>jikes</b>
+- Generate Java dependency files (See ODE Common Makefiles Reference)</a></li>
+
+<br>&nbsp;
+<li>
+<a NAME="ToC_18"></a><a href="ODEMakeMake.htm"><b>MakeMake</b> - Generate
+ODE makefiles (See ODE MakeMake Reference)</a></li>
+
+<br>&nbsp;
+<li>
+<a NAME="ToC_19"></a><a href="ODEMakeReference.htm"><b>mk</b> - Maintain
+program dependencies (See ODE Make Reference)</a></li>
+
+<br>&nbsp;
+<li>
+<a NAME="ToC_21"></a><a href="#HDRMKBB"><b>mkbb</b> - Make a backing build</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_22"></a><a href="#Header_22">Syntax</a></li>
+
+<li>
+<a NAME="ToC_22a"></a><a href="#mkbbrc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_23"></a><a href="#Header_23">Parameters</a></li>
+
+<li>
+<a NAME="ToC_24"></a><a href="#Header_24">ODE options</a></li>
+
+<li>
+<a NAME="ToC_24a"></a><a href="#envmkbb">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_25"></a><a href="#Header_25">Examples</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_26"></a><a href="#HDRMKDEP"><b>mkdep</b> - Convert dependency
+information</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_27"></a><a href="#Header_27">Syntax</a></li>
+
+<li>
+<a NAME="ToC_27a"></a><a href="#mkdeprc">Return Codes</a></li>
+
+<li>
+<a NAME="ToC_28"></a><a href="#Header_28">Parameters</a></li>
+
+<li>
+<a NAME="ToC_29"></a><a href="#Header_29">ODE options</a></li>
+
+<li>
+<a NAME="ToC_30"></a><a href="#Header_30">Parameter combinations</a></li>
+
+<li>
+<a NAME="ToC_30a"></a><a href="#envmkdep">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_31"></a><a href="#Header_31">Examples</a></li>
+
+<li>
+<a NAME="ToC_31a"></a><a href="#Header_34a">Platform-specifc mkdep behavior</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_35"></a><a href="#HDRMKLINKS"><b>mklinks</b> - Create symbolic
+links</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_36"></a><a href="#Header_36">Syntax</a></li>
+
+<li>
+<a NAME="ToC_36a"></a><a href="#mklinksrc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_37"></a><a href="#Header_37">Parameters</a></li>
+
+<li>
+<a NAME="ToC_38"></a><a href="#Header_38">ODE options</a></li>
+
+<li>
+<a NAME="ToC_39"></a><a href="#Header_39">Abs_options</a></li>
+
+<li>
+<a NAME="ToC_39a"></a><a href="#envmklinks">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_40"></a><a href="#Header_40">Examples</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_41"></a><a href="#HDRMKPATH"><b>mkpath</b> - Create intermediate
+directories for a path</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_42"></a><a href="#Header_42">Syntax</a></li>
+
+<li>
+<a NAME="ToC_42a"></a><a href="#mkpathrc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_43"></a><a href="#Header_43">Parameters</a></li>
+
+<li>
+<a NAME="ToC_mkpath_ODEOptions"></a><a href="#mkpath_ODEOptions">ODE options</a></li>
+
+<li>
+<a NAME="ToC_43a"></a><a href="#envmkpath">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_44"></a><a href="#Header_44">Example</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_45"></a><a href="#HDRMKSB"><b>mksb</b> - Make a new sandbox</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_46"></a><a href="#Header_46">Syntax</a></li>
+
+<li>
+<a NAME="ToC_46a"></a><a href="#mksbrc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_47"></a><a href="#Header_47">Parameters</a></li>
+
+<li>
+<a NAME="ToC_48"></a><a href="#Header_48">Population options</a></li>
+
+<li>
+<a NAME="ToC_49"></a><a href="#Header_49">ODE options</a></li>
+
+<li>
+<a NAME="ToC_49a"></a><a href="#envmksb">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_50"></a><a href="#Header_50">Example</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_50f"></a><a href="#Header_50f"><b>odeecho</b> - Output a message</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_50a"></a><a href="#Header_50a">Syntax</a></li>
+
+<li>
+<a NAME="ToC_50e"></a><a href="#Header_50e">Return codes</a></li>
+
+<li>
+<a NAME="ToC_50b"></a><a href="#Header_50b">Parameters</a></li>
+
+<li>
+<a NAME="ToC_50d"></a><a href="#Header_50d">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_50c"></a><a href="#Header_50c">Examples</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_51"></a><a href="#HDRRESB"><b>resb</b> - Retarget a sandbox</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_52"></a><a href="#Header_52">Syntax</a></li>
+
+<li>
+<a NAME="ToC_52a"></a><a href="#resbrc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_53"></a><a href="#Header_53">Parameters</a></li>
+
+<li>
+<a NAME="ToC_54"></a><a href="#Header_54">ODE options</a></li>
+
+<li>
+<a NAME="ToC_54a"></a><a href="#envresb">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_55"></a><a href="#Header_55">Examples</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_56"></a><a href="#HDRSBINFO"><b>sbinfo</b> - Show information
+derived from the buildconf files</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_57"></a><a href="#Header_57">Syntax</a></li>
+
+<li>
+<a NAME="ToC_57a"></a><a href="#sbinforc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_58"></a><a href="#Header_58">Parameters</a></li>
+
+<li>
+<a NAME="ToC_59"></a><a href="#Header_59">ODE options</a></li>
+
+<li>
+<a NAME="ToC_59a"></a><a href="#envsbinfo">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_60"></a><a href="#Header_60">Examples</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_61"></a><a href="#HDRSBLS"><b>sbls </b>- List directory contents</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_62"></a><a href="#Header_62">Syntax</a></li>
+
+<li>
+<a NAME="ToC_62a"></a><a href="#sblsrc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_63"></a><a href="#Header_63">Parameters</a></li>
+
+<li>
+<a NAME="ToC_64"></a><a href="#Header_64">ODE options</a></li>
+
+<li>
+<a NAME="ToC_64a"></a><a href="#envsbls">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_64b"></a><a href="#sblsexample">Examples</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_sbmerge1"></a><a href="#HDRSBMERGE"><b>sbmerge </b>- Merge
+sandbox files</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_sbmerge2"></a><a href="#sbmergesyntax">Syntax</a></li>
+
+<li>
+<a NAME="ToC_sbmerge3"></a><a href="#sbmergerc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_sbmerge4"></a><a href="#paramsbmerge">Parameters</a></li>
+
+<li>
+<a NAME="ToC_sbmerge5"></a><a href="#optionssbmerge">ODE options</a></li>
+
+<li>
+<a NAME="ToC_sbmerge6"></a><a href="#sbmergetooloptions">tool options</a></li>
+
+<li>
+<a NAME="ToC_sbmerge7"></a><a href="#envsbmerge">Environment variables
+used</a></li>
+
+<li>
+<a NAME="ToC_sbmerge8"></a><a href="#sbmergeexample">Examples</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_65"></a><a href="#HDRWORKON"><b>workon</b> - Work in a sandbox</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_66"></a><a href="#Header_66">Syntax</a></li>
+
+<li>
+<a NAME="ToC_66a"></a><a href="#workonrc">Return codes</a></li>
+
+<li>
+<a NAME="ToC_67"></a><a href="#Header_67">Parameters</a></li>
+
+<li>
+<a NAME="ToC_68"></a><a href="#Header_68">ODE options</a></li>
+
+<li>
+<a NAME="ToC_68a"></a><a href="#envworkon">Environment variables used</a></li>
+
+<li>
+<a NAME="ToC_69"></a><a href="#Header_69">Examples</a></li>
+</menu>
+</ul>
+<a NAME="ToC_70"></a><b><a href="ODEMakeReference.htm#HDRMAKEDET">Makefile
+syntax (See ODE Make Reference)</a></b>
+<br><a NAME="ToC_100"></a><b><a href="#Header_100">Backing builds and configuration
+files</a></b>
+<menu>
+<li>
+<a NAME="ToC_101"></a><a href="#Header_101">Configuration files</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_108"></a><a href="#Header_108">The buildconf, buildconf.exp,
+and buildconf.local files</a></li>
+
+<li>
+<a NAME="ToC_102"></a><a href="#Header_102">The build_list file</a></li>
+
+<li>
+<a NAME="ToC_103"></a><a href="ODEMakeReference.htm#Makeconf">The Makeconf
+and Makeconf.def files</a></li>
+
+<li>
+<a NAME="ToC_105"></a><a href="#Header_105">The .sandboxrc file</a></li>
+
+<li>
+<a NAME="ToC_106"></a><a href="#Header_106">The sb.conf file</a></li>
+</menu>
+
+<li>
+<a NAME="ToC_109"></a><a href="#Header_109">Using environment variables
+to share backing builds and sandboxes</a></li>
+
+<menu>
+<li>
+<a NAME="ToC_109a"></a><a href="#Header_109a">Sharing backing builds</a></li>
+
+<li>
+<a NAME="ToC_109b"></a><a href="#Header_109b">Sharing sandboxes using environment
+variables</a></li>
+</menu>
+</menu>
+<a NAME="ToC_EnvsUsedbyAll"></a><b><a href="#EnvsUsedbyAll">Environment
+variables used by all commands</a></b>
+<br><a NAME="ToC_110"></a><b><a href="#Header_110">Remote building</a></b>
+<br>
+<hr>
+<h1>
+<a NAME="AboutDoc"></a><a href="#ToC_AboutDoc">About this document</a></h1>
+This document is intended to give the information necessary for the reader
+to use build commands and configuration files.
+<p>See the <i><a href="index.htm">ODE Documentation Index</a></i> for a
+complete list of ODE documents and their purposes.
+<br>
+<hr width="100%">
+<h1>
+<a NAME="HDRCOMMAND"></a><a href="#ToC_2">ODE build commands</a></h1>
+This chapter provides details about ODE commands including syntax, parameters,
+ODE options, and specific examples.
+<br>
+<hr>
+<h2>
+<a NAME="HDRBUILD"></a><a href="#ToC_3">build - Perform a build</a></h2>
+In ODE, the <b>build</b> command serves as a front end to the <b><a href="ODEMakeReference.htm#HDRMK">mk
+</a></b>command. <b>mk</b> is a customized version of the UNIX <b>make</b>
+command. ODE bases its <b>mk</b> on a building model found in most UNIX
+systems: the UNIX <b>make</b> command and a control file called <b>makefile</b>.
+Options not recognized by <b>build</b> are automatically passed on to <b>mk</b>.
+<h3>
+<a NAME="Header_4"></a><a href="#ToC_4">Syntax</a></h3>
+
+<dl><b>build</b>[<b>-here</b>] [<b>-clean</b>] [-<b>ignore</b>] [<b>-m
+</b><i>machine</i>] [<b>-rmthost </b><i>remote_hostname</i>] [<i>ODE options</i>]
+[<i>mk options</i>] [<i>targets</i>]
+<p><i>ODE options:</i>&nbsp; [<b>-info</b>] [<b>-auto</b>] [<b>-quiet |
+-normal | -verbose | -debug</b>] [<b>-usage | -version | -rev</b>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[<b>-sb</b> <i>sandbox_name</i>] [<b>-rc</b> <i>rcfile</i>]
+<p><i>mk options:&nbsp;&nbsp;</i> [-*] [*=*]
+<br>&nbsp;
+<h3>
+<a NAME="buildrc"></a><a href="#ToC_4a">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Build failed or internal error in mk
+<br>&nbsp;&nbsp; <b>2</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error in makefile
+<br>&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="Header_5"></a><a href="#ToC_5">Parameters</a></h3>
+
+<dl>
+<dt>
+<b>-here</b></dt>
+
+<dd>
+Builds the <b>build_all</b> target within a subtree of the <b>src</b> subdirectory
+in a sandbox. When this flag is used, <i>targets</i> refers to the relative
+or absolute path (from the src tree in the sandbox) to the directory serving
+as the root of the subtree to be built. For example, a <b>build</b> with
+the <b>-here </b>parameter for target <b>/sonnet/include</b> would invoke
+the <b>build_all</b> target for that subdirectory of the src tree (for
+example, <b>/home/username/sbname/src/sonnet/include</b>).</dd>
+
+<dt>
+<b>-clean</b></dt>
+
+<dd>
+Removes built objects and performs a build on the target. Causes <b>build</b>
+to do a '<b>build clean_all build_all</b>'.&nbsp; This is an older form
+for performing this function, and the newer form, <b>clean_all</b> is preferred.
+The newer form, however, does not automatically build the target.</dd>
+
+<dt>
+<b>-ignore</b></dt>
+
+<dd>
+When multiple targets are specified on the command line, then the usage
+of this option would prompt build to ignore errors when it fails to build
+any of the targets. This is so that build can continue trying to build
+the remaining targets.</dd>
+
+<dt>
+<b>-m <i>machine</i></b></dt>
+
+<dd>
+Specifies the <a href="ODEAdminsGuide.htm#Header_4">machine</a> for which
+the build is being performed (for example, <b>-m rios_aix_4</b> to indicate
+an AIX machine). This parameter sets the environment variable <b>CONTEXT</b>
+to be <i>machine</i>. If <b>-m</b> is not used, <b>CONTEXT</b> is set to
+the machine on which the build command is being run.</dd>
+
+<dt>
+<b>-rmthost <i>remote_hostname</i></b></dt>
+
+<dd>
+Invoke the build on a remote host.&nbsp; See the <a href="#Header_110">Remote
+Building</a> section for more information.</dd>
+
+<dt>
+<b><i>targets</i></b></dt>
+
+<dd>
+Specifies the relative or absolute (from the root of the src tree in the
+sandbox) pathname of the file or files on which the build action is to
+be performed.&nbsp; See the <i><a href="ODECommonMakefiles.htm">ODE Common
+Makefiles</a></i> document for a list of some <a href="ODECommonMakefiles.htm#PredefinedPasses">predefined
+targets</a>.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_6"></a><a href="#ToC_6">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Provides information on what <b>build</b> would do if it were executed.
+The actual command is not performed. <b>-info</b> works in conjunction
+with the<i> </i><b>-quiet</b>, <b>-normal</b>, <b>-verbose, </b>and<b>
+-debug</b><i> </i>options. The <b>-info</b><i> </i>option also works in
+conjunction with the <b>mk</b> command <b>-n</b><i> </i>option. This enables
+you to get a listing of what <b>build</b> would do, followed by what <b>mk</b>would
+do. The actual functions are not performed. For example, <b>build -verbose
+-info myfile</b> displays detailed information on the environment <b>build</b>
+sets up and the command that is created to execute <b>mk</b>. This <b>build</b>
+command exits before executing the <b>mk</b> command. The command <b>build
+-verbose -n myfile</b> displays the same information as the previous example;
+in addition, the <b>build</b> command executes the <b>mk</b> command. <b>mk</b>
+then displays what it would do without actually performing the functions.</dd>
+
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Automatically answers interactive questions.&nbsp; Since this command never
+asks any, this flag has no effect.</dd>
+
+<dt>
+<b>-rc <i>rcfile</i></b></dt>
+
+<dd>
+Causes <b>build</b> to use the file named <b>rcfile</b> to obtain information
+on what the current sandbox is. If this option is not specified, <b>build</b>
+uses the <b>$HOME/.sandboxrc</b> file to obtain this information.</dd>
+
+<dt>
+<b>-sb <i>sandbox_name</i></b></dt>
+
+<dd>
+Specifies the name of the sandbox containing the source files to be built.
+If this parameter is not included, ODE uses the current sandbox. If this
+parameter is not included, and there is no current sandbox, ODE uses the
+default sandbox as indicated in the <b>.sandboxrc</b> file.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Controls the amount of message text you receive.&nbsp; <b>-quiet</b> is
+the most succinct; you receive only essential information, including all
+FATAL ERROR messages.&nbsp; <b>-normal</b> is the default level; it causes
+display of information on the significant steps the program is taking,
+and warnings. <b>-normal</b> also provides all messages displayed by <b>-quiet</b>.
+<b>-verbose</b> causes display of detailed information on the steps the
+program is taking, and all diagnostic errors. It also provides all messages
+displayed by <b>-quiet</b> and <b>-normal</b>.&nbsp; <b>-debug</b> provides
+the highest level of detail available, which may be helpful if a problem
+is suspected.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_7"></a><a href="#ToC_7">mk options</a></h3>
+
+<dl>
+<dt>
+<b>-* and *=*</b></dt>
+
+<dd>
+Provides information passed directly from <b>build</b> to the <b><a href="ODEMakeReference.htm#HDRMK">mk
+</a></b>command. <b>build</b> does not alter the options. The options for
+<b>mk</b> come in two formats: those starting with a dash (-), and those
+including an equal sign (=). For <b>mk</b> options that have values, do
+<i>not</i> put spaces between the values. For example,<b> build -j 4</b>
+should be <b>build -j4</b></dd>
+</dl>
+
+<h3>
+<a NAME="envbuild"></a><a href="#ToC_7a">Environment variables used</a></h3>
+&nbsp;
+<center><table BORDER WIDTH="100%" >
+<caption>
+<center><tbody>
+<br></tbody></center>
+</caption>
+
+<tr>
+<td><b>CONTEXT</b></td>
+
+<td>If a machine name is specified on the command line using the <b>-m</b>
+option, <b>CONTEXT</b> is set to that name. Otherwise, <b>CONTEXT</b> is
+set to the same value as the <b>MACHINE</b> environment variable. If nothing
+has been specified the default value is the name of the machine that the
+tool is executing on.</td>
+</tr>
+
+<tr>
+<td><b>MACHINE</b></td>
+
+<td>The name of the machine that the tool is executing on.</td>
+</tr>
+
+<tr>
+<td><b>MAKE</b></td>
+
+<td>This variable can be set to point to the location or name of a different
+make tool. If it isn't set, build automatically calls the ODE make tool.</td>
+</tr>
+
+<tr>
+<td></td>
+
+<td>Refer also to<b> <a href="ODEMakeReference.htm#envmk">mk's environment
+variables</a></b> list.</td>
+</tr>
+</table></center>
+
+<h3>
+<a NAME="Header_8"></a><a href="#ToC_8">Examples</a></h3>
+Assume you are working in the <b>src/sonnet/tutorial/helloworld</b> subdirectory
+of the <b>dune1</b> sandbox. There is one file, <b>helloworld.c</b> in
+this subdirectory. The command:
+<dl><b>build helloworld</b></dl>
+creates an object file called <b>helloworld.o</b> and a binary file called
+<b>helloworld</b>in the <b>obj/playa_aix4/sonnet/tutorial/helloworld</b>
+subdirectory of the <b>dune1</b> sandbox.
+<p>Assume you are in the same sandbox and you wish to compile the <b>helloworld.c</b>
+and <b>now_hear_this.c</b> source files from the <b>greetings</b> subdirectory.
+You also wish to receive detailed information on the steps of the compile.
+The command:
+<dl><b>build helloworld now_hear_this -verbose</b></dl>
+creates object files called <b>helloworld.o</b> and <b>now_hear_this.o</b>,
+as well as binary files <b>helloworld</b> and <b>now_hear_this</b>, in
+the <b>obj/playa_aix4/sonnet/tutorial/greetings</b> subdirectory of the
+<b>dune1</b> sandbox.
+<p>A command to remove object files for all targets listed in the makefile
+is:
+<dl><b>build clean_all</b></dl>
+
+<hr>
+<h2>
+<a NAME="crlfcon"></a><a href="#ToC_crlfcon">crlfcon - Convert text file
+formats</a></h2>
+<b>crlfcon</b> converts a text file to/from Unix and DOS (Windows NT/95/98
+and OS/2) formats. If running on an ASCII system <b>crlfcon</b> converts
+ASCII carriage return and linefeed characters. On an EBCDIC system <b>crlfcon</b>
+converts EBCDIC carriage return and linefeed characters. The primary difference
+in UNIX and DOS formats is the end-of-line terminator; the Unix format
+is a single linefeed (ASCII 10 or EBCDIC 21) character, while the DOS format
+is a combination of both a carriage return (ASCII 13 or EBCDIC 13) and
+a linefeed.&nbsp; The only other difference is that an end-of-file character
+(ASCII 26 or EBCDIC 63) is deleted (when converting to Unix format) or
+may optionally be added (when converting to DOS format). <b>crlfcon</b>
+does no other translations; it does not translate between ASCII and EBCDIC.
+<h3>
+<a NAME="crlfcon_syntax"></a><a href="#ToC_crlfcon_syntax">Syntax</a></h3>
+
+<dl><b>crlfcon </b>[<b>-info</b>]<b> </b>[<b>-auto</b>]<b> </b>[<b>-usage
+| -version | -rev</b>] [<b>-quiet | -normal | -verbose | -debug</b>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<b>-format
+u|d</b>] [<b>-eof</b>] <i>infile</i>[<i>outfile</i>]
+<br>&nbsp;
+<h3>
+<a NAME="crlfcon_rc"></a><a href="#ToC_crlfcon_rc">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="crlfcon_param"></a><a href="#ToC_crlfcon_param">Parameters</a></h3>
+
+<dl>
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Provides information on what the command would do if it were executed.
+The actual command is not performed.</dd>
+
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Automatically answers interactive questions.&nbsp; Since this command never
+asks any, this flag has no effect.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-format u|d</b></dt>
+
+<dd>
+Specifies what format to convert to.&nbsp; <b>u</b> indicates Unix format,
+while <b>d</b> specifies DOS format.&nbsp; If this parameter is omitted,
+the machine on which <b>crlfcon </b>is being run determines the format;
+if running on a Unix platform the default format is <b>u</b>, otherwise
+the format is <b>d</b>.</dd>
+
+<dt>
+<b>-eof</b></dt>
+
+<dd>
+Indicates that, when converting to DOS format, the last character in the
+file should be a Ctrl-Z.&nbsp; This parameter has no effect when converting
+to Unix format, in which case Ctrl-Z characters are always removed.</dd>
+
+<dt>
+<b><i>infile</i></b></dt>
+
+<dd>
+Specifies the input file to be converted.</dd>
+
+<dt>
+<b><i>outfile</i></b></dt>
+
+<dd>
+Specifies the name for the new (converted) file.&nbsp; If this parameter
+is omitted, <i>infile </i>is overwritten with the converted data.</dd>
+</dl>
+
+<h3>
+<a NAME="crlfcon_env"></a><a href="#ToC_crlfcon_env">Environment variables
+used</a></h3>
+None
+<h3>
+<a NAME="crlfcon_example"></a><a href="#ToC_crlfcon_example">Example</a></h3>
+The command:
+<dl><b><tt>crlfcon -format u infoo.txt outfoo.txt</tt></b></dl>
+converts the contents of <b>infoo.txt</b> to Unix format and stores the
+results in <b>outfoo.txt</b>
+<p>The command:
+<p><b><tt>crlfcon infoo.txt</tt></b>
+<p>converts the contents of <b>infoo.txt</b> to the format of the machine
+<b>crlfcon</b> is being run on and overwrites <b>infoo.txt</b> with the
+results.
+<br>
+<hr>
+<h2>
+<a NAME="HDRCURRSB"></a><a href="#ToC_9">currentsb - List the current sandbox</a></h2>
+<b>currentsb</b> displays the name of the specified sandbox or the current
+sandbox if none is specified. Optionally, this command also provides environmental
+data on the sandbox.&nbsp; By default, this command will use sandbox information
+from the environment if it is available (normally provided by <b>workon</b>)
+rather than reprocess <b>.sandboxrc</b>.
+<p>If no sandbox is defined, the command displays <b>--<tt>EMPTY</tt>.</b>
+<h3>
+<a NAME="Header_10"></a><a href="#ToC_10">Syntax</a></h3>
+
+<dl><b>currentsb</b>[<b>-sb</b>] [<b>-dir</b>] [<b>-back</b>] [<b>-chain</b>]
+[<b>-all</b>] [<i>ODE options</i>] [<i>sandbox</i>]
+<p><i>ODE options:</i>&nbsp; [<b>-quiet | -normal | -verbose | -debug</b>]
+[<b>-usage | -version | -rev</b>] [<b>-info</b>] [<b>-auto</b>] [<b>-rc
+</b><i>rcfile</i>]
+<br>&nbsp;
+<h3>
+<a NAME="currentsbrc"></a><a href="#ToC_10a">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="Header_11"></a><a href="#ToC_11">Parameters</a></h3>
+
+<dl>
+<dt>
+<b><i>sandbox</i></b></dt>
+
+<dd>
+If <i>sandbox</i> is not specified, the current sandbox is used. See <b>-rc</b><i>rcfile</i>
+for more information.</dd>
+
+<dt>
+<b>-all</b></dt>
+
+<dd>
+Displays the following information: <i>sandbox</i> name, <i>sandbox</i>
+base directory, and backing build.</dd>
+
+<dt>
+<b>-back</b></dt>
+
+<dd>
+Displays the absolute directory of the sandbox or backing build that <i>sandbox</i>
+is backed by.</dd>
+
+<dt>
+<b>-chain</b></dt>
+
+<dd>
+Displays the backing chain hierarchy for the <i>sandbox</i>.</dd>
+
+<dt>
+<b>-dir</b></dt>
+
+<dd>
+Displays the name of the base directory for the <i>sandbox</i>.</dd>
+
+<dt>
+<b>-sb</b></dt>
+
+<dd>
+Displays the name of the <i>sandbox</i>.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_12"></a><a href="#ToC_12">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Automatically answers interactive questions.&nbsp; Since this command never
+asks any, this flag has no effect.</dd>
+
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Display information about what the command would do instead of doing it.&nbsp;
+Since this command only displays information, this flag has no effect.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-rc <i>rcfile</i></b></dt>
+
+<dd>
+Causes <b>currentsb</b> to use the file named <i>rcfile</i> to obtain information
+about the <i>sandbox </i>or the current sandbox if <i>sandbox</i> was not
+specified. If this option is not specified and the <b>SANDBOXRC</b> environment
+variable is not defined then <b>currentsb</b> uses the <b>$HOME/.sandboxrc</b>
+file to obtain this information.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+</dl>
+
+<h3>
+<a NAME="envcurrentsb"></a><a href="#ToC_12a">Environment variables used</a></h3>
+
+<table BORDER WIDTH="100%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><b>SANDBOX</b></td>
+
+<td>Name of the sandbox. Normally set by <b>workon</b>.</td>
+</tr>
+
+<tr>
+<td><b>SANDBOXRC</b></td>
+
+<td>If specified in the environment, the value is the <i>rcfile</i> which
+describes where sandboxes are located. <b>workon</b> sets this environment
+variable if the user does not.</td>
+</tr>
+
+<tr>
+<td><b>SANDBOXBASE</b></td>
+
+<td>Location of the sandbox. Normally set by <b>workon</b>.</td>
+</tr>
+
+<tr>
+<td><b>BACKED_SANDBOXDIR</b></td>
+
+<td>List of paths to the sandboxes in the backing chain. Normally set by
+<b>workon</b>.</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="Header_13"></a><a href="#ToC_13">Examples</a></h3>
+The command:
+<dl><b>currentsb</b></dl>
+causes display of the current sandbox. If the current sandbox is <b>sb2</b>
+this command would display <b>sb2</b>.
+<p>The command:
+<dl><b>currentsb -chain</b></dl>
+causes display of the current sandbox backing chain. If the current sandbox
+is <b>dune1</b>, backed by backing build <b>spice</b> on a Windows or OS/2
+system this command would display something resembling:
+<blockquote><tt>o:\test\sbox\dune1</tt>
+<br><tt>o:\proj\build\spice</tt></blockquote>
+
+<dl>The command:
+<p><b>currentsb -all dune1</b></dl>
+causes display of the <b>dune1</b> sandbox name, the sandbox base directory,
+and its backing build.
+<blockquote><tt>dune1 o:\test\sbox o:\proj\build\spice</tt></blockquote>
+
+<hr>
+<h2>
+<a NAME="HDRGENDEP"></a><a href="#ToC_91">gendep - Generate makefile dependencies</a></h2>
+<b>gendep</b> will parse each specified source file and generate a list
+of makefile-style dependencies.&nbsp; During the parsing of each C/C++
+source file, preprocessor directives are processed, including #<b>define</b>,
+#<b>include</b>, #<b>undef</b>, #<b>ifdef</b>, #<b>ifndef</b>, #<b>if</b>,
+#<b>else</b>, #<b>elif</b>, and #<b>endif</b>.&nbsp; Any include files
+that are included by other include files are parsed as well.&nbsp; Searching
+for include files is done in directories specified by command line options.&nbsp;
+The output from the <b>gendep</b> command will be written to a <b><i>filename</i>.u</b>
+file, where <b><i>filename</i></b> is the specified source file name with
+the extension removed..
+<p>When a conditional cannot be fully or properly evaluated (due to either
+a syntax error or a <b>gendep</b> <a href="#gendeplim">limitation</a>),
+the default behavior is to treat the conditional as if it had evaluated
+to true, but to continue evaluating other conditionals in that block (as
+if it had evaluated to false).&nbsp; This may produce extra dependencies
+that are not needed, but is safer than failing to include expected dependencies.&nbsp;
+If these "extra" true sections are undesired, consider using the <b>-condfalse</b>
+flag.&nbsp; As an example, for the following conditional block, both the
+<b>"file1.h"</b>
+and <b>"file3.h"</b> headers are treated as dependents:
+<p><tt>#if max(X,Y) == 5&nbsp; /* cannot evaluate macros, so assume true
+but continue evaluating */</tt>
+<br><tt>#include "file1.h"</tt>
+<br><tt>#elif 0 /* evaluates to false, skip section but continue evaluating
+conditionals */</tt>
+<br><tt>#include "file2.h"</tt>
+<br><tt>#elif 1 /* evaluates to true, so cease evaluating other conditionals
+in this block */</tt>
+<br><tt>#include "file3.h"</tt>
+<br><tt>#else /* truth value not evaluated, assumed false */</tt>
+<br><tt>#include "file4.h"</tt>
+<br><tt>#endif</tt>
+<br>&nbsp;
+<h3>
+<a NAME="gendepsyn"></a><a href="#ToC_92">Syntax</a></h3>
+<b>gendep</b> [<b>-D</b><i>variable_name</i>]... [<b>-I</b><i>include_path</i>]...
+[<b>-E</b><i>exclude_path</i>]... [<b>-s</b><i>suffix</i>] [<b>-q</b>]
+[<b>-nodup</b>] [<b>-table</b>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[<b>-abs</b>] [<b>-condfalse</b>] [<b>-hdrsonly</b>] [<b>-targname</b><i>target_name</i>]
+[<b>-respfile</b> <i>response_file</i>]...
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[<i>ODE options</i>] <b><i>source_file...</i></b>
+<p><i>ODE options:</i>&nbsp; [<b>-normal | -quiet | -verbose | -debug</b>]
+[<b>-usage | -version | -rev</b>] [<b>-info</b>] [<b>-auto</b>]
+<h3>
+<a NAME="gendeprc"></a><a href="#ToC_93">Return codes</a></h3>
+&nbsp;&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp;&nbsp; System errors
+<h3>
+<a NAME="gendeppar"></a><a href="#ToC_94">Parameters</a></h3>
+
+<dl>
+<dt>
+<b>-D </b><i>variable_name</i></dt>
+
+<dd>
+Defines preprocessor variable <i>variable_name</i>.</dd>
+
+<dt>
+<b>-I </b><i>include_path</i></dt>
+
+<dd>
+Defines include search path for #include style directives. <i>include_path</i>
+can be one or more directories separated by the "<b>:</b>" character (UNIX-like
+systems) or the "<b>;</b>" character (OS/2 or Windows systems).</dd>
+
+<dt>
+<b>-E </b><i>exclude_path</i></dt>
+
+<dd>
+Defines paths to not search for included files. Overrides paths defined
+by the <b>-I</b> option. Portions or substrings of paths may be used. If
+an included file is found in an excluded path, no additional searching
+for that file is done and the file will not appear as a dependency in the
+<b>.u</b> file. <i>exclude_path</i> can be one or more directories separated
+by the "<b>:</b>" character (UNIX-like systems) or the "<b>;</b>" character
+(OS/2 or Windows systems).</dd>
+
+<dt>
+<b>-s</b><i> suffix</i></dt>
+
+<dd>
+Suffix to use on target name in dependency file. Default is .<b>obj</b>
+for NT/OS/2 C/C++ source files, .<b>o</b> for UNIX C/C++ source files.
+If more than one <b>-s</b><i> suffix</i> is specified, only the last one
+is used.</dd>
+
+<dt>
+<b>-q</b></dt>
+
+<dd>
+Do not continue processing files and quit program execution if an included
+file can not be found.&nbsp; Default is to continue processing.</dd>
+
+<dt>
+<b>-nodup</b></dt>
+
+<dd>
+Do not process duplicate included files.&nbsp; If an included file has
+already been processed by <b>gendep</b>, it will be not be processed again
+when the <b>-nodup</b> option is specified. The default behavior is to
+fully process any included file regardless of if it has been already read.
+The benefit to using the <b>-nodup</b> option is increased performance
+of the <b>gendep</b> utility due to decreasing the number of files that
+must be read. However, some build environments may require files to be
+re-read to fully generate the proper dependencies.</dd>
+
+<dt>
+<b>-table</b></dt>
+
+<dd>
+Display the contents of the symbol table created by <b>gendep</b> while
+parsing the source files. The symbol table contains the name and value
+of each variable assigned on the command line via the <i>-D </i>option,
+and variables assigned in the source files with #define directives.</dd>
+
+<dt>
+<b>-abs</b></dt>
+
+<dd>
+Write the target in the dependency <b>.u</b> file in the same format as
+the <i>source_file</i> was specified. For example, a <i>source_file</i>
+input to <b>gendep</b> as <b>../src/test.c</b> would result in a target
+of the format<b> ../src/test.obj</b>. Without using this option, the target
+will be the file name only, without any path specifications. For example,
+without this option a source file <b>../src/test.c</b> would result in
+a target of the format <b>test.obj</b>. This option is ignored if the <b>-targname</b>
+option is used.</dd>
+
+<dt>
+<b>-condfalse</b></dt>
+
+<dd>
+Set the default conditional value to false. If <b>gendep</b> cannot process
+a conditional statement, such as one that involves a function macro, truth
+is assumed for the conditional and the following statments are processed
+accordingly. Specifying <b>-condfalse</b> reverses this behavior and sets
+the unhandled conditional value to false.&nbsp; This eliminates the potential
+for multiple true sections in an if-endif block.&nbsp; However, since this
+will effectively skip includes that are in conditional sections which gendep
+cannot evaluate, it should be used with caution.</dd>
+
+<dt>
+<b>-targname</b> <i>target_name</i></dt>
+
+<dd>
+The <i>target_name</i> is used in place of the normal target in the output
+file. At most one <b>-targname</b><i>target_name</i> is allowed. If <b>-targname</b>
+is specified, there must only be one <i>source_file</i>. For example, if
+<b>test.c</b> contained <b>#include "dat.h"</b> the command</dd>
+
+<dl>
+<dd>
+<b>gendep -targname other.obj test.c</b></dd>
+</dl>
+
+<dd>
+would output the lines</dd>
+
+<dl>
+<dd>
+<b>other.obj: test.c</b></dd>
+
+<dd>
+<b>other.obj: dat.h</b></dd>
+</dl>
+
+<dt>
+<b>-hdrsonly</b></dt>
+
+<dd>
+Do not list <i>source_file</i> in the dependency list. Only list the files
+referenced in "#include" statements as dependents. For example, if the
+<i>source_file</i> is <b>test.c</b>, the dependency <b>test.obj: test.c</b>
+will not be output.</dd>
+
+<dt>
+<b>-respfile</b> <i>response_file</i></dt>
+
+<dd>
+The response file is read for additional <b>gendep</b> arguments. The arguments
+may be separated by whitespace characters: blanks, tabs, carriage returns,
+or ends of line. Whitespace characters within quotes are assumed to be
+a part of the argument rather than argument separators. A response file
+may not contain the <b>-respfile</b> flag.</dd>
+
+<dt>
+<b>-o</b> <i>output_file</i></dt>
+
+<dd>
+This option is used to specify a output file to which dependency information
+is written. The path to the output file can be either relative or absolute.
+When this option is specified, only one source file need to be specified.
+It is an error condition, if -o option is specified and more than one source
+file is passed to the <b>gendep </b>command. When this option is not specified
+then the dependency information is created in a <tt>.u</tt> file</dd>
+
+<dd>
+<b>Example:</b> <tt>gendep -o ./bar.dep -I/home/user1/include -E/home/user1/include
+bar.c</tt></dd>
+
+<dt>
+<b><i>source_file...</i></b></dt>
+
+<dd>
+The source files to generate dependencies for.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_94a"></a><a href="#ToC_94a">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Display information about what the command would do instead of doing it.</dd>
+
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Automatically answers interactive questions.&nbsp; Since this command never
+asks any, this flag has no effect.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+</dl>
+
+<h3>
+<a NAME="envgendep"></a><a href="#ToC_95">Environment variables used</a></h3>
+None
+<h3>
+<a NAME="gendepex"></a><a href="#ToC_96">Examples</a></h3>
+Assume the file <b>C:\project\src\bin\file1.c</b> contains:
+<dl compact="compact">
+<dd>
+<tt>#include "file1.h"</tt></dd>
+
+<dd>
+<tt>#include &lt;stdio.h></tt></dd>
+</dl>
+and the file <b>file1.h</b> located at <b>..\inc</b> contains:
+<dl compact="compact">
+<dd>
+<tt>#include &lt;stdlib.h></tt></dd>
+</dl>
+and the system header files are located at <b>C:\ibmcppw\include</b>.
+<h4>
+Example 1</h4>
+The command <b>gendep -I..\inc -IC:\ibmcppw\include file1.c</b> will result
+in a file <b>file1.u</b> containing:
+<dl compact="compact">
+<dd>
+<tt>file1.obj: file1.c</tt></dd>
+
+<dd>
+<tt>file1.obj: C:/project/src/inc/file1.h</tt></dd>
+
+<dd>
+<tt>file1.obj: C:/ibmcppw/include/stdio.h</tt></dd>
+
+<dd>
+<tt>file1.obj: C:/ibmcppw/include/stdlib.h</tt></dd>
+</dl>
+
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">
+<dl>
+<dt>
+<b>gendep</b> produces Unix-style forward slashes in its dependencies.&nbsp;</dt>
+</dl>
+</td>
+</tr>
+</table>
+
+<h4>
+Example 2</h4>
+The command <b>gendep -I..\inc -IC:\ibmcppw\include -s.o -abs ..\src\file1.c</b>
+will result in a file <b>file1.u</b> containing:
+<dl compact="compact">
+<dd>
+<tt>../src/file1.o: file1.c</tt></dd>
+
+<dd>
+<tt>../src/file1.o: C:/project/src/inc/file1.h</tt></dd>
+
+<dd>
+<tt>../src/file1.o: C:/ibmcppw/include/stdio.h</tt></dd>
+
+<dd>
+<tt>../src/file1.o: C:/ibmcppw/include/stdlib.h</tt></dd>
+</dl>
+
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">
+<dl>
+<dt>
+The use of <b>-abs</b> has generated targets in the same format as the
+source file, and the <b>-s</b> option has modified the target suffix.&nbsp;</dt>
+</dl>
+</td>
+</tr>
+</table>
+
+<p>Assume the file <b>file1.h</b> contains the following:
+<dl compact="compact">
+<dd>
+<tt>#ifdef VAR1</tt></dd>
+
+<dd>
+<tt>#if (VAR1==2)</tt></dd>
+
+<dd>
+<tt>#include &lt;stdlib.h></tt></dd>
+
+<dd>
+<tt>#else</tt></dd>
+
+<dd>
+<tt>#include &lt;string.h></tt></dd>
+
+<dd>
+<tt>#endif</tt></dd>
+
+<dd>
+<tt>#endif</tt></dd>
+</dl>
+
+<h4>
+Example 3</h4>
+The command <b>gendep -I..\inc -IC:\ibmcppw\include file1.c</b> will result
+in a file <b>file1.u</b> containing:
+<dl compact="compact">
+<dd>
+<tt>file1.obj: file1.c</tt></dd>
+
+<dd>
+<tt>file1.obj: C:/project/src/inc/file1.h</tt></dd>
+
+<dd>
+<tt>file1.obj: C:/ibmcppw/include/stdio.h</tt></dd>
+</dl>
+since <b>VAR1</b> is undefined.
+<h4>
+Example 4</h4>
+The command <b>gendep -I..\inc -IC:\ibmcppw\include -DVAR1 file1.c</b>
+will result in a file <b>file1.u</b> containing:
+<dl compact="compact">
+<dd>
+<tt>file1.obj: file1.c</tt></dd>
+
+<dd>
+<tt>file1.obj: C:/project/src/inc/file1.h</tt></dd>
+
+<dd>
+<tt>file1.obj: C:/ibmcppw/include/stdio.h</tt></dd>
+
+<dd>
+<tt>file1.obj: C:/ibmcppw/include/string.h</tt></dd>
+</dl>
+since <b>VAR1</b> is defined to be 1 by default.
+<h4>
+Example 5</h4>
+The command <b>gendep -I..\inc -IC:\ibmcppw\include -DVAR1=2 file1.c</b>
+will result in a file <b>file1.u</b> containing:
+<dl compact="compact">
+<dd>
+<tt>file1.obj: file1.c</tt></dd>
+
+<dd>
+<tt>file1.obj: C:/project/src/inc/file1.h</tt></dd>
+
+<dd>
+<tt>file1.obj: C:/ibmcppw/include/stdio.h</tt></dd>
+
+<dd>
+<tt>file1.obj: C:/ibmcppw/include/stdlib.h</tt></dd>
+</dl>
+since <b>VAR1</b> is now defined to be 2.
+<h4>
+Example 6</h4>
+The command <b>gendep -I..\inc;C:\ibmcppw\include -DVAR1=2 -targname altfile1.oxx
+-hdrsonly file1.c</b> will result in a file <b>file1.u</b> containing:
+<dl compact="compact">
+<dd>
+<tt>altfile1.oxx: C:/project/src/inc/file1.h</tt></dd>
+
+<dd>
+<tt>altfile1.oxx: C:/ibmcppw/include/stdio.h</tt></dd>
+
+<dd>
+<tt>altfile1.oxx: C:/ibmcppw/include/stdlib.h</tt></dd>
+</dl>
+
+<h3>
+<a NAME="gendeplim"></a><a href="#ToC_97">Known limitations</a></h3>
+The following are the known limitations to the <b>gendep</b> dependency
+generator tool. These are examples where the behavior of <b>gendep</b>
+will differ from that of most compiler preprocessors.
+<h3>
+Unresolved conditionals</h3>
+<b>gendep</b> handles most conditional statements supported by preprocessors.
+However, there are some that currently are not supported. In these cases
+when <b>gendep</b> encounters a conditional statement that it does not
+recognize or can't evaluate, it assumes truth for the conditional, and
+processes the corresponding statements. The command line option <b>-condfalse</b>
+can be used to set the assumed value to false when a conditional can not
+be resolved. See the following example:
+<br><tt>// Function-like macros are not supported</tt>
+<br><tt>#define SUM(a,b) (a + b)</tt>
+<p><tt>// The function SUM will not be called.</tt>
+<br><tt>// Since gendep does not know how to handle the conditional,</tt>
+<br><tt>// truth will be assumed, which will (falsely in this case)</tt>
+<br><tt>// include "file.h". Executing gendep with</tt>
+<br><tt>// the command line flag -condfalse will cause this</tt>
+<br><tt>// unhandled conditional to evaluate to false.</tt>
+<br><tt>#if SUM(1,2) > SUM(3,4)</tt>
+<br><tt>#include "file.h"</tt>
+<br><tt>#endif</tt>
+<br>&nbsp;
+<h3>
+Function-like macro definitions</h3>
+When <b>gendep</b> encounters a function-like macro definition, it will
+not attempt to preserve or evaluate the function contents, but will simply
+define the variable assigned to the function name as "1". References to
+the macro will be ignored, but gendep will treat it as having been defined.
+See the following example:
+<br><tt>// The variable SUM will be defined with a value of "1"</tt>
+<br><tt>#define SUM(a,b) (a + b)</tt>
+<p><tt>// "file1.h" will be included since "SUM" is defined</tt>
+<br><tt>#ifdef SUM</tt>
+<br><tt>#include "file1.h"</tt>
+<br><tt>#endif</tt>
+<p><tt>// The function SUM will not be called.</tt>
+<br><tt>// Since gendep does not know how to handle the conditional,</tt>
+<br><tt>//&nbsp; truth will be assumed, which will (falsely in this case)</tt>
+<br><tt>//&nbsp; include "file2.h"</tt>
+<br><tt>#if SUM(1,2) > SUM(3,4)</tt>
+<br><tt>#include "file2.h"</tt>
+<br><tt>#endif</tt>
+<br>&nbsp;
+<h3>
+Macros based on the values of other macros</h3>
+When <b>gendep</b> attempts to define a macro that is based on the value
+of another macro, the value of the other macro is not resolved, and the
+literal expression becomes the value of the new macro. See the following
+example:
+<br><tt>// The variable <i>VAL1</i> will be defined with a value of 10</tt>
+<br><tt>#define <i>VAL1</i> 10</tt>
+<p><tt>// The variable <i>VAL2</i> does not become 15, but becomes literally
+<i>VAL1+5</i></tt>
+<br><tt>#define <i>VAL2 VAL1+5</i></tt>
+<p><tt>// The following conditional would falsely not include "file1.h"</tt>
+<br><tt>#if <i>VAL2</i>==15</tt>
+<br><tt>#include "file1.h"</tt>
+<br><tt>#endif</tt>
+<br>&nbsp;
+<h3>
+Unhandled preprocessor directives</h3>
+In addition to the aforementioned items, <b>gendep</b> currently does not
+handle some other preprocessor directives and syntax available on most
+compilers. The following list details what directives and syntax are not
+handled by <b>gendep</b>:
+<ul>
+<li>
+Pragma statements - <font face="Courier New"><font size=-1>#pragma langlvl(extended)</font></font>,
+and others.</li>
+
+<li>
+"#" operator - <font face="Courier New"><font size=-1>#define ABC(x) #x</font></font></li>
+
+<li>
+Macro concatenation with ## - <font face="Courier New"><font size=-1>#define
+XY(x,y) x##y</font></font></li>
+
+<li>
+Macro concatenation with /**/ - <font face="Courier New"><font size=-1>#define
+XY(x,y) x/**/y</font></font></li>
+
+<li>
+Line control - <font face="Courier New"><font size=-1>#line 200</font></font></li>
+
+<li>
+Error directive - <font face="Courier New"><font size=-1>#error Error encountered</font></font></li>
+</ul>
+
+<h3>
+MVS Datasets</h3>
+<b>gendep</b> does not currently handle include files embedded in MVS datasets.&nbsp;
+Include files must be independent files specified by filename only.
+<h3>
+<a NAME="gendepPlatformSpecific"></a><a href="#ToC_97a">Platform-specific
+gendep behavior</a></h3>
+Because Windows NT may have <a href="ODEAdminsGuide.htm#SpacesInPaths">filenames
+with embedded blanks</a>, some support for this has been added to the Windows
+NT version of <b>gendep</b>.&nbsp; When <b>gendep</b> outputs a dependency
+to a <b><tt>*.u</tt></b> file, if a filename has embedded blanks, it will
+be double quoted.&nbsp; A non-Windows NT <b>gendep</b> would not double
+quote such a filename in a dependency.
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">
+<dl>
+<dt>
+Some compilers can be made to output dependency files, but such files might
+not have double quotes around filenames with embedded blanks.&nbsp; An
+example of this is Visual Age C++ for Windows NT.&nbsp; When the <b>/qmakedep</b>
+flag is used, the <b><tt>*.u</tt></b> output file lacks double quotes around
+filenames with embedded blanks.&nbsp; The file would have to be edited
+by the user before it could be used by either <b>nmake</b> or <b>mk</b>.&nbsp;</dt>
+</dl>
+</td>
+</tr>
+</table>
+
+<hr>
+<h2>
+<a NAME="HDRGENPATH"></a><a href="#ToC_14">genpath - Expand a flag specification</a></h2>
+<b>genpath</b> expands a relative path specification to create a list useful
+for searching a backing build.&nbsp; The output goes to standard output
+stream (stdout). The list includes corresponding directories in the sandbox
+and backing build <b>src</b> and/or <b>obj</b> areas. Absolute paths are
+not modified in any way.&nbsp; By default, this command will use sandbox
+information from the environment if it is available (normally provided
+by
+<b>workon</b>) rather than reprocess <b>.sandboxrc</b>.
+<p><b>genpath</b> can have multiple flag arguments. For example:
+<dl>
+<dd>
+<b>genpath</b><i> -Ihello -Igoodbye</i></dd>
+</dl>
+is equivalent to:
+<dl compact="compact">
+<dd>
+<b>genpath</b> -<i>Ihello</i></dd>
+
+<dd>
+<b>genpath </b><i>-Igoodbye</i></dd>
+</dl>
+
+<h3>
+<a NAME="Header_15"></a><a href="#ToC_15">Syntax</a></h3>
+<b>genpath</b> [<b>-sb</b> <i>sandbox_name</i>] [<b>-rc</b>&nbsp; <i>rc_file</i>]
+[<b>-usage | -version | -rev</b>] [<b>-info</b>] [<b>-auto</b>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[<b>-quiet | -normal | -verbose | -debug</b>] [<b>-a</b>] [<b>-i</b> |
+<b>-l</b> | <b>-V</b> | <b>-z</b>] [<b>-O</b> | <b>-S</b>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[<b>-I</b> <i>dir</i>] [<b>-L</b> <i>dir</i>] [<b>-R</b> <i>dir</i>] [<b>-E</b><i>dir</i>]
+<br>&nbsp;
+<h3>
+<a NAME="genpathrc"></a><a href="#ToC_15a">Return Codes</a></h3>
+&nbsp;&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp;&nbsp; System errors
+<h3>
+<a NAME="Header_16"></a><a href="#ToC_16">Parameters</a></h3>
+
+<dl>
+<dt>
+<b>-a</b></dt>
+
+<dd>
+Lists directories only if they exist.</dd>
+
+<dt>
+<b>-i</b></dt>
+
+<dd>
+Forces <b>-I</b> output (default), one directory per line with each preceded
+by <b>-I</b>. If more than one of <b>-i</b>, <b>-l</b>, <b>-V</b>, or <b>-z</b>
+is specified, the last one specifies the actual format used.</dd>
+
+<dt>
+<b>-l</b></dt>
+
+<dd>
+Forces <b>-L</b> output, one directory per line with each preceded by <b>-L</b>.
+If more than one of <b>-i</b>, <b>-l</b>, <b>-V</b>, or <b>-z</b> is specified,
+the last one specifies the actual format used..</dd>
+
+<dt>
+<b>-I <i>dir</i></b></dt>
+
+<dd>
+Expands <i>dir</i> relative to the current directory in the source tree
+(along with its corresponding directory in the obj tree) and adds the resulting
+directories to the list.</dd>
+
+<dt>
+<b>-L <i>dir</i></b></dt>
+
+<dd>
+Expands <i>dir</i> relative to the current directory in the source tree
+(along with its corresponding directory in the obj tree) and adds the resulting
+directories to the list.</dd>
+
+<dt>
+<b>-R <i>dir</i></b></dt>
+
+<dd>
+Expands <i>dir</i> relative to the base of the source tree (along with
+its corresponding directory in the obj tree) and adds the resulting directories
+to the list.</dd>
+
+<dt>
+<b>-E <i>dir</i></b></dt>
+
+<dd>
+Expands <i>dir</i> relative to the base of the export tree and adds the
+resulting directories to the list.</dd>
+
+<dt>
+<b>-O</b></dt>
+
+<dd>
+Output only obj directories. If both <b>-O</b> and <b>-S</b> are used,
+the last one specified determines the output.</dd>
+
+<dt>
+<b>-S</b></dt>
+
+<dd>
+Output only src directories. If both <b>-O</b> and <b>-S</b> are used,
+the last one specified determines the output.</dd>
+
+<dt>
+<b>-V</b></dt>
+
+<dd>
+Generates VPATH format output. The VPATH format has all directories concatenated
+on a single line, each preceded by a path separator (colon for UNIX, semicolon
+for Windows or OS/2). If more than one of <b>-i</b>, <b>-l</b>, <b>-V</b>,
+or <b>-z</b> is specified, the last one specifies the actual format used.</dd>
+
+<dt>
+<b>-z</b></dt>
+
+<dd>
+Inhibits generation of an <b>-[IL]</b> flag during output. Outputs one
+directory per line. If more than one of <b>-i</b>, <b>-l</b>, <b>-V</b>,
+or <b>-z</b> is specified, the last one specifies the actual format used.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_16b"></a><a href="#ToC_16b">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-rc <i>rc_file</i></b></dt>
+
+<dd>
+Provides the path and name of an alternative resource-configuration file
+to use instead of the default <b>${HOME}/.sandboxrc</b></dd>
+
+<dt>
+<b>-sb <i>sandbox_name</i></b></dt>
+
+<dd>
+The name of the sandbox. If this parameter is omitted, <b>genpath</b> uses
+either the default value from <b>$SANDBOX</b> or the default sandbox name
+listed in the <b>${HOME}/.sandboxrc</b> file.</dd>
+
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Display information about what the command would do instead of doing it.&nbsp;
+Since this command only displays information, this flag has no effect.</dd>
+
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Automatically answers interactive questions.&nbsp; Since this command never
+asks any, this flag has no effect.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+</dl>
+
+<h3>
+<a NAME="envgenpath"></a><a href="#ToC_16a">Environment variables used</a></h3>
+
+<table BORDER WIDTH="100%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><b>SANDBOX</b></td>
+
+<td>Name of the sandbox</td>
+</tr>
+
+<tr>
+<td><b>SANDBOXRC</b></td>
+
+<td>Default or the specified sandboxrc file</td>
+</tr>
+
+<tr>
+<td><b>BACKED_SANDBOXDIR</b></td>
+
+<td>List of base directories of the sandboxes in the backing chain</td>
+</tr>
+
+<tr>
+<td><b>MAKEOBJDIR</b>
+<br><b>OBJECTDIR</b></td>
+
+<td>Location of the object tree.&nbsp; <b>MAKEOBJDIR</b> is set internally
+by <b>mk</b>.</td>
+</tr>
+
+<tr>
+<td><b>EXPORTDIR</b></td>
+
+<td>Location of the export tree</td>
+</tr>
+
+<tr>
+<td><b>MAKEDIR</b></td>
+
+<td>Subdirectory within source tree.&nbsp; This is set by the <b>mk</b>
+command internally</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="Header_17"></a><a href="#ToC_17">Examples</a></h3>
+This command sequence searches the sandbox <b>sb1</b> and the backing build
+<b>back</b> for the current directory and the directory <b>inc</b>:
+<dl compact="compact">
+<dd>
+<b>cd /sb1/src/usr</b></dd>
+
+<dd>
+<b>genpath -I. -Iinc</b></dd>
+</dl>
+The above sequence would produce output as follows (assuming machine name
+"<b>pmax</b>" and <b>MAKEDIR</b>=/usr):
+<pre>&nbsp;&nbsp;&nbsp; -I/sb1/obj/pmax/usr
+&nbsp;&nbsp;&nbsp; -I/sb1/src/usr
+&nbsp;&nbsp;&nbsp; -I/back/obj/pmax/usr
+&nbsp;&nbsp;&nbsp; -I/back/src/usr
+&nbsp;&nbsp;&nbsp; -I/sb1/obj/pmax/usr/inc
+&nbsp;&nbsp;&nbsp; -I/sb1/src/usr/inc
+&nbsp;&nbsp;&nbsp; -I/back/obj/pmax/usr/inc
+&nbsp;&nbsp;&nbsp; -I/back/src/usr/inc</pre>
+
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">
+<dl>
+<dt>
+When you run <b>genpath</b> from a makefile, it will be executed from the
+<b>obj</b> directory corresponding to the <b>src</b> directory in which
+the makefile resides. This is determined by using the variable <b>MAKEDIR</b>
+set internally from <b>mk</b>.&nbsp;</dt>
+</dl>
+</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="genpathPlatformSpecific"></a><a href="#ToC_17a">Platform-specific
+genpath behavior</a></h3>
+Because Windows NT may have <a href="ODEAdminsGuide.htm#SpacesInPaths">filenames
+with embedded blanks</a>, some support for this has been added to the Windows
+NT version of <b>genpath</b>.&nbsp; In <b>genpath</b> output, if a directory
+name has embedded blanks, it will be double quoted.&nbsp; A non-Windows
+NT <b>genpath</b> would not double quote the directory name.
+<br>
+<hr>
+<h2>
+<a NAME="HDRGui"></a><a href="#ToC_gui">gui - Graphic user interface to
+ODE commands</a></h2>
+Information on the graphic user interface front end to the ODE commands
+can be found in the <i><a href="ODEGuiReference.htm">ODE Graphic User Interface
+Reference</a>.</i>
+<br>
+<hr>
+<h2>
+<a NAME="HDRMakemake"></a><a href="#ToC_18">MakeMake - Generate ODE makefiles</a></h2>
+Information on <b>MakeMake</b> can be found in the <i><a href="ODEMakeMake.htm">ODE
+MakeMake Reference</a>.&nbsp;</i>
+<hr>
+<h2>
+<a NAME="HDRMK"></a><a href="#ToC_19">mk - Maintain program dependencies</a></h2>
+Information on <b>mk</b> can be found in the <i><a href="ODEMakeReference.htm">ODE
+Make Reference</a>.&nbsp;</i>
+<hr>
+<h2>
+<a NAME="HDRMKBB"></a><a href="#ToC_21">mkbb - Make a backing build</a></h2>
+<b>mkbb</b> creates a new backing build. It can also be used to list all
+current builds, or to remove a build.
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">
+<dl>
+<dt>
+A backing build is essentially a sandbox that is not backed. For the remainder
+of this section and in the <b>mkbb</b> command usage, the word <b>sandbox</b>
+may be used instead of <b>backing build</b>.&nbsp;</dt>
+</dl>
+</td>
+</tr>
+</table>
+
+<p>In creating a new sandbox, <b>mkbb</b> builds the directory structure,
+and may also create or update the build list configuration file. It uses
+a <b>sandboxrc</b> file in the same manner that<b> <a href="#HDRMKSB">mksb</a></b>
+does.
+<h3>
+<a NAME="Header_22"></a><a href="#ToC_22">Syntax</a></h3>
+
+<dl><b>mkbb </b>[<b>-def</b>] [<b>-nobld</b>]<b> </b>[<b>-blist </b><i>build_list</i>]
+[<b>-dir </b><i>bb_dir</i>]
+<br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>[<b>-m</b><i>machine1</i>[<i>:machine2
+...</i>]] [<i>ODE options</i>] <i>bb_name</i>| <b>-sb </b><i>bb_name</i>
+<p><b>mkbb -list</b> [<i>ODE options</i>]
+<p><b>mkbb -undo</b> [<i>ODE options</i>] [<i>bb_name</i> | <b>-sb</b><i>bb_name</i>]
+<p><b>mkbb -upgrade </b>[<i>ODE options</i>] <i>bb_name</i> | <b>-sb</b><i>bb_name</i>
+<p><i>ODE options: </i>[<b>-auto</b>] [<b>-info</b>] [<b>-quiet | -normal
+| -verbose | -debug</b>] [<b>-rc </b><i>rcfile</i>] [<b>-usage | -version
+| -rev</b>]
+<br>&nbsp;
+<h3>
+<a NAME="mkbbrc"></a><a href="#ToC_22a">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="Header_23"></a><a href="#ToC_23">Parameters</a></h3>
+
+<dl>
+<dt>
+<b>-blist <i>build_list</i></b></dt>
+
+<dd>
+Specifies the <a href="#Header_102">build list file</a> pathname. This
+parameter overrides the value in the <b>BUILD_LIST</b> environment variable,
+if the variable exists. If the <b>.sandboxrc</b> file doesn't yet exist,
+this flag or the <b>BUILD_LIST</b> variable must be used if build list
+maintenance is desired.&nbsp; The <i>build_list</i> pathname will be stored
+in the build_list entry of <b>sb.conf</b>.&nbsp; <a href="#Header_109">Environment
+variable specifications</a> may be used in <i>build_list</i>, for example
+<b>${PROJ_BASE}/release5/bld_lst</b>.&nbsp; In this example, the build
+list file and the backing builds listed in the file might be on a file
+system shared by different operating systems.&nbsp; The environment variable
+<b>PROJ_BASE</b> could be defined as <b>/project2</b> on UNIX and defined
+as <b>O:\project2</b> on OS/2 or Windows.</dd>
+
+<dt>
+<b>-def</b></dt>
+
+<dd>
+Establishes the sandbox to be created as the default sandbox. The default
+sandbox is listed in the <b>${HOME}/.sandboxrc</b> file or, if <b>-rc</b>
+is used, in <i>rcfile</i>. If no <i>rcfile</i> exists, a new one is created,
+and the new sandbox is automatically established as the default. Also,
+the sandbox will be placed as the first entry in the <a href="#Header_102">build_list
+file</a>, if there is one, so that it becomes the default build. If this
+sandbox already exists, this parameter can be used to make this sandbox
+be the default sandbox.</dd>
+
+<dt>
+<b>-dir <i>bb_dir</i></b></dt>
+
+<dd>
+Creates the new backing build in the <i>bb_dir</i> directory. <i>bb_dir</i>
+must already exist. If this option is not used, ODE builds the backing
+build in the base directory listed in the <b>.sandboxrc</b> file.&nbsp;
+If <a href="#Header_109">environment variables are specified</a> in <i>bb_dir</i>
+(for example, <b>${MY_SYSTEM}/program3</b>) it will be stored in the <b>.sandboxrc</b>
+file in that form.&nbsp; This allows the user to parameterize base entries
+in the <b>.sandboxrc</b> file.&nbsp; The environment variable <b>MY_SYSTEM</b>
+could have different values on a UNIX system or an NT or OS/2 system, yet
+the same sandbox could be used if it was on a shared file system.</dd>
+
+<dt>
+<b>-list</b></dt>
+
+<dd>
+Displays a list of sandboxes, the default sandbox, and any sandbox bases
+in the <i>rcfile</i>. If the -<b>rc </b>option is specified, <b>-list</b>
+displays information from the specified <i>rcfile</i>. If <b>-rc</b> is
+not specified, <b>-list</b> displays information from the default <i>rcfile</i>
+(<b>.sandboxrc</b>). The list that is produced displays both sandboxes
+and backing builds, and does not distinguish between them.</dd>
+
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%"><b>-list</b> does not accept the name of a specific sandbox.&nbsp;</td>
+</tr>
+</table>
+
+<dt>
+<b>-m <i>machine1:machine2:...</i></b></dt>
+
+<dd>
+Specifies the <a href="ODEAdminsGuide.htm#Header_4">machines</a> needed
+to build the machine-dependent directories for the new sandbox. If there
+is more than one machine, the names should be separated by a colon (:),
+without spaces. If this option is not used, the machines listed in the
+<b>.sandboxrc</b> file will be used. These machines will be stored in the
+<b>machine_list</b> entry of <b>sb.conf</b> and appropriate machine dependent
+directories will be created. If the backing build already exists, this
+parameter can be used to add machines to the backing build.</dd>
+
+<dt>
+<b>-nobld</b></dt>
+
+<dd>
+Turns the build environment option off. The default is <b>on</b>. This
+pertains to the <b>ode_build_env</b> variable in <b>sb.conf</b> and controls
+whether or not the <b>Buildconf</b> config files are processed.</dd>
+
+<dt>
+<b><i>bb_name </i></b>| <b>-sb <i>bb_name</i></b></dt>
+
+<dd>
+<b><i>bb_name</i></b> is the name of the backing build to be created. <b>-sb</b>
+is optional. For full details on what names are legal, see the description
+of <a href="#mksb_sbname">sandbox_name</a> for <b>mksb</b>.</dd>
+
+<dt>
+<b>-undo </b>[<b><i>bb_name </i></b>| <b>-sb <i>bb_name</i></b>]</dt>
+
+<dd>
+Removes the specified build and updates the <b>build_list</b> file (if
+it used one) so this build will no longer be listed.&nbsp; If <i>sandbox_name</i>
+is not specified, <b>mkbb</b> lists all sandboxes so that the desired one(s)
+may be chosen.</dd>
+
+<dt>
+<b>-upgrade</b></dt>
+
+<dd>
+Upgrades a sandbox's <b>sb.conf</b> from earlier versions of ODE.&nbsp;
+This will create <b>sb.conf</b> if it does not exist, or populate essential
+missing fields (such as <b>machine_list</b>).</dd>
+</dl>
+
+<h3>
+<a NAME="Header_24"></a><a href="#ToC_24">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Eliminates prompting when defaults can be taken.</dd>
+
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Provides information on what the command would do if it were executed.
+The actual command is not performed. <b>-info</b> works in conjunction
+with the <b>-quiet</b>, <b>-normal</b>, <b>-verbose, </b>and<b> -debug
+</b>options.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-rc <i>rcfile</i></b></dt>
+
+<dd>
+Causes <b>mkbb</b> to use the file named <i>rcfile</i> to obtain information
+such as what the current sandbox is. If this option is not specified, <b>mkbb
+</b>uses the <b>SANDBOXRC</b> environment variable if set, if not <b>mkbb</b>
+uses the <b>$HOME/.sandboxrc</b> file to obtain this information.</dd>
+
+<dt>
+<b>-sb <i>bb_name</i></b></dt>
+
+<dd>
+See description for <b><i>bb_name</i></b> in the <i><a href="#Header_23">Parameters</a></i>
+section for <b>mkbb</b>.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+</dl>
+
+<h3>
+<a NAME="envmkbb"></a><a href="#ToC_24a">Environment variables used</a></h3>
+
+<table BORDER WIDTH="100%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><b>CONTEXT</b></td>
+
+<td>If a machine-name is specified on the command line using the <b>-m</b>
+option else if the <b>MACHINE</b> environment variable is already set,
+then <b>CONTEXT</b> is set to that machine-name. If nothing has been specified
+then the default value is the name of the machine that the tool is executing
+on.</td>
+</tr>
+
+<tr>
+<td><b>MACHINE</b></td>
+
+<td>This always holds name of the machine that the tool is executing on.</td>
+</tr>
+
+<tr>
+<td><b>SANDBOXRC</b></td>
+
+<td>If set, the specified file is used instead of default .<b>sandboxrc</b>
+file.</td>
+</tr>
+
+<tr>
+<td><b>BUILD_LIST</b></td>
+
+<td>If set, this specifies the build_list file that has a list of all the
+backing builds.</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="Header_25"></a><a href="#ToC_25">Examples</a></h3>
+Entering the following command sequence:
+<p><b>mkbb -dir $HOME/sbox -m playa1:playa2 bb1</b>
+<p>Creates a new backing build named <b>bb1</b> in the <b>$HOME/sbox</b>
+directory. Machine-dependent directories will be created for machines <b>playa1</b>
+and <b>playa2</b>. The default <b>rc</b> file (<b>$HOME/.sandboxrc</b>)
+will be used.
+<p>Entering the command sequence:
+<p><b>mkbb -verbose -info testbb</b>
+<p>Provides detailed information on the steps <b>mkbb</b> performs in creating
+a backing build named <b>testbb</b>. The actual backing build is not created.
+<p>Entering the command sequence:
+<p><b>mkbb -undo bb5</b>
+<p>Removes backing build <b>bb5</b>. This deletes the directory structure,
+the <b>sandboxrc</b> entry, and the <b>build_list</b> entry.
+<br>
+<hr>
+<h2>
+<a NAME="HDRMKDEP"></a><a href="#ToC_26">mkdep - Convert dependency information</a></h2>
+<b>mkdep</b> converts and combines compiler-generated dependency information
+into a single file. During a build, this serves as the final step on each
+directory so that the compiler dependency files can be converted into the
+make dependency format.
+<p>The <b>mkdep</b> copy feature will copy a backed <b>depend.mk</b> file
+to the current sandbox before updating it.
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">
+<dl>
+<dt>
+The copy feature inherent in <b>mkdep</b> yields proper results only if
+<b>mkdep</b> is invoked from the directory to which <b>mk</b> has issued
+a <b>cd</b> (change directory). Normally, this is not a problem when execution
+of <b>mkdep</b> is performed automatically during the build. However, if
+you execute <b>mkdep</b> manually, be sure it executes from the proper
+directory. For example, if the path to the sandbox is <b>/proj/sbox/sb1,
+</b>and you are building <b>some_module</b>,<b>mk</b> issues a <b>cd</b>
+to <b>/proj/sbox/sb1/obj/current_context/some_module</b>. The <b>mkdep</b>
+copy feature works properly only when executed from this path.&nbsp;</dt>
+</dl>
+</td>
+</tr>
+</table>
+
+<br>&nbsp;
+<h3>
+<a NAME="Header_27"></a><a href="#ToC_27">Syntax</a></h3>
+
+<dl><b>mkdep</b>[<b>-I</b><i>include_directory</i>] [<b>-K</b><i>include_directory</i>]
+[<b>-t</b>[<b>op</b>]] [<b>-e</b>[<b>lxdep</b>]] [<b>-elpdep </b><i>suffix</i>[,
+...]]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<b>-E</b>[<i>target_pattern</i>:]<i>dependent_pattern</i>[,
+...]]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<b>-r</b>[<b>m</b>]]
+[<b>-abs</b>] [<b>-file</b><i>filename</i>] [<b>-qb</b>] [<b>-suff</b><i>target_suffix</i>]
+[<b>-subst</b><i>oldval=newval</i>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<i>ODE
+options</i>] &lt;<i>file </i>|<i> directory></i>
+<p><i>ODE options:</i>&nbsp; [<b>-normal | -quiet | -verbose | -debug</b>]
+[<b>-usage | -version | -rev</b>] [<b>-info</b>] [<b>-auto</b>]
+<br>&nbsp;
+<h3>
+<a NAME="mkdeprc"></a><a href="#ToC_27a">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="Header_28"></a><a href="#ToC_28">Parameters</a></h3>
+
+<dl>
+<dt>
+<b><i>file | directory</i></b></dt>
+
+<dd>
+The name of the file or directory to be acted upon.&nbsp; You can specify
+more than one file and/or directory.</dd>
+
+<dt>
+<b>-file <i>filename</i></b></dt>
+
+<dd>
+Generate output (the dependency information) in <i>filename</i> instead
+of <b>depend.mk</b>.</dd>
+
+<dt>
+<b>-e[lxdep]</b></dt>
+
+<dd>
+Eliminates extra dependency lines in <b>depend.mk</b>. Extra dependency
+lines are those whose path does <i>not</i> match any defined path in the
+backing chain and those that do <i>not</i> match any paths defined with
+the <b>-I</b> or <b>-K</b> options. The primary reason for this option
+is to remove operating system and compiler file dependencies from <b>depend.mk</b>,
+since these files almost never change and the result is extra processing
+time for <b>mk</b>.&nbsp; May be abbreviated as <b>-e</b>.</dd>
+
+<dt>
+<b>-elpdep </b><i>suffix</i>[, ...]</dt>
+
+<dd>
+Eliminates the "primary dependent" of each target. The primary dependent
+is typically the source file that the <b>.u/.d</b> file was created from
+(e.g., foo.c).&nbsp; As <b>mkdep</b> processes targets and their dependents
+from the <b>.u</b>/<b>.d</b> files, it will search for a dependent with
+the same root name as the target, but with one of the specified suffixes.&nbsp;
+Such a dependent will be ignored (not added to <b>depend.mk</b>).&nbsp;
+Only the first match for a given target is affected.&nbsp; The suffix of
+the target is not important (thus targets named <b>foo.o</b> or <b>foo.class</b>are
+considered equivalent, as far as the root name is concerned). <b>-elpdep</b>
+processes dependency lines before <b>-E, -I</b>, <b>-K</b>, <b>-top</b>,
+and <b>-abs</b> processing (i.e., it has highest precedence).</dd>
+
+<dt>
+<b>-E</b> [<i>target_pattern</i><b>:</b>]<i>dependent_pattern</i>[, ...]</dt>
+
+<dd>
+Eliminates dependency lines based upon <i>target_pattern</i> and <i>dependent_pattern</i>.
+If both the <i>target_pattern</i> and the <i>dependent_pattern</i> match
+a dependency line, then that dependency line is not added to <b>depend.mk</b>.
+If no <i>target_pattern</i> is specified, it is equivalent to the * pattern,
+which matches any target. The shell-like wildcard characters in a pattern
+can be <b>*</b>, <b>?</b>, and <b>[]</b>, which are described in the <a href="ODEMakeReference.htm#Wildcards%20in%20Modifier">Wildcards
+in Modifiers</a> section of the Make Reference. However, a backslash in
+the pattern is <i>not</i> used as an escape character (it is treated as
+a directory separator). Instead, single or double quotes can be used to
+prevent the wildcard characters from being treated as such. Quotes also
+escape commas and colons. For example, the quotes in <b>-ED':'\MSDEV\*</b>
+will prevent the 'D' from being treated as a <i>target_pattern</i>. Note
+that many command shells remove double quotes from arguments before passing
+them to the invoked command, so you may need to use shell escaping to ensure
+the double quotes are seen by <b>mkdep</b>.&nbsp; <b>-E</b> processes dependency
+lines after <b>-elpdep</b> processing is done, and before <b>-I</b>, <b>-K</b>,
+<b>-top</b>, and <b>-abs</b> processing.</dd>
+
+<dt>
+<b>-I <i>include_directory</i></b></dt>
+
+<dd>
+Removes <i>include_directory</i> from the beginning of all dependency paths.&nbsp;
+This parameter may be used multiple times in a single command invocation.</dd>
+
+<dt>
+<b>-K <i>include_directory</i></b></dt>
+
+<dd>
+Keeps the <i>include_directory</i> prefix for dependency paths.&nbsp; This
+parameter may be used multiple times in a single command invocation.</dd>
+
+<dt>
+<b>-top</b></dt>
+
+<dd>
+Replaces all of the sources' path strings that match those in the backing
+chain and current sandbox directory with ${MAKETOP}. Use of this option
+allows sandboxes to resolve the proper file dependency in the backing chain
+and therefore is highly recommended.&nbsp; May be abbreviated as <b>-t</b>.</dd>
+
+<dt>
+<b>-r[m]</b></dt>
+
+<dd>
+Removes compiler dependency files after they have been converted and merged
+with the <b>depend.mk</b> file.&nbsp; May be abbreviated as <b>-r</b>.</dd>
+
+<dt>
+<b>-abs</b></dt>
+
+<dd>
+If a target in a <b>.u/.d</b> file uses an absolute path, do not remove
+the path information when writing it to <b>depend.mk</b> (the full pathname
+will be written as-is).&nbsp; If <b>-top</b> is also used, ${MAKETOP} substitution
+will be attempted for the target (just as with the sources).</dd>
+
+<dt>
+<b>-qb</b></dt>
+
+<dd>
+This parameter only affects Windows platforms.&nbsp; It stands for "quote
+blanks" and indicates that any whitespace found on a single dependency
+line is assumed to be part of the filename, and therefore the entire dependency
+list is surrounded by double quotes and treated as one file.&nbsp; Without
+this parameter, whitespace is treated as the filename separator, <i>not</i>
+part of the filenames (unless they are already surrounded by double quotes,
+in which case the quotes and whitespace are preserved).</dd>
+
+<dt>
+<b>-suff <i>target_suffix</i></b></dt>
+
+<dd>
+Causes <b>mkdep</b> to search for a file with <i>target_suffix</i> when
+building the <b>depend.mk</b>. If this parameter is not used, <b>mkdep</b>
+searches only for those files with a <b>.u</b> or <b>.d</b> suffix. If
+this parameter is specified, <b>mkdep</b> searches only those files with
+<i>target_suffix</i>, and not those with a <b>.u</b> or <b>.d</b> suffix.&nbsp;
+This parameter may be used multiple times in a single command invocation.</dd>
+
+<dt>
+<b>-subst <i>oldval=newval</i></b></dt>
+
+<dd>
+Causes all occurrences of <i>oldval</i> in the dependent part of dependency
+lines read from the <b>.u/.d</b> files to be replaced with <i>newval</i>.
+Occurances of <i>oldval</i> in the source part are not changed. This substitution
+will occur after ${MAKETOP} replacement, if <b>-top</b> was used.&nbsp;
+If <i>newval</i> is omitted, <i>oldval</i> will be removed (i.e., replaced
+with nothing).&nbsp; Leading equals signs are ignored, and multiple sequential
+equals signs between <i>oldval</i> and <i>newval</i> are treated as a single
+one.&nbsp; All other occurrences of equals signs in <i>newval</i> are treated
+as regular characters.&nbsp; No variable expansion, save that done by the
+shell, is done on <i>oldval</i> or <i>newval</i>.&nbsp; This parameter
+may be used multiple times in a single command invocation.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_29"></a><a href="#ToC_29">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Display information about what the command would do instead of doing it.</dd>
+
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Automatically answers interactive questions.&nbsp; Since this command never
+asks any, this flag has no effect.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_30"></a><a href="#ToC_30">Parameter combinations</a></h3>
+
+<dl>
+<dt>
+<b>-K <i>path</i></b></dt>
+
+<dd>
+If <b>-K</b> is used stand-alone, it is ignored and has the same net effect
+as <b>mkdep</b> with no options.</dd>
+
+<dt>
+<b>-K <i>path</i> -elxdep</b></dt>
+
+<dd>
+This option eliminates all extra dependencies except for those with <i>path</i>
+prefix.</dd>
+
+<dt>
+<b>-K <i>path1 </i>-I <i>path2</i> -elxdep</b></dt>
+
+<dd>
+These options will keep dependencies prefixed by <i>path1</i> and shorten
+those with a <i>path2</i> prefix.</dd>
+
+<dt>
+<b>-K <i>path</i> -I <i>path</i></b></dt>
+
+<dd>
+These options will simply yield the same net results as <b>-I</b> <i>path</i>
+below.</dd>
+
+<dt>
+<b>-I <i>path</i></b></dt>
+
+<dd>
+Keeps all dependencies and shortens those with <i>path</i> prefix.</dd>
+
+<dt>
+<b>-I <i>path</i> -elxdep</b></dt>
+
+<dd>
+Removes all dependencies except for those with <i>path</i> prefix that
+are shortened by <i>path</i>.</dd>
+</dl>
+
+<h3>
+<a NAME="envmkdep"></a><a href="#ToC_30a">Environment variables used</a></h3>
+
+<table BORDER WIDTH="100%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><b>BACKED_SANDBOXDIR</b></td>
+
+<td>The list of directories that represents the backing chain. Normally
+set by <b>workon</b>.</td>
+</tr>
+
+<tr>
+<td><b>ODESRCNAME</b></td>
+
+<td>If defined then its value is used for the directory within the sandbox
+where source files are stored; otherwise, the default directory is <b>src</b>.</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="Header_31"></a><a href="#ToC_31">Examples</a></h3>
+Assume the <b>helloworld.u</b> file contains:
+<dl compact="compact">
+<dd>
+<tt>helloworld.o: /proj/src/helloworld.c</tt></dd>
+
+<dd>
+<tt>helloworld.o: /proj/inc/salud.h</tt></dd>
+
+<dd>
+<tt>helloworld.o: /usr/include/stdio.h</tt></dd>
+</dl>
+
+<h4>
+Case 1</h4>
+If the <b>backing chain=/proj/src</b> and the <b>mkdep</b> command is <b>mkdep
+helloworld.u</b>, the <b>depend.mk</b> file is:
+<dl compact="compact">
+<dd>
+<tt>#</tt></dd>
+
+<dd>
+<tt># dependents of helloworld.c</tt></dd>
+
+<dd>
+<tt>helloworld.o: /proj/src/helloworld.c</tt></dd>
+
+<dd>
+<tt>helloworld.o: /proj/inc/salud.h</tt></dd>
+
+<dd>
+<tt>helloworld.o: /usr/include/stdio.h</tt></dd>
+</dl>
+This is the basic or default use of <b>mkdep</b>. In this case, it generates
+all full-path dependencies.
+<h4>
+Case 2</h4>
+If the backing chain is still <b>/proj/src</b>, but the <b>mkdep</b> command
+is <b>mkdep -top helloworld.u</b>, the <b>depend.mk</b> file is:
+<dl compact="compact">
+<dd>
+<tt>#</tt></dd>
+
+<dd>
+<tt># dependents of helloworld.c</tt></dd>
+
+<dd>
+<tt>helloworld.o: ${MAKETOP}helloworld.c</tt></dd>
+
+<dd>
+<tt>helloworld.o: ${MAKETOP}../inc/salud.h</tt></dd>
+
+<dd>
+<tt>helloworld.o: /usr/include/stdio.h</tt></dd>
+</dl>
+In this case, the <b>-top</b> parameter adds <b>${MAKETOP}</b> because
+<b>/proj</b>
+in the backing chain matches the initial dependency path in the first dependency
+line in <b>helloworld.u</b>.
+<p>If the backing chain were <b>/proj11/src</b>, there would not be a match
+of the initial dependency path and <b>depend.mk</b> would be the same as
+in Case 1.
+<h4>
+Case 3</h4>
+If the backing chain is still <b>/proj/src</b>, and the <b>mkdep</b> command
+is <b>mkdep -top -elxdep helloworld.u</b>, the <b>depend.mk</b> file is:
+<dl compact="compact">
+<dd>
+<tt>#</tt></dd>
+
+<dd>
+<tt># dependents of helloworld.c</tt></dd>
+
+<dd>
+<tt>helloworld.o: ${MAKETOP}helloworld.c</tt></dd>
+
+<dd>
+<tt>helloworld.o: ${MAKETOP)../inc/salud.h</tt></dd>
+</dl>
+In this case, the <b>-top</b> parameter adds <b>${MAKETOP}</b> because
+<b>/proj</b>
+in the backing chain matches the initial dependency path in the first dependency
+line in <b>helloworld.u</b>. However, the <b>-elxdep</b> option eliminates
+<b>helloworld.o: /usr/include/stdio.h</b> because it does not match the
+path defined in the backing chain.
+<h4>
+Case 4</h4>
+If the backing chain is still <b>/proj/src</b>, and the <b>mkdep</b> command
+is <b>mkdep -top -elxdep -elpdep .c helloworld.u</b>, the <b>depend.mk</b>
+file is:
+<dl compact="compact">
+<dd>
+<tt>#</tt></dd>
+
+<dd>
+<tt># dependents of helloworld.c</tt></dd>
+
+<dd>
+<tt>helloworld.o: ${MAKETOP)../inc/salud.h</tt></dd>
+</dl>
+In this case, the <b>-top</b> parameter adds <b>${MAKETOP}</b> because
+<b>/proj</b>
+in the backing chain matches the initial dependency path in the first dependency
+line in <b>helloworld.u</b>. The <b>-elxdep</b> option eliminates <b>helloworld.o:
+/usr/include/stdio.h</b> because it does not match the path defined in
+the backing chain. The <b>-elpdep .c</b> option eliminates <b>helloworld.o:
+/proj/src/helloworld.c</b> because <b>helloworld</b> is the root of both
+the target and the source, and the source has a suffix of <b>.c</b>.
+<h4>
+Case 5</h4>
+If the backing chain is still <b>/proj/src</b>, but the <b>mkdep</b> command
+is <b>mkdep -E /proj/*.h helloworld.u</b>, the <b>depend.mk</b> file is:
+<dl compact="compact">
+<dd>
+<tt>#</tt></dd>
+
+<dd>
+<tt># dependents of helloworld.c</tt></dd>
+
+<dd>
+<tt>helloworld.o: /proj/src/helloworld.c</tt></dd>
+
+<dd>
+<tt>helloworld.o: /usr/include/stdio.h</tt></dd>
+</dl>
+In this case, the <b>-E /proj/*.h</b> parameter removes <b>/proj/inc/salud.h</b>.
+<h3>
+<a NAME="Header_34a"></a><a href="#ToC_31a">Platform-specific mkdep behavior</a></h3>
+Because Windows platforms may have <a href="ODEAdminsGuide.htm#SpacesInPaths">filenames
+with embedded blanks</a>, support for this has been added to <b>mkdep</b>.&nbsp;
+On all platforms, by default <b>mkdep</b> treats whitespace as the filename
+delimiter.&nbsp; On Windows, if the <b>-qb</b> parameter is used, <b>mkdep</b>
+will assume that a single dependency line can consist of only a single
+filename (even when a portion of that line is already quoted), so any spaces
+are considered part of that file.&nbsp; For example, the following target/dependency
+line:
+<blockquote><tt>file1: c d</tt>
+<br><tt>file2: "e f" g</tt></blockquote>
+is transformed into the following <b>depend.mk</b> file when <b>-qb</b>
+is used on Windows:
+<blockquote><tt>file1: "c d"</tt>
+<br><tt>file2: "e f g"</tt></blockquote>
+When the <b>-qb</b> parameter is not specified, blanks are not assumed
+to be part of a filename unless they are already inside double quotes.
+For example:
+<blockquote><tt>file1: c d</tt>
+<br><tt>file2: "e f" g</tt></blockquote>
+<b>mkdep</b> would treat <b><tt>c</tt></b> and <b><tt>d</tt></b> as two
+separate filenames, "<b><tt>e f"</tt></b> as one filename, and <b><tt>g</tt></b>
+as another filename.&nbsp; The following <b>depend.mk</b> file would result:
+<blockquote><tt>file1: c</tt>
+<br><tt>file1: d</tt>
+<br><tt>file2: "e f"</tt>
+<br><tt>file2: g</tt></blockquote>
+The <b>-qb</b> flag currently has no effect on non-Windows platforms.
+<br>
+<hr>
+<h2>
+<a NAME="HDRMKLINKS"></a><a href="#ToC_35">mklinks - Create symbolic links</a></h2>
+<b>mklinks</b> enables you to create symbolic links to files in a backing
+build or shared sandbox. <b>mklinks</b> can create symbolic links to a
+single file or files of an entire subsystem. The command creates the necessary
+tree structure for any files symbolically linked.&nbsp; By default, this
+command will use sandbox information from the environment if it is available
+(normally provided by <b>workon</b>) rather than reprocess <b>.sandboxrc</b>.
+<p>This command can also be used as an alternative method for physically
+copying code from a backing build or shared sandbox into the development
+sandbox.
+<p>Before execution of the command, <b>mklinks</b> provides a confirmation
+message for the proposed "from" and "to" linking trees.
+<p>Instead of automatically linking a sandbox with its backing build, you
+can link files of two arbitrary directories. You can do this by using the
+<b>-link_from</b> and <b>-link_to</b> options together. These two options
+are an alternative to the <i>directory</i> specification, which must be
+used to create links in a sandbox to files in a backing build. <b>mklinks</b>
+returns an error if only one of the <b>-link_from</b> and <b>-link_to</b>
+pair is specified. <b>-link_from</b> and <b>-link_to</b> are described
+under abs_options.
+<p>Because OS/2 and Windows NT/95 do not support symbolic linking, <b>mklinks</b>
+cannot create symbolic links in these environments.&nbsp; Instead, <b>mklinks</b>
+only copies files on OS/2 and Windows NT/95, as if the <b>-copy</b> parameter
+had been specified.
+<h3>
+<a NAME="Header_36"></a><a href="#ToC_36">Syntax</a></h3>
+
+<dl><b>mklinks</b>[<b>-copy</b>] [<b>-over</b>] [<b>-timecmp</b>] [<b>-norecurse</b>]
+[<b>-query</b>] [<b>-norefresh</b>] [<b>-rename </b><i>newname</i>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[<i>ODE options</i>] &lt;<i>file... | directory... |&nbsp; abs_options</i>>
+<p><i>ODE options:</i>&nbsp; [<b>-info</b>] [<b>-auto</b>] [<b>-quiet |
+-normal | -verbose | -debug</b>] [<b>-usage | -version | -rev</b>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[<b>-sb</b> <i>sandbox</i>]&nbsp; [<b>-rc</b> <i>rcfile</i>]
+<p><i>abs_options:</i>&nbsp; [<b>-link_from</b> <i>source_directory </i><b>-link_to
+</b><i>new_directory</i>]
+<br>&nbsp;
+<h3>
+<a NAME="mklinksrc"></a><a href="#ToC_36a">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp; System errors
+<h3>
+<a NAME="Header_37"></a><a href="#ToC_37">Parameters</a></h3>
+</dl>
+
+<dl>
+<dt>
+<b>-copy</b></dt>
+
+<dd>
+Makes a physical copy rather than establishing a symbolic link. If this
+parameter is omitted, the default is symbolic link. This parameter does
+not overwrite existing links and files if <b>-over</b> or <b>-timecmp</b>
+are not specified. If both the <b>-copy</b> and the <b>-over</b> parameters
+are specified, all files and links are overwritten. If both the <b>-copy</b>
+and the <b>-timecmp</b> parameters are specified, all files and links are
+overwritten that have later versions in the backing chain.</dd>
+
+<dt>
+<b><i>file...</i></b></dt>
+
+<dd>
+The name of the file(s) to be linked or copied.&nbsp; You can use the standard
+shell wildcard characters (<b>*</b>, <b>?</b>, and <b>[]</b>) in a file
+name.</dd>
+
+<dt>
+<b><i>directory...</i></b></dt>
+
+<dd>
+The name(s) of one or more directories to be created, in which symbolic
+links should be made. If <b>mklinks</b> is run from within a sandbox the
+relative directory can be used. If run outside of a sandbox then an absolute
+path with respect to the top of the sandbox base should be used.&nbsp;
+You can use the standard shell wildcard characters (<b>*</b>, <b>?</b>,
+and <b>[]</b>) in a directory name.</dd>
+
+<dt>
+<b>-norecurse</b></dt>
+
+<dd>
+Inhibits linking of files in subdirectories of target specified. If this
+option is used, only the files in the target directory are linked; its
+subdirectories are created, but their contents are not linked.</dd>
+
+<dt>
+<b>-query</b></dt>
+
+<dd>
+Asks for confirmation before copying or linking a file.</dd>
+
+<dt>
+<b>-norefresh</b></dt>
+
+<dd>
+Does not refresh existing links. All existing files and links are not affected.
+If this parameter is omitted, the default is <b>refresh</b>, which causes
+existing links to be replaced with new links and actual files will not
+be overwritten (as long as neither <b>-over</b> nor <b>-timecmp</b> is
+not specified).</dd>
+
+<dt>
+<b>-over</b></dt>
+
+<dd>
+Overwrites files and links with the same name. <b>WARNING</b>: this option
+can overwrite files that have been checked out from a source control system.</dd>
+
+<dt>
+<b>-timecmp</b></dt>
+
+<dd>
+Similar to <b>-over</b> but overwrites files or links depending upon the
+modification timestamps of files in the backing chain. The latest version
+of the file in the backing chain is found. If it has a later timestamp
+than the version in the sandbox, then it is used to overwrite the file
+or link in the sandbox. If the file or link does not exist in the sandbox,
+the latest version from the backing chain is copied/linked to the sandbox.
+If both <b>-timecmp</b> and <b>-over</b> are specified, <b>-timecmp</b>
+takes precedence. <b>WARNING</b>: this option can overwrite files that
+have been checked out from a source control system.</dd>
+
+<dt>
+<b>-rename </b><i>newname</i></dt>
+
+<dd>
+The last file or directory on a <b><i>file</i></b> or <b><i>directory</i></b>
+source operand path is renamed to <b><i>newname</i></b> to determine the
+target file or directory for a link/copy. For example, if a source <b><i>directory</i></b>
+was <b>dir1/dir2</b> then all the files and directories in <b>dir2</b>
+will be copied/linked to <b>dir1/<i>newname</i></b>. If a source <b><i>file</i></b>
+was <b>dir3/file1</b> then <b>file1</b> would be copied/linked to <b>dir3/<i>newname</i></b>.
+The rename is done after the <b><i>file</i></b> or <b><i>directory</i></b>
+has been resolved to an absolute path with directories <b>..</b> and <b>.</b>
+eliminated. Thus a rename of <b>dir1/dir2/.</b> and <b>dir1/dir2</b> are
+the same; <b>dir2</b> will be renamed to <b><i>newname</i></b>. Some uses
+of <b>-rename</b> may cause undesirable results. For example, if both <b>dir3/file1</b>
+and <b>dir3/file2</b> are sources they will both be copied/linked to <b>dir3/<i>newname</i></b>.
+<b>-rename</b> may not be used with <b>-link_from</b> and <b>-link_to</b>.</dd>
+
+<br>&nbsp;
+<dt>
+&nbsp;If both the <b>-norefresh</b> and the <b>-over</b> or <b>-timecmp</b>
+parameters are specified, the default action is that only the <b>-norefresh</b>
+parameter is accepted to prevent files and links from being overwritten.</dt>
+</dl>
+
+<h3>
+<a NAME="Header_38"></a><a href="#ToC_38">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Eliminates prompting when defaults can be taken.</dd>
+
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Provides information on what the command would do if it were executed.
+The actual command is not performed. <b>-info</b> works in conjunction
+with the <b>-quiet</b>, <b>-normal</b>, <b>-verbose,</b> and <b>-debug</b>
+options.</dd>
+
+<dt>
+<b>-rc <i>rcfile</i></b></dt>
+
+<dd>
+Causes <b>mklinks</b> to use the file named <i>rcfile</i> to obtain information
+such as what the current sandbox is. If this option is not specified and
+the environment variable <b>SANDBOXRC</b> is not specified, then <b>mklinks</b>
+uses the <b>${HOME}/.sandboxrc</b> file to obtain this information.</dd>
+
+<dt>
+<b>-sb <i>sandbox</i></b></dt>
+
+<dd>
+Specifies the sandbox name. If you are already working in a sandbox (for
+example, through the <b>workon</b> command), this parameter is not necessary
+and the default is the current sandbox. If you are not working in a sandbox,
+the default is the default sandbox listed in <b>.sandboxrc</b> file.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_39"></a><a href="#ToC_39">Abs_options</a></h3>
+
+<dl>
+<dt>
+<b>-link_from <i>source_directory</i></b></dt>
+
+<dd>
+Uses <i>source_directory</i> as the path of the directory containing files
+from which to make the symbolic&nbsp; links. This option must be used in
+conjunction with the <b>-link_to </b><i>new_directory</i> option. The use
+of these options is for general functionality and does not normally apply
+to sandboxes.&nbsp; If this flag is listed multiple times, only the last
+one specified is used.</dd>
+
+<dt>
+<b>-link_to <i>new_directory</i></b></dt>
+
+<dd>
+Uses <i>new_directory</i> as the path to the directory to contain the new
+symbolic links. This option must be used in conjunction with the <b>-link_from
+</b><i>source_directory</i> option. The use of these options is for general
+functionality and does not normally apply to sandboxes.&nbsp; If this flag
+is listed multiple times, only the last one specified is used.</dd>
+</dl>
+
+<h3>
+<a NAME="envmklinks"></a><a href="#ToC_39a">Environment variables used</a></h3>
+
+<table BORDER WIDTH="100%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><b>SANDBOX</b></td>
+
+<td>Name of the sandbox. Normally set by <b>workon</b>.</td>
+</tr>
+
+<tr>
+<td><b>SANDBOXRC</b></td>
+
+<td>If set, the specified file is used instead of default .<b>sandboxrc</b>
+file. Normally set by <b>workon</b>.</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="Header_40"></a><a href="#ToC_40">Examples</a></h3>
+Assume you are in the <b>src</b> subdirectory of the <b>dune2</b> sandbox
+with the sandbox environment established with workon. Entering the command:
+<dl><b>mklinks sonnet/lib/libson</b></dl>
+creates the <b>sonnet/lib/libson</b> tree structure (if it does not already
+exist) in the <b>src</b> subdirectory of the <b>dune2</b> sandbox, and
+creates symbolic links to all files in the backing build's <b>libson</b>
+subdirectory. Entering the command:
+<dl><b>mklinks -copy intface.c</b></dl>
+physically copies the source file <b>intface.c</b> from the <b>src</b>
+subdirectory of the backing build into the <b>src</b> file of the <b>dune2</b>
+sandbox.
+<p>Assume you are in your home directory and you want to copy all the files
+from the backing chain to your sandbox <b>dune3</b> without being prompted.
+Entering the command:
+<p><b>mklinks -rc .sandboxrc -sb dune3 -copy -auto /src</b>
+<p>copies all the files from the backing chain to your sandbox <b>dune3</b>
+without being prompted..
+<br>
+<hr>
+<h2>
+<a NAME="HDRMKPATH"></a><a href="#ToC_41">mkpath - Create intermediate
+directories for a path</a></h2>
+<b>mkpath</b> creates any subdirectories needed for a path.
+<h3>
+<a NAME="Header_42"></a><a href="#ToC_42">Syntax</a></h3>
+
+<dl><b>mkpath </b>[<i>ODE Options</i>] <i>path</i>...
+<p><i>ODE options:</i>&nbsp; [<b>-info</b>] [<b>-auto</b>] [<b>-quiet |
+-normal | -verbose | -debug</b>] [<b>-usage | -version | -rev</b>]
+<br>&nbsp;
+<h3>
+<a NAME="mkpathrc"></a><a href="#ToC_42a">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="Header_43"></a><a href="#ToC_43">Parameters</a></h3>
+
+<dl>
+<dt>
+<b><i>path ...</i></b></dt>
+
+<dd>
+Specifies the paths to be created. <b>mkpath</b> creates the subdirectories
+needed to complete the paths. The last item of a path is assumed to not
+be a directory, and is not created. For example, if the path is <tt>bb/cc/dd</tt>
+then <tt>bb/cc</tt> is created. It is assumed that the user will supply
+file <tt>dd</tt> in directory <tt>cc</tt>.</dd>
+</dl>
+
+<h3>
+<a NAME="mkpath_ODEOptions"></a><a href="#ToC_mkpath_ODEOptions">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Provides information on what the command would do if it were executed.
+The actual command is not performed.</dd>
+
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Automatically answers interactive questions.&nbsp; Since this command never
+asks any, this flag has no effect.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+</dl>
+
+<h3>
+<a NAME="envmkpath"></a><a href="#ToC_43a">Environment variables used</a></h3>
+None
+<h3>
+<a NAME="Header_44"></a><a href="#ToC_44">Example</a></h3>
+Entering the command:
+<dl><b>mkpath /sb1/src/tutorial/helloworld.c</b></dl>
+creates any subdirectories necessary to complete the <b>/sb1/src/tutorial</b>
+path.&nbsp;
+<hr>
+<h2>
+<a NAME="HDRMKSB"></a><a href="#ToC_45">mksb - Make a new sandbox</a></h2>
+<b>mksb</b> creates a new sandbox. It can also be used to list all current
+sandboxes, or to remove a sandbox. See also the related command <b><a href="#HDRMKBB">mkbb</a></b>.
+<p>In creating a new sandbox, <b>mksb</b> builds the directory structure,
+and populates the sandbox in accordance with parameters specified and default
+information obtained from a control file known as the <b>.sandboxrc</b>
+file. If an <b>.sandboxrc</b> file does not exist, <b>mksb</b> creates
+the file; otherwise, <b>mksb</b> updates the sandbox information that the
+file contains.
+<h3>
+<a NAME="Header_46"></a><a href="#ToC_46">Syntax</a></h3>
+
+<dl><b>mksb</b>[<b>-def</b>] [<b>-back</b><i>backing_build</i>] [<b>-blist
+</b><i>build_list</i>] [<b>-dir</b><i>sandbox_dir</i>] [<b>-m</b><i>machine</i>[<i>:machine2
+...</i>]]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<i>Population options</i>]
+[<i>ODE options</i>]<b> </b><i>sandbox_name </i>| <b>-sb </b><i>sandbox_name</i>
+<p><b>mksb</b> <b>-list</b> [<b>-rc</b> <i>rcfile</i>]
+<p><b>mksb</b> <b>-undo</b> [<i>ODE options</i>] [<i>sandbox_name</i> |
+<b>-sb </b><i>sandbox_name</i>] [<b>-rc</b> <i>rcfile</i>]
+<p><b>mksb -upgrade </b>[<i>ODE options</i>] <i>sandbox_name</i> | <b>-sb</b><i>sandbox_name</i>
+<p><i>Population options:</i>&nbsp; [<b>-tools</b> <i>mode</i>]&nbsp; [<b>-obj
+</b><i>mode dir</i>]&nbsp; [<b>-src</b> <i>mode dir</i>]
+<p><i>ODE options:</i>&nbsp; [<b>-info</b>] [<b>-auto</b>] [<b>-quiet |
+-normal | -verbose | -debug</b>] [<b>-usage | -version | -rev</b>] [<b>-rc</b><i>rcfile</i>]
+<br>&nbsp;
+<h3>
+<a NAME="mksbrc"></a><a href="#ToC_46a">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="Header_47"></a><a href="#ToC_47">Parameters</a></h3>
+
+<dl>
+<dt>
+<b>-blist <i>build_list</i></b></dt>
+
+<dd>
+Specifies the <a href="#Header_102">build list file</a> pathname. This
+parameter overrides the value in the <b>BUILD_LIST</b> environment variable,
+if the variable exists. The specified build list file must already exist.
+The sandbox is added to the build list file only if <b>-blist</b> is used.
+The <i>build_list</i> pathname will be stored in the build_list entry of
+<b>sb.conf</b>.
+<a href="#Header_109">Environment variable specifications</a> may be used
+in <i>build_list</i>, for example <b>${PROJ_BASE}/release5/bld_lst</b>.&nbsp;
+In this example, the build list file and the backing builds listed in the
+file might be on a file system shared by different operating systems.&nbsp;
+The environment variable <b>PROJ_BASE</b> could be defined as <b>/project2</b>
+on UNIX and defined as <b>O:\project2</b> on OS/2 or Windows.</dd>
+
+<dt>
+<b>-back <i>backing_build</i></b></dt>
+
+<dd>
+Specifies the name of the backing build. <i>backing_build</i> must be an
+absolute path to a backing build or to another sandbox, or it must be the
+name of a backing build that can be found in a <a href="#Header_102">build
+list</a>. If this option is not specified, <b>mksb</b> prompts interactively
+for this information until a valid backing build is given. If there is
+a build list specified in the <b>BUILD_LIST</b> environment variable or
+else if the default sandbox's backing build has a build list specification,
+you may optionally give the build name (it is most convenient to allow
+the interactive prompt to display a list of all build names).&nbsp; If
+you are specifying an absolute path to a backing build, <a href="#Header_109">environment
+variable specifications</a> (for example, <b>${PROJ_BASE}/program2/release5</b>)
+may be used in <i>backing_build</i> so that different values can be substituted
+at run time. In this case the backing build could be on a file system shared
+by several computers.&nbsp; The environment variable <b>PROJ_BASE</b> could
+have the value <b>/server3</b> for UNIX and <b>O:\server3</b> for OS/2
+or Windows.&nbsp; <i>backing_build</i> is stored in the <b>sb.conf</b>
+file of the sandbox.</dd>
+
+<dt>
+<b>-def</b></dt>
+
+<dd>
+Establishes the sandbox to be created as the default sandbox. The default
+sandbox is listed in the <i>rcfile</i> file. See the description of the
+<b>-rc</b> parameter for how the <i>rcfile</i> is specified. If this sandbox
+already exists, this parameter can be used to make this sandbox be the
+default sandbox.</dd>
+
+<dt>
+<b>-dir <i>sandbox_dir</i></b></dt>
+
+<dd>
+Creates the new sandbox in the <i>sandbox_dir</i> directory. <i>sandbox_dir</i>
+must already exist. If this option is not used, ODE builds the sandbox
+in the base directory listed in the <b>.sandboxrc</b> file.&nbsp; If <a href="#Header_109">environment
+variables are specified</a> in <i>sandbox_dir</i> (for example, <b>${MY_SYSTEM}/program3</b>)
+it will be stored in the <b>.sandboxrc</b> file in that form.&nbsp; This
+allows the user to parameterize base entries in the <b>.sandboxrc</b> file.&nbsp;
+The environment variable <b>MY_SYSTEM</b> could have different values on
+a UNIX system or an NT or OS/2 system, yet the same sandbox could be used
+if it was on a shared file system.</dd>
+
+<dt>
+<b>-list</b></dt>
+
+<dd>
+Displays a list of sandboxes, the default sandbox, and any sandbox bases
+in the <i>rcfile</i>. If the <b>-rc</b> option is specified, <b>-list</b>
+displays information from the specified <i>rcfile</i>. If <b>-rc</b> is
+not specified, <b>-list</b> displays information from the default rc file
+(<b>.sandboxrc</b>).</dd>
+
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">-list does not accept the name of a specific sandbox.&nbsp;</td>
+</tr>
+</table>
+
+<dt>
+<b>-m <i>machine</i>[<i>:machine</i>]...</b></dt>
+
+<dd>
+Specifies the <a href="ODEAdminsGuide.htm#Header_4">machines</a> needed
+to build the machine-dependent directories for the new sandbox. If there
+is more than one machine, the names should be separated by a colon (:),
+without spaces. If this option is not used, the machines listed in the
+<b>.sandboxrc</b> file will be used. If the sandbox already exists, this
+parameter can be used to add machines to the sandbox.</dd>
+
+<dt>
+<a NAME="mksb_sbname"></a><b><i>sandbox_name</i></b> | <b>-sb <i>sandbox_name</i></b></dt>
+
+<dd>
+Is the name of the sandbox to be created. The sandbox name:</dd>
+
+<ul>
+<li>
+Must contain only legal characters, which are: alphanumeric characters
+(a-z,A-Z,0-9), dashes (-), periods (.), tildes (~), and underscores (_).</li>
+
+<li>
+Must not be equal to the following names: ".", "..", or "...".</li>
+
+<li>
+Must not begin with a tilde or a dash.</li>
+
+<li>
+Must be a single name. Each execution of <b>mksb</b> creates only one sandbox.</li>
+
+<li>
+You cannot have two sandboxes with the same name in the rc file.</li>
+</ul>
+
+<dt>
+<b>-upgrade</b></dt>
+
+<dd>
+Upgrades a sandbox's <b>sb.conf</b> from earlier versions of ODE.&nbsp;
+See the <i><a href="ODEAdminsGuide.htm">I</a><a href="ODEAdminsGuide.htm#Upgrading">nstallation
+and Admininstration Guide's</a></i><a href="ODEAdminsGuide.htm#Upgrading">
+section on upgrading</a> to determine what needs to be done to upgrade
+between different releases of ODE.&nbsp; This will create <b>sb.conf</b>
+if it does not exist and there is a link pointing to the backing build.
+The link symbolic link was used in earlier versions of ODE to point to
+the backing build of the sandbox.</dd>
+
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">Windows95/98/NT and OS/2 don't support symbolic links.&nbsp;
+Also the versions of ODE that used the<b> </b>link were not supported on
+these platforms therefore no upgrade is possible.&nbsp;</td>
+</tr>
+</table>
+
+<dt>
+<b>-undo </b>[<b><i>sandbox_name </i></b>| <b>-sb</b> <b><i>sandbox_name</i></b>]</dt>
+
+<dd>
+Removes a sandbox. Include the <i>-auto</i> option if you do not wish to
+be prompted for a confirmation.&nbsp; If <i>sandbox_name</i> is not specified,
+a list of sandboxes will be displayed to choose from.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_48"></a><a href="#ToC_48">Population options</a></h3>
+
+<dl>
+<dt>
+If any of the following options are not given on the command line, the
+defaults listed in the <b>.sandboxrc</b> file are used if it exists, otherwise
+the default mode is <b>b</b> and the default dir is <b>/</b>.</dt>
+
+<br>&nbsp;
+<dt>
+&nbsp;<b>-tools <i>mode</i></b></dt>
+
+<dd>
+Indicates how to access tools from the backing build, and how to populate
+the tools subdirectory of the sandbox with these tools. <i>mode</i> can
+be:</dd>
+
+<dl>
+<dt>
+<b>l</b></dt>
+
+<dd>
+link from the local area to the backing build's tools. This option is not
+available in the OS/2 and Windows NT environments.</dd>
+
+<dt>
+<b>c</b></dt>
+
+<dd>
+copy the backing build's tools into the local area.</dd>
+
+<dt>
+<b>b</b></dt>
+
+<dd>
+neither copy nor link to the backing build's tools. This parameter deals
+with space considerations within the sandbox. Copying (<b>c</b>) consumes
+the most space. Linking (<b>l</b>) consumes some space. However, with the
+<b>b</b> option, you have to switch to the directory with the backing build
+in order to access a file (for example, to display a source file).</dd>
+
+<dd>
+</dd>
+</dl>
+
+<dd>
+If <b>l</b> or <b>c</b> is specified, the tools will be linked or copied
+for each machine specified in the <b>-m</b> parameter.</dd>
+
+<dt>
+<b>-obj <i>mode dir</i></b></dt>
+
+<dd>
+Indicates how to access object code from the backing build, and how to
+populate the obj subdirectory of the sandbox with object code. <i>mode</i>
+can be:</dd>
+
+<dl>
+<dt>
+<b>l</b></dt>
+
+<dd>
+link from the local area to the backing build's object code. The linking
+(<b>l</b>) option is not available in the OS/2 and Windows NT environments.</dd>
+
+<dt>
+<b>c</b></dt>
+
+<dd>
+copy the backing build's object code into the local area.</dd>
+
+<dt>
+<b>b</b></dt>
+
+<dd>
+neither copy nor link to the backing build's object code.</dd>
+
+<br><b><i>dir</i></b>is the list of directories to which the links should
+be made, or from which the copies should be made. The directory list must
+begin with a slash (/) and the individual directories must be separated
+by a colon (:). For example, <b>/bin:/usr/bin</b>specifies two directories:
+<b>/bin</b>and <b>/usr/bin</b>. To copy or link to all objects, specify
+a slash (/). A copy or link will be established for each of the machines
+specified in the <b>-m</b><i>machine</i>[<i>:machine</i>]... parameter.</dl>
+
+<dt>
+<b>-src <i>mode</i> <i>dir</i></b></dt>
+
+<dd>
+Indicates how to access source code from the backing build, and how to
+populate the src subdirectory of the sandbox with source code. <i>mode</i>
+can be:</dd>
+
+<dl>
+<dt>
+<b>l</b></dt>
+
+<dd>
+link from the local area to the backing build's source code. The linking
+(<b>l</b>) option is not available in the OS/2 and Windows NT/95 environments.</dd>
+
+<dt>
+<b>c</b></dt>
+
+<dd>
+copy the backing build's source code into the local area.</dd>
+
+<dt>
+<b>b</b></dt>
+
+<dd>
+neither copy nor link to the backing build's source code.</dd>
+
+<dt>
+<b><i>dir</i></b> is the list of directories to which the links should
+be made, or from which the copies should be made. The directory list must
+begin with a slash (/) and the individual directories must be separated
+by a colon (:). For example, <b>/proj:/proj/src</b> specifies two directories:
+<b>/proj</b> and <b>/proj/src</b>. To copy or link to all sources, specify
+a slash (/).</dt>
+</dl>
+</dl>
+
+<h3>
+<a NAME="Header_49"></a><a href="#ToC_49">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+<b>-auto</b> eliminates prompting when defaults can be taken. For example,
+when used in conjunction with the <b>-undo</b> option, <b>-auto</b> allows
+removal of a sandbox without the user confirmation message.</dd>
+
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Provides information on what the command would do if it were executed.
+The actual command is not performed. <b>-info</b> works in conjunction
+with the <b>-quiet</b>, <b>-normal,</b> <b>-verbose</b> and <b>-debug</b>
+options.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-rc <i>rcfile</i></b></dt>
+
+<dd>
+Causes <b>mksb</b> to use the file named <i>rcfile</i> to obtain information
+such as what the current sandbox is. If this option is not specified, <b>mksb
+</b>uses the <b>SANDBOXRC</b> environment variable if set, if not <b>mksb</b>
+uses the <b>$HOME/.sandboxrc</b> file to obtain this information.</dd>
+
+<dt>
+<b>-sb <i>sandbox_name</i></b></dt>
+
+<dd>
+See the description for <b><i><a href="#mksb_sbname">sandbox_name</a></i></b>
+in the <a href="#Header_47">Parameters</a> section of <b>mksb</b>.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+</dl>
+
+<h3>
+<a NAME="envmksb"></a><a href="#ToC_49a">Environment variables used</a></h3>
+
+<table BORDER WIDTH="100%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><b>CONTEXT</b></td>
+
+<td>If a machine-name is specified on the command line using the -m option
+else if the <b>MACHINE</b> environment variable is already set, then <b>CONTEXT</b>
+is set to that machine-name. If nothing has been specified then the default
+value is the name of the machine that the tool is executing on.</td>
+</tr>
+
+<tr>
+<td><b>MACHINE</b></td>
+
+<td>This always holds name of the machine that the tool is executing on.</td>
+</tr>
+
+<tr>
+<td><b>SANDBOXRC</b></td>
+
+<td>If set, used instead of default .<b>sandboxrc</b> file.</td>
+</tr>
+
+<tr>
+<td><b>BUILD_LIST</b></td>
+
+<td>If set, this specifies the build_list file that has a list of all the
+backing builds.</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="Header_50"></a><a href="#ToC_50">Example</a></h3>
+Entering the command:
+<dl><b>mksb -back /hsf/den/sonnet/latest -dir $HOME/sbox -m playa1:playa2
+sb1</b></dl>
+creates a new sandbox named <b>sb1</b> in the <b>$HOME/sbox</b> directory.
+The backing build for <b>sb1</b> is <b>/hsf/den/sonnet/latest</b>. Machine-dependent
+directories will be created for machines <b>playa1</b> and <b>playa2</b>.
+The default rc file (<b>.sandboxrc</b>) will be used.
+<p>Entering the command:
+<dl><b>mksb -verbose -info -back /afs/lair/nways_admin/admin1 testsb</b></dl>
+provides detailed information on the steps <b>mksb</b> performs in creating
+a sandbox named <b>testsb</b> that is backed by build <b>/afs/lair/nways/nways_admin/admin1</b>.
+The actual sandbox is not created.
+<p>Entering the command:
+<dl><b>mksb -undo sb5</b></dl>
+removes sandbox <b>sb5</b>.
+<br>
+<hr>
+<h2>
+<a NAME="Header_50f"></a><a href="#ToC_50f">odeecho - Output a message</a></h2>
+<b>odeecho </b>is an alternative to the built-in echo command on Windows
+NT/95 and OS/2 (it is not included on other platforms, as the Unix echo
+already provides <b>odeecho</b>'s functionality).&nbsp; It simply copies
+the arguments you give it to the standard output stream.&nbsp; However,
+there are a few advantages provided over the built-in echo:
+<ul>
+<li>
+<b>odeecho</b> removes quotes (both single and double) from arguments before
+printing them.&nbsp; This enables you to print special shell characters
+(such as the ampersand) without the quotes appearing.</li>
+
+<li>
+By default, <b>odeecho</b> interprets the backslash as an escape character,
+which provides a way to print special characters: quotes (\' and \"), tabs
+(\t), linefeeds (\n), carriage returns (\r), and the backslash itself (\\).&nbsp;
+Any other character preceded by a backslash is printed normally ("\h" prints
+"h").&nbsp; To override this default behavior, use the <b>-e</b> parameter.</li>
+
+<li>
+Running <b>odeecho</b> with no arguments prints a blank line (instead of
+"ECHO is on.").</li>
+</ul>
+<b>odeecho</b> does not take any of the parameters typical to ODE commands,
+such as <b>-version</b>.
+<h3>
+<a NAME="Header_50a"></a><a href="#ToC_50a">Syntax</a></h3>
+
+<dl><b>odeecho </b>[<b>-e</b>[<b><i>char</i></b>]] [<b>-?</b>] [<i>text</i>]
+<br>&nbsp;
+<h3>
+<a NAME="Header_50e"></a><a href="#ToC_50e">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="Header_50b"></a><a href="#ToC_50b">Parameters</a></h3>
+
+<dl>
+<dt>
+<b>-e[<i>char</i>]</b></dt>
+
+<dd>
+Causes <i>char</i> (which must be a single character) to be used as the
+escape character instead of a backslash.&nbsp; If <i>char</i> is omitted,
+no characters will be escaped (causes the backslash to become a normal
+character).&nbsp; By default, <b>odeecho</b> treats backslashes as escape
+characters (as if "-e\" was given).</dd>
+
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">Using this flag without <i>char</i> to turn off escaping
+makes it impossible to print special characters (quotes, etc.).&nbsp;</td>
+</tr>
+</table>
+
+<dt>
+<b>-?</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">This generates a return code of 1, similar to other ODE
+commands when <b>-usage</b> is used.&nbsp;</td>
+</tr>
+</table>
+
+<dt>
+<b><i>text</i></b></dt>
+
+<dd>
+The text string to print.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_50d"></a><a href="#ToC_50d">Environment variables used</a></h3>
+
+<dl>None
+<h3>
+<a NAME="Header_50c"></a><a href="#ToC_50c">Examples</a></h3>
+Entering the command:
+<p><b>odeecho "&amp;"</b>
+<p>Displays:
+<p><b><tt>&amp;</tt></b>
+<p>Entering the command:
+<p><b>odeecho Hello\n\'World\'</b>
+<p>Displays:
+<p><b><tt>Hello</tt></b>
+<br><b><tt>'World'</tt></b></dl>
+Entering the command:
+<p><b>odeecho -e Hello\n\'World\'</b>
+<p>Displays:
+<p><b><tt>Hello\n\World\</tt></b>
+<br>
+<hr>
+<h2>
+<a NAME="HDRRESB"></a><a href="#ToC_51">resb - Retarget a sandbox</a></h2>
+<b>resb</b> enables you to switch from the shared sandbox or backing build
+that is currently backing your sandbox to a new shared sandbox or backing
+build. This process of change is called retargeting.
+<p>If you retarget a sandbox populated with symbolic links, you must recreate
+the links after the retargeting. You can use the <b>mklinks</b> command
+for recreating these links (see<a href="#HDRMKLINKS">"MKLINKS - Create
+Symbolic Links"</a>).
+<h3>
+<a NAME="Header_52"></a><a href="#ToC_52">Syntax</a></h3>
+
+<dl><b>resb</b> [<i>ODE options</i>] <i>new_backing_build</i>
+<p><i>ODE options:</i> [<b>-info</b>] [<b>-auto</b>] [<b>-quiet | -normal
+| -verbose | -debug</b>] [<b>-usage | -version | -rev</b>] [<b>-sb </b><i>sandbox</i>]&nbsp;
+[<b>-rc</b> <i>rcfile</i>]
+<br>&nbsp;
+<h3>
+<a NAME="resbrc"></a><a href="#ToC_52a">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="Header_53"></a><a href="#ToC_53">Parameters</a></h3>
+
+<dl>
+<dt>
+<b><i>new_backing_build</i></b></dt>
+
+<dd>
+The full path of the new backing build or sandbox that will now back the
+development sandbox or the name of a backing build. If the <i>new_backing_build</i>
+is not an absolute path, it is assumed to be a name of a backing build
+in the <a href="#Header_102">build list file</a> if the file is available.
+If a backing build is not given, then a list of backing builds retrieved
+from the build list file is displayed.&nbsp; If <i>new_backing_build</i>
+does not resolve into a backing build then the user is prompted to enter
+a backing build.</dd>
+
+<dt>
+&nbsp;</dt>
+
+<dd>
+<a href="#Header_109">Environment variables may be used</a> in <i>new_backing_build</i>
+(for example,&nbsp; <b>${PROJ_BASE}/build3</b>) so that different paths
+to the sandbox backing build can be used at runtime.&nbsp; For example,
+if the backing build is on a file system that is shared between different
+operating systems, the environment variable <b>PROJ_BASE</b> might have
+the value <b>/project5/release2.1</b> on UNIX, and the value <b>O:\project5\release2.1</b>
+on OS/2 or Windows.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_54"></a><a href="#ToC_54">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Provides information on what the command would do if it were executed.
+The actual command is not performed. <b>-info</b> works in conjunction
+with the <b>-quiet</b>, <b>-normal</b>, and <b>-verbose</b> options.</dd>
+
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Eliminates prompting when defaults can be taken.</dd>
+
+<dt>
+<b>-rc <i>rcfile</i></b></dt>
+
+<dd>
+Causes <b>resb</b> to use the file named <i>rcfile</i> to obtain information
+such as what the current sandbox is. If this option is not specified, <b>resb</b>
+uses the <b>$HOME/.sandboxrc</b> file to obtain this information.</dd>
+
+<dt>
+<b>-sb <i>sandbox</i></b></dt>
+
+<dd>
+Specifies the sandbox name. If you are already working in a sandbox (for
+example, through the <b>workon</b> command), this parameter is not necessary
+and the default is your current sandbox. If you are not working in a sandbox,
+the default is the default sandbox listed in the sandbox rc file.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+</dl>
+
+<h3>
+<a NAME="envresb"></a><a href="#ToC_54a">Environment variables used</a></h3>
+
+<table BORDER WIDTH="100%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><b>SANDBOX</b></td>
+
+<td>Name of the sandbox. Normally set by <b>workon</b>.</td>
+</tr>
+
+<tr>
+<td><b>SANDBOXRC</b></td>
+
+<td>If set, the specified file is used instead of default <b>.sandboxrc</b>
+file. Normally set by workon.</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="Header_55"></a><a href="#ToC_55">Examples</a></h3>
+Entering the command:
+<dl><b>resb /hfs/den/sonnet/proj11</b></dl>
+switches the default sandbox, as indicated in the <b>.sandboxrc</b> file,
+to the <b>/hfs/den/sonnet/proj11</b> backing build.
+<br>
+<hr>
+<h2>
+<a NAME="HDRSBINFO"></a><a href="#ToC_56">sbinfo - Show information derived
+from the buildconf files</a></h2>
+The <b>sbinfo</b> command displays information from the <b>Buildconf</b>
+files for the specified sandbox. If no sandbox is specified, <b>sbinfo</b>
+displays information for the current sandbox or the default sandbox if
+not in a <b>workon</b> environment. If you issue the <b>sbinfo</b> command
+from within a <b>workon</b> environment, you would get different results
+than if you ran <b>sbinfo</b> outside the <b>workon</b> environment. The
+reason for this is that the <b>Buildconf</b> files may have lines that
+use <i>setenv</i> without the <i>replace</i> modifier, which will not cause
+those variables to be reset if they already existed in the environment.
+The <b>workon</b> command sets the environment variable initially and <b>sbinfo</b>
+will not replace it or set it if the <i>replace</i> modifier was not used
+in the <b>Buildconf</b> configuration file.&nbsp; By default, this command
+will use sandbox information from the environment if it is available (normally
+provided by <b>workon</b>) rather than reprocess <b>.sandboxrc</b>.
+<p>You can limit the amount of information displayed by specifying one
+or more variables (for example, <i>MAKESYSPATH</i>). In this case, <b>sbinfo</b>
+displays information for only the variables specified.
+<h3>
+<a NAME="Header_57"></a><a href="#ToC_57">Syntax</a></h3>
+
+<dl><b>sbinfo</b> [<i>ODE options</i>] [<i>variables</i>]
+<p><i>ODE options:</i>&nbsp; [<b>-quiet | -normal | -verbose | -debug</b>]
+[<b>-usage | -version | -rev</b>] [<b>-info</b>] [<b>-auto</b>]
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[<b>-sb</b> <i>sandbox_name</i>]&nbsp; [<b>-rc</b> <i>rcfile</i>]
+<br>&nbsp;
+<h3>
+<a NAME="sbinforc"></a><a href="#ToC_57a">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="Header_58"></a><a href="#ToC_58">Parameters</a></h3>
+
+<dl>
+<dt>
+<b><i>variables</i></b></dt>
+
+<dd>
+Displays the contents of the variables specified (for example, OBJECTDIR
+shows the relative path from the base of the source tree to the object
+tree).&nbsp; By default, <b>sbinfo</b> shows the names and values of all
+relevant sandbox variables.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_59"></a><a href="#ToC_59">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Display information about what the command would do instead of doing it.&nbsp;
+Since this command only displays information, this flag has no effect.</dd>
+
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Automatically answers interactive questions.&nbsp; Since this command never
+asks any, this flag has no effect.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+
+<dt>
+<b>-sb <i>sandbox_name</i></b></dt>
+
+<dd>
+Specifies the sandbox name. If this parameter is not included, ODE uses
+the name of the current sandbox.</dd>
+
+<dt>
+&nbsp;</dt>
+
+<dt>
+<b>-rc <i>rcfile</i></b></dt>
+
+<dd>
+Causes <b>sbinfo</b> to obtain its information from the file named <i>rcfile</i>.</dd>
+</dl>
+
+<h3>
+<a NAME="envsbinfo"></a><a href="#ToC_59a">Environment variables used</a></h3>
+Doesn't use any variables - just reports on all the sandbox related variables
+that have been set.
+<h3>
+<a NAME="Header_60"></a><a href="#ToC_60">Examples</a></h3>
+Entering the command:
+<dl><b>sbinfo</b></dl>
+causes display of all the variables in the <b>Buildconf</b> files for the
+current sandbox.
+<h2>
+
+<hr><a NAME="HDRSBLS"></a><a href="#ToC_61">sbls - List directory contents</a></h2>
+<b>sbls</b> displays the contents of a directory similar to the Unix <b>ls</b>
+command.&nbsp; When run in a sandbox environment (for example, in a <b>workon</b>
+shell), it shows all the files and directories in the current directory
+(the sandbox) and all levels of the backing chain.&nbsp; If run outside
+a sandbox environment, only the files in the current directory are shown.
+<h3>
+<a NAME="Header_62"></a><a href="#ToC_62">Syntax</a></h3>
+
+<dl><b>sbls</b>[<b>-alpFR</b>]<b> </b>[ODE options] [<i>file...</i>]
+<p><i>ODE options: </i>[<b>-quiet | -normal | -verbose | -debug</b>] [<b>-usage
+| -version | -rev</b>] [<b>-info</b>] [<b>-auto</b>]
+<br>&nbsp;
+<h3>
+<a NAME="sblsrc"></a><a href="#ToC_62a">Return codes</a></h3>
+&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other&nbsp;</b>&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="Header_63"></a><a href="#ToC_63">Parameters</a></h3>
+
+<dl>
+<dt>
+<b>-a</b></dt>
+
+<dd>
+Lists all entries in the directory, including those starting with a . (dot).</dd>
+
+<dt>
+<b>-l</b></dt>
+
+<dd>
+(ell) List in long format.&nbsp; Displays file size and time of last modification
+for each file.</dd>
+
+<dt>
+<b>-p</b></dt>
+
+<dd>
+Displays the full absolute file path for each filename.</dd>
+
+<dt>
+<b>-F</b></dt>
+
+<dd>
+Puts a "/" (slash) after each filename if the file is a directory, an "@"
+(at sign) for symbolic link, and zero or more "^" (caret) characters to
+show where the files exist in the chain (one tilde for each level, so files
+found in the sandbox would display no tilde characters, while files found
+in the second backed sandbox would display two).</dd>
+
+<dt>
+<b>-R</b></dt>
+
+<dd>
+Lists all subdirectories recursively.</dd>
+
+<dt>
+<b><i>file...</i></b></dt>
+
+<dd>
+Files and/or directories to list. The filename may contain shell wildcard
+characters.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_64"></a><a href="#ToC_64">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Display information about what the command would do instead of doing it.&nbsp;
+Since this command only displays information, this flag has no effect.</dd>
+
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Automatically answers interactive questions.&nbsp; Since this command never
+asks any, this flag has no effect.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+</dl>
+
+<h3>
+<a NAME="envsbls"></a><a href="#ToC_64a">Environment variables used</a></h3>
+
+<dl>&nbsp;
+<table BORDER WIDTH="100%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><b>BACKED_SANDBOXDIR</b></td>
+
+<td>If this variable is set in the environment, sbls assumes it is running
+in a sandbox environment and thus shows information from the backing chain
+contained within.&nbsp; Otherwise, it only processes files in the current
+directory.</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="sblsexample"></a><a href="#ToC_64b">Examples</a></h3>
+Assume <b>BACKED_SANDBOXDIR</b>contains "/home/jdoe/sb:/home/share/sb:/builds/bb"
+(as might be set when the <b>workon</b>command is run), and the user is
+currently in <b>/home/jdoe/sb/src</b>.
+<br>&nbsp;
+<dl>1. <b>"sbls -lF"</b>should display:
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; 4910 Jan 11 16:08:11 1999 Buildconf^^</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; 1807 Jan 11 16:08:12 1999 Buildconf.exp^^</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; 8775 Jan 11 16:43:10 1999 Makeconf^</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 374 Jan 11 15:46:46 1999 Makefile^</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 320 Jan 11 15:48:26 1999 bbexample/^^</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 384 Jan 13 13:08:06 1999 bin/</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 288 Jan 12 16:23:47 1999 doc/^^</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 288 Jan 13 11:40:11 1999 include/</tt>
+<p>This implies that the bin and include directories were in the sandbox
+at <b>/home/jdoe/sb/src</b>, the <b>Makeconf</b> and <b>makefile</b> files
+have been created in <b>/home/share/sb/src</b>, and the other entries exist
+only in <b>/builds/bb/src</b>.</dl>
+
+<h2>
+
+<hr size="3" width="100%"><a NAME="HDRSBMERGE"></a><a href="#ToC_sbmerge1">sbmerge
+- Merge sandbox files</a></h2>
+<b>sbmerge</b>is an ODE front end to a three file merge tool such as "merge",
+available on many Unix systems. It must be run in a sandbox environment
+(for example, in a <b>workon</b>shell). The required file must exist in
+the current sandbox. <b>sbmerge</b>will look for corresponding files in
+the backing chain and call an external merge tool to merge this file's
+changes into the local file. A backup copy of the original local file is
+made with a <b>.bak</b>extension.
+<h3>
+<a NAME="sbmergesyntax"></a><a href="#ToC_sbmerge2">Syntax</a></h3>
+
+<dl><b>sbmerge</b>[<b>-all</b>] [<b>-orig&nbsp; </b>dir] [<i>ODE options</i>]
+[<i>tool options</i>]&nbsp;<i> file</i>
+<p><i>ODE options: </i>[<b>-quiet | -normal | -verbose | -debug</b>] [<b>-usage
+| -version | -rev</b>] [<b>-info</b>] [<b>-auto</b>]
+<p><i>tool options:&nbsp;&nbsp;</i> [-*]</dl>
+
+<h3>
+<a NAME="sbmergerc"></a><a href="#ToC_sbmerge3">Return codes</a></h3>
+
+<dl>&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success
+<br>&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error
+<br>&nbsp;&nbsp; <b>Other&nbsp;</b>&nbsp;&nbsp; System errors</dl>
+
+<h3>
+<a NAME="paramsbmerge"></a><a href="#ToC_sbmerge4">Parameters</a></h3>
+
+<dl>
+<dt>
+<b>-all</b></dt>
+
+<dd>
+Attempts to merge <b>file</b> with all corresponding files in all sandboxes
+in the backing chain.&nbsp; The default is to stop after the first merge
+is performed.</dd>
+
+<dt>
+<b>-orig&nbsp; </b>dir</dt>
+
+<dd>
+Indicates the root directory of the build tree that contains the original
+file.&nbsp; The default is to assume the original file is in the backing
+build.</dd>
+
+<dt>
+<b><i>file</i></b></dt>
+
+<dd>
+Local sandbox file to be updated by merge.&nbsp; This filename may have
+a relative path or absolute path, but it must be in the current sandbox.</dd>
+</dl>
+
+<h3>
+<a NAME="optionssbmerge"></a><a href="#ToC_sbmerge5">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Display information about what the command would do instead of doing it.</dd>
+
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Automatically answers interactive questions.&nbsp; The user will not be
+prompted to verify before calling the merge tool.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+</dl>
+
+<h3>
+<a NAME="sbmergetooloptions"></a><a href="#ToC_sbmerge6">tool options</a></h3>
+
+<dl>
+<dt>
+<b>-*</b></dt>
+
+<dl>
+<dt>
+Provides information passed directly from <b>sbmerge</b> to the merge tool.
+<b>sbmerge</b> does not alter the options.&nbsp; Any option that is not
+recognized by <b>sbmerge</b> is passed on to the merge tool.</dt>
+</dl>
+</dl>
+
+<h3>
+<a NAME="envsbmerge"></a><a href="#ToC_sbmerge7">Environment variables
+used</a></h3>
+&nbsp;
+<table BORDER WIDTH="100%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><b>&nbsp;ODEMERGE&nbsp;</b></td>
+
+<td>The name of the merge tool that sbmerge will call.&nbsp; This must
+be a three file merge tool. The default is "merge".</td>
+</tr>
+
+<tr>
+<td>&nbsp;<b>SBMERGE_ARGFIX&nbsp;</b></td>
+
+<td>If your merge tool doesn't work with absolute paths for the first argument,
+define this variable.</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="sbmergeexample"></a><a href="#ToC_sbmerge8">Examples</a></h3>
+
+<dl>There are at least two plausible scenarios that you may encounter in
+an ODE environment which will require the merging of files.
+<p>Consider&nbsp; two sandboxes that are backed by the same backing build
+and that file changes have been made independently.&nbsp; If both sandboxes
+are to be implemented, then the files common to both sandboxes must be
+merged.&nbsp; Assume&nbsp;<b> sandboxA</b> is backed by <b>sandboxB</b>
+which is backed by the backing build and that&nbsp; <b>src/bin/file.cpp</b>
+has been independently updated in both sandboxes.&nbsp; Also assume that
+you are currently in a workon session of <b>sandboxA </b>and in the src/bin
+directory.&nbsp; The following command will merge the changes of<b> file.cpp
+</b>in <b>sandboxB</b> into<b> file.cpp </b>located in <b>sandboxA</b>.
+<dl><b>sbmerge file.cpp</b></dl>
+The above scenario assumes that the original file exists in the backing
+build. Consider that a sandbox exists prior to the backing build being
+updated. Any files in the sandbox that were also updated in the new backing
+build must be merged. Assume <b>sandboxA</b>is backed by a recently updated
+backing build and <b>src/bin/file.cpp</b>has been modifed in both places.
+The previous backing build has been archived in the directory <b>/archivebb</b>.
+Since the original version of file.cpp is not in the current backing build,
+the <b>-orig</b>option must be used. Assume that you are currently in a
+workon session of <b>sandboxA </b>and in the src/bin directory. The following
+command will merge the changes in the new backing build into file.cpp located
+in <b>sandboxA</b>.
+<dl><b>sbmerge&nbsp; -orig /archivebb&nbsp; file.cpp</b></dl>
+</dl>
+
+<hr>
+<h2>
+<a NAME="HDRWORKON"></a><a href="#ToC_65">workon - Work in a sandbox</a></h2>
+<b>workon</b>enables you to get into a sandbox for editing, compiling,
+and linking. <b>workon</b>creates a new shell, sets the proper environmental
+variables for the sandbox, and places you in the <b>src</b>subdirectory
+of the sandbox.
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:</td>
+
+<td WIDTH="92%">Before you can use the <b>workon</b> command, you must
+have created a sandbox first by using the <b>mksb</b> command.&nbsp; By
+default, this command will use sandbox information from the environment
+if it is available (normally provided by a previous execution of <b>workon</b>)
+rather than reprocess <b>.sandboxrc</b>.&nbsp;</td>
+</tr>
+</table>
+
+<h3>
+<a NAME="Header_66"></a><a href="#ToC_66">Syntax</a></h3>
+
+<dl><font color="#000000"><b>workon</b> [<b>-m</b> <i>machine_name</i>]
+[<b>-c</b> <i>command</i>] [<b>-k</b> <i>command</i>] [<i>ODE options</i>]</font>
+<p><font color="#000000"><i>ODE options:</i>&nbsp; [<b>-info</b>] [<b>-auto</b>]
+[<b>-quiet | -normal | -verbose | -debug</b>] [<b>-usage | -version | -rev</b>]</font>
+<br><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[<b>-rc</b> <i>rcfile</i>]</font> <font color="#000000">[<b>-sb</b> <i>sandbox_name</i>
+| <i>sandbox_name</i>]</font>
+<br>&nbsp;</dl>
+
+<h3>
+<a NAME="workonrc"></a><a href="#ToC_66a">Return codes</a></h3>
+
+<dl><font color="#000000">&nbsp;&nbsp;&nbsp; <b>0</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Success</font>
+<br><font color="#000000">&nbsp;&nbsp;&nbsp; <b>1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Error</font>
+<br><font color="#000000">&nbsp;&nbsp;&nbsp; <b>Other</b>&nbsp;&nbsp;&nbsp;&nbsp;
+System errors</font></dl>
+
+<h3>
+<a NAME="Header_67"></a><a href="#ToC_67">Parameters</a></h3>
+
+<dl>
+<dt>
+<b>-m <i>machine_name</i></b></dt>
+
+<dd>
+Specifies the name of the machine for which code is being developed. If
+this parameter is omitted, the default is the name of the machine on which
+you are working.&nbsp; It sets the environment variable <i>CONTEXT</i>
+to be <i>machine_name.</i></dd>
+
+<dt>
+<b>-c <i>command</i></b></dt>
+
+<dd>
+Specifies a command to be run in the sandbox environment. A shell is started
+with the sandbox environment set up as usual, the command is executed,
+and then the shell ends (instead of continuing like with the <b>-k</b>
+flag). If the command contains whitespace, it should be enclosed in the
+quotes that are appropriate for the operating system.</dd>
+
+<dt>
+<b>-k <i>command</i></b></dt>
+
+<dd>
+Specifies a command to be run in the sandbox environment. A shell is started
+with the sandbox environment set up as usual, the command is executed,
+and then the shell continues (instead of terminating like with the <b>-c</b>
+flag). If the command contains whitespace, it should be enclosed in the
+quotes that are appropriate for the operating system.</dd>
+</dl>
+
+<h3>
+<a NAME="Header_68"></a><a href="#ToC_68">ODE options</a></h3>
+
+<dl>
+<dt>
+<b>-auto</b></dt>
+
+<dd>
+Automatically answers interactive questions.&nbsp; Since this command never
+asks any, this flag has no effect.</dd>
+
+<dt>
+<b>-info</b></dt>
+
+<dd>
+Provides information on what the command would do if it were executed.
+The actual command is not performed. <b>-info</b> works in conjunction
+with the <b>-quiet</b>, <b>-normal</b>, and <b>-verbose</b> options.</dd>
+
+<dt>
+<b>-quiet, -normal, -verbose, -debug</b></dt>
+
+<dd>
+Sets verbosity of messages. <b>-normal</b> is the default.</dd>
+
+<dt>
+<b>-rc <i>rcfile</i></b></dt>
+
+<dd>
+Causes <b>workon</b> to use the file <i>rcfile</i> to obtain information
+such as what the current sandbox is. If this option is not specified, <b>workon</b>
+uses the <b>$HOME/.sandboxrc</b> file to obtain this information.</dd>
+
+<dt>
+<b>-sb <i>sandbox_name </i></b>| <b><i>sandbox_name</i></b></dt>
+
+<dd>
+Specifies the name of the sandbox to be worked on. If this parameter is
+omitted, the default sandbox is used.</dd>
+
+<dt>
+<b>-usage</b></dt>
+
+<dd>
+Displays the correct syntax for this command and exits.</dd>
+
+<dt>
+<b>-version, -rev</b></dt>
+
+<dd>
+Displays information on the ODE version level installed and exits.</dd>
+</dl>
+
+<h3>
+<a NAME="envworkon"></a><a href="#ToC_68a">Environment variables used</a></h3>
+Unless otherwise specified, the environment variables are set by <b>workon</b>for
+use by ODE commands that are run in the <b>workon</b>shell.
+<table BORDER WIDTH="98%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><b>CONTEXT</b></td>
+
+<td>If a machine-name is specified on the command line using the <b>-m</b>option
+else if the <b>MACHINE</b> environment variable is already set, then <b>CONTEXT</b>
+is set to that machine-name. If nothing has been specified then the default
+value is the name of the machine that the tool is executing on.</td>
+</tr>
+
+<tr>
+<td><b>MACHINE</b></td>
+
+<td>This always holds name of the machine that the tool is executing on.</td>
+</tr>
+
+<tr>
+<td><b>WORKON</b></td>
+
+<td>This holds an integer value that represents the depth if <b>workon</b>
+is used in a <b>workon</b> environment. For example: The first time <b>workon</b>
+is started <b>WORKON</b> is 1. Then if another <b>workon</b> is started
+in this <b>workon</b> environment the new <b>workon</b> envirnment will
+have its <b>WORKON</b> variable set to 2.</td>
+</tr>
+
+<tr>
+<td><b>BACKED_SANDBOXDIR</b></td>
+
+<td>List of paths to the sandboxes in the backing chain</td>
+</tr>
+
+<tr>
+<td><b>MAKESYSPATH *</b></td>
+
+<td>List of paths to the all the rules' directories in the backing chain</td>
+</tr>
+
+<tr>
+<td><b>ODERCFNAME</b></td>
+
+<td>Name of the directory in the sandbox where the rc files are located.
+Default is <b>rc_files</b></td>
+</tr>
+
+<tr>
+<td><b>ODESRCNAME</b></td>
+
+<td>Name of the directory in the sandbox where the source files are located.
+Default is <b>src</b></td>
+</tr>
+
+<tr>
+<td><b>SANDBOX</b></td>
+
+<td>Sandbox name</td>
+</tr>
+
+<tr>
+<td><b>SANDBOXBASE</b></td>
+
+<td>Location of the sandbox</td>
+</tr>
+
+<tr>
+<td><b>SANDBOXRC</b></td>
+
+<td>If set, the specified file is used instead of default <b>.sandboxrc</b>
+file. If the <b>-rc</b> parameter also is used it overrides the value in
+<b>SANDBOXRC</b>. <b>workon</b> sets this environment variable in the shell
+that it starts.</td>
+</tr>
+
+<tr>
+<td><b>SHELL_K_FLAG</b></td>
+
+<td>If set to a non-empty string, the shell is assumed to have a built-in
+flag (which the user specifies in this variable) that permits the running
+of a command in the new shell without exiting.&nbsp; The default value
+is "/K" on non-Unix platforms, otherwise it is undefined.</td>
+</tr>
+</table>
+* For typical settings see the <a href="#Header_108">Buildconf[.exp]</a>files
+of the <a href="ODETutorial.htm#Installing%20ODE%20and%20the%20Backing%20Build%20Example">bbexample</a>from
+the <a href="ODETutorial.htm">ODE Tutorial</a>.
+<h3>
+<a NAME="Header_69"></a><a href="#ToC_69">Examples</a></h3>
+Entering the command:
+<dl><b>workon</b></dl>
+places the user in the <b>src</b>subdirectory of the default sandbox (specified
+in the <b>.sandboxrc</b>file).
+<p>Entering the command:
+<dl><b>workon -sb dune2</b></dl>
+places the user in the <b>src </b>subdirectory of the <b>dune2</b>sandbox.
+<p>Entering the command:
+<dl><b>workon dune2 -c "currentsb -chain"</b></dl>
+temporarily changes to the <b>src </b>subdirectory of the <b>dune2</b>sandbox,
+the <b>currentsb -chain</b>command is run, and then <b>workon</b>ends back
+in the directory where it was entered.</dl>
+
+<dl>
+<hr>
+<h2>
+<a href="#ToC_70">Makefile syntax</a></h2>
+Information on the makefile syntax<b> </b>can be found in the <i><a href="ODEMakeReference.htm#HDRMAKEDET">ODE
+Make Reference</a></i>.&nbsp;
+<hr>
+<h1>
+<a NAME="Header_100"></a><a href="#ToC_100">Backing builds and configuration
+files</a></h1>
+One of the primary functions of the ODE administrator is to create and
+maintain backing builds. There are two general categories of builds: <i>static</i>and
+<i>dynamic</i>. The source trees of static builds do not change during
+the development process. They represent a stable set of code: all or most
+of the bugs and conflicts have been resolved. Dynamic builds represent
+an interim step during the development process. A dynamic build's source
+trees change, and usually contain the most recent source files. Changes
+made in a dynamic build immediately affect all sandboxes backed by that
+build. Dynamic builds may contain bugs and unresolved conflicts between
+various source files.
+<p>The administrator must maintain the static build as the stable basis
+for all development work, and the dynamic, or default build, as the build
+with all the new changes and functionality. When the dynamic build stabilizes
+and is released as a new version, it becomes a static build.
+<p>Changes to the backing builds essentially come from developers' work
+in areas called sandboxes. Work by developers in sandbox areas is performed
+independently of each other, and does not affect established, or static,
+backing builds.
+<p><a href="#FIGODESB">Figure 1</a> illustrates how developers can work
+independently on the same or different levels of code.
+<p><a NAME="FIGODESB"></a><b>Figure 1. Independent use of sandboxes under
+ODE.</b>
+<br>&nbsp;
+<p>&nbsp;
+<table BORDER >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><img SRC="odesb.gif" ALT="Figure ODESB not displayed." ></td>
+</tr>
+</table>
+
+<hr>
+<h2>
+<a NAME="Header_101"></a><a href="#ToC_101">Configuration files</a></h2>
+This section provides a description of the configuration files. These files
+should only be used by the administrator for the backing build.
+<h3>
+<a NAME="Header_108"></a><a href="#ToC_108">The <b>B</b>uildconf, Buildconf.exp,
+and Buildconf.local files</a></h3>
+The <b>Buildconf</b>, <b>Buildconf.exp</b>, and <b>Buildconf.local </b>configuration
+files set local and environment variables needed by ODE.
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">The processing of these files will not occur if the <i>ode_build_env</i>
+variable in the sandbox configuration file (sb.conf) is set to the value
+<i>false</i>.&nbsp;</td>
+</tr>
+</table>
+
+<p>The <b>Buildconf</b> file at the root of the backing chain is always
+evaluated first (and only once) for the backing build. The Buildconf.exp
+file is the expansion file for <b>Buildconf</b>. It is used to expand the
+values of certain variables. The <b>Buildconf.exp</b> file is evaluated
+once for every sandbox in the backing chain (in reverse order), except
+for the backing build. The<b> Buildconf.local</b> file is evaluated once
+for the current sandbox but is not required.
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">All of these files are located in the <b>/src</b> directory.&nbsp;</td>
+</tr>
+</table>
+
+<p>Unlike the <b>sb.conf</b> file, only one of each of these files is processed
+as follows:
+<ul compact="compact">
+<li>
+The<b> Buildconf</b> and <b>Buildconf.exp</b> files are sought throughout
+the chain starting with the sandbox. Each is sought separately, so if the
+<b>Buildconf</b> file exists in the sandbox but the <b>Buildconf.exp</b>
+file only exists in the backing build, then they are read from their separate
+respective locations.</li>
+
+<li>
+The <b>Buildconf.local</b> file is only sought in the current sandbox.</li>
+
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">Although only one copy of the <b>Buildconf.exp</b> file
+is used, it is processed multiple times (the only difference being the
+value of the variable <i>sandbox_base</i>).&nbsp;</td>
+</tr>
+</table>
+</ul>
+
+<h4>
+The sandbox_base variable</h4>
+One local variable is set automatically by the ODE commands for use in
+the <b>Buildconf</b>files: <i>sandbox_base</i>. For the <b>Buildconf</b>file,
+the value is the directory of the backing build. For the <b>Buildconf.exp</b>file,
+the value begins with the directory of the sandbox just above the backing
+build and continues backward up the backing chain until the directory of
+the current sandbox is processed. For the <b>Buildconf.local </b>file,
+the value is the directory of the current sandbox (that is, identical to
+the final processing of the <b>Buildconf.exp</b>file). Thus, this variable
+can be used to easily construct full paths of common subdirectories.
+<p>Examples of typical uses of <i>sandbox_base</i>:
+<pre>${sandbox_base}/src
+${sandbox_base}/tools/${CONTEXT}/bin</pre>
+
+<h4>
+Using lines in the Buildconf, Buildconf.exp, and Buildconf.local files</h4>
+The <b>Buildconf</b>, <b>Buildconf.exp</b>, and <b>Buildconf.local</b>files
+use the following types of lines.
+<dl>
+<ul>
+<li>
+[&lt;<b>on | for> </b><i>machine</i>] [<b>replace</b> ] [<b>set</b> | <b>setenv</b>]
+<i>variable value</i></li>
+
+<li>
+[&lt;<b>on | for></b> <i>machine</i>] &lt;<b>unset</b> | <b>unsetenv></b><i>variable</i></li>
+
+<li>
+<b>include</b> <i>filename</i></li>
+</ul>
+</dl>
+
+<dl>
+<dt>
+<b>[on | for]</b></dt>
+
+<dd>
+These optional modifiers are used to designate a specific platform on or
+for which the rest of the line will be processed.&nbsp; For the <b>on</b>
+modifier, the <i>machine</i> name (for example, <b>rios_aix_4</b>) is compared
+with the contents of the environment variable MACHINE (set internally by
+the ODE tools).&nbsp; Similarly, the <b>for</b> modifier's <i>machine</i>
+is compared with <i>CONTEXT</i> (set by the <b>-m</b> flag with <b>workon</b>
+and <b>build</b>).</dd>
+
+<dt>
+<b>[replace]</b></dt>
+
+<dd>
+The variable is set to the value, even if the variable already contained
+a value.</dd>
+</dl>
+
+<dl>
+<dt>
+<b>[set | setenv]</b></dt>
+
+<dd>
+These optional keywords determine if the <i>variable</i> to be set is local
+(with <b>set</b>, available only in the Buildconf files) or global (with
+<b>setenv</b>, set in the environment).&nbsp; If neither is used, <b>set</b>
+is implied.&nbsp; If the variable already has a value, it is not set (see
+<b>replace</b>). The <i>variable</i> should be separated from its <i>value</i>
+by whitespace.&nbsp; If <i>value</i> contains whitespace, the entire value
+must be enclosed in quotation marks.</dd>
+
+<dt>
+<b>unset | unsetenv</b></dt>
+
+<dd>
+Use these keywords to unset previously set local or environment variables.&nbsp;
+If the <i>variable</i> doesn't exist, there is no effect.</dd>
+</dl>
+
+<dl>
+<dt>
+<b>include</b></dt>
+
+<dd>
+This keyword allows an external Buildconf-formatted file to be read inline.
+Once processing of the included file is finished, processing continues
+in the current file. The <i>filename</i> argument can contain either a
+relative path (from the directory where the current file being read is
+located) or an absolute path.</dd>
+</dl>
+
+<h4>
+<b>Example</b></h4>
+Below are some examples of typical <b>Buildconf</b>content.
+<pre>&nbsp;&nbsp; <b>replace setenv</b> OBJECTDIR ../obj/${CONTEXT}
+&nbsp;&nbsp; <b>on</b> rios_aix_4 <b>setenv</b> CONTEXT rios_aix_4
+&nbsp;&nbsp; <b>for</b> x86_nt_4 <b>set</b> FLAGS "-debug -auto -list"
+&nbsp;&nbsp; <b>unsetenv</b> TEMP
+&nbsp;&nbsp; <b>include</b> mybconf.rc</pre>
+See the <a href="ODEAdminsGuide.htm#Header_13">backing build example</a>for
+a samples of a <b>Buildconf</b>and <b>Buildconf.exp</b>file. A <a href="ODEAdminsGuide.htm#InstallConfigFiles">generic
+version</a>of each is also available for starting a new ODE project.
+<h3>
+<a NAME="Header_102"></a><a href="#ToC_102">The Build_list file</a></h3>
+The<b> build_list</b>configuration file contains build names along with
+their base directories. Through use of this file, some of the ODE commands
+can accept just the name of the build as a command line option. The location
+of the build list is specified in the <b>sb.conf</b>file. See the <b><a href="#Header_106">sb.conf
+</a></b>section for more details. The <b>build_list</b>file can also be
+specified by the <b>BUILD_LIST</b>environment variable for use by <b>mkbb</b>and
+<b>mksb</b>.
+<p>The <b>build_list</b> file contains one line for each build. The format
+for each line is:
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; <i>buildname&nbsp; configinfo&nbsp; basedirectory</i></pre>
+
+<dl>
+<dt>
+<b>buildname</b></dt>
+
+<dd>
+Name of build directory</dd>
+
+<dt>
+<b>configinfo</b></dt>
+
+<dd>
+Exists for backward compatability. Assign with an asterisk (*).</dd>
+
+<dt>
+<b>basedirectory</b></dt>
+
+<dd>
+Path to the build name.</dd>
+</dl>
+</dl>
+
+<dl>The three entries must be separated from each other by a space or a
+tab. The <i>buildname</i>normally is set with the <b>mkbb</b>command, and
+is the name of the backing build. The <i>basedirectory</i>normally is set
+with the <b>mkbb -dir</b>operand. The <i>basedirectory</i>may contain <a href="#Header_109">environment
+variables</a>. See <b><a href="#HDRMKBB">mkbb</a></b>for details.
+<h4>
+Example</h4>
+The following is an example for an entry in the build_list file. It references
+the build <b>/project/ode/build/b3</b><i>.</i>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>b3 * /project/ode/build</b></pre>
+
+<h3>
+<a NAME="Header_103"></a><a href="#ToC_103">The Makeconf and Makeconf.def
+files</a></h3>
+See the <i><a href="ODEMakeReference.htm">ODE Make Reference</a></i> regarding
+<a href="ODEMakeReference.htm#Makeconf">Makeconf and Makeconf.def</a>
+<h3>
+<a NAME="Header_105"></a><a href="#ToC_105">The .sandboxrc file</a></h3>
+The <b>.sandboxrc</b>configuration file builds either a sandbox or the
+backing build itself. The file's default location is the user's home directory.
+It is created and updated by the <b><a href="#HDRMKBB">mkbb</a></b>and
+<b><a href="#HDRMKSB">mksb</a></b>commands.
+<h4>
+Using lines in the .sandboxrc file</h4>
+There are three primary lines used in the <b>.sandboxrc</b>configuration
+file. There should only be one <b>default</b>line used, but there can be
+as many of the other lines as desired. Using each of these three lines
+provides the minimum sandbox description; the default sandbox, its base
+directory, and the sandbox name.
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; <b>default</b> <i>sandbox_name
+</i>&nbsp;&nbsp;&nbsp;&nbsp; <b>base</b> [<i>sandbox_name | *</i>] <i>base_directory
+</i>&nbsp;&nbsp;&nbsp;&nbsp; <b>sb</b> <i>sandbox_name</i></pre>
+
+<dl>
+<dt>
+<b>default</b></dt>
+
+<dd>
+Identifies <i>sandbox_name</i> as the default sandbox. Only one default
+line can be used in the <b>.sandboxrc</b> file.&nbsp; The sandbox specified
+must also appear in an <b>sb</b> line.</dd>
+
+<dt>
+<b>base</b></dt>
+
+<dd>
+The base directory of the sandbox(es). The two arguments, in order, are
+the name of the sandbox and the directory where the sandbox is created.&nbsp;
+If an asterisk is used in place of the sandbox name, the associated base
+directory applies to all sandboxes that aren't explicitly listed.&nbsp;
+If multiple <b>base</b> lines use an asterisk, only the last one to appear
+in the file is significant.&nbsp; Sandboxes listed explictly must also
+appear in an <b>sb</b> line. The <i>base_directory</i> can contain <a href="#Header_109">environment
+variables</a>, for example,. <b><tt>${MY_PROJ}/program3</tt></b>.&nbsp;
+The <i>base_directory</i> is set by the <b><tt>-dir</tt></b> argument of
+the <b><a href="#HDRMKSB">mksb</a></b> or <b><a href="#HDRMKBB">mkbb</a></b>
+command.</dd>
+
+<dt>
+<b>sb</b></dt>
+
+<dd>
+Identifies <i>sandbox_name</i> as a valid sandbox.</dd>
+</dl>
+
+<p><br>There is one optional keyword, <b>mksb</b>, that may be used to
+define default values for subsequent sandbox creation with the <b>mkbb</b>
+and <b>mksb</b> commands.&nbsp; Its syntax is as follows:
+<pre>&nbsp;&nbsp;&nbsp; <b>mksb</b> -dir <i>directory
+</i>&nbsp;&nbsp;&nbsp; <b>mksb</b> -m <i>context1:context2...
+</i>&nbsp;&nbsp;&nbsp; <b>mksb</b> -tools [c|l|b]
+&nbsp;&nbsp;&nbsp; <b>mksb</b> -obj [c|l|b] <i>objpath
+</i>&nbsp;&nbsp;&nbsp; <b>mksb</b> -src [c|l|b] <i>srcpath</i></pre>
+These lines are created automatically by <b>mkbb</b>and <b>mksb</b>(although
+the former doesn't use the three population flags, it still creates them)
+when the <b>.sandboxrc</b>is first generated. The values of the corresponding
+command line arguments are stored as shown above, and are used as the default
+values of those flags when subsequent invocation of the <b>mkbb/mksb</b>command
+doesn't specify them explicitly.
+<p>The <b>.sandboxrc</b> file may contain user comments. A comment is a
+line which begins with optional blanks and tabs, followed by the '#' character.
+Blank lines are also comments. Comments will be preserved when ODE tools
+modify the <b>.sandboxrc</b> file.
+<h4>
+Example</h4>
+Consider the following <b>.sandboxrc</b>file:
+<pre>&nbsp;&nbsp;&nbsp; <b>default</b> sandbox3
+&nbsp;&nbsp;&nbsp; <b>base</b> sandbox1 /home/user13
+&nbsp;&nbsp;&nbsp; <b>base</b> sandbox2 /tmp
+&nbsp;&nbsp;&nbsp; <b>base</b> * /project/ode/build
+&nbsp;&nbsp;&nbsp; <b>sb</b> sandbox1
+&nbsp;&nbsp;&nbsp; <b>sb</b> sandbox2
+&nbsp;&nbsp;&nbsp; <b>sb</b> sandbox3</pre>
+Here, the default sandbox is sandbox3, which is used when the -<b>sb</b>flag
+(to <b>workon</b>, etc.) is not given. Its base is <b>/project/ode/build</b>,
+since there is not an explicit base listed for it. Two other sandboxes
+are available via this <b><tt>.sandboxrc</tt></b>file, sandbox1 and sandbox2.
+The former is located at <b>/home/user13</b>, while the latter is in <b>/tmp</b>.
+<h3>
+<a NAME="Header_106"></a><a href="#ToC_106">The sb.conf file</a></h3>
+The sandbox configuration file <b>sb.conf</b>is used to indicate whether
+or not a sandbox is backed by another sandbox or backing build and whether
+the ODE build environment should be used. The <b>sb.conf</b>file resides
+in the <b>rc_files</b>directory of the sandbox. The file format is the
+same as the <a href="#Header_108">Buildconf</a>files, but only advanced
+users should modify this file manually. The files are processed twice for
+every sandbox in the chain, including the current sandbox. The first processing
+establishes the backing chain by reading forward through the chain (starting
+with the sandbox and working toward the backing build). The second processing
+causes the variables to be set and replaced in the proper order by reading
+backward through the chain (so that variables set in sandboxes can override
+variables set in backing builds). Use of the "replace" modifier is therefore
+important to use correctly.
+<p>Only the following variables are meaningful in <b>sb.conf</b>:
+<br>&nbsp;
+<dl>
+<dt>
+<b>backing_build</b></dt>
+
+<dd>
+Use this variable to assign an absolute path to the sandbox or backing
+build that this sandbox is backed by. Required in all sandboxes, but the
+backing build in a backing chain must not use this variable.&nbsp; The
+value of the <b>backing_build</b> variable can contain <a href="#Header_109">environment
+variables</a>, for example, <b><tt>${PROJ_BASE}/program2/release5</tt></b>.&nbsp;
+The <b><a href="#HDRMKSB">mksb</a></b> command argument <b>-back</b> is
+used to set the <b>backing_build</b> value in <b><tt>sb.conf</tt></b>.</dd>
+
+<dt>
+<b>ode_build_env</b></dt>
+
+<dd>
+This variable can also be <i>true</i> or <i>false</i>. <i>True</i> means
+that the ODE build environment should be used. This also means that the
+Buildconf files will be processed. If this is defined as desired in the
+backing build, a sandbox need not use this. This variable is optional and
+the default setting is <i>false</i>.</dd>
+
+<dt>
+<b>ode_confs_in_rcfiles</b></dt>
+
+<dd>
+This variable can also be <i>true</i> or <i>false</i>. <i>True</i> means
+that the ODE configuration files which are normally located in the sandbox
+<b>src</b> directory will be in the sandbox <b>rc_files</b> directory instead.
+The ODE configuration files affected are the <b>Buildconf</b>, <b>Buildconf.exp</b>,
+<b>Buildconf.local</b> and <b>Makeconf</b> files. This variable is optional
+and the default setting is <i>false</i>.</dd>
+
+<dt>
+<b>build_list</b></dt>
+
+<dd>
+Use this optional variable to assign an absolute path to the <a href="#Header_102">build_list</a>
+configuration file.&nbsp; Typically only used in backing build <b>sb.conf</b>files.
+The value of the <b>build_list</b> variable can contain <a href="#Header_109">environment
+variables</a>, for example,<tt> <b>${PROJ_BASE}/release5/bld_lst</b></tt>.&nbsp;
+The <b>build_list</b> value is set by the <b>-blist</b> argument of the
+<b><tt><a href="#HDRMKBB">mkbb</a></tt></b> command.</dd>
+
+<dt>
+<b>machine_list</b></dt>
+
+<dd>
+Use this variable to list valid machine names separated by colons. This
+variable is required in at least one <b>sb.conf</b> file in the backing
+chain.</dd>
+</dl>
+
+<p><br>The <b>sb.conf</b> file may contain user comments. A comment is
+a line which begins with optional blanks and tabs, followed by the '#'
+character. Blank lines are also comments. Comments will be preserved when
+ODE tools modify the <b>sb.conf</b> file.
+<h4>
+Example</h4>
+The following example uses variables and the replace modifier in the <b>sb.conf</b>file.
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; replace backing_build /projects/ode/build/build4
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; replace ode_build_env true
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; replace machine_list rios_aix_4:sparc_solaris_2:hp9000_ux_10</pre>
+
+<h2>
+<a NAME="Header_109"></a><a href="#ToC_109">Using environment variables
+to share backing builds and sandboxes</a></h2>
+Environment variables can be used in the ODE configuration files to parameterize
+the location of backing builds and sandboxes. ODE is designed to be useable
+in a shared file system, which is shareable by multiple computers possibly
+running multiple operating systems. The <b>obj</b>directory of a sandbox
+can contain directories for several operating systems, yet the <b>src</b>directory
+can have a single source that is used by all the operating systems. Environment
+variables can be used so that sandbox or backing build directory structures
+can be shared between several operating systems.
+<p>The points illustrated in the sections below are:
+<br>&nbsp;
+<ul>
+<li>
+There is a single <b>.sandboxrc</b> file read/write shared by all the systems
+that the administrator will use to do builds.&nbsp; The <b>.sandboxrc</b>
+file is not required to be accessible to developers.</li>
+
+<li>
+The <b>SANDBOXRC</b> environment variable is used to access the <b>.sandbox</b>
+file on all the administrator's systems.</li>
+
+<li>
+There is a single <b>build_list</b> file read/write shared by all the systems
+that the administrator will use.&nbsp; This file should be read shared
+by all the developers that will use the backing builds to back their sandboxes.</li>
+
+<li>
+The path to access the <b>build_list</b> file has an environment variable
+(PROJ_BASE in the example) so that differences can be managed in paths
+to the file on different systems.</li>
+
+<li>
+Although use of the <b>build_list</b> file is shown, a <b>build_list</b>
+file is not required for a project.&nbsp; It is a convenience.</li>
+
+<li>
+There is a single directory tree for each backing build, and it should
+be in a file system read/write shared by all the systems of the build administrator
+and read shared by all the systems of the developers.</li>
+
+<li>
+An environment variable that is common to the project, is used in the access
+path to the backing builds.&nbsp; The build administrator and all developers
+will set the variable appropriately for accessing a backing build from
+a system.&nbsp; This variable (<b>PROJ_BASE</b> in the example) is what
+enables the sharing of the backing builds.</li>
+
+<li>
+Each developer will have a private <b>.sandboxrc</b> file, which will be
+read/write shared by all the systems used by the developer.</li>
+
+<li>
+The <b>SANDBOXRC</b> environment variable is used to access the <b>.sandboxrc</b>
+file on each system used by a developer.</li>
+
+<li>
+There is a single directory tree for each sandbox used by a developer,
+and it should be in a file system read/write shared by all the systems
+of the developer.</li>
+
+<li>
+Each developer uses an environment variable to access the directory of
+a sandbox, so that system differences in access to the sandbox can be managed.
+In the example, developer A uses <b>SB_BASE</b> and developer B uses <b>MYSBOXES</b>.</li>
+</ul>
+&nbsp;.
+<h3>
+<a NAME="Header_109a"></a><a href="#ToC_109a">Sharing backing builds</a></h3>
+This section illustrates how backing builds can be shared among several
+systems. It allows the ODE Build Administrator to do the builds for all
+systems on the same shared file system, without having to create a new
+backing build for each operating system.
+<p>Assume that the ODE Build Administrator (user ID <b>bldadmin</b> in
+this example) creates two builds as shown in <a href="#FIGODESB">Figure
+1</a> on a shareable file system.&nbsp; The UNIX systems are configured
+so that the backing builds are built in directory <b>/projects</b>.&nbsp;
+Windows or OS/2 systems are configured to use the same directory by accessing
+<b>o:\projects</b>.&nbsp; The UNIX shared file home directory for <b>bldadmin</b>
+is <b>/home/bldadmin</b>and the shared file system is set up so that OS/2
+or NT systems can access the same directory by using <b>p:\bldadmin</b>.
+<p>If the backing build for <b>proj10</b> is created on a Windows or OS/2
+system, it could be done similar to the following:
+<br>&nbsp;
+<dl><tt>set HOME=p:\bldadmin</tt>
+<br><tt>set PROJ_BASE=o:\projects</tt>
+<br><tt>mkbb -blist ${PROJ_BASE}\bld_list -dir ${PROJ_BASE} -m x86_nt_4:mvs390_oe_2:rios_aix_4
+-def proj10</tt></dl>
+
+<p><br>This makes backing build <b>proj10</b> be the default sandbox in
+the <b>p:\bldadmin\.sandboxrc</b> file of the ODE Admisitrator.&nbsp; Assuming
+that the same environment variables are defined, a second backing build
+<b>proj11</b> can be created by the administrator doing:
+<br>&nbsp;
+<dl><tt>mkbb proj11</tt></dl>
+
+<p><br>Both <b>proj10</b> and <b>proj11</b> will be in the <a href="#Header_102">build
+list</a> file <b>o:\projects\bld_list</b>, which should look like:
+<br>&nbsp;
+<dl><tt>proj10 * ${PROJ_BASE}</tt>
+<br><tt>proj11 * ${PROJ_BASE}</tt></dl>
+
+<p><br>The <b><a href="#Header_106">sb.conf</a></b> files for both projects
+will point to the same build list file, using lines that look like:
+<br>&nbsp;
+<dl><tt>replace build_list ${PROJ_BASE}/bld_list</tt></dl>
+
+<p><br>In the example NT environment, the builds can be done for NT.&nbsp;
+Assume the <b>.sandboxrc</b> file is on the shared file system and is read/write
+accessible for all the platforms for user bldadmin.&nbsp; The administrator
+could work on the same <b>proj10</b> build for a UNIX system by having
+the <b>HOME</b> environment variable be <b>/home/bldadmin</b> and <b>PROJ_BASE</b>
+be <b>/projects</b>, then entering the command:
+<br>&nbsp;
+<dl><b>workon -sb proj10</b></dl>
+
+<h3>
+<a NAME="Header_109b"></a><a href="#ToC_109b">Sharing sandboxes using environment
+variables</a></h3>
+Assume that developer A in <a href="#FIGODESB">Figure 1</a>(user ID <b>deva</b>)
+needs to set up sandboxes for <b>proj10</b>and <b>proj11</b>, and that
+most of the work is to be in <b>proj11</b>, with a small amount of maintenance
+work in <b>proj10</b>. Similarly to <b>bldadmin</b>, assume that the backing
+builds are available in the same shared file system, in <b>o:\projects</b>on
+OS/2 or NT, and in <b>/projects</b>on UNIX systems. The home directory
+for <b>deva</b>is on the shared file system, and there is no <b>.sandboxrc</b>file
+yet in the home directory. On NT or OS/2, environment variable <b>HOME</b>could
+be set to <b>p:\deva</b>and to <b>/home/deva</b>on UNIX.
+<p>To create a sandbox <b>proj10sb</b> based on backing build <b>proj10</b>,
+on NT enter the commands:
+<br>&nbsp;
+<dl><b><tt>set HOME=p:\deva</tt></b>
+<br><b><tt>set PROJ_BASE=o:\projects</tt></b>
+<br><b><tt>set SB_BASE=%HOME%</tt></b>
+<br><b><tt>mksb -back ${PROJ_BASE}\proj10 -dir ${SB_BASE} proj10sb</tt></b></dl>
+
+<p><br>This creates <b>p:\deva\.sandboxrc</b> (which is <b>/home/deva/.sandboxrc</b>
+on the UNIX systems that are sharing the file).&nbsp; After doing some
+work in <b>proj10sb</b>, user <b>deva</b> wants to create sandbox <b>proj11sb</b>,
+based on backing build <b>proj11</b>.&nbsp; Since the user will do most
+of the work from then on in this new sandbox, it will be made the default,
+using <b><tt>-def</tt></b>. Entering the following command does this:
+<br>&nbsp;
+<dl><b><tt>mksb -def -back proj11 proj11sb</tt></b></dl>
+
+<p><br>From this point on user <b>deva</b> can do a simple <b>workon</b>
+to do work in the <b>proj11sb</b> sandbox, no matter which system is used.&nbsp;
+Environment variables <b>HOME</b>, <b>SB_BASE</b>, and <b>PROJ_BASE</b>
+must be set appropriately for the system that is being used.
+<p>Assume that developer B (user ID <b>devb</b>) will just do work based
+on <b>proj11</b>.&nbsp; Also <b>devb</b> chooses to create a sandbox first
+on a UNIX system, but that it will be shared on several systems.&nbsp;
+If the environment variable <b>HOME</b> is already defined as <b>/home/devb</b>
+for <b>devb</b>, to create a first sandbox named <b>sb1</b> the following
+commands can be entered in the user's home directory:
+<br>&nbsp;
+<dl><b><tt>mkdir sbox</tt></b>
+<br><b><tt>export PROJ_BASE=/projects</tt></b>
+<br><b><tt>export MYSBOXES=$HOME/sbox</tt></b>
+<br><b><tt>mksb -back '${PROJ_BASE}/proj11' -dir '${MYSBOXES}' sb1</tt></b></dl>
+
+<p><br>The parameters are enclosed in single quotes to prevent the shell
+from evaluating the <b><tt>PROJ_BASE</tt></b> and <b><tt>MYSBOXES</tt></b>
+variables. To do work in <b>sb1</b>, which is the default sandbox for <b>devb</b>,
+enter the command:
+<br>&nbsp;
+<dl><b><tt>workon</tt></b></dl>
+
+<p><br>whether in the UNIX machine or the Windows machine, assuming that
+<b>HOME</b>, <b>MYSBOXES</b>, and <b>PROJ_BASE</b> are set appropriately.&nbsp;
+On NT or OS/2 this can be done by entering the commands:
+<br>&nbsp;
+<dl><b><tt>set HOME=p:\devb</tt></b>
+<br><b><tt>set PROJ_BASE=o:\projects</tt></b>
+<br><b><tt>set MYSBOXES=%HOME%\sbox</tt></b></dl>
+
+<br>&nbsp;
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">The user <b>devb</b> used a different environment variable
+and directory for the sandbox location than did user <b>deva</b>.&nbsp;
+The sandboxes are accessible from all the platforms being used by that
+developer.&nbsp; However both developers needed to use the <b>PROJ_BASE</b>
+environment variable as specified by the ODE Build Administrator.&nbsp;
+(Some projects may standardize the location of sandboxes and the environment
+variables related to them although ODE does not require it.&nbsp; This
+could make it easier for one developer to work on a sandbox created another
+developer.)&nbsp;</td>
+</tr>
+</table>
+
+<br>&nbsp;
+<p>If <b>devb</b> needs another sandbox, still based on <b>proj11</b>,
+enter the following commands:
+<br>&nbsp;
+<dl><b><tt>mksb sb2</tt></b>
+<br><b><tt>workon -sb sb2</tt></b></dl>
+
+<p><br>By default this will have the same backing build as <b>sb1</b> in
+<b>/home/devb/sbox/sb2.</b>&nbsp; On NT or OS/2 it would be accessed using
+<b>p:\devb\sbox\sb2</b>.
+<br>
+<hr width="100%">
+<h1>
+<a NAME="EnvsUsedbyAll"></a><a href="#ToC_EnvsUsedbyAll">Environment variables
+used by all commands</a></h1>
+These environment variables are used by ODE commands and the rules supplied
+with ODE. They can be set by the user, although they are set by default
+by the <b>workon</b>command or while running the <b>build</b>command.
+<br>&nbsp;
+<center><table BORDER WIDTH="100%" >
+<caption>
+<center><tbody>
+<br></tbody></center>
+</caption>
+
+<tr>
+<td><b>CONTEXT</b></td>
+
+<td>This variable designates the machine for which the build is intended.
+If a machine-name is specified on the command line using the <b>-m</b>
+option, else if the <b>MACHINE</b> environment variable is already set,
+then CONTEXT is set to that machine-name (for example <b>x86_nt_4</b>,
+<b>rios_aix_4</b>, etc.). If nothing has been specified then the default
+value is the name of the machine that the tool is executing on.</td>
+</tr>
+
+<tr>
+<td><b>MACHINE</b></td>
+
+<td>This always holds name of the machine that the tool is executing on
+(for example, <b>rios_aix_4</b>, <b>x86_os2_4</b>, etc.). It may be set
+by the user although it is normally not necessary or recommended.</td>
+</tr>
+
+<tr>
+<td><b>ODERCFNAME</b></td>
+
+<td>Control files that define a sandbox (<b>sb.conf</b>) are stored in
+a directory within the sandbox. If the environment variable <b>ODERCFNAME</b>
+is defined then the ODE commands use its value for the directory; otherwise,
+the default directory is <b>rc_files</b>.</td>
+</tr>
+
+<tr>
+<td><b>ODESRCNAME</b></td>
+
+<td>If the environment variable <b>ODESRCNAME</b> is defined then the ODE
+commands use its value for the directory within the sandbox where source
+files are stored; otherwise, the default directory is <b>src</b>.</td>
+</tr>
+</table></center>
+
+<hr width="100%">
+<h1>
+<a NAME="Header_110"></a><a href="#ToC_110">Remote building</a></h1>
+Both the <b>build</b>and <b>mk</b>commands can perform builds on a remote
+host. They accomplish this by using the <b>rsh/remsh/rexec</b>syntax to
+execute a command using a remote shell. The remote host you wish to use
+must therefore allow connections on either the shell or the exec service
+ports (normally serviced by <b>rshd</b>and <b>rexecd</b>). The default
+client command used is <b>remsh</b>(<b>rsh</b>on NT/OS2), but this can
+be changed by setting the <i>ODEMAKE_RSHELL</i>environment variable to
+contain the desired command name (for example,<b> rexec</b>).
+<p><b>build</b> constructs the remote command string by removing the -rmthost
+flag (and its argument) from its command line and sending the rest of the
+command line verbatim to the remote string.&nbsp; The default remote command
+string will thus resemble <b>"rsh hostname.ibm.com build -a target.o"</b>.
+<p><b>mk</b> runs individual makefile commands remotely in a more complex
+fashion.&nbsp; First, it creates a file containing all of the local environment
+variables.&nbsp; This file is created in the form of a shell script, so
+the proper commands will be included to export the environment variables
+based on the remote shell type.&nbsp; Then, the actual remote command is
+inserted as the last command in this script.&nbsp; Finally, the command
+string is generated and executed locally which will invoke the shell script.&nbsp;
+The generated script resembles the following:
+<p><b><tt>export var1="val"</tt></b>
+<br><b><tt>export val2="val"</tt></b>
+<br><b><tt>...</tt></b>
+<br><b><tt>export valn="val"</tt></b>
+<br><b><tt>cd /sandbox/obj/machine/proj ; . ~/.profile ; cc -c -I/path
+foo.c</tt></b>
+<p>The command string which invokes this script resembles <b>"rsh hostname.ibm.com
+. /cwd/scriptname ; rm /cwd/scriptname"</b>.
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">The <b>"cd"</b> and <b>".profile"</b> commands on the last
+line in the script are inserted automatically...only the<b> "cc"</b> command
+came from the makefile.&nbsp;</td>
+</tr>
+</table>
+
+<p>The following table lists all of the remote build environment variables
+that <b>build</b> and <b>mk</b> use (all are optional):
+<br>&nbsp;
+<table BORDER WIDTH="100%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td><b>ODEMAKE_RHOST</b></td>
+
+<td>Used only by <b>mk</b>.&nbsp; Normally, the <b>-R</b> flag is given
+to<b> mk</b> to indicate the remote host.&nbsp; This variable's value will
+be used if <b>-R</b> is not given.</td>
+</tr>
+
+<tr>
+<td><b>ODEMAKE_RSHELL</b></td>
+
+<td>This indicates the command used to invoke the remote command.&nbsp;
+The shell used is expected to have the syntax <b>"cmd &lt;hostname> [-l
+username] &lt;command>"</b>, as is the case with<b> rsh</b>,<b> remsh </b>and<b>
+rexec</b>.&nbsp; On most Unix platforms, the default value of ODEMAKE_RSHELL
+is <b>rsh</b>. On HP-UX, the default is<b> remsh</b>.</td>
+</tr>
+
+<tr>
+<td><b>ODEMAKE_RUSER</b></td>
+
+<td>This is the username to use for the remote shell.&nbsp; By default,
+no username is passed (with the <b>-l</b> flag), so the local username
+is typically used implicitly.</td>
+</tr>
+
+<tr>
+<td><b>ODEMAKE_RTMPDIR</b></td>
+
+<td>Used only by <b>mk</b>.&nbsp; By default, the script that mk creates
+(which contains both the environment variables and remote command) is generated
+in the current directory.&nbsp; This variable can be used to store these
+scripts in an alternate directory.&nbsp;
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">This directory must be accessible from both the local and
+remote machines (i.e.,<b> /tmp</b> is not normally possible).&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td><b>ODEMAKE_RCMDPREPEND</b></td>
+
+<td>This string, if set, is prepended to the remote command string.&nbsp;
+This provides a way to run some command(s) before the remote command is
+executed.&nbsp; By default, Unix platforms use a prepend string of<b> ".
+~/.profile ; "</b> to source the ksh login script.&nbsp; Non-Unix platforms
+have no default value.&nbsp;
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">A command separator must be used at the end of the string,
+since this string is literally prepended to the remote command string.&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td><b>ODEMAKE_RCMDAPPEND</b></td>
+
+<td>This string, if set, is appended to the remote command string. This
+provides a way to run some command(s) after the remote command is executed.&nbsp;
+This variable doesn't have a default value.&nbsp;
+<table BORDER WIDTH="84%" >
+<caption><tbody>
+<br></tbody></caption>
+
+<tr>
+<td WIDTH="8%" BGCOLOR="#FFFF00">Note:&nbsp;</td>
+
+<td WIDTH="92%">A command separator must be used at the front of the string,
+since this string is literally appended to the remote command string.&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td><b>ODEMAKE_RSHELLTYPE</b></td>
+
+<td>Used only by <b>mk</b>.&nbsp; This can be set to any of the following
+strings: <b>"sh"</b>, <b>"ksh"</b>, <b>"csh"</b>, or <b>"cmd"</b>.&nbsp;
+This indicates the style of shell used on the remote host, and is currently
+only used to determine the script file format that should be used.&nbsp;
+If <b>"sh"</b> is used, environment variables are exported with <b>"var=val"</b>
+followed by<b> "export var"</b>, the value is enclosed in double quotes,
+and script files are sourced with <b>". script</b>".&nbsp; If <b>"ksh"</b>
+is used, environment variables are exported with <b>"export var=val"</b>
+the value is enclosed in double quotes, and script files are sourced with
+<b>". script"</b>.&nbsp; If <b>"csh"</b> is used, environment variables
+are exported with <b>"setenv var val",</b> the value is enclosed in double
+quotes, and script files are sourced with<b> "source script"</b>.&nbsp;
+If <b>"cmd"</b> is used, environment variables are exported with <b>"set
+var=val"</b>, the value is not enclosed in double quotes, and script files
+are given a <b>".cmd"</b> extension and sourced with <b>"script.cmd"</b>.&nbsp;
+If you use an alternate shell, such as zsh, use the shelltype that most
+closely matches the its behavior described above (for <b>zsh</b>, <b>"ksh"</b>
+would be used).</td>
+</tr>
+
+<tr>
+<td><b>ODEMAKE_RDCELOGIN</b></td>
+
+<td>Can be used to specify a dce_login string to perform DCE authentication
+(on the remote host) before running the remote command (typically not needed
+if rexec is used in ODEMAKE_RSHELL).&nbsp; Include password information,
+since rsh shells are non-interactive.&nbsp; For security purposes, it is
+best to use a keytab file instead of using your password directly (for
+example, "dce_login username -k keytab").&nbsp; See your DCE documentation
+on creating a keytab file (the ktadd command in rgy_edit is one way).</td>
+</tr>
+
+<tr>
+<td><b>ODEMAKE_RDCECMD_QUOTED</b></td>
+
+<td>If this environment variable is set to a non-whitespace/non-empty value,
+the DCE command will be specially quoted with \" on both sides.&nbsp; This
+is usually only necessary on OS/2, so this variable will be set by default
+on that platform (to turn it off there, set it to a blank/empty string
+instead).</td>
+</tr>
+</table>
+
+<h3>
+Known limitations</h3>
+
+<blockquote>
+<li>
+Remote building is currently untested and unsupported on MVS/USS, OS/400,
+and Windows 95/98 (none of which provide default <b>rsh/rexec</b> software).&nbsp;
+However, aside from various COMMAND.COM shell limitations, remote building
+should theoretically work properly on Windows 95/98 if third party remote
+shell software is added.</li>
+
+<li>
+The <b>rsh</b> service, <b>rshsvc</b>, included with Windows NT (in the
+Resource Kit) is notably limited and may not be effectively usable for
+building purposes.&nbsp; Using a third party service is recommended.</li>
+
+<li>
+Since <b>rsh/rexec</b> do not return the exit code of the command that
+was run, it is not currently possible to detect the success or failure
+of remote jobs.</li>
+
+<li>
+If <b>ODEMAKE_RDCELOGIN</b> is used with <b>mk</b>, the remote command
+will be enclosed in double quotes (as part of the argument to the<b> -e</b>
+flag of dce_login).&nbsp; Thus, it is problematic if a remote command (from
+a makefile) also contains double quotes.&nbsp; For commands known to be
+run remotely in this situation, inserting backslashes in front of the command's
+quotes, or using single quotes instead, may be necessary.</li>
+
+<li>
+For <b>mk</b>'s purposes, the local and remote hosts must use the same
+operating system, shell, and file system (for example, DFS, AFS, or NFS).</li>
+</blockquote>
+<a NAME="Bot_Of_Page"></a></dl>
+
+<br>&nbsp;
+</body>
+</html>

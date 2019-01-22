@@ -1,0 +1,158 @@
+#
+#  This special makefile marks the top of the source tree.  Several
+#  builtin make variables are defined based upon the location of this
+#  file and the subdirectory within this tree where make was invoked.
+#
+
+PROJECT_NAME ?= ode
+
+RULES_MK ?= rules.mk
+
+# Release name and build num used mainly for installables
+.ifdef WEBMAKE
+REL_NAME    ?= webmake1.1
+CDEFS       += -D__WEBMAKE__ -D__WEBDAV__
+NO_TOOLSBASE =
+
+.else
+REL_NAME   ?= %release_name%
+.endif # WEBMAKE
+
+.if !empty(MACHINE:M*_openvms_*)
+REL_NAME   := ${REL_NAME:s|.||g}
+.endif
+
+BUILD_NUM  ?= b${SANDBOX}
+
+# All installed files will have BUILD_PREFIX added
+BUILD_PREFIX = ${REL_NAME}_${BUILD_NUM}_
+
+TARGET_MACHINE ?= ${CONTEXT}
+
+# The name to use for the main ODE DLL/LIB file.
+# Format is:
+#  ode<2 digit major number><1 digit minor number><1 digit minor minor number>
+BASE_REL_NAME := ${REL_NAME:S/^ode/ode0/:S/\.//}
+# If we have the format of 2.3.1, strip the '.', else add a '0'.
+.if !empty(BASE_REL_NAME:M*.*)
+ODELIBNAME ?= ${BASE_REL_NAME:S/\.//}
+MAJOR_VERSION       ?= "'${REL_NAME:R:R:S/ode//}'"
+MINOR_VERSION       ?= "'${REL_NAME:R:E:S/.//}'"
+MINOR_MINOR_VERSION ?= "'${BASE_REL_NAME:E:S/\.//}'"
+BUILD_NUMBER        ?= "'${SANDBOX}'"
+.else
+ODELIBNAME ?= ${BASE_REL_NAME}0
+MAJOR_VERSION       ?= "'${REL_NAME:R:S/ode//}'"
+MINOR_VERSION       ?= "'${REL_NAME:E:S/.//}'"
+MINOR_MINOR_VERSION ?= "'0'"
+BUILD_NUMBER        ?= "'${SANDBOX}'"
+
+.endif # !empty(BASE_REL_NAME:M*.*)
+
+# Distribution type can be: "base", "full"
+DIST_TYPE  ?= full
+
+# During the install pass, place everything in the inst.images directory.
+.if ${DIST_TYPE:l} != "base"
+INSTDIR ?= inst.images
+.else
+INSTDIR ?= base.images
+# For now, we'll assume we ship the docs with the base installation
+.if ( !empty(CONTEXT:Mrios_aix*) || (${PKGFAMILY:M*rpm*}) )
+SHIP_DOCS = yes
+.endif
+.endif # DIST_TYPE != "base"
+
+.if !empty(MACHINE:M*_openvms_*)
+INSTDIR := ${INSTDIR:s|.|_|g}
+.endif
+
+# During the install pass, place everything in the inst.images directory.
+TOSTAGE ?= ${SANDBOXBASE}${DIRSEP}${INSTDIR}${DIRSEP}${CONTEXT}
+
+.ifndef STATIC_BUILD
+USE_SHARED_LIBRARY =
+.endif
+
+GROUP ?= ode
+
+# Disable LEX and YACC rules for speed
+NO_YACC_RULES =
+NO_LEX_RULES  =
+
+# Include rules for CMVC
+USE_CMVC_RULES  =
+
+# Turn on miscellaneous options by default.
+# May be overridden in the ${CONTEXT}.mk rules.
+NO_RANLIB    =
+DEPENDENCIES =
+
+# Most platforms don't use the _Import keyword, so ODEDLLPORT is empty.
+# Overridden in ${CONTEXT}.mk rules where appropriate (e.g., x86_nt_4.mk).
+ODEDLLPORT =
+
+# Most platforms are Unix-like and use standard Unix archive format.
+# Overridden in ${CONTEXT}.mk rules where appropriate (e.g., x86_nt_4.mk).
+UNIX =
+PORTABLE_NATIVE_OFILES = unixarch${OBJ_SUFF}
+PLATFORM_CLASSPATH = ${ECLIPSE_ROOT}${DIRSEP}eclipse${DIRSEP}plugins${DIRSEP}org.eclipse.swt.motif_2.0.2${DIRSEP}ws${DIRSEP}motif${DIRSEP}swt.jar
+
+# Set Gendep option -nodup for speed
+GENDEPFLAGS += -nodup
+
+# If you want to redefine the MAKE used for subdirectory recursion then
+# set MAKECMD.
+#
+.ifdef MAKECMD
+MAKE = ${MAKECMD}
+.elifdef NO_TOOLSBASE
+MAKE = mk${PROG_SUFF}
+.else
+MAKE = ${TOOLSBASE}mk${PROG_SUFF}
+.endif # MAKECMD
+
+# Set the release of ODE to use to build this release
+TOOLSBASE_REL ?= bldrel
+
+# Set MAKESRCDIRPATH to the backing chains source directories.
+# Then add in the appropriate object directory for each backing chain.
+MAKESRCDIRPATH := ${BACKED_SANDBOXDIR:S/${PATHSEP}/ /g:@WORD@${WORD}${DIRSEP}${ODESRCNAME}${DIRSEP}${OBJECTDIR}${PATHSEP}${WORD}${DIRSEP}${ODESRCNAME}@:s/ /${PATHSEP}/g}
+
+.if defined(CONTEXT)
+# Include platform specific Makeconf
+#
+.include <${CONTEXT}.mk>
+.endif  # context defined
+
+# C++ is the default
+CCTYPE ?= cpp
+
+TOOLSBASE ?= /ode/build/${TOOLSBASE_REL}/latest/inst.images/${MACHINE}/bin/
+
+INSTALL_IMAGE_NAME ?= ode
+INSTALL_IMAGE_FILE ?= ${SANDBOXBASE}/${INSTDIR}/ship/${BUILD_PREFIX}${CONTEXT}_${INSTALL_TOOL}
+
+# Compile source files as C++ by default.
+# SRCTYPE_CFLAGS is overridden in some makefiles
+# to be "C_CFLAGS" when compiling ANSI C code.
+SRCTYPE_CFLAGS ?= ${CPP_CFLAGS}
+CFLAGS         += ${SRCTYPE_CFLAGS}
+
+.if empty(MACHINE:M*_openvms_*)
+CDEFS          += -DODEDLLPORT=${ODEDLLPORT}
+.endif
+
+IDIR ?= /bin/
+
+# Define AIX_PACKAGE here
+#
+.if defined(AIX_PACKAGE) || \
+    defined(PACKAGE) && !empty(MACHINE:Mrios_aix_*) 
+IDIR        = /usr/ode/bin/
+AIX_PACKAGE =
+.elif defined(RPM_PACKAGE) || \
+    defined(PACKAGE) && !empty(MACHINE:M*_linux_*)
+IDIR        = ${IDIR_PREF}/ode/bin/
+RPM_PACKAGE =
+.endif

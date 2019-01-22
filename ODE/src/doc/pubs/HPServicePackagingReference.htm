@@ -1,0 +1,841 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="default">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>HP-UX Service Packaging User's Guide</title>
+</head>
+<body>
+<img SRC="bannerx.gif" ALT="IBM Books" height=92 width=490>
+<br>&nbsp;
+<h1>
+HP-UX Service Packaging User's Guide</h1>
+Open Development Environment
+<br>Service Packaging Reference
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<br>
+<hr>
+<h2>
+Table of Contents</h2>
+<a NAME="Toc_AboutDoc"></a><a href="#AboutDoc">About this Document</a>
+<br><a NAME="Toc_Introduction"></a><a href="#Introduction">Introduction</a>
+<br><a NAME="Toc_ODE Passes for Service Packaging"></a><a href="#ODE Passes for Service Packaging">ODE
+Passes for Service Packaging</a>
+<br><a NAME="Toc_Makefile Variables"></a><a href="#Makefile Variables">Makefile
+Variables</a>
+<br><a NAME="Toc_Support for New Filesets"></a><a href="#Support for New Filesets">Support
+for New Filesets</a>
+<br><a NAME="Toc_Support for Ancestor and Supersedes"></a><a href="#Support for Ancestor and Supersedes">Support
+for Ancestor and Supersedes</a>
+<br><a NAME="Toc_Support for Symbolic Links"></a><a href="#Support for Symbolic Links">Support
+for Symbolic Links</a>
+<br><a NAME="Toc_Support for Directories"></a><a href="#Support for Directories">Support
+for Directories</a>
+<br><a NAME="Toc_Hardcoded Entries in the PSF"></a><a href="#Hardcoded Entries in the PSF">Hard
+Coded Entries in the PSF</a>
+<br><a NAME="Toc_Example"></a><a href="#Example">Example</a>
+<br><a NAME="Toc_Limitations"></a><a href="#Limitations">Limitations</a>
+<br><a NAME="Toc_Useful Links"></a><a href="#Useful Links">Useful Links</a>
+<p>
+<hr>
+<h2>
+<a NAME="AboutDoc"></a><a href="#Toc_AboutDoc">About this Document</a></h2>
+This document is intended to give the reader the necessary information
+to do Service Packaging on HP-UX version 11.0 or later.
+<p>See the <a href="http://w3.ode.raleigh.ibm.com/3.0/doc/pubs/index.htm">ODE
+Documentation Index</a> for a complete list of ODE documents and their
+purposes. It is recommended that the <a href="http://w3.ode.raleigh.ibm.com/3.0/doc/pubs/ODEPackagingConcepts.htm">ODE
+Packaging Concepts</a> and <a href="http://w3.ode.raleigh.ibm.com/3.0/doc/pubs/ODEPackagingReference.htm">ODE
+Packaging Reference</a> documents be read before reading the HP-UX Service
+Packaging Reference.
+<p>
+<hr>
+<h2>
+<a NAME="Introduction"></a><a href="#Toc_Introduction">Introduction</a></h2>
+ODE supports Initial Product Packaging(IPP) and Service Packaging(SP) on
+HP-UX. The tool used to create packages on HP-UX is s<i>wpackage</i>. Though
+IPP is supported on HP-UX versions 10 or lower, SP is supported only on
+versions 11.0 or later. IPP creates a full and complete package, containing
+the entire contents of a product. Service packaging creates a patch which
+generally contains a partial, or incremental set of files used to update
+or refresh an existing software installation. Swpackage uses the PSF (Product
+Specification File) to organize files into products, subproducts and filesets.
+<p>
+<hr>
+<h2>
+<a NAME="ODE Passes for Service Packaging"></a><a href="#Toc_ODE Passes for Service Packaging">ODE
+Targets for Service Packaging</a></h2>
+ODE requires the same set of targets for Service Packaging as for Initial
+Product Packaging, namely <i>gather_all</i>, <i>parse_all </i>and <i>runpkgtool_all</i>.
+The same file structure that is currently being used for IPP can be used
+to create a patch in Service Packaging and the CMF need not be changed
+except while adding new filesets or files as a part of the patch. The major
+difference is that SP will use an extra set of makefile variables which
+will be discussed below.
+<p>A typical patch creation process involves creating a sandbox, populating
+the sandbox with the files which need to be changed for the patch and running
+the following targets after the files are changed.
+<p><b>'mk'</b>: Run as <i>mk</i>
+<br>This pass builds the modified source files.
+<p><b>'gather_all'</b>: Run as <i>mk gather_all PKG_CLASS=sp</i>
+<br>It runs the<i> instdep_all</i> target. This target populates the shiptree
+with the changed/modified files.
+<b>Note:
+</b>The shiptree can be populated
+with the modified files either by issuing
+<i>mk gather_all PKG_CLASS=sp</i>
+or <i>mk instdep_all </i>command.
+<p><b>'parse_all'</b>: Run as <i>mk parse_all PATCH_NAME=xxxx</i>
+<br>This target parses the CMF and generates the PSF which will be used
+by the packaging tool <i>swpackage</i>. Since the PKG_CLASS is set to "sp",
+the resultant PSF will contain the entries for only the files present in
+the shiptree of the sandbox. This pass uses the makefile variables <b>PATCH_NAME</b>,
+<b>PATCH_NEW_FILESETS</b>, <b>PATCH_ANCESTOR_LIST</b>, <b>PATCH_SUPERSEDES_LIST</b>,
+<b>PATCH_NEW_LINKS</b> and <b>PATCH_NEW_DIRS</b> which are discussed in
+the next section.
+<p><b>'runpkgtool_all'</b>: Run as <i>mk runpkgtool_all PKG_CLASS=sp</i>
+<br>This target runs the actual packaging command <i>swpackage</i>. This
+command is invoked through the script Spti_swpackage and an installable
+patch is created based on the contents of the PSF.
+<p>
+<hr>
+<h2>
+<a NAME="Makefile Variables"></a><a href="#Toc_Makefile Variables">Makefile
+Variables</a></h2>
+The following makefile variables are used in Service Packaging. Some of
+these variables are required and some are optional. These makefile variables
+could be either defined in a makefile or on the command line itself.
+<br>&nbsp;
+<table BORDER CELLSPACING=0 CELLPADDING=0 COLS=4 WIDTH="100%" >
+<tr BGCOLOR="#999999">
+<td><b>Makefile Variable</b></td>
+
+<td><b>Definition</b></td>
+
+<td><b>Required/Optional</b></td>
+
+<td><b>Format</b></td>
+</tr>
+
+<tr>
+<td><b>PATCH_NAME</b></td>
+
+<td>This makefile variable generates the tag for the patch in the PSF.
+This is a required makefile variable. The patch tag should be different
+from the original product tag as recommended by HP.</td>
+
+<td>Required</td>
+
+<td>string</td>
+</tr>
+
+<tr>
+<td><b>PATCH_NEW_FILESETS</b></td>
+
+<td>This makefile variable contains a list of colon separated filesets.
+All the filesets which don't exist in the base product and are being newly
+introduced in the patch should be listed here. For more information on
+this variable, check <a href="#Support for New Filesets">Support for New
+Filesets</a>.</td>
+
+<td>Optional</td>
+
+<td>colon separated list of fileset names. For Example: odehellobin:odehellodoc</td>
+</tr>
+
+<tr>
+<td><b>PATCH_ANCESTOR_LIST</b></td>
+
+<td>This makefile variable contains a list of filesets with each entry
+being an ancestor to a particular fileset listed in the PSF. It tells the
+SD that it is replacing that particular fileset. For more information on
+this variable check <a href="#Support for Ancestor and Supersedes">Support
+for Ancestor and Supersedes</a>.</td>
+
+<td>Optional</td>
+
+<td>Each entry in this variable corresponds to a fileset in the PSF. All
+the entries should be separated by : (colon)
+<br>Each entry will have a fileset and a corresponding list of superseding
+filesets. The fileset and the list should be separated by @. In each entry,
+the superseding filesets should be separated by ; (semicolon). Each superseding
+fileset will be in the format <i>Product.Filset,Version&nbsp;</i></td>
+</tr>
+
+<tr>
+<td><b>PATCH_SUPERSEDES_LIST</b></td>
+
+<td>This makefile variable contains a list of filesets with each entry
+being a supersede to a particular fileset listed in the PSF. For more information
+on this variable check <a href="#Support for Ancestor and Supersedes">Support
+for Ancestor and Supersedes</a>.</td>
+
+<td>Optional</td>
+
+<td>Same as <b>PATCH_ANCESTOR_LIST</b></td>
+</tr>
+
+<tr>
+<td><b>PATCH_NEW_LINKS</b></td>
+
+<td>This makefile variable contains a list of colon separated symbolic
+links to be included in the patch. For more information on this variable
+and the support for symbolic links, check <a href="#Support for Symbolic Links">Support
+for Symbolic Links</a>.</td>
+
+<td>Optional</td>
+
+<td>colon separated list of links. Each link is of format <b>sourceDir/sourceFile</b>
+where sourceDir and sourceFile are attributes of the file stanza that represents
+a symbolic link in the CMF.</td>
+</tr>
+
+<tr>
+<td><b>PATCH_NEW_DIRS</b></td>
+
+<td>This makefile variable contains a list of colon separated directories
+to be included in the patch. For more information on this variable and
+the support for directories, check <a href="#Support for Directories">Support
+for Directories</a>.</td>
+
+<td>Optional</td>
+
+<td>colon separated list of directories. Each directory should exactly
+match <b>sourceDir </b>attribute of the file stanza that represents a directory
+in the CMF.</td>
+</tr>
+
+<tr>
+<td><b>PKG_CONTROL_DIR</b></td>
+
+<td>This variable represents the location of the control files.</td>
+
+<td>Required</td>
+
+<td>valid path to a directory</td>
+</tr>
+
+<tr>
+<td><b>PKG_OUTPUT_DIR</b></td>
+
+<td>This variable represents the directory where the patch is created.
+The value of this variable is used to specify -d option of swpackage.</td>
+
+<td>Required</td>
+
+<td>valid path to a directory</td>
+</tr>
+
+<tr>
+<td><b>PKG_TOOL_FLAGS</b></td>
+
+<td>This variable is used to specify all the supported flags that can be
+passed to swpackage</td>
+
+<td>Optional</td>
+
+<td>\"option1 option2 ...\"".
+<br><b>E.g.</b>: "\"-d /test/dir -f file\""</td>
+</tr>
+</table>
+
+<h2>
+<a NAME="Support for New Filesets"></a><a href="#Toc_Support for New Filesets">Support
+for New Filesets</a></h2>
+ODE supports the creation of new filesets in a patch. All the new filesets
+(created in the patch but not present in the base product) should be listed
+as a colon separated list in the makefile variable <b>PATCH_NEW_FILESETS</b>.
+The tags <i>is_patch true</i>, <i>ancestor</i> and <i>supersedes</i> will
+not be generated for these filesets.
+<h2>
+<a NAME="Support for Ancestor and Supersedes"></a><a href="#Toc_Support for Ancestor and Supersedes">Support
+for Ancestor and Supersedes</a></h2>
+ODE will generate <b>ancestor</b> and <b>supersedes</b> tags in the PSF.
+<p>ODE will generate the <b>ancestor</b> tag in all the filesets in the
+PSF based on the values specified in the makefile variable <b>PATCH_ANCESTOR_LIST</b>.
+This variable should contain a colon separated list with each entry containing
+a fileset and its corresponding ancestors. If this variable is not set
+or if it does not have an entry for a fileset, ODE will generate this tag
+dynamically for the fileset (if the fileset is not new) in the format <i>product.fileset
+</i>where
+<i>product</i>
+refers to the name of the base product for which the patch is applied and
+<i>fileset</i>
+refers to the name of the fileset for which this tag is generated. In IPP
+packaging, the ancestor tag is generated from the value of the "Sup" requisite
+as specified in the <b>requisites</b> attribute in the RequisitesInfo stanza
+of the CMF. But in SP, this value will be ignored.
+<p><b>E.g.:</b> It can be specified in the makefile as
+<br><tt>PATCH_ANCESTOR_LIST=odehellobin@odehello.binfileset:odehellodoc@odehello.docfileset;odetestdoc.testfileset</tt>
+<p>ODE will generate the <b>supersedes</b> tag in all the required filesets
+in the PSF based on the values specified in the makefile variable <b>PATCH_SUPERSEDES_LIST</b>.
+This variable should contain a colon separated list with each entry containing
+a fileset and its corresponding supersedes. Note that this tag will be
+generated for only those filesets listed in this variable and hence no
+tag will be generated for a fileset if this variable is not set or if it
+does not have an entry for this fileset or if the fileset is new.
+<p><b>E.g.:</b> It can be specified in the makefile as
+<br><tt>PATCH_SUPERSEDES_LIST=odehellobin@odetest.fileset1,fr=1.0;odedev.fileset2,fr>1.1:odehelodoc@odebld.fileset3,fr>2.0;odeship.fileset4,fr&lt;1.2</tt>
+<p><b>Important:</b> Note that the ancestor and supersedes tags will not
+be generated if the fileset is listed in <b>PATCH_NEW_FILESETS</b>, which
+indicates that the fileset is new even if it is listed in any of the above
+two variables.
+<h2>
+<a NAME="Support for Symbolic Links"></a><a href="#Toc_Support for Symbolic Links">Support
+for Symbolic Links</a></h2>
+ODE supports the packaging of symbolic links in a patch. Swpackage packages
+this link irrespective of it pointing to a valid file or not.
+<p>The symbolic links will be supported through a makefile variable <b>PATCH_NEW_LINKS</b>.
+This variable will contain a colon separated list of links to be packaged.
+A link listed in the CMF but missing in this variable will be ignored.
+All the links listed in this variable will be created in the shiptree and
+get included in the patch by swpackage.
+<p><b>E.g.:</b> It can be specified in the makefile as
+<br><tt><font size=+1>PATCH_NEW_LINKS=/opt/odehello/bin/link1:/opt/odehello/html/link2</font></tt>
+<p>Note that each entry in this variable should exactly match the combination
+of <b>sourceDir</b> and <b>sourceFile</b> attributes for a particular link
+in the CMF. Also, if the fileset which contains the link is new (listed
+in <b>PATCH_NEW_FILESETS</b>) the above checking will not be done. In this
+case, the link will be entered into the PSF and get created in the shiptree.
+<h2>
+<a NAME="Support for Directories"></a><a href="#Toc_Support for Directories">Support
+for Directories</a></h2>
+ODE will ignore all the directory entries in the CMF while generating the
+PSF. <b>PATCH_NEW_DIRS</b> is a makefile variable containing a list of
+colon separated directories. Only the entries for those directories listed
+in this variable will be generated in the PSF.
+<p><b>E.g.:</b> It can be specified in the makefile as
+<br><tt><font size=+1>PATCH_NEW_DIRS=/opt/odehello/bin/:/opt/odehello/html/</font></tt>
+<p>Note that each entry in this variable should exactly match the <b>sourceDir</b>
+attribute for a particular directory in the CMF.
+<br>Also, if a new fileset (specified in <b>PATCH_NEW_FILESETS</b>) contains
+a directory, then that directory will be generated in the PSF irrespective
+of its existence in <b>PATCH_NEW_DIRS</b>.
+<h2>
+<a NAME="Hardcoded Entries in the PSF"></a><a href="#Toc_Hardcoded Entries in the PSF">Hard
+Coded Entries in the PSF</a></h2>
+The tag <b>layout_version</b> will be set to 1.0 at the depot level in
+the PSF (See note below).
+<br>The tag <b>is_patch</b> will be set to true once at the product level
+and also in all the filesets in the PSF provided that the fileset is not
+new (not listed in <b>PATCH_NEW_FILESETS)</b>.
+<p><b>Note:</b> Beginning with HP-UX 11.0, patching was significantly enhanced
+by extending the abilities of the Software Distributor tools. The price
+of these new abilities was to introduce new attributes to the SD objects.
+The layout_version attribute is used to differentiate between the old and
+new, with 10.X depots identified by the value 0.8 and 11.X depots marked
+by 1.0.
+<h2>
+<a NAME="Example"></a><a href="#Toc_Example">Example</a></h2>
+Consider the following CMF in a sandbox used to create a patch for the
+product odehello.
+<p><tt>InstallEntity /* Representing the Product odehello */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; EntityInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityName&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehello" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fullEntityName&nbsp;
+=&nbsp; ["odehello"] ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; description&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; "ODE Test Package ";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; LinkInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildEntities =&nbsp;
+[ "odehellobin" "odehellodoc" "odehellotest" ] ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildFiles&nbsp;&nbsp;&nbsp;
+= ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= NULL ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; .......</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; .......</tt>
+<br><tt>}</tt>
+<p><tt>InstallEntity /* Representing the Fileset odehellobin */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; EntityInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityName&nbsp; =&nbsp;
+"odehellobin";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityId&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehellobin";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; LinkInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildFiles&nbsp;&nbsp;
+=&nbsp; [&lt; /opt ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/bin ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/bin/client ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/bin/server ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/bin/newlink > ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;}</tt>
+<p><tt>InstallEntity /* Representing the doc fileset odehellodoc */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; EntityInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityName&nbsp; =&nbsp;
+"odehellodoc";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityId&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehellodoc";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; LinkInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildFiles&nbsp;&nbsp;
+=&nbsp; [&lt; /opt ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/html ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/html/page.html ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/odehello/html/pagelink.html > ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;}</tt>
+<p><tt>InstallEntity /* Representing the doc fileset odehellotest */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; EntityInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityName&nbsp; =&nbsp;
+"odehellotest";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entityId&nbsp;&nbsp;&nbsp;
+=&nbsp; "odehellotest";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; LinkInfo</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; immChildFiles&nbsp;&nbsp;
+=&nbsp; [&lt; /opt ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/test ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/test/service ></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt; /opt/test/tlink > ];</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; }</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;}</tt>
+<p><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Representing directory 'opt' using file Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'D'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; permissions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "-m 755" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "root" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "sys" ;</tt>
+<br><tt>}</tt>
+<br><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Representing
+directory /opt/odehello/ using file Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'D'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; permissions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "-m 755" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "root" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "sys" ;</tt>
+<br><tt>}</tt>
+<br><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Representing
+directory /opt/odehello/bin/ using file Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'D'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/bin/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/bin/"&nbsp;&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; permissions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "-m 755" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "root" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "sys" ;</tt>
+<br><tt>}</tt>
+<br><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Representing file /opt/odehello/bin/client using file Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "client";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/bin/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/bin/"&nbsp;&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'F'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "client";</tt>
+<br><tt>}</tt>
+<br><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Representing file /opt/odehello/bin/server using file Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "server";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/bin/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/bin/"&nbsp;&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'F'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "server";</tt>
+<br><tt>}</tt>
+<br><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Representing the link /opt/odehello/bin/newlink using file Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "newlink";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/bin/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/bin/"&nbsp;&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'S'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "newlink";</tt>
+<br><tt>}</tt>
+<br><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Representing
+directory /opt/odehello/html/ using file Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'D'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/html/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/html/"&nbsp;&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; permissions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "-m 755" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "root" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "sys" ;</tt>
+<br><tt>}</tt>
+<br><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Representing file /opt/odehello/html/page.html using file Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "page.html";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/html/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/html/"&nbsp;&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'F'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "page.html";</tt>
+<br><tt>}</tt>
+<br><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Representing symbolic link /opt/odehello/html/pagelink.html using file
+Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "pagelink.html";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/html/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/odehello/html/"&nbsp;&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'S'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "pagelink.html";</tt>
+<br><tt>}</tt>
+<br><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Representing
+directory /opt/test/ using file Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'D'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/test/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/test/"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; permissions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "-m 755" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; userId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "root" ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; groupId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "sys" ;</tt>
+<br><tt>}</tt>
+<br><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Representing file /opt/test/service using file Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "service";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/test"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/test"&nbsp;&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'F'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "service";</tt>
+<br><tt>}</tt>
+<br><tt>file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Representing symbolic link /opt/test/tlink using file Stanza */</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; partNum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= '1';</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "tlink";</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/test"&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; targetDir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "/opt/test"&nbsp;&nbsp;&nbsp;&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; fileType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 'S'&nbsp; ;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; sourceFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= "tlink";</tt>
+<br><tt>}</tt>
+<p>Note that the above CMF is not complete and only the information needed
+to demonstrate the use of makefile variables is included.
+<br>This CMF has three filesets; odehellobin, odehellodoc and odehellotest.
+The first two filesets exist in the base product odehello, while odehellotest
+is a new fileset being introduced in the patch.
+<p>Assume that the makefile variables used in service packaging are set
+as below.
+<p><tt>PATCH_NAME=patch1</tt>
+<br><tt>PATCH_ANCESTOR_LIST=odehellobin@odehello.binfileset:odehellodoc@odehello.docfileset;odetestdoc.testfileset</tt>
+<br><tt>PATCH_SUPERSEDES_LIST=odehellobin@odetest.fileset1,fr=1.0;odedev.fileset2,fr>1.1:odehellodoc@odebld.fileset3,fr>2.0;odeship.fileset4,fr&lt;1.2</tt>
+<br><tt>PATCH_NEW_LINKS=/opt/odehello/bin/newlink</tt>
+<br><tt>PATCH_NEW_DIRS=/opt/odehello/html/</tt>
+<p>Assume that in the sandbox, files /opt/odehello/bin/client, /opt/odehello/html/page.html
+and the links /opt/odehello/bin/newlink, /opt/odehello/html/pagelink.html
+have been changed.
+<p>After running <i>mk parse_all PKG_CLASS=sp</i> the resultant PSF looks
+like below.<tt></tt>
+<p><tt>depot</tt>
+<p><tt># Packaging Tool to be used : swpackage</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp; layout_version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1.0</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; product</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>tag&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+patch1</b></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; description&nbsp;&nbsp;&nbsp;&nbsp;
+"ODE Test Package "</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; copyright&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"Copyright IBM, 2000"</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+application</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/opt/odehello</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>is_patch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+true</b></tt>
+<br><tt><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ..........</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Control Scripts</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Dependencies</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #
+No dependencies at the patch level<b></b></tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fileset</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tag&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+odehellobin</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; revision&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+2.5.0.0</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_reboot&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+false</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>is_patch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+true</b></tt>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>. . . . . . . . . .</b><b></b>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Control
+Scripts</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Dependencies</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ancestor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+odehello.binfileset</b></tt>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+supersedes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; odetest.fileset1,fr=1.0&nbsp;
+odedev.fileset2,fr>1.1</tt></b>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Files</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>file_permissions&nbsp;&nbsp;&nbsp;
+-m 755 -o root -g sys</b></tt>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /test/sandbox/inst.images/hp9000_ux_10/shipdata/opt/odehello/bin/
+= /opt/odehello/bin/</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+client client</tt></b>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>file_permissions&nbsp;&nbsp;&nbsp;
+-m 755 -o root -g sys</b></tt>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /test/sandbox/inst.images/hp9000_ux_10/shipdata/opt/odehello/bin/
+= /opt/odehello/bin/</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+newlink newlink</tt></b>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # The
+file server has not been included as it is not changed in the sandbox</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #
+The link newlink has been included as it is specified in PATCH_NEW_LINKS</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #
+The directories opt, odehello, bin have not been included as they are not</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #
+listed in PATCH_NEW_DIRS</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end&nbsp;&nbsp; # end
+of fileset odehellobin</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fileset</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tag&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+odehellodoc</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; revision&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+2.5.0.0</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_reboot&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+false</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>is_patch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+true</b></tt>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>. . . . . . . .</b>
+<br><tt>&nbsp;</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Control
+Scripts</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Dependencies</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ancestor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+odehello.docfileset odetestdoc.testfileset</b></tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>supersedes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+odebld.fileset3,fr>2.0 odeship.fileset4,fr&lt;1.2</b></tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Files</tt>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+file_permissions&nbsp;&nbsp;&nbsp; -m 755 -o root -g sys</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /test/sandbox/inst.images/hp9000_ux_10/shipdata/opt/odehello/
+= /opt/odehello/</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+html html</tt></b>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>file_permissions&nbsp;&nbsp;&nbsp;
+-m 755 -o root -g sys</b></tt>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /test/sandbox/inst.images/hp9000_ux_10/shipdata/opt/odehello/html/
+= /opt/odehello/html/</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+page.html page.html</tt></b>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # The
+link pagelink.html has not been included even though it is changed as it
+is not specified</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #
+in PATCH_NEW_LINKS</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #
+The directory html is included as it is listed in PATCH_NEW_DIRS</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end&nbsp;&nbsp; # end
+of fileset odehellodoc</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fileset</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tag&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+odehellotest</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; revision&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+2.5.0.0</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_reboot&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+false</tt><tt></tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Notice
+that is_patch is not set to true as this is a new fileset</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Control
+Scripts</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Dependencies</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+# ancestor and supersedes will not be generated as this is a new fileset</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Files</tt>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+file_permissions&nbsp;&nbsp;&nbsp;&nbsp; -m 755 -o root -g sys</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/test/sandbox/inst.images/hp9000_ux_10/shipdata/opt/test = /opt/test</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+service service</tt></b>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>file_permissions&nbsp;&nbsp;&nbsp;&nbsp;
+-m 755 -o root -g sys</b></tt>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/test/sandbox/inst.images/hp9000_ux_10/shipdata/opt/test/ = /opt/test</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tlink tlink</tt></b>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # The
+file service and the link tlink are included as they are a part of a new
+fileset</tt>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end&nbsp;&nbsp; # end
+of fileset odehellotest</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp; end&nbsp; # end of patch</tt>
+<br><tt>end&nbsp;&nbsp; # end of depot</tt>
+<p>
+<hr>
+<h2>
+<a NAME="Limitations"></a><a href="#Toc_Limitations">Limitations</a></h2>
+
+<ul>
+<li>
+Deletion of files in a product by applying a patch will not be supported
+in this version.</li>
+
+<li>
+Service Packaging is supported only on HP-UX versions 11 or higher.</li>
+
+<li>
+ODE will not check the validity of ancestors and supersedes for any fileset.</li>
+</ul>
+
+<hr>
+<h2>
+<a NAME="Useful Links"></a><a href="#Toc_Useful Links">Useful Links</a></h2>
+<a href="http://docs.hp.com/hpux/onlinedocs/B2355-90154/B2355-90154.html">Managing
+HP-UX 11.0 Software with SD</a>
+<p><a href="http://docs.hp.com/">HP Technical documentation</a>
+<p><a href="http://devresource.hp.com/STK/man/11.00/swpackage_4.html">Swpackage
+Manual page</a>
+<p><a href="http://www.software.hp.com/products/SD_AT_HP/index.html">Software
+Distributor - Summary</a>
+<p><a href="http://devresource.hp.com/STK/man/11.00/sd_4.html">HP-UX 11.00
+manual page for sd</a>
+</body>
+</html>

@@ -1,0 +1,1263 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 [en] (WinNT; U) [Netscape]">
+   <meta name="Author" content="Ernest Crvich">
+   <title>ODE Migration Guide</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+<img SRC="bannerx.gif" ALT="IBM Books" BORDER=0 height=92 width=490>
+<br><a NAME="Top_Of_Page"></a>
+<h1>
+ODE Migration Guide</h1>
+Open Development Environment
+<br>Migration Guide
+<p>Version %RELEASE_NAME% (Build %LEVEL_NAME%, %BUILD_DATE%)
+<br>
+<hr WIDTH="100%">
+<h2>
+<a NAME="ToC"></a>Table of Contents</h2>
+<a NAME="ToC_About"></a><b><a href="#About">About this Document</a></b>
+<br><a NAME="ToC_Getting_Started"></a><b><a href="#Getting_Started">Getting
+Started</a></b>
+<br><a NAME="ToC_Concepts"></a><b><a href="#Concepts">Understanding ODE
+Concepts</a></b>
+<br><a NAME="ToC_Builders"></a><b><a href="#Builders">Part 1: For Builders</a></b>
+<ol>
+<li>
+<a NAME="ToC_BB_Creation"></a><a href="#BB_Creation">Creating the Backing
+Build</a></li>
+
+<ul>
+<li>
+<a NAME="ToC_Shared_BBs"></a><a href="#Shared_BBs">Cross-platform Backing
+Builds</a></li>
+</ul>
+
+<li>
+<a NAME="ToC_Population"></a><a href="#Population">Populating the Source
+Tree</a></li>
+
+<li>
+<a NAME="ToC_Makefile_Creation"></a><a href="#Makefile_Creation">Creating
+the Initial Makefiles</a></li>
+
+<li>
+<a NAME="ToC_Rules_Addition"></a><a href="#Rules_Addition">Adding the Rules
+and Confs</a></li>
+
+<li>
+<a NAME="ToC_Makefile_Mod"></a><a href="#Makefile_Mod">Modifying the Makefiles</a></li>
+
+<ul>
+<li>
+<a NAME="ToC_CPP_Mods"></a><a href="#CPP_Mods">C/C++ Modifications</a></li>
+
+<ul>
+<li>
+<a NAME="ToC_CPP_Archive_Libs"></a><a href="#CPP_Archive_Libs">Archive
+Libraries</a></li>
+
+<li>
+<a NAME="ToC_CPP_Shared_Libs"></a><a href="#CPP_Shared_Libs">Shared Libraries</a></li>
+
+<li>
+<a NAME="ToC_CPP_Programs"></a><a href="#CPP_Programs">Programs</a></li>
+
+<li>
+<a NAME="ToC_CPP_Objects"></a><a href="#CPP_Objects">Objects</a></li>
+
+<li>
+<a NAME="ToC_CPP_Targ_Spec"></a><a href="#CPP_Targ_Spec">Target-specific
+Usage</a></li>
+</ul>
+
+<li>
+<a NAME="ToC_Java_Mods"></a><a href="#Java_Mods">Java Modifications</a></li>
+
+<ul>
+<li>
+<a NAME="ToC_Java_Jars"></a><a href="#Java_Jars">Jar Files</a></li>
+</ul>
+
+<li>
+<a NAME="ToC_Other_Mods"></a><a href="#Other_Mods">Other Modifications</a></li>
+
+<li>
+<a NAME="ToC_Design_Problems"></a><a href="#Design_Problems">Common Design
+Problems</a></li>
+
+<ul>
+<li>
+<a NAME="ToC_Header_Inclusion"></a><a href="#Header_Inclusion">Header File
+Inclusion</a></li>
+
+<li>
+<a NAME="ToC_Rel_Abs_Paths"></a><a href="#Rel_Abs_Paths">Relative and Absolute
+Paths</a></li>
+</ul>
+</ul>
+
+<li>
+<a NAME="ToC_BB_Build"></a><a href="#BB_Build">Performing the Build</a></li>
+</ol>
+<a NAME="ToC_Developers"></a><b><a href="#Developers">Part 2: For Developers</a></b>
+<ol>
+<li>
+<a NAME="ToC_SB_Creation"></a><a href="#SB_Creation">Creating the Sandbox</a></li>
+
+<li>
+<a NAME="ToC_Checkout"></a><a href="#Checkout">Checking Out Files</a></li>
+
+<li>
+<a NAME="ToC_SB_Build"></a><a href="#SB_Build">Working in the Sandbox</a></li>
+</ol>
+<a NAME="ToC_Variables"></a><b><a href="#Variables">Frequently Used Variables</a></b>
+<br><a NAME="ToC_Make_Diffs"></a><b><a href="#Make_Diffs">Make Differences</a></b>
+<br><a NAME="ToC_More_Help"></a><b><a href="#More_Help">For Further Assistance</a></b>
+<p>
+<hr>
+<h1>
+<a NAME="About"></a><a href="#ToC_About">About this Document</a></h1>
+This document is intended to help the user migrate to ODE from a different
+build process, whether that be another software product (e.g., nmake) or
+building manually.&nbsp; It describes very simply the step-by-step process
+of setting up one's project to build typical output (from C/C++ and Java
+source code) with ODE, both for builders and developers.&nbsp; No previous
+knowledge of ODE is required, but some knowledge of basic makefile syntax,
+elementary compiler usage (C/C++ and Java), basic command shell (e.g.,
+<b><tt>/bin/ksh</tt></b>)
+usage, and the structure of your own project is expected.
+<p>Packaging topics are not covered in this document.&nbsp; See the <a href="ODEPkgTutorial.htm">Packaging
+Tutorial</a> for an introduction to Packaging with ODE.
+<p><b><u>NOTE</u></b>:&nbsp; The example shell commands given in this document
+are assumed to be performed on AIX in a Korn Shell (<b><tt>/bin/ksh</tt></b>)
+environment.&nbsp; Other operating systems and shells are very similar.&nbsp;
+Also, backing builds and sandboxes will be created in the home directory
+of the user "jdoe" (<b>HOME=/home/jdoe</b>) by default.
+<p>See <i><a href="ODEAdminsGuide.htm">ODE Installation and Administration
+Guide</a> </i>for information on <a href="ODEAdminsGuide.htm#HighlightingConventions">Highlighting
+Conventions</a> and <a href="ODEAdminsGuide.htm#howto">How to Read Syntax
+Statements</a>.
+<p>See the <i><a href="index.htm">ODE Documentation Index</a></i> for a
+complete list of ODE documents and their purposes.
+<p>
+<hr WIDTH="100%">
+<h1>
+<a NAME="Getting_Started"></a><a href="#ToC_Getting_Started">Getting Started</a></h1>
+Before starting actual ODE work, you need to complete the following preliminary
+tasks:
+<ol>
+<li>
+Understand your existing build process.&nbsp; You need to know what to
+expect as output from your project, and what files and tools are needed
+to create that output.&nbsp; The best way to understand this is to create
+a log file of your existing build process and observe the directories that
+are traversed and the commands that are executed.&nbsp; This can then be
+used as a guide in creating the ODE makefiles, and later compared with
+your results with ODE to ensure the same processes occur.</li>
+
+<li>
+Obtain the necessary ODE files from our <a href="http://w3.ode.raleigh.ibm.com/">home
+page</a>'s "Download Code" link, shown below (where <i>num</i> is the current
+build number, e.g., 22, and <i>machine</i> is the <a href="ODEAdminsGuide.htm#Header_4">machine
+name</a> of the platform(s) you are working on, e.g., x86_nt_4):</li>
+
+<ul>
+<li>
+<b><tt>%release_name%_b<i>num</i>_<i>machine</i>.zip</tt></b></li>
+
+<li>
+<b><tt>%release_name%_b<i>num</i>_tools.jar</tt></b></li>
+
+<li>
+<b><tt>%release_name%_b<i>num</i>_rules.zip</tt></b></li>
+
+<br>(on platforms which use the EBCDIC character set instead of ASCII,
+such as MVS/USS, get <b><tt>%release_name%_b<i>num</i>_rules_ebcdic.zip</tt></b>
+instead)
+<li>
+<b><tt>%release_name%_b<i>num</i>_confs.zip</tt></b></li>
+
+<br>(on platforms which use the EBCDIC character set instead of ASCII,
+such as MVS/USS, get <b><tt>%release_name%_b<i>num</i>_confs_ebcdic.zip</tt></b>
+instead)</ul>
+
+<li>
+Install the files <b><tt>%release_name%_b<i>num</i>_<i>machine</i>.zip</tt></b>
+and <b><tt>%release_name%_b<i>num</i>_tools.jar</tt></b> as described in
+the <a href="ODEAdminsGuide.htm#ToC_ODE_Component_Install">Installation
+and Administration Guide</a> for the platform you are using.&nbsp; For
+the sake of following those instructions, assume that you <i>will</i> be
+using packaging tools (i.e., add the <b>tools.jar</b> file to your <b>CLASSPATH</b>).</li>
+
+<li>
+Make sure you have Java JDK 1.1 or higher installed.</li>
+</ol>
+
+<hr WIDTH="100%">
+<h1>
+<a NAME="Concepts"></a><a href="#ToC_Concepts">Understanding ODE Concepts</a></h1>
+A few fundamental definitions of ODE terminology need to be learned before
+the actual migration process begins.&nbsp; This section will briefly cover
+the minimum necessary ideas in order to begin migration, but please consider
+reading the entire <a href="ODEConcepts.htm">ODE Concepts</a> manual for
+more detailed information.
+<dl>
+<dt>
+<i>backing builds and sandboxes</i></dt>
+
+<dd>
+These are effectively the ODE-specific directory structures which contain
+the project's source code and all generated output (object files, executables,
+etc.).&nbsp; To the ODE tools, a backing build is literally the same as
+a sandbox, the only difference being that the former is not backed by another
+sandbox.&nbsp; To users, the difference is more practical; backing builds
+contain all of the source code and resulting generated output (object files,
+executables, etc.), whereas sandboxes typically contain only a small subset
+of the source and output (for whatever defect or feature the developer
+is working on).</dd>
+
+<dt>
+<i>backing chain</i></dt>
+
+<dd>
+Simply refers to the conceptual linkage between sandboxes and the final
+backing build.&nbsp; In most cases, a chain will only consist of a sandbox
+and the backing build, but there can be other sandboxes in between if files
+in multiple sandboxes need to be shared.</dd>
+
+<dt>
+<i>rules</i></dt>
+
+<dd>
+These are the makefiles that ODE provides, which contain the logic to build
+the most common output (object files from C/C++ source files, executables
+and libraries from object files, .class files from .java files, etc.).</dd>
+</dl>
+
+<hr WIDTH="100%">
+<h1>
+<a NAME="Builders"></a><a href="#ToC_Builders">Part 1: For Builders</a></h1>
+The following sections describe the processes that are normally followed
+to set up an ODE backing build for the first time so that developers can
+back their sandboxes by a consistent version of the source code.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="BB_Creation"></a><a href="#ToC_BB_Creation">1. Creating the Backing
+Build</a></h2>
+The first step of migration is to create the backing build in which your
+project's source code, makefiles, and output files will be stored.&nbsp;
+To do this, the ODE command <b>mkbb</b> should be used.&nbsp; Here is the
+command to create a backing build called "my_bb" in the home directory:
+<p><b><tt>mkbb -dir /home/jdoe my_bb</tt></b>
+<p>This will create a directory in <b><tt>/home/jdoe</tt></b> called <b>my_bb</b>,
+which itself contains many subdirectories used by ODE as well as the user.&nbsp;
+The primary subdirectories are <b>src</b> and <b>obj</b>.&nbsp; The <b>src</b>
+directory tree will be where all of the source code is placed, organized
+into a directory structure of your choosing.&nbsp; The <b>obj</b> directory
+tree is where ODE will output the object files, executables, and libraries
+that the compiler (and other tools) generate.
+<p>This command also creates two files which you should be aware of: <b><tt>/home/jdoe/.sandboxrc</tt></b>
+and <b><tt>/home/jdoe/my_bb/rc_files/sb.conf</tt></b>.&nbsp; The <b><tt>.sandboxrc</tt></b>
+file, created by <b>mksb</b> and <b>mkbb</b>, contains a list of all backing
+builds and sandboxes that you have created, along with basic information
+about them.&nbsp; The <b><tt>sb.conf</tt></b> file primarily contains a
+list of valid context (machine) names and the path to the backing build
+(if there is one).
+<h3>
+<a NAME="Shared_BBs"></a><a href="#ToC_Shared_BBs">Cross-platform Backing
+Builds</a></h3>
+Ideally, in order to use the same backing build from multiple platforms
+(e.g., AIX and Windows NT), a shared file system such as DFS would be used
+instead of the user's home directory.&nbsp; The same exact backing build
+and ODE configuration files can be used from all platforms (both Unix and
+non-Unix machines) if an environment variable is used to specify the base
+directory.&nbsp; For example, on Windows NT, you may have your DFS project
+directory mounted as the P drive (<b><tt>NET USE P: \\SAMBAHOST\PROJECT</tt></b>),
+which may be equivalent to the AIX path <b><tt>/.../mydfs.mysite.ibm.com/fs/myproj</tt></b>.&nbsp;
+You would establish an environment variable to be used on both platforms,
+for example <b>PROJECT_ROOT</b>.&nbsp; On Windows, this variable would
+be set to simply "<b><tt>P:</tt></b>".&nbsp; On AIX, it would be set to
+<b><tt>/.../mydfs.mysite.ibm.com/fs/myproj</tt></b>.&nbsp;
+Then you could create the backing build with the following command instead
+of the one shown above:
+<p><b><tt>mkbb -dir '${PROJECT_ROOT}/backing_builds' -rc ${PROJECT_ROOT}/backing_builds/.sandboxrc</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp;&nbsp; -m x86_nt_4:ppc_aix_4 my_bb</tt></b>
+<p>Note that the single quotes around the <b><tt>-dir</tt></b> argument
+should only be used on Unix-like platforms, which prevents the command
+shell from evaluating the <b>PROJECT_ROOT</b> variable (the quotes should
+not be used on Windows NT or OS/2).&nbsp; This variable will be stored
+exactly as shown in your <tt>.sandboxrc</tt> file and evaluated at runtime.&nbsp;
+Thus on Windows NT, the effective backing build directory would be <b><tt>P:/backing_builds/my_bb</tt></b>
+(do not worry about forward slashes being used; these are converted to
+backslashes when necessary).&nbsp; On AIX it would be <b><tt>/.../mydfs.mysite.ibm.com/fs/myproj/backing_builds/my_bb</tt></b>.
+<p>The <b><tt>-rc</tt></b> flag is used to tell <b><tt>mkbb</tt></b> to
+put the <b><tt>.sandboxrc</tt></b> file (or whatever you choose to name
+it) somewhere else instead of in the <b>$HOME</b> directory (in this case,
+we put it in the same directory where the backing build will be created).&nbsp;
+There are no quotes around the <b><tt>-rc</tt></b> argument since that
+parameter is not stored in a file and thus the <b>PROJECT_ROOT</b> variable
+does not need to be "protected" from immediate evaluation.
+<p>The <b>-m</b> flag is used to specify all the machines/platforms for
+which you will be building (separated by colons).&nbsp; In this example,
+both Windows NT and AIX platforms will be able to build in this shared
+file system backing build.&nbsp; Although these platform names can be anything
+the user chooses, it is perhaps most convenient to use the predefined ODE
+<a href="ODEAdminsGuide.htm#Header_4">machine
+names</a>.&nbsp; If the <b>-m</b> flag is omitted, only the ODE machine
+name for the current platform (on which <b>mkbb</b> is executed) is used.&nbsp;
+This list of valid machine names is placed in the <b><tt>rc_files/sb.conf</tt></b>
+file, and can be modified later either manually or by using <b>mkbb</b>.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Population"></a><a href="#ToC_Population">2. Populating the Source
+Tree</a></h2>
+The next step is to populate the <b>src</b> directory of your newly created
+backing build with all of your project's source files.&nbsp; Typically
+users store their source code in CMVC for extraction to a build area, and
+that method applies to ODE quite well.&nbsp; Simply specify the <b>src</b>
+directory of the sandbox in the CMVC file/track/level extract dialog (e.g.,
+<b><tt>/home/jdoe/my_bb/src</tt></b>).&nbsp;
+Files and directories should be given the appropriate permissions to prevent
+accidental alteration by developers who create sandboxes backed by the
+backing build.&nbsp; For example, Unix file modes 755 or 555 for directories,
+and modes 644 or 444 for files.&nbsp; If the file system used to store
+the backing build uses ACL control, such as DFS, then the ACLs may need
+to be set properly as well.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Makefile_Creation"></a><a href="#ToC_Makefile_Creation">3. Creating
+the Initial Makefiles</a></h2>
+You may or may not already have makefiles in your project's source code
+directories, but even if you do, they will not work as-is with ODE (unless
+your build process happened to be an old version of ODE).&nbsp; Fortunately,
+you can automatically generate initial makefiles for use with ODE that
+will help you get started (although you will still need to edit many of
+them in <a href="#Makefile_Mod">Step 5</a>).&nbsp; To do this, go to the
+<b><tt>src</tt></b>
+directory of your sandbox and enter the following command to invoke the
+<b>MakeMake</b>
+tool:
+<p><b><tt>java com.ibm.ode.MakeMake -ofiles -sub .</tt></b>
+<p>This will generate files in every directory of your source tree called
+<b><tt>makefile.ode</tt></b>
+which ODE will use to determine what needs to be built.&nbsp; The <b><tt>-ofiles</tt></b>
+argument is a bit beyond the scope of this document, but is the desired
+behavior for most situations.&nbsp; The
+<b><tt>-sub</tt></b> flag tells
+<b>MakeMake</b>
+to traverse all subdirectories of the directory specified (the final argument,
+"<tt>.</tt>", which means the current directory).
+<p>You may wish to read more about the details of the <b><a href="ODEMakeMake.htm#Using MakeMake">MakeMake</a></b>
+tool if the above usage requires more explanation or if you are simply
+curious about <b>MakeMake</b>'s other options.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Rules_Addition"></a><a href="#ToC_Rules_Addition">4. Adding the
+Rules and Confs</a></h2>
+The necessary ODE rules and conf files are contained in the files <b><tt>%release_name%_b<i>num</i>_rules.zip</tt></b>
+and <b><tt>%release_name%_b<i>num</i>_confs.zip</tt></b>.&nbsp; The former
+contains all of the standard ODE makefiles that do most of the work of
+actually building your project; these files should not be modified (rule
+enhancement/modification is described later).&nbsp; The latter contains
+the three primary build configuration files: <b><tt>Makeconf</tt></b>,
+<b><tt>Buildconf</tt></b>,
+and <b><tt>Buildconf.exp</tt></b>.&nbsp; These files may be modified as
+desired.&nbsp; Both of these zip files should be extracted from the <b><tt>src</tt></b>
+directory of the sandbox.&nbsp; The three configuration files will be placed
+in that directory, while the rules will be created in a subdirectory called
+<b><tt>rules_mk</tt></b>.
+<p>Typically, the <b>PROJECT_NAME</b> variable will be changed (in <b><tt>Makeconf</tt></b>)
+to a suitable short name for the user's project.&nbsp; This name is used
+for making custom rules makefiles.&nbsp; In the <b><tt>rules_mk</tt></b>
+directory, two user-defined files will be used if they exist: <b><tt>${PROJECT_NAME}.passes.mk</tt></b>
+and <b><tt>${PROJECT_NAME}.rules.mk</tt></b>.&nbsp; So, if you decided
+to make your <b>PROJECT_NAME</b> be "<tt>myproj</tt>", then the two files
+would be <b><tt>myproj.passes.mk</tt></b> and <b><tt>myproj.rules.mk</tt></b>.&nbsp;
+These files are where you would put extensions to the ODE rules (typically
+in
+<b><tt>${PROJECT_NAME}.rules.mk</tt></b>; the
+<b><tt>${PROJECT_NAME}.passes.mk</tt></b>
+file is only needed in very rare cases), such as new targets or alterations
+to existing targets.
+<p>You may also want to create a platform-specific <b><tt>Makeconf</tt></b>
+file.&nbsp; If you look at the <b><tt>Makeconf</tt></b> file that has been
+extracted in the <b><tt>src</tt></b> directory, you will see a line as
+follows:
+<p><b><tt>.tryinclude &lt;${CONTEXT}.mk></tt></b>
+<p>So, in the <b><tt>rules_mk</tt></b> directory, simply create files with
+the desired <a href="ODEAdminsGuide.htm#Header_4">machine names</a> with
+".mk" suffixes.&nbsp; An example is <b><tt>x86_linux_2.mk</tt></b>.&nbsp;
+These files can then be used to set platform-specific values for ODE variables
+(e.g., CFLAGS) without having large ".ifdef" sections to achieve the same
+thing in <b><tt>Makeconf</tt></b> itself.
+<p>All of these files (especially the conf files) could be added to your
+CMVC project so that future extraction (<a href="#Population">Step 2</a>)
+would automatically provide you with the necessary rules and configuration
+files.&nbsp; However, you could choose to avoid adding the ODE-supplied
+rules files to CMVC, since you may want to upgrade your rules each time
+a new ODE build is made available.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Makefile_Mod"></a><a href="#ToC_Makefile_Mod">5. Modifying the
+Makefiles</a></h2>
+The most difficult step of all is modifying (and debugging) the makefiles
+created in <a href="#Makefile_Creation">Step 3</a> so that ODE will generate
+the same output as your previous build process.&nbsp; The process can be
+broken down into two parts: identifying C/C++ targets and identifying Java
+targets.&nbsp; The <b>MakeMake</b> tool used in Step 3 will take most of
+the thoughtless work out of the way (putting all of the object files and
+Java files in the appropriate variables), but you will need to add information
+to the makefiles to tell ODE what the final output will be (executables,
+libraries, etc.).
+<p>The <a href="ODECommonMakefiles.htm">ODE Common Makefiles</a> document
+should be consulted for additional information on variables used for creating
+other types of files and for adding additional flags to commands.
+<h3>
+<a NAME="CPP_Mods"></a><a href="#ToC_CPP_Mods">C/C++ Modifications</a></h3>
+<b>MakeMake</b> will put all files with C/C++ extensions (.c, .cpp, etc.)
+into a variable called <b>OFILES</b>.&nbsp; This variable does not trigger
+ODE to build anything by itself; it is merely a list of objects that will
+be used to create an executable or library.&nbsp; So for all makefiles
+that contain <b>OFILES</b>, you will need to determine what the desired
+use of those objects are.
+<h4>
+<a NAME="CPP_Archive_Libs"></a><a href="#ToC_CPP_Archive_Libs">Archive
+Libraries</a></h4>
+If the objects are used to create an archive (static) library, you would
+add a variable to the makefile as follows:
+<p><b><tt>LIBRARIES = ${LIB_PREF}foo${STATLIB_SUFF}</tt></b>
+<p>This will tell ODE to put all of the <b>OFILES</b> objects into a library
+called <b><tt>libfoo.a</tt></b> (on Unix platforms, or <b><tt>foo.lib</tt></b>
+on Windows and OS/2). <b>LIB_PREF</b> is defined as "lib" by default by
+the rules for Unix (an empty string on non-Unix platforms), which represents
+the library name prefix.&nbsp; <b>STATLIB_SUFF</b> is defined as ".a"&nbsp;
+by the rules for Unix (".lib" on non-Unix platforms), which represents
+the library name suffix.
+<h4>
+<a NAME="CPP_Shared_Libs"></a><a href="#ToC_CPP_Shared_Libs">Shared Libraries</a></h4>
+If the objects are used to create a shared (dynamic) library, you would
+add a variable to the makefile as follows:
+<p><b><tt>SHARED_LIBRARIES = ${LIB_PREF}foo${SHLIB_SUFF}</tt></b>
+<p>This informs ODE to link together all of the objects in <b>OFILES</b>
+to a shared library called <b><tt>libfoo.so</tt></b> (on most Unix platforms,
+though the suffix may differ, or <b><tt>foo.dll</tt></b> on Windows and
+OS/2).&nbsp; <b>SHLIB_SUFF</b> is defined by the rules as ".so" on most
+Unix platforms (".dll" on Windows and OS/2).
+<h4>
+<a NAME="CPP_Programs"></a><a href="#ToC_CPP_Programs">Programs</a></h4>
+If the objects are used to create an executable, you would add a variable
+to the makefile as follows:
+<p><b><tt>PROGRAMS = foo${PROG_SUFF}</tt></b>
+<p>This will tell ODE to link together all the objects listed in <b>OFILES</b>
+to an executable program called <b><tt>foo</tt></b> (on Unix platforms,
+or <b><tt>foo.exe</tt></b> on Windows and OS/2, the extension of which
+is taken care of by the <b>PROG_SUFF</b> variable, defined in the rules).
+<p>You may also have libraries (archive or shared) that need to be linked
+into the executable.&nbsp; This is done using the <b>LIBS</b> variable.&nbsp;
+For example:
+<p><b><tt>LIBS = ${LIB_PREF}foo1${IMPLIB_SUFF} ${LIB_PREF}foo2${STATLIB_SUFF}</tt></b>
+<p>In this case, you are linking the objects (in <b>OFILES</b>, not shown)
+along with two libraries, <b><tt>libfoo1.so</tt></b> (a shared library)
+and <b><tt>libfoo2.a</tt></b> (an archive library), to create the executable
+<b><tt>foo</tt></b>.&nbsp;
+Note that <b>IMPLIB_SUFF</b> is used for linking with shared libraries;
+although the value of this variable is the same as <b>SHLIB_SUFF</b> on
+most platforms, some platforms have a separate file called an import library
+that is used to link with rather than the shared library itself.&nbsp;
+A typical example is Windows and OS/2, in which the shared library is the
+.DLL file, but the file that is linked into the executable is the .LIB
+import library.
+<h4>
+<a NAME="CPP_Objects"></a><a href="#ToC_CPP_Objects">Objects</a></h4>
+Another possibility is that only object files should be produced in the
+current directory; no executables or libraries are produced yet.&nbsp;
+In that case, simply change the name of the <b>OFILES</b> variable to be
+<b>OBJECTS</b>.&nbsp;
+This is effectively identical to <b>OFILES</b> with the exception that
+it <i>will</i> trigger ODE to generate the objects by themselves (without
+requiring one of the above variables, e.g. <b>PROGRAMS</b>).&nbsp; Note
+that files listed in <b>OBJECTS</b> are not used as input to create
+<b>PROGRAMS</b>,
+<b>LIBRARIES</b>,
+or <b>SHARED_LIBRARIES</b>; only <b>OFILES</b> is used for that purpose.
+<h4>
+<a NAME="CPP_Targ_Spec"></a><a href="#ToC_CPP_Targ_Spec">Target-specific
+Usage</a></h4>
+In some cases you may wish to create more than one program or library in
+the same directory.&nbsp; In this case, you will need to use ODE's target-specific
+syntax.&nbsp; Let us say that <b>MakeMake</b> generated <b>OFILES</b> as
+follows:
+<p><b><tt>OFILES = foo1${OBJ_SUFF} foo2${OBJ_SUFF} foo3${OBJ_SUFF} foo4${OBJ_SUFF}</tt></b>
+<p>Now assume you want to create an archive library from <b><tt>foo1</tt></b>
+and <b><tt>foo2</tt></b>, and a program from <b><tt>foo3</tt></b> and <b><tt>foo4</tt></b>.&nbsp;
+First add the trigger variables as expected:
+<p><b><tt>PROGRAMS = myprog${PROG_SUFF}</tt></b>
+<br><b><tt>LIBRARIES = ${LIB_PREF}myprog${STATLIB_SUFF}</tt></b>
+<p>Now, to tell ODE which objects in <b>OFILES</b> go with each output
+file, you would prepend the target name with an underscore to the <b>OFILES</b>
+variable for each set (in place of the generic <b>OFILES</b> line above).&nbsp;
+However, due to the way variables are evaluated in ODE, you must put these
+target-specific lines <i>after</i> the "<b><tt>.include &lt;${RULES_MK}></tt></b>"
+line.&nbsp; Your makefile would therefore finally look something like this
+(the <b>SUBDIRS</b> lines and comments have been omitted for clarity):
+<p><b><tt>PROGRAMS = myprog${PROG_SUFF}</tt></b>
+<br><b><tt>LIBRARIES = ${LIB_PREF}myprog${STATLIB_SUFF}</tt></b>
+<p><b><tt>.include &lt;${RULES_MK}></tt></b>
+<p><b><tt>myprog${PROG_SUFF}_OFILES = foo3${OBJ_SUFF} foo4${OBJ_SUFF}</tt></b>
+<br><b><tt>${LIB_PREF}myprog${STATLIB_SUFF}_OFILES = foo1${OBJ_SUFF} foo2${OBJ_SUFF}</tt></b>
+<br>&nbsp;
+<h3>
+<a NAME="Java_Mods"></a><a href="#ToC_Java_Mods">Java Modifications</a></h3>
+For the purpose of simply generating .class files, the makefiles do not
+require further modification.&nbsp; However, this assumes that the directory
+structure under the <b><tt>src</tt></b> tree matches your package naming
+convention.&nbsp; For example, assume you have a Java source file called
+<b><tt>Foo.java</tt></b>,
+which contains a class <b><tt>Foo</tt></b> in the package <b><tt>com.ibm.myproj</tt></b>.&nbsp;
+If this file resides in your sandbox under <b><tt>src/com/ibm/myproj</tt></b>,
+then you would not need to make any changes to the makefile in that directory.&nbsp;
+However, if this is not the case (for example, if the file resides in <b><tt>src/java/com/ibm/myproj</tt></b>),
+you will need to edit all of the makefiles which contain lines with the
+<b>JAVA_CLASSES</b>
+variable and add a line like this:
+<p><b><tt>JAVA_PACKAGE_NAME = com.ibm.myproj</tt></b>
+<p>The name used, of course, should match whatever the correct package
+is for the files in that directory.
+<p>Also note that the .class files are generated by default in the <b>export</b>
+tree of the sandbox under the <b>classes</b> directory (e.g., <b><tt>/home/jdoe/my_bb/export/classes</tt></b>).&nbsp;
+The Java compiler will create the appropriate package subdirectories under
+<b>classes</b>
+as your source files dictate.&nbsp; If you wish to change this location,
+modify the <b>CLASSGEN_SUBDIR</b> variable.&nbsp; The default value of
+this variable is <b><tt>/export/classes</tt></b>.&nbsp; You may wish to
+set it as follows instead:
+<p><b><tt>CLASSGEN_SUBDIR = /obj/java</tt></b>
+<p>Since you would normally want this variable to affect all makefiles,
+you can put this line in your <b><tt>Makeconf</tt></b> file and it will
+apply to all directories in your project.
+<h4>
+<a NAME="Java_Jars"></a><a href="#ToC_Java_Jars">Jar Files</a></h4>
+The most common activity besides generating class files is packaging the
+built class files into a Jar archive.&nbsp; The most effective way to indicate
+the components of the archive is to specify the top level directories (the
+first component of the package name(s)) rather than listing the files.&nbsp;
+Here is an example of creating a Jar file:
+<p><b><tt>JAR_LIBRARIES = my_jar${JAR_SUFF}</tt></b>
+<br><b><tt>OTHER_JAR_OBJECTS = com</tt></b>
+<p>This would create a Jar file called <b><tt>my_jar.jar</tt></b>, which
+consists of all files under the <b><tt>/home/jdoe/my_bb/export/classes/com</tt></b>
+directory.&nbsp; Note that ODE will run the Jar creation command from the
+.class file generation directory (<b><tt>/home/jdoe/my_bb/export/classes</tt></b>),
+so the paths stored in the archive will be relative (which is necessary
+for Jar file usage in <b>CLASSPATH</b>) and the .jar file will be created
+in that directory.
+<h3>
+<a NAME="Other_Mods"></a><a href="#ToC_Other_Mods">Other Modifications</a></h3>
+There will almost certainly be other changes necessary, although most will
+be made to your <b><tt>Makeconf</tt></b> and <b><tt>rules_mk/${PROJECT_NAME}.rules.mk</tt></b>
+files.&nbsp; For example, variables such as <b>CFLAGS</b>, <b>LDFLAGS</b>,
+<b>SHLDFLAGS</b>,
+<b>GROUP</b>,
+<b>CCFAMILY</b>,
+and <b>CCTYPE</b> are very often changed by the user.&nbsp; For more information
+on the most commonly used variables, see the <a href="#Variables">Frequently
+Used Variables</a> section.
+<p>Users may also add new targets/commands or modify existing ODE targets/commands,
+or even add a new "pass".&nbsp; The Passes section of the <a href="ODECommonMakefiles.htm#Passes">Common
+Makefiles</a> document contains information on most advanced changes of
+this sort. For example, consider the case of modifying an existing ODE
+target such as <b>PROGRAMS</b>.&nbsp; The default commands for generating
+targets in the <b>PROGRAMS</b> variable are defined in <b><tt>rules_mk/prog.mk</tt></b>.&nbsp;
+Looking in that file, you will see that (like most ODE variables), this
+variable is used with underscores surrounding the name (<b>${_PROGRAMS_}</b>)
+when used as the target.&nbsp; This is because the rules make modifications
+to <b>${PROGRAMS}</b> and put the results into a private version, <b>${_PROGRAMS_}</b>.&nbsp;
+Also notice that <b>PROGRAMS</b> depends on two sets of files, those contained
+in the <b>OFILES</b> and <b>LIBS</b> variables (here again, private underscored
+versions of the variables are used).&nbsp; Let us consider that you want
+to both change the dependents (remove <b>LIBS</b>, for example) and add
+more commands to the end of the command list.&nbsp; To do this, here is
+the code you would put in your <b><tt>${PROJECT_NAME}.rules.mk</tt></b>
+file:
+<p><b><tt>${_PROGRAMS_} : ${_OFILES_} .REPLSRCS .POSTCMDS</tt></b>
+<br><b><tt>&nbsp;&nbsp;&nbsp; echo "This command is run after the ones
+in prog.mk for PROGRAMS."</tt></b>
+<p>In this example note the two <a href="ODEMakeReference.htm#HDRSPECSRC">special
+sources</a>, <b><tt>.REPLSRCS</tt></b> and
+<b><tt>.POSTCMDS</tt></b>.&nbsp;
+The former causes the sources (dependents) listed to replace the ones previously
+specified (by the rules).&nbsp; The latter causes the commands given to
+be appended to the ones previously specified.&nbsp; So the result of the
+above lines is to make <b>PROGRAMS</b> depend only upon <b>OFILES</b> (and
+<i>not</i><b>LIBS</b>),
+and then to add the <b>echo</b> command to the end of the commands given
+in <b><tt>prog.mk</tt></b> (which generate the executables).
+<h3>
+<a NAME="Design_Problems"></a><a href="#ToC_Design_Problems">Common Design
+Problems</a></h3>
+Because of the unique nature of the ODE sandbox design, there are some
+source code and makefile design issues to consider when setting up the
+backing build.&nbsp; Following are the most common and serious of these
+issues.
+<h4>
+<a NAME="Header_Inclusion"></a><a href="#ToC_Header_Inclusion">Header File
+Inclusion</a></h4>
+One of the most common problems that users encounter with ODE is related
+to the way C/C++ header files are included.&nbsp; Frequently, users may
+code their header file inclusion macros using the following syntax:
+<p><b><tt>#include "foo.h"</tt></b>
+<p>Assume this line is in the file <b><tt>foo.c</tt></b>.&nbsp; This double
+quote usage will not work well in a sandbox structure, since it instructs
+the compiler to first look for <b><tt>foo.h</tt></b> in the directory where
+<b><tt>foo.c</tt></b>
+was found.&nbsp; So if <b><tt>foo.h</tt></b> exists in the sandbox (and
+also the backing build, of course), but <b><tt>foo.c</tt></b> <i>only</i>
+exists in the backing build, the compiler will use the <b><tt>foo.h</tt></b>
+in the backing build (but the user would expect the one in the sandbox
+to be used).&nbsp; There are a few ways to solve this problem.&nbsp; The
+first and simplest method is to use angle brackets instead of double quotes
+in <i>all</i> inclusion macros:
+<p><b><tt>#include &lt;foo.h></tt></b>
+<p>This ensures that the compiler only searches the paths explicitly specified
+in the <tt>-I</tt> flags (as well as the standard include directories for
+your system/compiler).&nbsp; However, users can also solve the problem
+without using angle brackets (if, for example, they wish to easily and
+clearly differentiate which files are system/compiler headers and which
+are user-defined headers).&nbsp; It requires specifying a path (either
+relative or absolute, but typically the former) in front of <i>every</i>
+double quoted header file.&nbsp; Here are some examples:
+<p><b><tt>#include "libincs/foo.h"</tt></b>
+<br><b><tt>#include "usr/string/foo.h"</tt></b>
+<p>This will require a change to your compiler <tt>-I</tt> flag path(s)
+to reference the parent directories rather than the directories that contain
+the headers themselves, as well as all of the source files that contained
+the double quoted inclusions.&nbsp; It could also require altering your
+directory structure, but that is typically optional.&nbsp; This may seem
+to be a very difficult and time consuming task for little reward, but the
+resulting structure and inclusion syntax are clearer and self-documenting.
+<h4>
+<a NAME="Rel_Abs_Paths"></a><a href="#ToC_Rel_Abs_Paths">Relative and Absolute
+Paths</a></h4>
+In ODE, file paths used in variables may either be relative (e.g., <b><tt>../export</tt></b>)
+or absolute (e.g., <b><tt>/home/jdoe/my_sb/export</tt></b>).&nbsp; Knowing
+when to use one or the other is critical to ensuring that sandbox builds
+will work properly.&nbsp; Some predefined variables, such as <b>SANDBOXBASE</b>
+and <b>CURDIR</b>, contain absolute paths.&nbsp; Others, such as <b>OBJECTDIR</b>
+and <b>MAKETOP</b>, contain relative paths.&nbsp; To determine which type
+is appropriate for a situation, you must simply make sure that your usage
+is mindful of the backing chain design, and allows ODE to find files throughout
+the backing chain (except for cases where you explicitly want to avoid
+such searching).&nbsp; For example, consider an object file<b> foo.o</b>
+that exists in a different directory, say <b><tt>../other_dir</tt></b>,
+that needs to be linked into a program in the current directory, say <b><tt>/home/jdoe/my_sb/src/cur_dir</tt></b>.&nbsp;
+You might expect the way to code this is as follows:
+<p><b><tt>OFILES = /home/jdoe/my_sb/src/other_dir/foo.o</tt></b>
+<br>or
+<br><b><tt>OFILES = ${SANDBOXBASE}/src/other_dir/foo.o</tt></b>
+<p>However, this is a bad idea, since this will prevent ODE from searching
+for <b>foo.o</b> and its dependent (e.g., <b>foo.c</b>) in the backing
+chain; absolute paths are never expanded for the equivalent directories
+in the backing chain, whereas relative paths often are (depending on which
+variables they are used in).&nbsp; The best way to rewrite the above to
+allow ODE to search for <b>foo.o</b> throughout the backing chain would
+be:
+<p><b><tt>OFILES = ../other_dir/foo.o</tt></b>
+<p>This would enable <b><tt>mk</tt></b> to search for <b>foo.o</b> and
+its dependent in both the <b>/home/jdoe/my_sb</b> sandbox as well as the
+<b>/home/jdoe/my_bb</b>
+backing build.&nbsp; Searching will occur in both the <b>obj</b> and <b>src</b>
+trees of the sandbox.
+<p>However, some variables, such as <b><a href="ODECommonMakefiles.htm#SettingCCPPCompilerIncDirs">INCDIRS</a></b>,
+do not cause this automatic expansion of the backing chain paths to be
+applied to the paths given.&nbsp; With these types of variables, the user
+must specify absolute paths and thus explicitly include each sandbox in
+the backing chain.&nbsp; To make this task easier, there are <a href="ODEMakeReference.htm#VARMODS">variable
+modifiers</a> available to perform this expansion on a relative path and
+return the resulting absolute paths for all of the sandboxes (or the path
+to a specific file being sought).&nbsp; Let us say that you want to add
+the aforementioned <b><tt>other_dir</tt></b> to the include search path
+using <b>INCDIRS</b>. (Note this is only for learning purposes; users would
+typically use a variable like
+<b>INCFLAGS</b> instead for specifying relative
+paths, which are automatically expanded by the rules).&nbsp; From the makefile
+in the <b><tt>cur_dir</tt></b> directory, you might expect to specify this
+as follows:
+<p><b><tt>INCDIRS = ../other_dir</tt></b>
+<p>But since <b>INCDIRS</b>'s contents do not get expanded automatically,
+you will instead need to use the <b><tt>:G</tt></b> variable modifier (which
+is an internalized equivalent of the <b><a href="ODEBuildReference.htm#HDRGENPATH">genpath</a></b>
+command) to expand this relative path.&nbsp; This can be done as follows:
+<p><b><tt># specify the genpath-style parameters in a temporary variable.</tt></b>
+<br><b><tt># -I contains the path to expand</tt></b>
+<br><b><tt>TEMPVAR = -I../other_dir</tt></b>
+<br><b><tt>INCDIRS = ${TEMPVAR:G}</tt></b>
+<p>This will result in <b>INCDIRS</b> containing the following paths (separated
+by whitespace), with the <b>-I</b> flag prepended as shown:
+<p><b><tt>-I/home/jdoe/my_sb/obj/<i>machine</i>/other_dir</tt></b>
+<br><b><tt>-I/home/jdoe/my_sb/src/other_dir</tt></b>
+<br><b><tt>-I/home/jdoe/my_bb/obj/<i>machine</i>/other_dir</tt></b>
+<br><b><tt>-I/home/jdoe/my_bb/src/other_dir</tt></b>
+<p>In this example, <i>machine</i> would be whatever machine name you are
+building for.
+<p>Determining which situations require absolute paths is not always easy,
+but here are some good rules of thumb:
+<ul>
+<li>
+In most of the standard ODE variables (<b>PROGRAMS</b>, <b>OFILES</b>,
+<b>CFLAGS</b>,
+etc.) as well as in targets and dependents of rules you write yourself,
+paths should almost always be given in relative form, unless you have a
+specific reason to use an absolute path.</li>
+
+<li>
+When specifying files that are used as input only (files not generated
+during the build or used as dependents), you can use the <b>:F</b> or <b>:P</b>
+modifier to locate the file in a chain explicitly, if that is not done
+for you by ODE automatically.</li>
+
+<li>
+When specifying files that are generated as output but are used as targets
+or dependents (and thus searched for by <b><tt>mk</tt></b>), relative paths
+should always be used.</li>
+
+<li>
+When specifying directories, determine if the variable used ever gets expanded
+with the <b><tt>:G</tt></b> modifier in the rules.&nbsp; If so, relative
+paths may be used.&nbsp; Otherwise, determine if the directory should be
+expanded for the chain or not (it usually should be), and use the <b><tt>:G</tt></b>
+modifier yourself if so.</li>
+</ul>
+Effectively, relative paths are almost always the preferred style, except
+when it is not possible to use them.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="BB_Build"></a><a href="#ToC_BB_Build">6. Performing the Build</a></h2>
+Once the makefiles have been molded into a buildable state, the first attempt
+at an ODE build can be attempted.&nbsp; This can be done as simply as running
+the following command from the <b><tt>src</tt></b> directory of the backing
+build (or any subdirectory thereof, if you wish to attempt building only
+a subset of your project):
+<p><b><tt>build</tt></b>
+<p>This assumes the <b><tt>.sandboxrc</tt></b> file was created in the
+<b>$HOME</b>
+directory in <a href="#BB_Creation">Step 1</a>.&nbsp; If <b><tt>.sandboxrc</tt></b>
+was created elsewhere, use the <b><tt>-rc</tt></b> flag, such as:
+<p><b><tt>build -rc ${PROJECT_ROOT}/backing_builds/.sandboxrc</tt></b>
+<p>Errors produced by the <b>mk</b> command (which the <b>build</b> command
+calls to do the actual building) during the build are fairly descriptive
+and should indicate the source of the problem in most cases.&nbsp; If not,
+using the <b>-dd</b> and/or <b>-dm</b> flags on the build command line
+may help to track down the issue (note these are <a href="ODEMakeReference.htm#Header_20"><b>mk</b>
+flags</a>; <b>build</b> will pass any flags it does not recognize on to
+the <b>mk</b> command).&nbsp; If you still have trouble locating the problem,
+see the <a href="#More_Help">For Further Assistance</a> section.
+<p>
+<hr WIDTH="100%">
+<h1>
+<a NAME="Developers"></a><a href="#ToC_Developers">Part 2: For Developers</a></h1>
+The following sections are intended for developers that will perform defect
+and feature changes in a sandbox, and assume that someone has already performed
+the steps to create a working backing build in <a href="#Builders">Part
+1</a>.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="SB_Creation"></a><a href="#ToC_SB_Creation">1. Creating the Sandbox</a></h2>
+The first step for a developer, like a builder, is creating the sandbox
+to work in.&nbsp; This is done in almost the exact same way (using a very
+similar command).&nbsp; Run the following command from your home directory:
+<p><b><tt>mksb -back /home/jdoe/my_bb -dir . my_sb</tt></b>
+<p>For the cross-platform backing build scenario mentioned in <a href="#Shared_BBs">Step
+1 of Part 1</a>, the command would be:
+<p><b><tt>mksb -back '${PROJECT_ROOT}/backing_builds/my_bb' -dir . my_sb</tt></b>
+<p>This command will create a sandbox called "my_sb" in the home directory,
+identical in directory structure to the backing build.&nbsp; The <b>-back</b>
+flag tells ODE where the backing build (by which to back the sandbox) is
+located.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="Checkout"></a><a href="#ToC_Checkout">2. Checking Out Files</a></h2>
+Now the developer must determine which source files of the project need
+to be edited for the defect or feature in question, and then check out
+those files from the source code control system into the sandbox.&nbsp;
+With CMVC, this is done using the Files/Check Out functionality.&nbsp;
+The "Destination directory" field should contain the path to the <b><tt>src</tt></b>
+directory in the sandbox, namely <b><tt>/home/jdoe/my_sb/src</tt></b>.
+<p>Although the user may also use the <b><tt><a href="ODEBuildReference.htm#HDRMKLINKS">mklinks</a></tt></b>
+command to copy/link files from the backing build into the sandbox, this
+is generally not recommended for files that the user plans on changing,
+since the files in the backing build may be older than files in CMVC.
+<p>
+<hr WIDTH="100%">
+<h2>
+<a NAME="SB_Build"></a><a href="#ToC_SB_Build">3. Working in the Sandbox</a></h2>
+Typically, developers will make many changes to source files and perform
+compilation many times before checking the source files back into CMVC.&nbsp;
+For this reason, developers typically use <b>workon</b> and <b>mk</b> rather
+than <b>build</b>, since <b>workon</b> provides the user an ODE environment
+shell in which to work, where <b>mk</b> can be used directly (<b>build</b>
+establishes the ODE environment each time it is run, so is somewhat less
+efficient over the long term if many calls to <b>mk</b> are expected in
+a development session).&nbsp; To establish this ODE environment shell,
+simply enter this command:
+<p><b><tt>workon</tt></b>
+<p>This will create a new shell (specified in the <b>SHELL</b> variable)
+which contains all of the necessary environment variables that <b>mk</b>
+requires to work properly in a sandbox, and automatically will change to
+the
+<b><tt>src</tt></b> directory of the sandbox.&nbsp; The user may then
+use normal shell commands (<b>cd</b>, <b>ls</b>, <b>vi</b>, etc.) and ODE
+commands (<b><a href="ODEBuildReference.htm#HDRSBLS">sbls</a></b>,
+<b><a href="ODEBuildReference.htm#HDRMKLINKS">mklinks</a></b>,
+<b><a href="ODEMakeReference.htm">mk</a></b>,
+etc.) to work on the defect or feature.
+<p>Only the source files to be changed need to be in the sandbox itself.&nbsp;
+The remaining files are automatically located in the backing build by the
+ODE tools.&nbsp; This is one of the primary advantages of the ODE design,
+allowing developers to maintain small, focused build areas, and allowing
+builders the assurance of a consistent, reliable, shared set of files that
+developers will work from.
+<p>After changing the desired source files, the user will likely wish to
+recompile and test the changes.&nbsp; To do so, the user can simply use
+the following command in the <b><tt>src</tt></b> directory of the sandbox
+(or any subdirectory thereof, if only a subset of the project needs to
+be compiled):
+<p><b>mk</b>
+<p>This will cause ODE to compare all of the appropriate files' timestamps
+to determine which source files need to be recompiled.&nbsp; The difference
+between <b>mk</b> and other make tools, as mentioned above, is that <b>mk</b>
+will check the files in the sandbox(es) and the backing build automatically.
+<p>When a developer needs to add or delete source files to/from the project,
+the <b><tt>makefile.ode</tt></b> file in those directories will have to
+be changed to add or remove the filenames from the <b>OFILES</b>, <b>JAVA_CLASSES</b>,
+etc. variables.&nbsp; See <a href="#Makefile_Mod">Step 5 of Part 1</a>
+for details on the C/C++ and Java ODE variables.
+<p>
+<hr WIDTH="100%">
+<h1>
+<a NAME="Variables"></a><a href="#ToC_Variables">Frequently Used Variables</a></h1>
+Below is a list of commonly used ODE variables, along with what they are
+used for and where the variables are <i>normally</i> placed.&nbsp; The
+typical locations are <b><tt>Buildconf</tt></b>, <b><tt>Makeconf</tt></b>,
+the local <b><tt>makefile.ode</tt></b>, on the command line, or in the
+shell environment (by putting them in your shell's profile file, e.g.,
+<b><tt>$HOME/.profile</tt></b>).&nbsp;
+Note that most variables technically can be used anywhere, so the "Where
+Used" column is a suggestion only.
+<p>Variables described as Boolean variables do not need a particular value
+to be turned on; the value is ignored.&nbsp; Thus, the simplest way to
+turn on (define) a Boolean variable is as follows:
+<p><b><tt>BOOLEAN_VAR =</tt></b>
+<p>To set an ODE variable from <b>build</b>'s or <b>mk</b>'s command line,
+there are two forms: "<b>-D</b><i>BOOLEAN_VAR</i>" for Boolean variables
+and "<i>REGULAR_VAR</i>=<i>value</i>".&nbsp; Here are some examples:
+<p><b><tt>build -DDEBUGGING</tt></b>
+<br><b><tt>build CDEFS=-Q</tt></b>
+<p>All of the ODE variables shown below can be found in the <a href="ODECommonMakefiles.htm">Common
+Makefiles</a> documentation. Simply go to that document and use your browser's
+"Edit / Find in Page..." menu function to locate the desired variables.
+<br>&nbsp;
+<table BORDER WIDTH="100%" >
+<tr>
+<td><b>Variable Name</b></td>
+
+<td><b>Description/Purpose</b></td>
+
+<td><b>Where Used</b>
+<br><b>(suggested)</b></td>
+</tr>
+
+<tr>
+<td>CCFAMILY</td>
+
+<td>The brand of C/C++ compiler (e.g. Visual Age) to use for compiling
+and linking C/C++ source code.&nbsp; See the <nobr><a href="ODECommonMakefiles.htm#SelectingCCompiler">Common
+Makefiles</a></nobr> document for a complete list of valid values.</td>
+
+<td>Makeconf</td>
+</tr>
+
+<tr>
+<td>CCTYPE</td>
+
+<td>This is effectively used to specify whether the C compiler or the C++
+compiler is used.&nbsp; See the <nobr><a href="ODECommonMakefiles.htm#SelectingCCompiler">Common
+Makefiles</a></nobr> document for a complete list of valid values.</td>
+
+<td>Makeconf</td>
+</tr>
+
+<tr>
+<td>CFLAGS
+<br>CARGS
+<br>CDEFS</td>
+
+<td>Any of these variables can be used to specify flags to be used with
+the C/C++ compiler.</td>
+
+<td>Makeconf</td>
+</tr>
+
+<tr>
+<td>LDFLAGS</td>
+
+<td>Used to specify flags used with the linker when generating executables.</td>
+
+<td>Makeconf</td>
+</tr>
+
+<tr>
+<td>SHLDFLAGS</td>
+
+<td>Used to specify flags used with the linker when generating shared libraries.</td>
+
+<td>Makeconf</td>
+</tr>
+
+<tr>
+<td>DEPENDENCIES</td>
+
+<td>When this Boolean variable is defined, the rules will attempt to generate
+header dependency information during compilation.&nbsp; This is either
+handled by the compiler itself (in most cases) using a flag, or by using
+the ODE <b>gendep</b> tool when the compiler does not have this capability.</td>
+
+<td>Makeconf</td>
+</tr>
+
+<tr>
+<td>GENDEPFLAGS</td>
+
+<td>When <b>DEPENDENCIES</b> is defined and the selected compiler (<b>CCFAMILY</b>/<b>CCTYPE</b>)
+cannot produce dependency files on its own, <b>gendep</b> is used.&nbsp;
+This variable is used to pass flags (typically <b>-I</b> and <b>-E</b>
+to specify directories to search) to the <b>gendep</b> tool.&nbsp; See
+the <nobr><a href="ODEBuildReference.htm#gendeppar">Build Reference</a></nobr>
+for details on valid <b>gendep</b> flags.</td>
+
+<td>Makeconf</td>
+</tr>
+
+<tr>
+<td>EXTRA_OFILES
+<br>EXTRA_LIBS</td>
+
+<td>Similar to <b>OFILES</b> and <b>LIBS</b> (described in <a href="#CPP_Mods">Step
+5</a> for Builders), except these files are not used as dependents of the
+targets.&nbsp; These are normally used to specify objects and libraries
+that are located outside of the sandbox environment (e.g., <b><tt>/usr/lib/libc.a</tt></b>).</td>
+
+<td>makefile.ode</td>
+</tr>
+
+<tr>
+<td>TOOLSBASE
+<br>NO_TOOLSBASE</td>
+
+<td><b>TOOLSBASE</b> is used to set the absolute path to where the ODE
+tools are located, with a trailing slash at the end.&nbsp; For example,
+<b><tt>/usr/local/ODE/bin/</tt></b>.&nbsp;
+Alternatively, if the user wishes the environment's <b>PATH</b> variable
+to be searched for the ODE tools, the <b>NO_TOOLSBASE</b> Boolean variable
+can be defined.</td>
+
+<td>Makeconf</td>
+</tr>
+
+<tr>
+<td>DEBUGGING</td>
+
+<td>When this Boolean variable is defined, the rules will automatically
+add the appropriate compiler flag to generate debugging information.</td>
+
+<td>command line</td>
+</tr>
+
+<tr>
+<td>MAKEFILE_PASS</td>
+
+<td>The purpose of this variable is an <a href="ODECommonMakefiles.htm#Passes">advanced
+topic</a> beyond the scope of this document, but the usage is simple. When
+you want to specify one particular pass that <b>mk</b> should process,
+you can do so with this variable.&nbsp; For example, "<b>EXPLIB</b>".</td>
+
+<td>command line</td>
+</tr>
+
+<tr>
+<td>EXPINCS
+<br>EXPLIBS
+<br>EXPINCDIR
+<br>EXPLIBDIR</td>
+
+<td>Used to specify files to copy/link (and where to copy/link them) to
+the <b><tt>export</tt></b> tree during the <b>EXPINC</b> and <b>EXPLIB</b>
+passes.</td>
+
+<td>makefile.ode</td>
+</tr>
+
+<tr>
+<td>ILIST
+<br>IDIR</td>
+
+<td>Used to specify files to copy (and where to copy them) to the <b><tt>inst.images</tt></b>
+tree for the install_all action.</td>
+
+<td>makefile.ode</td>
+</tr>
+
+<tr>
+<td>ODEMAKE_SHELL</td>
+
+<td>This variable is used to specify the command shell that <b>build</b>
+and <b>mk</b> will use to run child processes (for <b>build</b>, that simply
+means the <b>mk</b> command itself; for <b>mk</b>, it means the makefile
+commands).&nbsp; You must also specify the flag (if any) that the shell
+uses to allow commands to be specified on the command line.&nbsp; For example,
+the default value on most Unix platforms is "<b><tt>/bin/ksh -c</tt></b>".</td>
+
+<td>Buildconf</td>
+</tr>
+
+<tr>
+<td>SHELL</td>
+
+<td>This variable is used to specify the command shell that <b>workon</b>
+will use.&nbsp; The default value on most Unix platforms is "<b><tt>/bin/ksh</tt></b>".</td>
+
+<td>Buildconf</td>
+</tr>
+
+<tr>
+<td>USER
+<br>GROUP</td>
+
+<td>These variables are used to specify the user and group name to be used
+with the <b>chown</b> command when running the ODE installation action
+(e.g., "<b><tt>mk install_all</tt></b>").&nbsp; They only affect Unix platforms.</td>
+
+<td>shell profile</td>
+</tr>
+</table>
+
+<p>
+<hr WIDTH="100%">
+<h1>
+<a NAME="Make_Diffs"></a><a href="#ToC_Make_Diffs">Make Differences</a></h1>
+Two of the most common make tools besides ODE are nmake and GNU make.&nbsp;
+For the benefit of users migrating to ODE from one of these, below are
+listed several similarities and differences of each.&nbsp; Though this
+list is by no means comprehensive, it should help users understand ODE
+better in relation to these tools.&nbsp; Asterisks, as noted, show functionality
+that is identical to ODE.&nbsp; Information is based on GNU make version
+3.75 and nmake version 3.x.
+<br>&nbsp;
+<table BORDER COLS=4 WIDTH="100%" >
+<tr>
+<td><b>Feature</b></td>
+
+<td><b>ODE mk</b></td>
+
+<td><b>GNU make</b></td>
+
+<td><b>nmake</b></td>
+</tr>
+
+<tr>
+<td>regular target syntax</td>
+
+<td>target : source
+<br>&nbsp;&nbsp; commands</td>
+
+<td>*</td>
+
+<td>*</td>
+</tr>
+
+<tr>
+<td>suffix rule syntax</td>
+
+<td>.c.o :
+<br>&nbsp;&nbsp; commands</td>
+
+<td>*</td>
+
+<td>*</td>
+</tr>
+
+<tr>
+<td>pattern rule syntax</td>
+
+<td>%.o : %.c
+<br>&nbsp;&nbsp; commands</td>
+
+<td>*</td>
+
+<td>*</td>
+</tr>
+
+<tr>
+<td>static pattern syntax</td>
+
+<td>not available</td>
+
+<td>target : %.o : %.c</td>
+
+<td>not available</td>
+</tr>
+
+<tr>
+<td>makefile processing</td>
+
+<td>reparsed each invocation</td>
+
+<td>*</td>
+
+<td>compiles makefiles (recompilation occurs if makefile changes)</td>
+</tr>
+
+<tr>
+<td>target building logic</td>
+
+<td>uses file timestamp comparisons to determine if file(s) should be rebuilt</td>
+
+<td>*</td>
+
+<td>creates a "statefile" to determine if file(s) should be rebuilt</td>
+</tr>
+
+<tr>
+<td>makefile command execution</td>
+
+<td>runs each command in a separate new subshell</td>
+
+<td>*</td>
+
+<td>each command set for a target is sent to the same subshell</td>
+</tr>
+
+<tr>
+<td>header file dependency generation</td>
+
+<td>included (<b><a href="ODEBuildReference.htm#HDRGENDEP">gendep</a></b>
+tool)</td>
+
+<td>not included</td>
+
+<td>included</td>
+</tr>
+
+<tr>
+<td>makefile inclusion syntax</td>
+
+<td>.include <i>filespec</i>
+<br>.tryinclude <i>filespec</i></td>
+
+<td>include <i>filespec</i>
+<br>-include <i>filespec</i></td>
+
+<td>include <i>filespec</i>
+<br>include - <i>filespec</i></td>
+</tr>
+
+<tr>
+<td>variable modification functions</td>
+
+<td>over 30 available
+<br>e.g., $(VAR:T)</td>
+
+<td>over 20 available
+<br>$(notdir $(VAR))</td>
+
+<td>over 60 available
+<br>e.g., $(VAR:B:S)</td>
+</tr>
+
+<tr>
+<td>recursive make syntax</td>
+
+<td>SUBDIRS = subdir</td>
+
+<td>subdirs:
+<br>&nbsp;&nbsp; cd subdir &amp;&amp; $(MAKE)</td>
+
+<td>subdirs :MAKE: subdir</td>
+</tr>
+
+<tr>
+<td>remote makes</td>
+
+<td>minimal support using rsh</td>
+
+<td>not available</td>
+
+<td>communication using its own client/server technology</td>
+</tr>
+
+<tr>
+<td>variables used in variable names (e.g., "${VAR}_NAME = x")</td>
+
+<td>supported</td>
+
+<td>*</td>
+
+<td>*</td>
+</tr>
+
+<tr>
+<td>syntax of assigning command output to variables</td>
+
+<td>VAR != pwd</td>
+
+<td>define VAR
+<br>pwd
+<br>endef</td>
+
+<td>VAR :COMMAND:
+<br>&nbsp;&nbsp; pwd</td>
+</tr>
+
+<tr>
+<td>common actions/targets provided</td>
+
+<td>yes; ODE makefile "rules" provide many common actions (compilation,
+installation, etc.)</td>
+
+<td>no; all targets/actions must be defined by user</td>
+
+<td>yes; nmake provides many common actions</td>
+</tr>
+</table>
+
+<p>* same behavior/feature as <b>ODE mk</b>
+<p>
+<hr WIDTH="100%">
+<h1>
+<a NAME="More_Help"></a><a href="#ToC_More_Help">For Further Assistance</a></h1>
+If this document has been insufficient in getting you on your way to building
+your project, or if you have further questions regarding migration, you
+may wish to post your questions and comments to ODE's discussion forum.&nbsp;
+To access this forum, visit our <a href="http://w3.ode.raleigh.ibm.com/">home
+page</a> and read about the ODE Newsgroup in the "Useful Links" section.&nbsp;
+The newsgroup is read by ODE team members as well as other ODE users, so
+you should be able to get virtually any ODE question answered.
+<p>There is also a good <a href="http://build.hursley.ibm.com/docs/ode/quickstart.html">quick-start
+reference</a> that exists, written by an experienced user of ODE.&nbsp;
+It contains some of the information present here, but has a slightly different
+focus.&nbsp; Some examples or information might be slightly out of date
+with respect to the current ODE release (e.g., usage of <b>EXPLIBTOP</b>,
+which is effectively unnecessary in the current release).
+<br><a NAME="Bot_Of_Page"></a>
+</body>
+</html>

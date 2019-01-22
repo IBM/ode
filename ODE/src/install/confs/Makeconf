@@ -1,0 +1,46 @@
+################################################################################
+#
+# Makeconf
+#
+# This special makefile marks the top of the source tree and is the first
+# file read by 'mk'. Several builtin make variables are defined based upon the
+# location of this file and the subdirectory within this tree where make was
+# invoked.
+#
+################################################################################
+
+# The name of the base "rules" makefile to include.
+#
+RULES_MK ?= rules.mk
+
+# Your project name...used for project-specific rules files.
+#
+PROJECT_NAME ?= myproj
+
+# Set variables for all platform (CONTEXT) types.
+#
+TOSTAGE=${SANDBOXBASE}${DIRSEP}inst.images${DIRSEP}${CONTEXT}${DIRSEP}shipdata
+
+# Uncomment variable to trigger the building of java source.
+#
+#BUILDJAVA =
+
+# Uncomment variable to allow JAVA_CLASSES to be defined from
+# ${PROJECT_NAME}.passes.mk or after the inclusion of ${RULES_MK}
+#USE_JAVA_CLASSES =
+
+.if defined(CONTEXT)
+# Include platform specific Makeconf
+#
+.tryinclude <${CONTEXT}.mk>
+.endif  # context defined
+
+# Uncomment to allow makefiles to use spaces to indent commands instead
+# of enforcing hard tabs.
+#.MAKEFLAGS: -w
+
+# Set MAKESRCDIRPATH to the backing chain's source directories.
+# Then add in the appropriate object directory for each backing chain.
+MAKESRCDIRPATH := ${BACKED_SANDBOXDIR:S/${PATHSEP}/ /g:@WORD@${WORD}${DIRSEP}${ODESRCNAME}${DIRSEP}${OBJECTDIR}${PATHSEP}${WORD}${DIRSEP}${ODESRCNAME}@:s/ /${PATHSEP}/g}
+
+.tryinclude <Makeconf.def>

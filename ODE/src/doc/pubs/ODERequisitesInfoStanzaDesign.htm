@@ -1,0 +1,880 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>RequisitesInfo Stanza</title>
+<meta name="Microsoft Border" content="t, default">
+</head>
+
+<body>
+
+<h1>Changes</h1>
+<ul>
+  <li>Soaris and MVS will validate requisites now.</li>
+  <li><b>ancestor</b> and <b>compver</b> have been eliminated and have become
+    &quot;S&quot; or &quot;Sup&quot; in the requisites info stanza.</li>
+</ul>
+<hr>
+<dl>
+  <dt>( P | pre )</dt>
+  <dd>pre-requisite -</dd>
+  <dd><b>AIX</b> A prereq indicates both a functional and an installation order
+    dependency of one fileset on another fileset. Pre-requisites should be used
+    as little as possible in packaging.&nbsp;</dd>
+  <dd><b>HP</b> A pre-requisite dependency requires another software object to
+    be installed (configured) in order for the first fileset to be installed.</dd>
+  <dd><b>MVS</b> In SMP/E, a SYSMOD that must be installed before or along with
+    another SYSMOD in order for that other SYSMOD to be successfully installed.
+    It is defined by the PRE operand on the ++VER statement.</dd>
+  <dd><b>RPM</b> (<i>Prereq</i>)</dd>
+  <dd><b>Solaris</b> A package that depends on the existence of another package.</dd>
+  <dt>( C | co )</dt>
+  <dd>co-requisite -</dd>
+  <dd><b>AIX</b> A coreq indicates only a one-way functional dependency of one
+    fileset on another fileset. Co-requisites are the most desirable requisite
+    to use in the case of a functional dependency since a coreq only indicates
+    that both filesets must be installed on the system; no order to the install
+    is implied. A common misunderstanding with coreqs is that they are not
+    two-way as the name may imply.</dd>
+  <dd><b>HP</b></dd>
+  <dd>1.) A corequisite dependency states that a fileset requires another
+    software to operate correctly.</dd>
+  <dd>2.) <a name="corequisite"><!--index anchor-->
+    </a>A corequisite dependency requires another software object to be
+    installed in order for the dependent fileset to be usable.</dd>
+  <dd><b>MVS</b> <b>corequisite</b> <b>SYSMODs</b>. SYSMODs each of which can be
+    installed properly only if the other is present. Corequisites are defined by
+    the REQ operand on the ++VER statement.</dd>
+  <dd><b>RPM</b>. (<i>Requires</i>) The <b>requires</b> tag is used to warn RPM
+    that the package needs to have certain capabilities to operate
+    properly.&nbsp; These capabilities refer to the name of a package or to a
+    virtual package provided by one or more packages that use the provides
+    tag.&nbsp; A package that requires certain ``capabilities''.&nbsp; Manual
+    dependency requirements are always represented in terms of packages..</dd>
+  <dd><b>Solaris</b> N/A.</dd>
+  <dt>( L | ins )</dt>
+  <dd>install requisite -</dd>
+  <dd><b>AIX</b> An instreq is used in cases where one fileset should be
+    installed only IF another fileset is installed.&nbsp; It doesn't make sense
+    to install the documentation for a package unless the &quot;core
+    functionality&quot; is also installed.&nbsp; But the documentation will not
+    prereq the &quot;core functionality&quot; it will instreq it.</dd>
+  <dd><b>HP</b> N/A.</dd>
+  <dd><b>MVS</b> N/A.</dd>
+  <dd><b>RPM </b>N/A</dd>
+  <dd><b>Solaris</b> N/A.</dd>
+  <dt>( R | rev )</dt>
+  <dd>reverse requisite -</dd>
+  <dd><b>AIX</b> N/A.</dd>
+  <dd><b>HP</b> N/A</dd>
+  <dd><b>MVS</b> N/A</dd>
+  <dd><b>RPM</b> N/A.</dd>
+  <dd><b>Solaris</b> A condition when another package depends on the existence
+    of your package.&nbsp; <font color="#000000">Use the reverse dependency type
+    only when a package that cannot deliver a <kbd>depend</kbd> file relies on
+    your package.</font></dd>
+  <dt>( I | if )</dt>
+  <dd>if-requisite -</dd>
+  <dd><b>AIX</b> An ifreq is probably the most complicated form of requisite and
+    is used primarily with updates. An ifreq is best thought of as a conditional
+    coreq. The ifreq is similar in behavior to a coreq, in that, if one update
+    ifreqs another update then both updates must be installed at the same time
+    or the target update must already be installed, with the order of
+    installation not being important. The conditional part is that the second
+    fileset must only be installed at the specified level if it is already
+    installed on the system at some lower base or specified level. Otherwise,
+    the ifreq is ignored until the second fileset is installed on the system, at
+    which time <b>lppchk</b> can be used by the customer to tell them if there
+    are any missing updates. The ifreq does NOT allow installp to add the
+    required fileset to the list of filesets to install (or update) even if the <b>-g</b>
+    flag is used.</dd>
+  <dd><b>HP</b> N/A.</dd>
+  <dd><b>MVS</b> (<b>IFREQ) </b>A conditional requisite. Conditional requisites
+    are specified on the REQ operand of the ++IF statement.</dd>
+  <dd><b>RPM</b> N/A</dd>
+  <dd><b>Solaris</b> N/A</dd>
+  <dt>( X | npr )</dt>
+  <dd>negative pre-requisite -&nbsp;</dd>
+  <dd><b>AIX</b> N/A.</dd>
+  <dd><b>HP</b> (<b>exrequisites)</b> (Not yet implemented.) A list of
+    dependencies on software that may not be installed when this software is
+    installed. See also the <b>ancestor</b>, <b>corequisites</b>, and <b>prerequisites</b>
+    attributes..</dd>
+  <dd><b>MVS</b> In SMP/E, a function that is mutually exclusive with another
+    function. It is defined by the <b>NPRE</b> operand on the ++VER statement.</dd>
+  <dd><b>RPM</b> N/A.</dd>
+  <dd><b>Solaris </b><i>(incompatible)</i></dd>
+  <dd>1.) Implies that the existence of the indicated package or version is
+    incompatible.</dd>
+  <dd>2.) (Incompatible package) A package that is incompatible with the named
+    package.</dd>
+  <dt>( S | su )</dt>
+  <dd>supercedes -</dd>
+  <dd><b>AIX</b> The <i>fileset</i>.supersede file is optional and used for both
+    install images and updates.&nbsp; When used with an install image, the <i>fileset</i>.supersede
+    should list the <b>one</b> fileset that this image completely
+    replaces.&nbsp; For updates, the <i>fileset</i>.supersede file contains a
+    list of the fileset and levels (with fix field smaller than this one) that
+    are superseded by this fileset update.</dd>
+  <dd><b>HP</b> (Ancestor)An &quot;attribute&quot; which signifies the name of a
+    previous version fileset used in the &quot;Match-What-Target-Has&quot;
+    functionality. If the <i>match_target</i> option is set to true, the system
+    will match the ancestor fileset name to the new fileset name.</dd>
+  <dd><b>RPM</b> N/A.&nbsp;</dd>
+  <dd><b>MVS</b> <b>superseding</b> <b>SYSMOD</b>. In SMP/E, a SYSMOD that
+    contains all the functions in another SYSMOD and is recognized as the
+    equivalent of that other SYSMOD. The superseding SYSMOD uses SUP operand on
+    its ++VER statement to specify the superseded SYSMOD.</dd>
+  <dd><b>Solaris</b> (compver) A method of specifying package
+    backward-compatibility.</dd>
+  <dt>sup</dt>
+  <dd>superceding patches - <b>Not Implemented by ODE.</b></dd>
+  <dd><b>AIX</b> N/A.</dd>
+  <dd><b>HP</b> Patches that supersede all previous patches to a given
+    fileset.&nbsp; Used when a patch is replaced by (or merged into) a later
+    patch. The attribute indicates which previous patches are replaced by the
+    patch being installed or copied. This attribute value is a list of software
+    specifications of other patches that this patch supersedes.</dd>
+  <dd><b>MVS</b> N/A.</dd>
+  <dd><b>RPM</b> N/A.</dd>
+  <dd><b>Solaris</b> N/A.</dd>
+  <dt>gr</dt>
+  <dd>group requisite - <b>Not Implemented by RequisitesInfo stanza in ODE.</b></dd>
+  <dd><b>AIX</b> This is simply a format which can be used to indicate to the <b>installp</b>
+    command that one or more of the following requisites are required to
+    continue. An example of this would be where an LPP requires either the
+    Netscape Navigator or Communicator product on the system as a co-requisite.
+    This would be shown as :</dd>
+  <dd>&nbsp;</dd>
+  <dd>&gt;0 {<br>
+    *coreq Netscape.nav.rte 4.0.8.0<br>
+    *coreq Netscape.communicator.rte 5.0.0.0<br>
+    }</dd>
+  <dd><b>HP</b> N/A.</dd>
+  <dd><b>MVS</b> N/A.</dd>
+  <dd><b>RPM</b> N/A.</dd>
+  <dd><b>Solaris </b>N/A.</dd>
+  <dt>rw</dt>
+  <dd>requisite webs - <b>Not Implemented by RequisitesInfo stanza in ODE.</b></dd>
+  <dd><b>AIX</b> In packaging it is sometimes necessary for an LPP to split core
+    function into small filesets for ease of update, but the overall function of
+    the LPP will not work without all the function installed on the system. This
+    is a case where the LPP should split the core function into these smaller
+    filesets, and then use requisite webs to ensure that all the core function
+    is installed at the same time if any one piece is requested. Be sure to not
+    carry these requisite webs over from install images to update images. Also
+    take care to ensure that the web does not become circular.<br>
+  </dd>
+</dl>
+<p align="center"><b>RequisitesInfo Stanza</b></p>
+<div align="center">
+  <center>
+  <table width="90%" border="1" height="301" cellspacing="0" cellpadding="0">
+    <tbody>
+      <tr>
+        <th valign="top" align="center" nowrap style="border-right-style: solid; border-bottom-style: solid">Category</th>
+        <th valign="top" align="center" nowrap>Attribute</th>
+        <th valign="top" align="center" nowrap>AIX&nbsp;</th>
+        <th valign="top" align="center" nowrap>
+          <p style="word-spacing: 0; line-height: 100%; margin: 0">Solaris</p>
+          <p style="word-spacing: 0; line-height: 100%; margin: 0">Unixware</p>
+        </th>
+        <th valign="top" align="center" nowrap>HP-UX&nbsp;</th>
+        <th valign="top" align="center" nowrap>MVS/USS&nbsp;</th>
+        <th valign="top" align="center" nowrap>RPM</th>
+      </tr>
+      <tr>
+        <td align="left" nowrap>pre-requisites</td>
+        <td align="center" nowrap>P or pre</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>yes</td>
+      </tr>
+      <tr>
+        <td align="left" nowrap>negative pre-requisites</td>
+        <td align="center" nowrap>X or npr</td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+      </tr>
+      <tr>
+        <td align="left" nowrap>install requisites</td>
+        <td align="center" nowrap>L or ins</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+      </tr>
+      <tr>
+        <td align="left" nowrap>co-requisites</td>
+        <td align="center" nowrap>C or co</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>yes</td>
+      </tr>
+      <tr>
+        <td align="left" nowrap>conditional requisites&nbsp;</td>
+        <td align="center" nowrap>I or if</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+      </tr>
+      <tr>
+        <td nowrap>reverse requisites</td>
+        <td align="center" nowrap>R or rev</td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+      </tr>
+      <tr>
+        <td nowrap>supercedes</td>
+        <td align="center" nowrap>S or su</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>yes</td>
+        <td align="center" nowrap>
+          <hr width="25">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </center>
+</div>
+&nbsp;
+<div align="center">
+  <center>
+  <table width="927" border="1" height="36" cellspacing="0" cellpadding="0">
+    <tr>
+      <td nowrap height="34" width="381">control scripts</td>
+      <td align="center" nowrap height="34" width="117">
+        <hr width="25">
+      </td>
+      <td align="center" nowrap height="34" width="96">yes</td>
+      <td align="center" nowrap height="34" width="91">yes</td>
+      <td align="center" nowrap height="34" width="139">
+        <hr width="25">
+      </td>
+      <td align="center" nowrap height="34" width="89">yes</td>
+    </tr>
+  </table>
+  </center>
+</div>
+<p>&nbsp;</p>
+<p>* <b>Investigate</b>, for MVS, <b>superseded-only</b> <b>SYSMOD </b>and<b>
+superseding SYSMOD</b></p>
+<dl>
+  <dt><b>Install Requisite (instreq)</b></dt>
+  <dd>An instreq is used in cases where one fileset should be installed only IF
+    another fileset is installed. For example, the messages for some function
+    should only be installed if that function is already installed, or in the
+    process of being installed. The messages are of no use to the customer and
+    only waste space on the customer system if the function which uses them is
+    not installed.</dd>
+  <dt><b>supercedes and superceding patches</b></dt>
+  <dd>An obvious typo has been carried over from MVS documentation where
+    supercedes has been spelled supersedes.&nbsp; Also an incompatibility exists
+    where supercedes on HP is for patches only and on other platforms it is for
+    install images and updates.&nbsp; Probably the best thing to do would be to
+    use both and force other pkgtools to coply with HP's new tag.&nbsp; The
+    generators will enforce the correct syntax and keyword for each platform.</dd>
+  <dt><b>control scripts</b></dt>
+  <dd><b>HP. <a name="controlscripts">Control Scripts</a></b>&nbsp;&nbsp;Optional,
+    vendor- or administrator-supplied scripts that are run during <b>swinstall</b>
+    and <b>swremove</b>. Includes checkinstall, preinstall, postinstall and
+    configure scripts for <b>swinstall</b>; the checkremove, unconfigure,
+    preremove, and postremove scripts for <b>swremove</b>; and the verify script
+    for <b>swverify</b></dd>
+  <dd><b>Solaris. </b>You are not required to write any installation scripts for
+    a package. The <kbd><b>pkgadd</b></kbd> command performs all the actions
+    necessary to install your package, using the information you supply with the
+    package information files. Any installation script that you provide is used
+    to perform customized actions beyond those executed by<b> <kbd>pkgadd</kbd>.</b></dd>
+</dl>
+<h1>Examples:</h1>
+<h2>AIX</h2>
+<table border="1" width="90%">
+  <tr>
+    <td width="46%" align="center">CMF Syntax</td>
+    <td width="54%" align="center">Control File Syntax</td>
+  </tr>
+  <tr>
+    <td width="46%">
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1"><br>
+      #ifdef
+      MKINSTALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /* AIX */<br>
+      RequisitesInfo<br>
+      {</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      requisites = [ (&quot;P&quot;&nbsp; &quot;bos.iconv.com&quot;
+      &quot;4.1.0.0&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;L&quot; &quot;Netscape.communicator.rte&quot; &quot;4.0.6.0&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;C&quot;&nbsp; &quot;pkgtools.core&quot; &quot;1.0.1.0&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;I&quot;&nbsp; &quot;bos.rte.install&quot; &quot;(4.1.0.0)
+      4.1.4.1&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;I&quot;&nbsp; &quot;bos.rte.install&quot; &quot;(4.2.0.0)
+      4.2.0.1&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;S&quot; &quot;bosnet.tcip.obj&quot; &quot;4.1.0.0&quot;) ] ;</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">}</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#endif</font></p>
+    </td>
+    <td width="54%"><font size="1">Example fileset.prereq file:</font>
+      <blockquote>
+        <p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin-left: 0; margin-top: 0; margin-bottom: 0"><font size="1"><br>
+        *instreq Netscape.communicator.rte 4.0.6.0<br>
+        *prereq bos.iconv.com 4.1.0.0</font></p>
+        <p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin-left: 0; margin-top: 0; margin-bottom: 0"><font size="1">*coreq
+        pkgtools.core 1.0.1.0<br>
+        *ifreq bos.rte.install (4.1.0.0) 4.1.4.1<br>
+        *ifreq bos.rte.install (4.2.0.0) 4.2.0.1</font></p>
+      </blockquote>
+      <p><font size="1">If an fileset.prereq file is used with the ADE build
+      environment then be sure to add fileset.prereq to the *INFO_FILES list in
+      the <a href="http://w3.austin.ibm.com/projects/PKG/public_html/lpp_guide/man/packdep.mk.html">packdep.mk</a>
+      file.</font></p>
+      <p><font size="1">Example fileset.supercedes file:</font></p>
+      <blockquote>
+        <pre><font size="1"># This fileset supersedes the 4.1.0.0 level of fileset bosnet.tcpip.obj
+bosnet.tcpip.obj 4.1.0.0
+</font></pre>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<h2>HP</h2>
+<table border="1" width="90%">
+  <tr>
+    <td width="42%" align="center">CMF Syntax</td>
+    <td width="58%" align="center">Control File Syntax</td>
+  </tr>
+  <tr>
+    <td width="42%">
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#ifdef
+      INSTALLP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /* HP */</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">PathInfo</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">{</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;
+      configFiles = [&nbsp; (&quot;configure&quot;
+      &quot;scripts/configure.commands&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;checkinstall&quot; &quot;scripts/checkinstall.commands&quot;) ] ;</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">}</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">RequisitesInfo<br>
+      {</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;
+      requisites = [ (&quot;Pre&quot; &quot;nsu&quot; &quot;Network Support
+      Utilities&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;Co&quot; &quot;SD.data&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;Co&quot; &quot;SD.agent&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;Sup&quot; &quot;productA, r&gt;=2.1&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;Neg&quot; &quot;productB, r&gt;=2.1&quot;) ] ;</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">}</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#endif</font></p>
+    </td>
+    <td width="58%">
+      <pre style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1"> # Fileset definitions:
+  fileset
+    tag          commands
+    title        Commands (management utilities)
+    revision     2.42
+    description  &lt; data/descr.commands
+ # Dependencies</font></pre>
+      <pre style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">    ancestor      oldproduct.fileset
+    corequisites  SD.data
+	 corequisites SD.agent</font></pre>
+      <pre style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">    prerequisite  SD.agent,r&gt;=2.0 2.42</font></pre>
+      <pre style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">    supercedes    productA, r&gt;=2.1</font></pre>
+      <pre style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">    exrequisites  productB, r&gt;=2.1
+ # Control files:
+    configure       scripts/configure.commands</font></pre>
+      <pre style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">    checkinstall    scripts/checkinstall.commands</font></pre>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#
+      Files:</font></p>
+      <ul>
+        <li><font size="1"><font color="red">Checkinstall</font> scripts are
+          executed during the Analysis phase of a swinstall session. The
+          pathname of the script being executed is:<br>
+          [$ {<code>SW_CONTROL_DIRECTORY</code>}<code><font color="red">checkinstall</font></code>]</font>
+        <li><font size="1">A <font color="red">checkinstall</font> script must
+          not modify the system.</font>
+        <li><font size="1">A <font color="red">checkinstall</font> script
+          determines whether the product/fileset can be installed by performing
+          checks beyond those performed by swinstall. Example checks include
+          checking to see if the product/fileset is actively in use, or checking
+          that the system run-level is appropriate.</font>
+        <li><font size="1">If you are using a request script as part of the
+          install, the <font color="red">checkinstall</font> script should:</font>
+          <ul type="disc">
+            <table cellspacing="0" cellpadding="3" border="0">
+              <tbody>
+                <tr>
+                  <td valign="top"><font size="1"><img src="http://docs.hp.com//hpux/onlinedocs/images/em-dash.gif" width="12" border="0"></font></td>
+                  <td></td>
+                  <td><font size="1">Verify that the response file exists.</font></td>
+                </tr>
+              </tbody>
+            </table>
+            <table cellspacing="0" cellpadding="3" border="0">
+              <tbody>
+                <tr>
+                  <td valign="top"><font size="1"><img src="http://docs.hp.com//hpux/onlinedocs/images/em-dash.gif" width="12" border="0"></font></td>
+                  <td></td>
+                  <td><font size="1">Prevent swinstall from &quot;hanging&quot;
+                    if:</font>
+                    <ul type="disc">
+                      <table cellspacing="0" cellpadding="3" border="0">
+                        <tbody>
+                          <tr>
+                            <td valign="top"><font size="1"><img src="http://docs.hp.com//hpux/onlinedocs/images/em-dash.gif" width="12" border="0"></font></td>
+                            <td></td>
+                            <td><font size="1">A script tries to read a response
+                              file that does not exist.</font></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table cellspacing="0" cellpadding="3" border="0">
+                        <tbody>
+                          <tr>
+                            <td valign="top"><font size="1"><img src="http://docs.hp.com//hpux/onlinedocs/images/em-dash.gif" width="12" border="0"></font></td>
+                            <td></td>
+                            <td><font size="1">The install or configuration
+                              relies on information in the missing response
+                              file.</font></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ul>
+        </li>
+      </ul>
+    </td>
+  </tr>
+</table>
+<h2>MVS</h2>
+<table border="1" width="90%">
+  <tr>
+    <td width="42%" align="center">CMF Syntax</td>
+    <td width="58%" align="center">Control File Syntax</td>
+  </tr>
+  <tr>
+    <td width="42%">
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#ifdef
+      MVS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /* MVS */</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><tt><font size="1">RequisitesInfo</font></tt>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><tt><font size="1">{</font></tt></p>
+      <blockquote>
+        <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1"><tt>requisites&nbsp;&nbsp;
+        = [</tt></font>
+        <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1"><tt>&nbsp;&nbsp;
+        (&quot;S&quot;
+        &quot;hbps111,hbps211&quot;)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        // SUP</tt><br>
+        <tt>&nbsp;&nbsp; (&quot;P&quot;
+        &quot;hbps123&quot;)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        // PRE</tt><br>
+        <tt>&nbsp;&nbsp; (&quot;C&quot;
+        &quot;hbps124&quot;)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        // REQ</tt><br>
+        <tt>&nbsp;&nbsp; (&quot;X&quot;
+        &quot;hbps125&quot;)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        // NPRE</tt><br>
+        <tt>&nbsp;&nbsp; (&quot;I&quot; &quot;hbps111,hbps112,hbps113&quot;) //
+        IF</tt><br>
+        <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ];</tt></font></p>
+      </blockquote>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><tt><font size="1">}</font></tt></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#endif</font></p>
+    </td>
+    <td width="58%"><font size="1">Intermediate step in the pcd.mvs file :</font>
+      <blockquote>
+        <p><span style="mso-fareast-font-family: MS Mincho"><font size="1">&lt;IF&gt;
+        bps111,jbps111<br>
+        &lt;SUP&gt; hbps111<br>
+        &lt;PRE&gt; hbpsprereq<br>
+        &lt;NPRE&gt; hbpsxreq<br>
+        &lt;REQ&gt; hbscoreq</font></span></p>
+      </blockquote>
+      <p><font size="1"><span style="mso-fareast-font-family: MS Mincho">SMP/E
+      Statementes</span></font></p>
+      <blockquote>
+        <p><tt><font size="1">++VER(Z038)</font></tt><font size="1"><br>
+        <tt>FMID(HBPS112)</tt><br>
+        <tt>SUP(HBPS111,HBPS211)</tt><br>
+        <tt>PRE(HBPS123)</tt><br>
+        <tt>NPRE(HBPS125)</tt><br>
+        <tt>REQ(HBPS124)</tt><br>
+        <tt>DELETE(HBPS111,HBPS112)</tt><br>
+        <tt>VERSION(HBPS113)</tt><br>
+        <tt>.</tt></font>
+        <p><font size="1"><tt>++IF FMID (HBPS111) THEN REQ(HBPS112,HBPS113)</tt><br>
+        <tt>.</tt></font></p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<h2>RPM</h2>
+<table border="1" width="90%">
+  <tr>
+    <td width="42%" align="center">CMF Syntax</td>
+    <td width="58%" align="center">Control File Syntax</td>
+  </tr>
+  <tr>
+    <td width="42%">
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#ifdef
+      RPM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      /* Red Hat Linux */</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">PathInfo</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">{</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;
+      configFiles = [ (&quot;pre commands&quot;
+      &quot;scripts/preinstall.commands&quot;) ] ;</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">}</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">RequisitesInfo<br>
+      {</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;
+      requisites = [ (&quot;P&quot; &quot;<span style="mso-fareast-font-family: MS Mincho">gawk
+      fileutils textutils sh-utils mktemp</span>&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;X&quot; &quot;Patch &lt; 2.5&quot;)</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;C&quot; &quot;<span style="mso-fareast-font-family: MS Mincho">popt,
+      bzip2 &gt;= 0.9.0c-2&quot;</span> )</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;V&quot; &quot;odehello.so&quot;) ] ;<br>
+      }</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#endif</font></p>
+      &nbsp;</td>
+    <td width="58%">
+      <p style="word-spacing: 0; text-indent: 0; line-height: 100%; margin: 0"><span style="mso-fareast-font-family:&quot;MS Mincho&quot;"><font size="1">Summary:
+      The Red Hat package management system.<br>
+      Name: rpm<br>
+      %define version 4.0<br>
+      Version: %{version}<br>
+      Release: 7x<br>
+      Group: System Environment/Base<br>
+      Source: ftp://ftp.rpm.org/pub/rpm/dist/rpm-4.0.x/rpm-%{version}.tar.gz<br>
+      Copyright: GPL<br>
+      Conflicts: patch &lt; 2.5<br>
+      Provides: odehello.so</font></span></p>
+      <p style="word-spacing: 0; text-indent: 0; line-height: 100%; margin: 0"><span style="mso-fareast-font-family:&quot;MS Mincho&quot;"><font size="1">%ifos
+      linux<br>
+      Prereq: gawk fileutils textutils sh-utils mktemp<br>
+      Requires: popt, bzip2 &gt;= 0.9.0c-2<br>
+      # XXX glibc-2.1.92 has incompatible locale changes that affect statically<br>
+      # XXX linked binaries like /bin/rpm.<br>
+      %ifnarch ia64<br>
+      Requires: glibc &gt;= 2.1.92<br>
+      # XXX needed to avoid libdb.so.2 satisfied by compat/libc5 provides.<br>
+      Requires: db1 = 1.85<br>
+      %endif<br>
+      BuildRequires: db3-devel<br>
+      BuildRequires: bzip2 &gt;= 0.9.0c-2<br>
+      BuildRequires: python-devel &gt;= 1.5.2<br>
+      %endif<br>
+      BuildRoot: %{_tmppath}/%{name}-root<br>
+      </font></span></p>
+    </td>
+  </tr>
+</table>
+<h2>SOLARIS</h2>
+<table border="1" width="90%">
+  <tr>
+    <td width="42%" align="center">CMF Syntax</td>
+    <td width="58%" align="center">Control File Syntax</td>
+  </tr>
+  <tr>
+    <td width="42%">
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#ifdef
+      PKGMK /* Solaris */</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">EntityInfo</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">{</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;
+      space =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ (&quot;data&quot; &quot;500&quot;
+      &quot;1&quot;) ] ;</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">}</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">PathInfo</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">{</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;
+      configFiles =&nbsp; [ (&quot;checkinstall&quot;
+      &quot;checkinstall.sh&quot;) ] ;</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">}</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">RequisitesInfo</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">{<br>
+      &nbsp;&nbsp;&nbsp; requisites = [ (&quot;P&quot; nsu&quot;
+      &quot;Networking Support Utilities&quot;)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;R&quot; inet&quot; &quot;Internet Utilities&quot;)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;X&quot; sys&quot; &quot;System Header Files&quot;)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;S&quot; &quot;1.3&quot; )</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      (&quot;S&quot; &quot;1.0&quot;) ] ;</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">}<br>
+      #endif</font></p>
+      &nbsp;</td>
+    <td width="58%"><font size="1">A sample <b>compver </b>file is shown below:</font>
+      <dl>
+        <dd>
+          <pre><font size="1"><strong>Version 1.3</strong>
+<strong>Version 1.0</strong></font></pre>
+        </dd>
+      </dl>
+      <font size="1">Here is a sample <b>depend </b>file:</font>
+      <dl>
+        <dd>
+          <pre><font size="1"><strong>#ident &quot;@(#)pkg.compat:depend 1.1&quot;</strong>
+<strong>P nsu           Networking Support Utilities</strong>
+<strong>R inet          Internet Utilities</strong>
+<strong>X sys           System Header Files</strong>
+<strong>I inc           Source InCompatibility Files</strong></font></pre>
+        </dd>
+      </dl>
+      <dl>
+        <dt><font size="1">Here is a sample <b>space</b> file:</font></dt>
+      </dl>
+      <dl>
+        <dd><b><font size="1"># extra space required by config data which is</font></b></dd>
+      </dl>
+      <dl>
+        <dd>
+          <dl>
+            <dd>
+              <pre><font size="1"><strong># dynamically loaded onto the system</strong>
+<strong>data    500     1</strong></font></pre>
+            </dd>
+          </dl>
+        </dd>
+      </dl>
+      <font size="1">The <kbd><font color="#c00000"><b>checkinstall</b></font></kbd>
+      script is intended to perform basic checks on a file system that would not
+      be normal for the <kbd>pkgadd</kbd> command. For example, it can be used
+      to check ahead to determine if any files from the current package are
+      going to overwrite existing files, or manage general software dependencies
+      (the <kbd>depend</kbd> file only manages package-level dependencies).</font>
+      <blockquote>
+      </blockquote>
+      <p><font size="1">Here is a sample <b>checkinstall</b> script:</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1"># <font color="#c00000"><b>checkinstall</b></font>
+      script for SUNWcadap</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#
+      This confirms the existence of the required specU database</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#
+      First find which database package has been installed.</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">pkginfo
+      -q SUNWspcdA # try the older one</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;</p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">if
+      [ $? -ne 0 ]; then</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;
+      pkginfo -q SUNWspcdB # now the latest</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;</p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;
+      if [ $? -ne 0 ]; then # oops</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      echo &quot;No database package can be found. Please install the&quot;</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      echo &quot;SpecU database package and try this installation again.&quot;</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      exit 3 # Suspend</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;
+      else</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      DBBASE=&quot;`pkgparam SUNWsbcdB BASEDIR`/db&quot; # new DB software</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;
+      fi</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">else</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;
+      DBBASE=&quot;`pkgparam SUNWspcdA BASEDIR`/db&quot; # old DB software</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">fi</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;</p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">#
+      Now look for the database file we will need for this installation</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">if
+      [ $DBBASE/specUlatte ]; then</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;
+      exit 0 # all OK</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">else</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;
+      echo &quot;No database file can be found. Please create the database&quot;</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;
+      echo &quot;using your installed specU software and try this&quot; echo
+      &quot;installation again.&quot;</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">&nbsp;&nbsp;
+      exit 3 # Suspend</font></p>
+      <p style="word-spacing: 0; line-height: 100%; margin: 0"><font size="1">fi</font></td>
+  </tr>
+</table>
+<hr>
+<h1 style="word-spacing: 0; line-height: 100%; margin: 0">Sample CMF</h1>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">#ifdef
+AIX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* ONLY define appropriate requisites on each platform since unknown requisites
+will generatate an Exception in the Generator. */</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">RequisitesInfo</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">{</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+requisites = [ (&quot;P&quot;&nbsp; &quot;bos.iconv.com&quot;
+&quot;4.1.0.0&quot;)</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;L&quot; &quot;Netscape.communicator.rte&quot; &quot;4.0.6.0&quot;)</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;C&quot;&nbsp; &quot;pkgtools.core&quot; &quot;1.0.1.0&quot;)</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;I&quot;&nbsp; &quot;bos.rte.install&quot; &quot;(4.1.0.0) 4.1.4.1&quot;)</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;I&quot;&nbsp; &quot;bos.rte.install&quot; &quot;(4.2.0.0) 4.2.0.1&quot;)</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;S&quot; &quot;bosnet.tcip.obj&quot; &quot;4.1.0.0&quot;) ] ;</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">}</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">#endif</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">&nbsp;</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">#ifdef
+HP</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">RequisitesInfo</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">{</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;
+requisites = [ (&quot;Pre&quot; &quot;nsu&quot; &quot;Network Support
+Utilities&quot;)</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;Co&quot; &quot;SD.data&quot;)</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;Co&quot; &quot;SD.agent&quot;)</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;Sup&quot; &quot;productA, r&gt;=2.1&quot;)</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;Neg&quot; &quot;productB, r&gt;=2.1&quot;) ] ;</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">}</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">#endif</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">#ifdef
+RPM</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">RequisitesInfo</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">{</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;
+requisites = [ (&quot;Pre&quot; &quot;<span style="mso-fareast-font-family: MS Mincho">gawk
+fileutils textutils sh-utils mktemp</span>&quot;)</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;X&quot; &quot;Patch &lt; 2.5&quot;)</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;C&quot; &quot;<span style="mso-fareast-font-family: MS Mincho">popt,
+bzip2 &gt;= 0.9.0c-2&quot;</span> )</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;Pro&quot; &quot;odehello.so&quot;) ] ;</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">}</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">#endif</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">#ifdef
+SOLARIS</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">RequisitesInfo</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">{</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;
+requisites = [ (&quot;P&quot; nsu&quot; &quot;Networking Support
+Utilities&quot;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;R&quot; inet&quot; &quot;Internet Utilities&quot;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;X&quot; sys&quot; &quot;System Header Files&quot;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;S&quot; &quot;1.3&quot; )</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;S&quot; &quot;1.0&quot;) ] ;</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">}</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">#endif</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">#ifdef
+MVS</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">RequisitesInfo</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">{</p>
+<p style="word-spacing: 0; line-height: 100%; margin: 0"><tt>&nbsp;&nbsp;&nbsp;
+requisites&nbsp;&nbsp; = [</tt>
+<p style="word-spacing: 0; line-height: 100%; margin: 0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;S&quot;
+&quot;hbps111,hbps211&quot;)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+SUP</tt><br>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;P&quot;
+&quot;hbps123&quot;)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// PRE</tt><br>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;C&quot;
+&quot;hbps124&quot;)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// REQ</tt><br>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;X&quot;
+&quot;hbps125&quot;)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// NPRE</tt><br>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(&quot;I&quot; &quot;hbps111,hbps112,hbps113&quot;) // IF</tt><br>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+];</tt></p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">}</p>
+<p style="word-spacing: 0; line-height: 100%; text-indent: 0; margin: 0">#endif</p>
+
+</body>
+
+</html>

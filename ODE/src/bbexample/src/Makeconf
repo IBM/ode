@@ -1,0 +1,129 @@
+################################################################################
+#
+# Makeconf
+#
+# This special makefile marks the top of the source tree and is the first
+# file read by 'mk'. Several builtin make variables are defined based upon the
+# location of this file and the subdirectory within this tree where make was
+# invoked.
+#
+################################################################################
+
+# Our project name.
+#
+PROJECT_NAME ?= myproj
+
+# The name of the base "rules" makefile to include.
+#
+RULES_MK ?= rules.mk
+
+# Set variables for all platform (CONTEXT) types.
+#
+TOSTAGE=${SANDBOXBASE}${DIRSEP}inst.images${DIRSEP}${CONTEXT}${DIRSEP}shipdata
+
+# Using the -E flags causes genpath to expand only the export subdirectories.
+#
+INCFLAGS += -Eusr/include
+LIBFLAGS += -Eusr/lib
+
+# Variable triggers the building of java source.
+#
+BUILDJAVA =
+
+# Variable triggers to allow JAVA_CLASSES to be defined from
+# ${PROJECT_NAME}.passes.mk or after the inclusion of ${RULES_MK}
+USE_JAVA_CLASSES =
+
+# Variable triggers to allow building of one file istall image.
+.if !empty(MACHINE:M*_linux_*)
+#PKG_GEN_DIST_FILE =
+.elif empty(MACHINE:Mx86_nt_*) && empty(MACHINE:Mx86_95_*)
+PKG_GEN_DIST_FILE =
+.endif
+
+.ifdef PKG_GEN_DIST_FILE
+INSTALL_IMAGE_NAME = odehello
+INSTALL_IMAGE_FILE = ${PKG_OUTPUT_DIR}/${CONTEXT}_install_image
+.endif #PKG_GEN_DIST_FILE
+
+# The name of the library created.  Can be overridden from
+# the command line or environment (or Buildconf).
+#
+LIBBASE ?= exa
+
+# To build the above library as a dynamic/shared library,
+# uncomment the following variable definition.  By default,
+# it will be built as an archive/static library.
+#
+# USE_SHARED_LIBRARY =
+
+# To build a .RES resource file containing an icon and STRINGTABLE
+# for WinNT or OS/2, uncomment the following variable definition.
+# If USE_SHARED_LIBRARY is defined, the .RES file will be linked with
+# the shared library; otherwise it is linked with server.exe.
+#
+# USE_RESOURCES=
+
+# Packaging variables
+#
+PKG_NAME ?=odehello
+
+# CMF Generation variables (default settings)
+#
+CMF_PERMISSIONS   = 755
+CMF_GROUP_ID      = sys
+CMF_USER_ID       = root
+CMF_PART_NUM      = 1
+CMF_HFS_COPY_TYPE = binary
+CMF_SHIP_TYPE     = ipp ptf
+CMF_VPL_SECURITY  = unc
+
+.if !empty(CONTEXT:Mmvs*)
+CMF_BIN_PARENT   = HBPS112
+CMF_DOC_PARENT   = JBPS112
+.elif !empty(CONTEXT:Mhp9000*)
+CMF_BIN_PARENT   = odehellobin
+CMF_DOC_PARENT   = odehellodoc
+.elif !empty(CONTEXT:M*_linux_*)
+CMF_BIN_PARENT   = bin
+.else
+CMF_BIN_PARENT   = odehello.bin
+CMF_DOC_PARENT   = odehello.doc
+CMF_LINKS_PARENT = odehello.links
+.endif
+
+CMF_PARENT     ?= ${CMF_BIN_PARENT}
+
+.if defined(USE_RESOURCES) && !defined(USE_SHARED_LIBRARY)
+# link resources file with server.exe
+USE_RESOURCES_FILE=
+.endif
+
+# Disable LEX and YACC rules for speed
+#  (Comment out the following variable definition if the rules are needed)
+#
+NO_YACC_RULES =
+NO_LEX_RULES  =
+
+.if defined(CONTEXT)
+# Include platform specific Makeconf
+#
+.include <${CONTEXT}.mk>
+.endif  # context defined
+
+# Setting Java compiler flags for debugging
+.ifdef DEBUGGING
+JFLAGS += -g
+.endif
+
+# Allow makefiles to use spaces to indent commands instead
+# of enforcing hard tabs.
+.MAKEFLAGS: -w
+
+.if defined(OBJECTDIR)
+MAKEOBJDIR=${OBJECTDIR}
+.endif
+
+# Set MAKESRCDIRPATH to the backing chain's source directories.
+# Then add in the appropriate object directory for each backing chain.
+MAKESRCDIRPATH := ${BACKED_SANDBOXDIR:S/${PATHSEP}/ /g:@WORD@${WORD}${DIRSEP}${ODESRCNAME}${DIRSEP}${OBJECTDIR}${PATHSEP}${WORD}${DIRSEP}${ODESRCNAME}@:s/ /${PATHSEP}/g}

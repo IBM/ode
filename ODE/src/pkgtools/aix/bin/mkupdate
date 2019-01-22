@@ -1,0 +1,205 @@
+#!/usr/bin/perl
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+#  
+# (C) COPYRIGHT International Business Machines Corp. 1997
+# All Rights Reserved 
+#  
+# US Government Users Restricted Rights - Use, duplication or 
+# disclosure restricted by GSA ADP Schedule Contract with IBM Corp. 
+#
+# ORIGINS: 27
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# NAME        : make update
+# DESCRIPTION :
+#    The 'mkupdate' script manages the process of creating
+#    update images for AIX version 4.x on the RS/6000.
+#    More information is provided by the ODE people at
+#    http://w3.ode.raleigh.ibm.com/
+#
+# NOTES       :
+#   -- There is a change log attached to the end of this script.
+#   -- The man page for this command follows the change log that
+#      is at the end of this script.
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+require 5.002;                # must be at perl5.002 or greater
+
+BEGIN
+{
+    # Put the default pkgtools lib at the end of the list.
+    # If I had used 'use lib "/usr/opt/pkgtools/lib", it would
+    # go onto the beginning of the INC list and thus negate
+    # the use of the PERL5LIB, or PERLLIB, environment vars.
+    #
+    push @INC, "/usr/opt/pkgtools/lib";
+}
+use English;                  
+use IO::Handle;
+use Getopt::Long;             # may want to change this to be like CMVC
+
+# Get the various packaging object classes and support classes
+#
+use Pkg::Log;                 # base error/debug/logging class
+use Pkg::Config;              # config file interface class
+use Pkg::Parser;              # pkg language parser
+use Pkg::Update;              # Update class
+
+use strict;                   # Force safer programming practices
+#
+# "Forward" declaration of variables
+#
+use vars(qw($cmd));
+
+#
+# Parameter Variable initialization
+#
+my $debug      = "";           # debug filter pattern, empty str means no debug
+my $config_file= "";           
+my $cpp_flags  = "-P";         # default to -P to process input with out
+                               # producing line control information
+my $no_cpp     = 1;            # flag for running .pd file thru cpp or not.
+my $output_dir = `pwd`;        # output defaults to current directory
+chomp $output_dir;
+
+#--------------------------------------------------------------------------
+# Define the default error messages and error codes.
+# We use 'my' variables in Main since they will not
+# be shared or replicated across objects -- there is only 
+# 1 main.
+#
+my @err_msgs = ("No Error",
+  # $Err_Usage = 1 ($cmd)
+    "usage %s [-Debug \"pattern filter\"]\n" .
+    "\t[-configfile \"file_name\"] [-cppflags \"flag string\"] [-nocpp]\n"  .
+    "\t[-cpp] [-outputdir some/directory]\n" .
+    "\t[Definition_file(s)...]\n".
+    "    where\n" .
+    "\t- All flags are optional.\n" .
+    "\t- Debug pattern is a regular expression that causes the debug\n" .
+    "\t  message to be generated if the subroutine name or perl package\n" .
+    "\t  match the expression.\n" .
+    "\t- -configfile provides a mechanism for the user to define and\n" .
+    "\t  provide their own config file.\n" .
+    "\t- -cppflags provides a mechanism to pass flags to the 'cpp'\n" .
+    "\t  command (such as -D flags).\n" .
+    "\t- -cpp indicates that 'cpp' is to be used on the definition file(s).\n".
+    "\t  This flag is on by default; see -nocpp for turning off 'cpp'.\n".
+    "\t- -nocpp turns off the use of 'cpp' on the definition file(s).\n" .
+    "\t- \"Definition_files(s)\" is the list of definition files to\n" .
+    "\t  process. This list can contain 0, 1, or more file names.\n" .
+    "\t  If no filenames are given, the current directory is searched\n" .
+    "\t  for any files ending in '.pd'.  Any files found will be processed.\n".
+    "Version = %s",
+  # $Err_Build_Failed = 2 ($fileset_name)
+    "Unable to create update package for %s.\n",
+  # $Err_Load_Failed  = 3 (no parameters)
+    "The reading/loading of one or more definition files failed; " .
+    "update images cannot be created.",
+  # $Err_Cfg_Failed  = 3 (no parameters)
+    "Failed to load the configuration file; update images cannot be created."
+);
+
+my $Err_No_Error     = 0;
+my $Err_Usage        = 1;
+my $Err_Build_Failed = 2;
+my $Err_Load_Failed  = 3;
+my $Err_Cfg_Failed   = 4;
+#
+#--------------------------------------------------------------------------
+###########################################################################
+# Begin Main
+#
+$cmd    = substr($0, rindex($0, "/") + 1);   # get name of cmd being run.
+my $log = Pkg::Log->new($cmd);  # logging interface (includes error and debug)
+$log->register_errors(\@err_msgs);
+
+my $rc = 0;
+
+if (GetOptions("Debug=s"      => \$debug,
+	       "configfile=s" => \$config_file,
+	       "cppflags=s"   => \$cpp_flags,
+	       "cpp!"         => \$no_cpp,
+	       "outputdir=s"  => \$output_dir))
+{
+    # The GetOptions routine automatically allows for simple boolean
+    # flags to be "notted" by prepending 'no' to the flag.  So, to 
+    # avoid user confusion, I use a flag of 'cpp' to GetOptions which
+    # allows the user to specify 'nocpp'.  However, I have to not the
+    # contents of the variable to get the semantics I want.
+    #
+    $no_cpp = !$no_cpp;
+
+    $log->set_debug($debug);
+    $log->Debug("inputs ==> debug = $debug, config = $config_file, " .
+		"cppflags = $cpp_flags, nocpp = $no_cpp, " .
+		"outputdir = $output_dir\n");
+
+    # get the config file data.
+    my $cfg = Pkg::Config->new($cpp_flags, $no_cpp, $config_file);  
+
+    if (defined($cfg))
+    {
+	# Load all of the definition files.
+	# Note that these files may be given or may need to be
+	# discovered.
+	#
+	autoflush STDOUT 1;        # flush STDOUT after each print
+	my $spec = new Pkg::Parser $cfg, $cpp_flags, $no_cpp;
+	$log->Log("Loading Definition File(s)");
+	
+	$rc |= $spec->load_files(\@ARGV);
+	
+	$log->Log("Definition File(s) load complete; rc = $rc");
+	#
+	# Now begin the work of creating packages
+	#
+	if ($rc == 0)
+	{
+	    #
+	    # Now build all updates defined in the definition
+	    # files just loaded.
+	    #
+	    my $upd_list;
+	    my $fs;
+	    foreach $fs (values %{$spec->{Update}})
+	    {
+		push(@{$upd_list}, @{$fs});
+	    }
+	    my $updt;
+	    foreach $updt (@{$upd_list})
+	    {
+		$log->Debug("Building image for '$updt->{Name}'...");
+		$rc |= ( $updt->mk_update($output_dir) );
+                if ($rc >= 8) 
+	        {    	
+		    $log->error("Error", $Err_Build_Failed, $updt->{Name});
+		} 
+	    }
+	}
+	else
+	{
+	    $rc = 16;
+	    $log->error("Severe", $Err_Load_Failed);
+	}
+    }
+    else
+    {
+	$rc = 16;
+	$log->error("Severe", $Err_Cfg_Failed);
+    }
+}
+else
+{
+    $rc = 16;
+    $log->error("Error", $Err_Usage, $cmd);
+}
+$log->Log("Completed packaging updates, highest return code was '$rc'\n");
+exit $rc;
+#
+# END Main
+__END__
+
+Revision = $Id: mkupdate,v 1.3 1997/12/18 14:45:49 bender Exp $
