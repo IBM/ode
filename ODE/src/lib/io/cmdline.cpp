@@ -1,3 +1,4 @@
+using namespace std ;
 #define _ODE_LIB_IO_COMMANDLINE_CPP_
 
 #include "lib/io/cmdline.hpp"

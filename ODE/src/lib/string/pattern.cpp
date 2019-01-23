@@ -4,7 +4,8 @@
 **/
 
 #include <ctype.h>
-#include <iostream.h>
+#include <iostream>
+using namespace std ;
 
 #define _ODE_LIB_STRING_PATTERN_CPP_
 #include "lib/string/pattern.hpp"

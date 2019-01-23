@@ -8,7 +8,8 @@
  *
 **/
 
-#include <iostream.h>
+using namespace std;
+#include <iostream>
 #include <stdlib.h>
 #include <string.h>
 

@@ -1,4 +1,5 @@
 #define _LIB_STRING_STRING_CPP_
+using namespace std ;
 
 #include <ctype.h>
 #include <stdio.h>

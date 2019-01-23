@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_LIB_IO_SETVARCF_CPP_
 
 #include "lib/io/setvarcf.hpp"

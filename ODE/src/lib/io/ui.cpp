@@ -1,3 +1,4 @@
+using namespace std;
 #ifdef DEFAULT_SHELL_IS_VMS
 #include <ssdef.h>
 #endif

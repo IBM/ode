@@ -2,6 +2,7 @@
  * ConfigFile
  *
 **/
+using namespace std ;
 #define _ODE_LIB_IO_CFGF_CPP_
 #include "lib/io/cfgf.hpp"
 #include "lib/string/strcon.hpp"

@@ -2,6 +2,7 @@
  * Sandbox
 **/
 
+using namespace std ;
 #include <ctype.h>
 
 #define _ODE_LIB_IO_SANDBOX_CPP_
