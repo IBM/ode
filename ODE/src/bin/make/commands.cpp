@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_BIN_MAKE_COMMANDS_CPP_
 
 #include <base/binbase.hpp>

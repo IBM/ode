@@ -1,5 +1,6 @@
 // Generate explicit instantiations for mk.
 
+using namespace std;
 #include "lib/string/string.hpp"
 #include "lib/string/smartstr.hpp"
 #include "lib/portable/collectn.cxx"

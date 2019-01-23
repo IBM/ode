@@ -1,6 +1,7 @@
 /**
  * MakefileCache
  **/
+using namespace std;
 #define _ODE_BIN_MAKE_MKFILCAC_CPP_
 
 #include <base/binbase.hpp>

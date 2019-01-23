@@ -2,6 +2,7 @@
  * Keyword
  *
 **/
+using namespace std;
 #define _ODE_BIN_MAKE_KEYWORD_CPP_
 
 #include <base/binbase.hpp>
