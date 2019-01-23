@@ -1,7 +1,7 @@
 #ifndef _ODE_LIB_IO_CFGF_HPP_
 #define _ODE_LIB_IO_CFGF_HPP_
 
-#include <fstream.h>
+#include <fstream>
 
 #include <base/odebase.hpp>
 #include "lib/io/path.hpp"

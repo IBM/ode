@@ -119,13 +119,13 @@ template< class Type >
 inline void Vector< Type >::insertElementAt( const Type &element,
     unsigned long index )
 {
-  addAtPosition( index, element );
+  this->addAtPosition( index, element );
 }
 
 template< class Type >
 inline void Vector< Type >::addElement( const Type &element )
 {
-  addAsLast( element );
+  this->addAsLast( element );
 }
 
 template< class Type >
@@ -158,7 +158,7 @@ inline void Vector< Type >::addWithoutDup( const Type &element )
 {
   // No Duplicates, only add if element is not already in the vector.
   if ( !contains( element) )
-    addAsLast( element );
+    this->addAsLast( element );
 }
 
 #endif /* _ODE_LIB_PORTABLE_VECTOR_HPP_ */

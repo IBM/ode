@@ -3,6 +3,7 @@
  *
 **/
 
+using namespace std; 
 #define _ODE_LIB_PORTABLE_ENV_CPP_
 #include "lib/portable/env.hpp"
 #include "lib/portable/platcon.hpp"

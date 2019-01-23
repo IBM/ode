@@ -11,7 +11,7 @@
 #ifndef _ODE_LIB_IO_PATH_HPP_
 #define _ODE_LIB_IO_PATH_HPP_
 
-#include <fstream.h>
+#include <fstream>
 
 #include "lib/string/string.hpp"
 #include "lib/string/strarray.hpp"

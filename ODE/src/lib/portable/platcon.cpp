@@ -3,6 +3,7 @@
  *
 **/
 
+using namespace std ;
 #define _ODE_LIB_PORTABLE_PLATCON_CPP_
 #include "lib/portable/native/platver.h"
 #include "lib/portable/platcon.hpp"

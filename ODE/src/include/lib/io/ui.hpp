@@ -1,7 +1,7 @@
 #ifndef _ODE_LIB_IO_UI_HPP_
 #define _ODE_LIB_IO_UI_HPP_
 
-#include <iostream.h>
+#include <iostream>
 #include <base/odebase.hpp>
 #include "lib/string/string.hpp"
 #include "lib/string/strarray.hpp"

@@ -5,7 +5,7 @@
 #ifndef _ODE_LIB_IO_TARGET_HPP_
 #define _ODE_LIB_IO_TARGET_HPP_
 
-#include <fstream.h>
+#include <fstream>
 #include "lib/intcmds/body.hpp"
 
 #include "lib/io/ui.hpp"

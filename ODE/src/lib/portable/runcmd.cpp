@@ -2,7 +2,8 @@
  * RunSystemCommand
  *
 **/
-#include <fstream.h>
+#include <fstream>
+using namespace std ;
 
 #define _ODE_LIB_PORTABLE_RUNCMD_CPP_
 #include "lib/portable/runcmd.hpp"
