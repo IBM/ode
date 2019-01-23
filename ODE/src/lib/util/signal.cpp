@@ -1,5 +1,6 @@
 #include <signal.h>
-#include <iostream.h>
+#include <iostream>
+using namespace std;
 
 #define _ODE_LIB_UTIL_SIGNAL_CPP_
 #include "lib/util/signal.hpp"

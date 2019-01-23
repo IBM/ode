@@ -1,6 +1,7 @@
 /**
  * Cond
 **/
+using namespace std;
 #define _ODE_LIB_UTIL_COND_CPP_
 
 //#include <iostream.h>

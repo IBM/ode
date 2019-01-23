@@ -2,6 +2,7 @@
  * BitSet
 **/
 
+using namespace std;
 #define _ODE_LIB_UTIL_BITSET_CPP_
 #include "lib/util/bitset.hpp"
 

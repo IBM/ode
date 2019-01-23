@@ -3,6 +3,7 @@
  *
 **/
 
+using namespace std;
 #define _ODE_LIB_UTIL_CONDEVAL_CPP_
 #include "lib/util/condeval.hpp"
 
