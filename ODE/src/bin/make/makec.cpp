@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_BIN_MAKE_MAKEC_CPP_
 
 using namespace std;

@@ -1,3 +1,4 @@
+using namespace std;
 // Generate explicit instantiations for dllrenam.
 
 #include "lib/portable/array.cxx"

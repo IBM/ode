@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_BIN_CURRSB_CURRSB_CPP
 
 #include <base/odebase.hpp>

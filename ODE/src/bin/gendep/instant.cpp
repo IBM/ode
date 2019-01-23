@@ -1,3 +1,4 @@
+using namespace std;
 // Generate explicit instantiations for gendep.
 
 #include "lib/string/smartstr.hpp"

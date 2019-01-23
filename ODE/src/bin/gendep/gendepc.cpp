@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_BIN_GENDEP_GENDEP_CPP_
 
 #define MAX_INCLUDE_NEST_DEPTH 128

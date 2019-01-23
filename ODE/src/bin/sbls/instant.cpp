@@ -1,3 +1,4 @@
+using namespace std;
 // Generate explicit instantiations for sbls.
 
 #include "lib/string/string.hpp"

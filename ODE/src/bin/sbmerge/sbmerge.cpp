@@ -1,3 +1,4 @@
+using namespace std;
 #include "bin/sbmerge/sbmergec.hpp"
 
 #ifdef ODE_USE_GLOBAL_ENVPTR

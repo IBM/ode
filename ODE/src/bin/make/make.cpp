@@ -1,3 +1,4 @@
+using namespace std;
 /**
  * Main Entry for make
 **/

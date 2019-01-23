@@ -1,4 +1,5 @@
 using namespace std;
+using namespace std;
 #define _ODE_BIN_MAKE_JOB_CPP_
 
 #include "bin/make/job.hpp"

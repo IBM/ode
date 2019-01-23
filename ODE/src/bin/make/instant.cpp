@@ -1,3 +1,4 @@
+using namespace std;
 // Generate explicit instantiations for mk.
 
 using namespace std;

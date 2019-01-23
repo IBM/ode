@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_BIN_SBMERGE_SBMERGE_CPP
 
 

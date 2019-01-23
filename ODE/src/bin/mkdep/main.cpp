@@ -1,3 +1,4 @@
+using namespace std;
 #include "lib/intcmds/mkdep.hpp"
 #include "lib/exceptn/mkdepexc.hpp"
 

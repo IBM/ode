@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_BIN_MKSB_MKSB_CPP_
 
 
