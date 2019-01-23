@@ -1,3 +1,4 @@
+using namespace std ;
 #include <base/binbase.hpp>
 #include "lib/intcmds/misc.hpp"
 

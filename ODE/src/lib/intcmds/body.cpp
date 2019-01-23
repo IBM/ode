@@ -1,4 +1,5 @@
-#include <fstream.h>
+#include <fstream>
+using namespace std ;
 
 #include "lib/intcmds/body.hpp"
 #include "lib/io/ui.hpp"
