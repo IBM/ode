@@ -229,20 +229,20 @@ ZIP_FILES = ${ZIP_NAMES:@WORD@${SHIPTOP}${WORD}@}
 
 zip_all: ${ZIP_FILES} .SPECTARG
 
-${SHIPTOP}${CONTEXT_ZIP}: \
-	    ${SHIPABLES:@WORD@${TOSTAGE}/bin/${WORD}@}
-	${.TARGET:H:C}
-.if !empty(MACHINE:M*_openvms_*)
-	${CHDIR} ${${TOSTAGE}/bin:L:@.PATH.@${VMS_PATH_CONV}@} && jar -cvf ../../ship/${.TARGET:T} *.*
-.else
-	${.TARGET:rm-}
-.ifdef USE_COMPRESS
-	cd ${TOSTAGE}${DIRSEP}bin && ${_ZIP_} ../../ship/${.TARGET:T:R} *
-	${_COMPRESS_} ${TOSTAGE}/../ship/${.TARGET:T:R}
-.else
-	cd ${TOSTAGE}${DIRSEP}bin && ${_ZIP_} ../../ship/${.TARGET:T} *
-.endif # USE_COMPRESS
-.endif # openvms
+#${SHIPTOP}${CONTEXT_ZIP}: \
+#	    ${SHIPABLES:@WORD@${TOSTAGE}/bin/${WORD}@}
+#	${.TARGET:H:C}
+#.if !empty(MACHINE:M*_openvms_*)
+#	${CHDIR} ${${TOSTAGE}/bin:L:@.PATH.@${VMS_PATH_CONV}@} && jar -cvf ../../ship/${.TARGET:T} *.*
+#.else
+#	${.TARGET:rm-}
+#.ifdef USE_COMPRESS
+#	cd ${TOSTAGE}${DIRSEP}bin && ${_ZIP_} ../../ship/${.TARGET:T:R} *
+#	${_COMPRESS_} ${TOSTAGE}/../ship/${.TARGET:T:R}
+#.else
+#	cd ${TOSTAGE}${DIRSEP}bin && ${_ZIP_} ../../ship/${.TARGET:T} *
+#.endif # USE_COMPRESS
+#.endif # openvms
 
 .if !empty(MACHINE:Mrios_aix_*) || !empty(MACHINE:Mmvs390_oe_*) \
  || defined(ALLZIPS) 
