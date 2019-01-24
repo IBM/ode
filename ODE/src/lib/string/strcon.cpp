@@ -2,6 +2,7 @@
  * StringConstants
  *
 **/
+using namespace std ;
 #define _ODE_LIB_STRING_STRCON_CPP_
 #include "lib/string/strcon.hpp"
 #include "lib/portable/env.hpp"

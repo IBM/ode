@@ -3,6 +3,7 @@
  * for the library.
  *
 **/
+using namespace std ;
 #include "lib/string/setvars.cxx"
 #include "lib/portable/array.cxx"
 #include "lib/portable/hashtabl.cxx"

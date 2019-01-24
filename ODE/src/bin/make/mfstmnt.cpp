@@ -1,7 +1,9 @@
+using namespace std;
 /**
  * MakefileStatement
  *
 **/
+using namespace std;
 #define _ODE_BIN_MAKE_MFSTMNT_CPP_
 
 #include <base/binbase.hpp>

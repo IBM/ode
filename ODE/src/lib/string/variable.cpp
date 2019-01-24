@@ -2,6 +2,7 @@
  * Variable
 **/
 
+using namespace std ;
 #define _ODE_LIB_STRING_VARIABLE_CPP_
 #include "lib/string/variable.hpp"
 #include "lib/exceptn/mfvarexc.hpp"

@@ -1,3 +1,5 @@
+using namespace std;
+using namespace std;
 #include "bin/workon/workonc.hpp"
 
 #ifdef ODE_USE_GLOBAL_ENVPTR

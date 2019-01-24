@@ -1,7 +1,9 @@
+using namespace std;
 /**
  * PassNode (parsing)
  *
 **/
+using namespace std;
 #define _ODE_BIN_MAKE_PASSNDP_CPP_
 
 // The maximum number of nest includes that can occur within a makefile.

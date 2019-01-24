@@ -1,6 +1,8 @@
+using namespace std;
 /**
  * Main Entry for make
 **/
+using namespace std;
 #include <base/binbase.hpp>
 #include "bin/make/makec.hpp"
 

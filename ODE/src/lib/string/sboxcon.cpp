@@ -2,6 +2,7 @@
  * SandboxConstants
  *
 **/
+using namespace std ;
 #define _ODE_LIB_STRING_SBOXCON_CPP_
 #include "lib/string/sboxcon.hpp"
 #include "lib/portable/env.hpp"

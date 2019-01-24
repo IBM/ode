@@ -28,7 +28,7 @@ CDEFS += -D_POSIX_SOURCE -D_POSIX_C_SOURCE=199309L -D_BSD_SOURCE
 # UNIX - This is a Unix-like operating system (should ONLY be used in the
 #        lib/portable and lib/portable/native code).
 #
-CDEFS += -DLINUX -DLINUX_X86 -DUNIX
+CDEFS += -DLINUX -DLINUX_X86 -DUNIX -DUSE_OPENMODE_TYPE -fPIC
 
 #########################################
 #########################################

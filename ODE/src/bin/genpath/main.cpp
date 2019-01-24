@@ -1,3 +1,4 @@
+using namespace std;
 #include "lib/intcmds/genpath.hpp"
 #include "lib/exceptn/exceptn.hpp"
 

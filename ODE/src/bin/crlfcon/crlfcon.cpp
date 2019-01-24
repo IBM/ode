@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_BIN_CRLFCON_CRLFCON_CPP_
 
 #include <ctype.h>

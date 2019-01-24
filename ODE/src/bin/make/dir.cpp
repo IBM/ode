@@ -1,7 +1,9 @@
+using namespace std;
 /**
  * Dir
  *
 **/
+using namespace std;
 #define _ODE_BIN_MAKE_DIR_CPP_
 
 #include <base/binbase.hpp>

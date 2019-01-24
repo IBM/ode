@@ -11,6 +11,9 @@
 
 #include "lib/string/string.hpp"
 #include "lib/portable/array.hpp"
+#include <iostream>
+#include <ostream>
+
 
 #ifdef __cplusplus
 extern "C"

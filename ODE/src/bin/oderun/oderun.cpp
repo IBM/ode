@@ -1,3 +1,4 @@
+using namespace std;
 #include <ssdef.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -15,7 +15,7 @@ CDEFS       += -D__WEBMAKE__ -D__WEBDAV__
 NO_TOOLSBASE =
 
 .else
-REL_NAME   ?= %release_name%
+REL_NAME   ?= 050
 .endif # WEBMAKE
 
 .if !empty(MACHINE:M*_openvms_*)
@@ -76,6 +76,7 @@ USE_SHARED_LIBRARY =
 
 GROUP ?= ode
 
+NO_CHOWN ?= 1
 # Disable LEX and YACC rules for speed
 NO_YACC_RULES =
 NO_LEX_RULES  =

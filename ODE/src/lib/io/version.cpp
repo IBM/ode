@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_LIB_IO_VERSION_CPP_
 
 #include "lib/io/version.hpp"

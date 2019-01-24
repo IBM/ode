@@ -1,7 +1,9 @@
+using namespace std;
 /**
  * Makefile
  *
 **/
+using namespace std;
 #define _ODE_BIN_MAKE_MAKEFILE_CPP_
 
 #include <base/binbase.hpp>

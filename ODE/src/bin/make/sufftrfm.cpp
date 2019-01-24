@@ -1,7 +1,9 @@
+using namespace std;
 /**
  * SuffixTransforms
  *
 **/
+using namespace std;
 #define _ODE_BIN_MAKE_SUFFTRFM_CPP_
 
 #include <base/binbase.hpp>

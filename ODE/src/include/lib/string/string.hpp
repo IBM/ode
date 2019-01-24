@@ -4,7 +4,8 @@
 #include <limits.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include <iostream.h>
+#include <iostream>
+#include <ostream>
 #include <string.h>
 #include "base/odebase.hpp"
 #include "lib/portable/hashable.hpp"

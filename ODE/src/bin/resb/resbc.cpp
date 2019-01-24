@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_BIN_RESB_RESB_CPP_
 
 #include "bin/resb/resbc.hpp"

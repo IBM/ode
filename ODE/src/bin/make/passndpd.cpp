@@ -1,7 +1,9 @@
+using namespace std;
 /**
  * PassNode (parseDep function)
  *
 **/
+using namespace std;
 #define _ODE_BIN_MAKE_PASSNDP_CPP_
 
 #include "base/binbase.hpp"

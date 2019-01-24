@@ -1,6 +1,8 @@
+using namespace std;
 /**
  * GraphNode
 **/
+using namespace std;
 #define _ODE_BIN_MAKE_GRAPHND_CPP_
 
 #include <base/binbase.hpp>

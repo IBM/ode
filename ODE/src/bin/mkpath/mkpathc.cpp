@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_BIN_MKPATH_MKPATH_CPP_
 
 #include <base/binbase.hpp>

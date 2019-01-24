@@ -1,4 +1,5 @@
 #define _ODE_LIB_UTIL_ARCH_CPP_
+using namespace std;
 #include "lib/string/strcon.hpp"
 #include "lib/util/arch.hpp"
 #include "lib/io/path.hpp"

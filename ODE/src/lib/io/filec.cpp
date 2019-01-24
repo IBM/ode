@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_LIB_IO_FILE_CPP_
 #include "lib/io/file.hpp"
 #include "lib/io/path.hpp"

@@ -7,6 +7,7 @@
  * normalizing or canonicalizing paths.
 **/
 
+using namespace std;
 #include <stdio.h>
 #include <string.h>
 

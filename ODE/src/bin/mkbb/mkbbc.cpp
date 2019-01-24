@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_BIN_MKBB_MKBB_CPP_
 
 #include "bin/mkbb/mkbbc.hpp"

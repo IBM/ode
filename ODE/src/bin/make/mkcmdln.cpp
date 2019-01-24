@@ -1,8 +1,10 @@
+using namespace std;
 /**
  * MkCmdLine
  *
  */
 
+using namespace std;
 #define _ODE_BIN_MAKE_MKCMDLINE_CPP_
 
 #include "base/binbase.hpp"

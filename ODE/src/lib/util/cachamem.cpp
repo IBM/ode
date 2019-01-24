@@ -1,6 +1,7 @@
 #include <sys/types.h>
 #include <time.h>
 
+using namespace std;
 #define _ODE_LIB_UTIL_CACHAMEM_CPP_
 #include "lib/io/path.hpp"
 #include "lib/util/cachamem.hpp"

@@ -1,3 +1,4 @@
+using namespace std;
 #define _ODE_BIN_BUILD_TARGET_CPP_
 
 

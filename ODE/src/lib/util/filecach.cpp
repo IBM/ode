@@ -1,3 +1,4 @@
+using namespace std;
 #include "lib/util/filecach.hpp"
 
 #include "lib/io/path.hpp"

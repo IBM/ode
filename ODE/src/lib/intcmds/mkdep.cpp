@@ -1,4 +1,5 @@
-#include <iostream.h>
+#include <iostream>
+using namespace std ;
 #include "base/binbase.hpp"
 #include "lib/intcmds/mkdep.hpp"
 #include "lib/exceptn/mkdepexc.hpp"

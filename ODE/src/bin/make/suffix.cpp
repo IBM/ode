@@ -1,7 +1,9 @@
+using namespace std;
 /**
  * Sufffix
  *
 **/
+using namespace std;
 #define _ODE_BIN_MAKE_SUFFIX_CPP_
 
 #include <base/binbase.hpp>

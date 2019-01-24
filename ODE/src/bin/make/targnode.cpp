@@ -1,3 +1,5 @@
+using namespace std;
+using namespace std;
 #define _ODE_BIN_MAKE_TARGETNODE_CPP
 
 #include <time.h>

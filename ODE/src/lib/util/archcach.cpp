@@ -1,4 +1,5 @@
 #define _ODE_LIB_UTIL_ARCHCACH_CPP_
+using namespace std;
 #include "lib/string/strcon.hpp"
 #include "lib/util/archcach.hpp"
 #include "lib/io/path.hpp"

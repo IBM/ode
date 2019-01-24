@@ -1,7 +1,9 @@
+using namespace std;
 /**
  * Constants
  *
 **/
+using namespace std;
 
 #define _ODE_BIN_MAKE_CONSTANT_CPP_
 

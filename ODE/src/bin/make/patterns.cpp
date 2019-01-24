@@ -1,7 +1,9 @@
+using namespace std;
 /**
  * Patterns
  *
 **/
+using namespace std;
 #define _ODE_BIN_MAKE_PATTERNS_CPP_
 
 #include <base/binbase.hpp>
