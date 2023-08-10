@@ -1,12 +1,17 @@
 # ode
 OSF Development Environment IBM modified
 
-ODE had tooling for building projects written in C, C++, and Java
+ODE has tooling for building projects written in C, C++, and Java. 
+
+It is used for building on many platforms, including Linux and Windows.
 
 As coded, you will need to install the 'ksh' package to run an ODE build.
 
 You need to set TOOLSBASE environment variable to the directory where the ODE binaries can be found
 (e.g. export TOOLSBASE=${HOME}/eclipse-workspace/ode/ODE/inst.images/x86_linux_2/bin/ )
+
+You need to set PATH environment variable to the directory where the ODE binaries can be found
+(e.g. export PATH=${HOME}/eclipse-workspace/ode/ODE/inst.images/x86_linux_2/bin/:$PATH )
 
 You need to set LD_LIBRARY_PATH to the directory where the library lib0500.so can be found
 (e.g. export LD_LIBRARY_PATH=${HOME}/eclipse-workspace/ode/ODE/inst.images/x86_linux_2/bin/:$LD_LIBTARY_PATH )
