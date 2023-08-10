@@ -1,0 +1,61 @@
+#!/bin/ksh
+# skeleton for building an RPM package automatically
+# parse arguments.
+# Arguments:
+#       1: Package Control Directory (absolute path)
+#       2: Location of the device (absolute path)
+#       3: Base Directory for relocatable objects (absolute path)
+#       4: Path to rpm program
+#       5: Any other flags to be used by RPM
+
+print -- ----------------------------------------------------------------
+print Package Control Directory             : $1
+print Package Output Directory              : $2
+print TOSTAGE                               : $3
+print Path to rpm program                   : $4
+print Additional Packaging Flags            : $5   
+print
+if (( $# > 5 )) ; then
+integer i=5
+print -n Additional packaging flags were found that were not correctly set in 
+print -n the RUNPKGTOOLFLAGS variable
+print in pkg.runpktool.mk
+print The following additional flags were not used. 
+while (( i < $# ))
+do
+   i=i+1
+   eval print -n -- "\" \$$i "\"
+done
+print
+fi
+print -- -------------------------------------------------------------------
+print Packaging
+
+SPECDIR=$1
+PKG=$SPECDIR/pcd.spec
+STATUS="FAILED"
+
+vers=$(rpm --version | cut -f3 -d' ')
+
+if [ -r $PKG ] ; then
+
+  if [[ $vers = 4* ]]; then
+    print ${4} -bb -vv $PKG --define "_rpmdir${2} " $5
+    exec ${4} -bb $PKG -vv --define "_rpmdir${2} " $5 && STATUS=OK 1>/dev/null 
+  elif [[ $vers = 3* ]]; then
+    print ${4} -bb -vv $PKG --define "_rpmdir ${2} " $5
+    exec ${4} -bb $PKG -vv --define "_rpmdir ${2} " $5 && STATUS=OK 1>/dev/null 
+  else
+    print "Unsupported rpm version. Hence exiting.."
+    return 1
+  fi
+   # you may want to make this fancier.
+   # to determine whether to do full or
+   # update installation.
+else
+    echo No configuration file found.
+fi
+
+test "$STATUS" = "OK"           # set return code
+exit $?
+

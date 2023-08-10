@@ -1,0 +1,95 @@
+#!/bin/ksh 
+ 
+# Skeleton for building a patch package automatically 
+# parse arguments: 
+#	1.) Package control directory (absolute path)
+#	2.) Proto Area (absolute path)
+#       3.) package output directory (absolute path)
+#       4.) patch number
+#       5.) patch format
+#       6.) Build one patch
+#       7.) Path to buildpatch
+#       8.) Additional Flags
+#       9.) Package Tool Flags
+
+print -- -------------------------------------------------------------------- 
+print Package Control Directory  : $1 
+print Proto Area                 : $2
+print Package Output Directory   : $3  
+print Patch Number               : $4
+print Patch Format               : $5
+print Build One Patch            : $6
+print Path to buildpatch         : $7 
+print Additional Flags           : ${8}
+print Package Tool Flags         : ${9}
+print -- ---------------------------------------------------------------------
+
+if (( $# < 7)) ; then 
+  print "Error:  Required parameters are not specified. The usage is as follows:"
+  print "Usage: Spti_buildpatch [options]"
+  print  
+  print "where options include:"
+  print "Package Control Directory (absolute path)"
+  print "Proto Area directory (absolute path)"
+  print "Package Output Directory (absolute path)"
+  print "Patch Number"
+  print "Build One Patch"
+  print "Path to buildpatch"
+  print "Additional Flags"
+  print "Package Tool Flags"
+  return 1
+fi 
+ 
+STATUS="FAILED" 
+ 
+UTILITY_DIR=$1 
+PROTOAREA_DIR=$2
+OUTPUT_DIR=$3
+PATCH_NAME=$4
+PATCH_FORMAT=$5
+BUILD_ONE_PATCH=$6
+BUILD_PATCH_PATH=$7
+ADDITIONAL_FLAGS=$8
+PKG_TOOL_FLAGS=$9
+
+if [[ -d $OUTPUT_DIR/$PATCH_NAME ]] ; then
+print "$OUTPUT_DIR/$PATCH_NAME already exists. Hence deleting it\n"
+rm -rf $OUTPUT_DIR/$PATCH_NAME
+fi
+
+LOG_FILE_DIR=$3/Log 
+[ ! -d `dirname ${LOG_FILE_DIR}` ] && mkdir -p `dirname ${LOG_FILE_DIR}` 
+LOG_FILE=$LOG_FILE_DIR/buildpatch.log
+
+PACKAGE_NAME="dummy"
+function readPkginfo 
+{ 
+ while read line; do 
+  line1=${line#PKG=}
+  if [[ $line1 != $line ]]; then
+    PACKAGE_NAME=$line1
+  fi
+ done 
+}
+
+CMD_ARGS="-7 -p ${PATCH_NAME} -d ${OUTPUT_DIR} -f ${PATCH_FORMAT}"
+
+if [[ ${BUILD_ONE_PATCH} = "yes" ]]; then
+  PACKAGING_OPTION="-U ${PROTOAREA_DIR} ${UTILITY_DIR}" 
+else
+  #get the package name from the pkginfo file
+  PKGINFO_FILE=${UTILITY_DIR}/pkginfo
+  if [[ -a $PKGINFO_FILE ]]; then
+   readPkginfo <  $PKGINFO_FILE
+  else
+   print "Error: $PKGINFO_FILE not found."
+   return 1
+  fi
+  PACKAGING_OPTION="-P ${PACKAGE_NAME} ${PROTOAREA_DIR} ${UTILITY_DIR}" 
+fi
+
+print "${BUILD_PATCH_PATH} ${CMD_ARGS} ${ADDITIONAL_FLAGS} ${PKG_TOOL_FLAGS} ${PACKAGING_OPTION} " 
+exec ${BUILD_PATCH_PATH} ${CMD_ARGS} ${ADDITIONAL_FLAGS} ${PKG_TOOL_FLAGS} ${PACKAGING_OPTION} && STATUS=OK | tee ${LOG_FILE}
+
+test "$STATUS" = "OK"		# set return code 
+exit $?     

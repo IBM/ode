@@ -1,0 +1,29 @@
+#!/bin/ksh
+#
+# This is a front-end to SUN's pkgmk tool
+# Arguments:
+#       1: Package Control Directory (absolute path)
+#       2: Location of the device (absolute path)
+#       3: Base Directory for relocatable objects (absolute path)
+#       4. Path to pkgmk
+#       5: Any other flags to be used by pkgmk
+#
+
+_status=1
+echo ------------------------------------------------------------------
+echo Package Control Directory             : $1
+echo Location of Device                    : $2
+echo Base Directory for relocatable objects: $3
+echo Path to pkgmk                         : $4 
+if [[ -n "$5" ]]; then
+echo Package Flag                          : $5
+fi
+echo ------------------------------------------------------------------
+echo Packaging...
+echo ${4} -o -f $1/prototype -d $2 -b $3 $5
+${4} -o -f $1/prototype -d $2 -b $3 $5
+_status=$?
+
+exit $_status
+# End of Script
+
