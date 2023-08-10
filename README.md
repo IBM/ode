@@ -20,7 +20,9 @@ This package includes assistance for bootstrapping for x86_linux_2 in directory 
 easy to bootstrap for linux_2 on other hardware by reference to the `odecc` script and the 'iostream.h'
 header file to help with following the instructions in the ODEManualCompile document.
 
-A prebuilt ODE for x86_linux_2 is also supplied.
+A prebuilt ODE for x86_linux_2 is also supplied. 
+The files under inst.images/x86_linux_2 were built by Fedora 38, and the
+files under inst.images/x86_linux_2.rhel8 were built by Red Hat Enterprise Linux 8
 
 A sample project buildable with ODE is available with 'git clone git@github.com:IBM/BlueMatter.git'
 
