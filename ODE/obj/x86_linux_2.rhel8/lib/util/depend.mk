@@ -1,0 +1,173 @@
+#
+# dependents of archcach.o:
+archcach.o:  ${MAKETOP}lib/util/archcach.cpp
+archcach.o:  ${MAKETOP}include/lib/string/strcon.hpp
+archcach.o:  ${MAKETOP}include/base/odebase.hpp
+archcach.o:  ${MAKETOP}include/lib/string/string.hpp
+archcach.o:  ${MAKETOP}include/lib/portable/hashable.hpp
+archcach.o:  ${MAKETOP}include/lib/util/archcach.hpp
+archcach.o:  ${MAKETOP}include/lib/string/strarray.hpp
+archcach.o:  ${MAKETOP}include/lib/portable/array.hpp
+archcach.o:  ${MAKETOP}include/lib/portable/collectn.hpp
+archcach.o:  ${MAKETOP}include/lib/util/cacharch.hpp
+archcach.o:  ${MAKETOP}include/lib/string/smartstr.hpp
+archcach.o:  ${MAKETOP}include/lib/portable/platcon.hpp
+archcach.o:  ${MAKETOP}include/lib/util/cachamem.hpp
+archcach.o:  ${MAKETOP}include/lib/util/cachfile.hpp
+archcach.o:  ${MAKETOP}include/lib/io/file.hpp
+archcach.o:  ${MAKETOP}include/lib/portable/native/file.h
+archcach.o:  ${MAKETOP}include/lib/io/path.hpp
+archcach.o:  ${MAKETOP}include/lib/string/sboxcon.hpp
+archcach.o:  ${MAKETOP}include/lib/portable/native/dir.h
+archcach.o:  ${MAKETOP}include/lib/portable/hashtabl.hpp
+archcach.o:  ${MAKETOP}include/lib/portable/nilist.hpp
+archcach.o:  ${MAKETOP}include/lib/portable/ilist.hpp
+archcach.o:  ${MAKETOP}include/lib/io/ui.hpp
+#
+# dependents of cacharch.o:
+cacharch.o:  ${MAKETOP}lib/util/cacharch.cpp
+cacharch.o:  ${MAKETOP}include/lib/string/strcon.hpp
+cacharch.o:  ${MAKETOP}include/base/odebase.hpp
+cacharch.o:  ${MAKETOP}include/lib/string/string.hpp
+cacharch.o:  ${MAKETOP}include/lib/portable/hashable.hpp
+cacharch.o:  ${MAKETOP}include/lib/util/arch.hpp
+cacharch.o:  ${MAKETOP}include/lib/util/cacharch.hpp
+cacharch.o:  ${MAKETOP}include/lib/string/strarray.hpp
+cacharch.o:  ${MAKETOP}include/lib/portable/array.hpp
+cacharch.o:  ${MAKETOP}include/lib/portable/collectn.hpp
+cacharch.o:  ${MAKETOP}include/lib/string/smartstr.hpp
+cacharch.o:  ${MAKETOP}include/lib/portable/platcon.hpp
+cacharch.o:  ${MAKETOP}include/lib/util/cachamem.hpp
+cacharch.o:  ${MAKETOP}include/lib/util/cachfile.hpp
+cacharch.o:  ${MAKETOP}include/lib/io/file.hpp
+cacharch.o:  ${MAKETOP}include/lib/portable/native/file.h
+cacharch.o:  ${MAKETOP}include/lib/io/path.hpp
+cacharch.o:  ${MAKETOP}include/lib/string/sboxcon.hpp
+cacharch.o:  ${MAKETOP}include/lib/portable/native/dir.h
+cacharch.o:  ${MAKETOP}include/lib/portable/hashtabl.hpp
+cacharch.o:  ${MAKETOP}include/lib/portable/nilist.hpp
+cacharch.o:  ${MAKETOP}include/lib/portable/ilist.hpp
+cacharch.o:  ${MAKETOP}include/lib/util/archcach.hpp
+cacharch.o:  ${MAKETOP}include/lib/io/ui.hpp
+cacharch.o:  ${MAKETOP}include/lib/portable/native/arch.h
+cacharch.o:  ${MAKETOP}include/lib/exceptn/parseexc.hpp
+cacharch.o:  ${MAKETOP}include/lib/exceptn/exceptn.hpp
+#
+# dependents of condeval.o:
+condeval.o:  ${MAKETOP}lib/util/condeval.cpp
+condeval.o:  ${MAKETOP}include/lib/util/condeval.hpp
+condeval.o:  ${MAKETOP}include/lib/util/finforep.hpp
+condeval.o:  ${MAKETOP}include/base/odebase.hpp
+condeval.o:  ${MAKETOP}include/lib/string/string.hpp
+condeval.o:  ${MAKETOP}include/lib/portable/hashable.hpp
+condeval.o:  ${MAKETOP}include/lib/util/minforep.hpp
+condeval.o:  ${MAKETOP}include/lib/util/bitset.hpp
+condeval.o:  ${MAKETOP}include/lib/util/cond.hpp
+condeval.o:  ${MAKETOP}include/lib/string/strarray.hpp
+condeval.o:  ${MAKETOP}include/lib/portable/array.hpp
+condeval.o:  ${MAKETOP}include/lib/portable/collectn.hpp
+condeval.o:  ${MAKETOP}include/lib/string/variable.hpp
+condeval.o:  ${MAKETOP}include/lib/portable/env.hpp
+condeval.o:  ${MAKETOP}include/lib/portable/platcon.hpp
+condeval.o:  ${MAKETOP}include/lib/string/svarlink.hpp
+condeval.o:  ${MAKETOP}include/lib/string/setvars.hpp
+condeval.o:  ${MAKETOP}include/lib/string/smartstr.hpp
+condeval.o:  ${MAKETOP}include/lib/string/sboxcon.hpp
+condeval.o:  ${MAKETOP}include/lib/string/strcon.hpp
+condeval.o:  ${MAKETOP}include/lib/portable/hashtabl.hpp
+condeval.o:  ${MAKETOP}include/lib/portable/nilist.hpp
+condeval.o:  ${MAKETOP}include/lib/portable/ilist.hpp
+condeval.o:  ${MAKETOP}include/lib/string/strfind.hpp
+condeval.o:  ${MAKETOP}include/lib/portable/vector.hpp
+condeval.o:  ${MAKETOP}include/lib/exceptn/parseexc.hpp
+condeval.o:  ${MAKETOP}include/lib/exceptn/exceptn.hpp
+#
+# dependents of filecach.o:
+filecach.o:  ${MAKETOP}lib/util/filecach.cpp
+filecach.o:  ${MAKETOP}include/lib/util/filecach.hpp
+filecach.o:  ${MAKETOP}include/base/odebase.hpp
+filecach.o:  ${MAKETOP}include/lib/string/strarray.hpp
+filecach.o:  ${MAKETOP}include/lib/string/string.hpp
+filecach.o:  ${MAKETOP}include/lib/portable/hashable.hpp
+filecach.o:  ${MAKETOP}include/lib/portable/array.hpp
+filecach.o:  ${MAKETOP}include/lib/portable/collectn.hpp
+filecach.o:  ${MAKETOP}include/lib/util/cachfile.hpp
+filecach.o:  ${MAKETOP}include/lib/string/smartstr.hpp
+filecach.o:  ${MAKETOP}include/lib/portable/platcon.hpp
+filecach.o:  ${MAKETOP}include/lib/io/file.hpp
+filecach.o:  ${MAKETOP}include/lib/portable/native/file.h
+filecach.o:  ${MAKETOP}include/lib/io/path.hpp
+filecach.o:  ${MAKETOP}include/lib/string/strcon.hpp
+filecach.o:  ${MAKETOP}include/lib/string/sboxcon.hpp
+filecach.o:  ${MAKETOP}include/lib/portable/native/dir.h
+filecach.o:  ${MAKETOP}include/lib/util/cachdir.hpp
+filecach.o:  ${MAKETOP}include/lib/portable/hashtabl.hpp
+filecach.o:  ${MAKETOP}include/lib/portable/nilist.hpp
+filecach.o:  ${MAKETOP}include/lib/portable/ilist.hpp
+filecach.o:  ${MAKETOP}include/lib/io/ui.hpp
+filecach.o:  ${MAKETOP}include/lib/portable/native/dirent.h
+#
+# dependents of cachamem.o:
+cachamem.o:  ${MAKETOP}lib/util/cachamem.cpp
+cachamem.o:  ${MAKETOP}include/lib/io/path.hpp
+cachamem.o:  ${MAKETOP}include/lib/string/string.hpp
+cachamem.o:  ${MAKETOP}include/base/odebase.hpp
+cachamem.o:  ${MAKETOP}include/lib/portable/hashable.hpp
+cachamem.o:  ${MAKETOP}include/lib/string/strarray.hpp
+cachamem.o:  ${MAKETOP}include/lib/portable/array.hpp
+cachamem.o:  ${MAKETOP}include/lib/portable/collectn.hpp
+cachamem.o:  ${MAKETOP}include/lib/string/strcon.hpp
+cachamem.o:  ${MAKETOP}include/lib/string/sboxcon.hpp
+cachamem.o:  ${MAKETOP}include/lib/portable/native/file.h
+cachamem.o:  ${MAKETOP}include/lib/portable/native/dir.h
+cachamem.o:  ${MAKETOP}include/lib/io/file.hpp
+cachamem.o:  ${MAKETOP}include/lib/string/smartstr.hpp
+cachamem.o:  ${MAKETOP}include/lib/portable/platcon.hpp
+cachamem.o:  ${MAKETOP}include/lib/util/cachamem.hpp
+cachamem.o:  ${MAKETOP}include/lib/util/cachfile.hpp
+cachamem.o:  ${MAKETOP}include/lib/portable/native/arch.h
+#
+# dependents of cond.o:
+cond.o:  ${MAKETOP}lib/util/cond.cpp
+cond.o:  ${MAKETOP}include/base/binbase.hpp
+cond.o:  ${MAKETOP}include/lib/io/ui.hpp
+cond.o:  ${MAKETOP}include/base/odebase.hpp
+cond.o:  ${MAKETOP}include/lib/string/string.hpp
+cond.o:  ${MAKETOP}include/lib/portable/hashable.hpp
+cond.o:  ${MAKETOP}include/lib/string/strarray.hpp
+cond.o:  ${MAKETOP}include/lib/portable/array.hpp
+cond.o:  ${MAKETOP}include/lib/portable/collectn.hpp
+cond.o:  ${MAKETOP}include/lib/portable/env.hpp
+cond.o:  ${MAKETOP}include/lib/portable/platcon.hpp
+cond.o:  ${MAKETOP}include/lib/string/svarlink.hpp
+cond.o:  ${MAKETOP}include/lib/string/setvars.hpp
+cond.o:  ${MAKETOP}include/lib/string/smartstr.hpp
+cond.o:  ${MAKETOP}include/lib/string/sboxcon.hpp
+cond.o:  ${MAKETOP}include/lib/string/strcon.hpp
+cond.o:  ${MAKETOP}include/lib/portable/hashtabl.hpp
+cond.o:  ${MAKETOP}include/lib/portable/nilist.hpp
+cond.o:  ${MAKETOP}include/lib/portable/ilist.hpp
+cond.o:  ${MAKETOP}include/lib/util/signal.hpp
+cond.o:  ${MAKETOP}include/lib/util/cond.hpp
+cond.o:  ${MAKETOP}include/lib/string/variable.hpp
+cond.o:  ${MAKETOP}include/lib/string/strfind.hpp
+cond.o:  ${MAKETOP}include/lib/portable/vector.hpp
+cond.o:  ${MAKETOP}include/lib/util/minforep.hpp
+cond.o:  ${MAKETOP}include/lib/util/finforep.hpp
+cond.o:  ${MAKETOP}include/lib/exceptn/parseexc.hpp
+cond.o:  ${MAKETOP}include/lib/exceptn/exceptn.hpp
+cond.o:  ${MAKETOP}include/lib/exceptn/mfvarexc.hpp
+#
+# dependents of signal.o:
+signal.o:  ${MAKETOP}lib/util/signal.cpp
+signal.o:  ${MAKETOP}include/lib/util/signal.hpp
+signal.o:  ${MAKETOP}include/base/odebase.hpp
+signal.o:  ${MAKETOP}include/lib/string/string.hpp
+signal.o:  ${MAKETOP}include/lib/portable/hashable.hpp
+#
+# dependents of bitset.o:
+bitset.o:  ${MAKETOP}lib/util/bitset.cpp
+bitset.o:  ${MAKETOP}include/lib/util/bitset.hpp
+bitset.o:  ${MAKETOP}include/base/odebase.hpp
+bitset.o:  ${MAKETOP}include/lib/string/string.hpp
+bitset.o:  ${MAKETOP}include/lib/portable/hashable.hpp

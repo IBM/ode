@@ -1,0 +1,74 @@
+#
+# dependents of sbls.o:
+sbls.o:  ${MAKETOP}bin/sbls/sbls.cpp
+sbls.o:  ${MAKETOP}include/bin/sbls/sblsc.hpp
+sbls.o:  ${MAKETOP}include/base/odebase.hpp
+sbls.o:  ${MAKETOP}include/base/binbase.hpp
+sbls.o:  ${MAKETOP}include/lib/io/ui.hpp
+sbls.o:  ${MAKETOP}include/lib/string/string.hpp
+sbls.o:  ${MAKETOP}include/lib/portable/hashable.hpp
+sbls.o:  ${MAKETOP}include/lib/string/strarray.hpp
+sbls.o:  ${MAKETOP}include/lib/portable/array.hpp
+sbls.o:  ${MAKETOP}include/lib/portable/collectn.hpp
+sbls.o:  ${MAKETOP}include/lib/portable/env.hpp
+sbls.o:  ${MAKETOP}include/lib/portable/platcon.hpp
+sbls.o:  ${MAKETOP}include/lib/string/svarlink.hpp
+sbls.o:  ${MAKETOP}include/lib/string/setvars.hpp
+sbls.o:  ${MAKETOP}include/lib/string/smartstr.hpp
+sbls.o:  ${MAKETOP}include/lib/string/sboxcon.hpp
+sbls.o:  ${MAKETOP}include/lib/string/strcon.hpp
+sbls.o:  ${MAKETOP}include/lib/portable/hashtabl.hpp
+sbls.o:  ${MAKETOP}include/lib/portable/nilist.hpp
+sbls.o:  ${MAKETOP}include/lib/portable/ilist.hpp
+sbls.o:  ${MAKETOP}include/lib/util/signal.hpp
+sbls.o:  ${MAKETOP}include/lib/io/cmdline.hpp
+sbls.o:  ${MAKETOP}include/lib/io/version.hpp
+sbls.o:  ${MAKETOP}include/lib/portable/vector.hpp
+sbls.o:  ${MAKETOP}include/lib/io/path.hpp
+sbls.o:  ${MAKETOP}include/lib/portable/native/file.h
+sbls.o:  ${MAKETOP}include/lib/portable/native/dir.h
+sbls.o:  ${MAKETOP}include/lib/io/file.hpp
+sbls.o:  ${MAKETOP}include/lib/portable/stack.hpp
+#
+# dependents of sblsc.o:
+sblsc.o:  ${MAKETOP}bin/sbls/sblsc.cpp
+sblsc.o:  ${MAKETOP}include/bin/sbls/sblsc.hpp
+sblsc.o:  ${MAKETOP}include/base/odebase.hpp
+sblsc.o:  ${MAKETOP}include/base/binbase.hpp
+sblsc.o:  ${MAKETOP}include/lib/io/ui.hpp
+sblsc.o:  ${MAKETOP}include/lib/string/string.hpp
+sblsc.o:  ${MAKETOP}include/lib/portable/hashable.hpp
+sblsc.o:  ${MAKETOP}include/lib/string/strarray.hpp
+sblsc.o:  ${MAKETOP}include/lib/portable/array.hpp
+sblsc.o:  ${MAKETOP}include/lib/portable/collectn.hpp
+sblsc.o:  ${MAKETOP}include/lib/portable/env.hpp
+sblsc.o:  ${MAKETOP}include/lib/portable/platcon.hpp
+sblsc.o:  ${MAKETOP}include/lib/string/svarlink.hpp
+sblsc.o:  ${MAKETOP}include/lib/string/setvars.hpp
+sblsc.o:  ${MAKETOP}include/lib/string/smartstr.hpp
+sblsc.o:  ${MAKETOP}include/lib/string/sboxcon.hpp
+sblsc.o:  ${MAKETOP}include/lib/string/strcon.hpp
+sblsc.o:  ${MAKETOP}include/lib/portable/hashtabl.hpp
+sblsc.o:  ${MAKETOP}include/lib/portable/nilist.hpp
+sblsc.o:  ${MAKETOP}include/lib/portable/ilist.hpp
+sblsc.o:  ${MAKETOP}include/lib/util/signal.hpp
+sblsc.o:  ${MAKETOP}include/lib/io/cmdline.hpp
+sblsc.o:  ${MAKETOP}include/lib/io/version.hpp
+sblsc.o:  ${MAKETOP}include/lib/portable/vector.hpp
+sblsc.o:  ${MAKETOP}include/lib/io/path.hpp
+sblsc.o:  ${MAKETOP}include/lib/portable/native/file.h
+sblsc.o:  ${MAKETOP}include/lib/portable/native/dir.h
+sblsc.o:  ${MAKETOP}include/lib/io/file.hpp
+sblsc.o:  ${MAKETOP}include/lib/portable/stack.hpp
+#
+# dependents of instant.o:
+instant.o:  ${MAKETOP}bin/sbls/instant.cpp
+instant.o:  ${MAKETOP}include/lib/string/string.hpp
+instant.o:  ${MAKETOP}include/base/odebase.hpp
+instant.o:  ${MAKETOP}include/lib/portable/hashable.hpp
+instant.o:  ${MAKETOP}include/lib/portable/nilist.cxx
+instant.o:  ${MAKETOP}include/lib/portable/nilist.hpp
+instant.o:  ${MAKETOP}include/lib/portable/ilist.hpp
+instant.o:  ${MAKETOP}include/lib/portable/stack.cxx
+instant.o:  ${MAKETOP}include/lib/portable/stack.hpp
+instant.o:  ${MAKETOP}include/lib/portable/collectn.hpp

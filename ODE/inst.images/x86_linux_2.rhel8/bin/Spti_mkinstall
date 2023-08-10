@@ -1,0 +1,55 @@
+#!/usr/bin/ksh
+#
+# This is a front-end to AIX's mkinstall tool
+# Arguments:
+#       $1: Package Control Directory (absolute path)
+#       $2: Package Output Directory (absolute path)
+#       $3: ipp - required for initial product packaging
+#           sp  - service packaging not supported
+#       $4: Path to mkinstall program
+#       $5: any other flags to be used by mkinstall and mkupdate
+#
+
+echo ------------------------------------------------------------------
+echo Package Control Directory : $1
+echo Package Output directory  : $2
+echo Package Class             : $3
+echo Path to mkinstall program : $4 
+if [[ -n "$5" ]]; then
+echo Package Flag              : $5
+fi
+echo ------------------------------------------------------------------
+echo Packaging...
+
+_status=1  
+if [[ -a $1/pcd.conf ]]; then
+  echo Configuartion file found : $1/pcd.conf
+  if [[ -n "$3" && $3 = ipp ]]; then
+    echo $4 -configfile $1/pcd.conf -outputdir $2 $1/pcd.pd $5
+    $4 -configfile $1/pcd.conf -outputdir $2 $1/pcd.pd $5
+  else
+    echo Service Packaging not supported
+    exit 1
+  fi
+else
+  echo No configuration file found, using default
+  if [[ -n "$3" && $3 = ipp ]]; then
+    echo $4 -outputdir $2 $1/pcd.pd $5
+    $4 -outputdir $2 $1/pcd.pd $5
+  else
+    echo Service Packaging not supported
+    exit 1    
+  fi
+fi
+_status=$?      
+
+if (( $_status >= 8 )); then
+  echo Packaging failed, return code = $_status
+else
+  echo Packaging complete, return code = $_status
+  _status=0
+fi
+
+exit $_status
+# End of Script
+
