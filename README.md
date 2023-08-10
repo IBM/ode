@@ -14,7 +14,7 @@ You need to set PATH environment variable to the directory where the ODE binarie
 (e.g. export PATH=${HOME}/eclipse-workspace/ode/ODE/inst.images/x86_linux_2/bin/:$PATH )
 
 You need to set LD_LIBRARY_PATH to the directory where the library lib0500.so can be found
-(e.g. export LD_LIBRARY_PATH=${HOME}/eclipse-workspace/ode/ODE/inst.images/x86_linux_2/bin/:$LD_LIBTARY_PATH )
+(e.g. export LD_LIBRARY_PATH=${HOME}/eclipse-workspace/ode/ODE/inst.images/x86_linux_2/bin/:$LD_LIBRARY_PATH )
 
 This package includes assistance for bootstrapping for x86_linux_2 in directory 'bootstrap'; it should be
 easy to bootstrap for linux_2 on other hardware by reference to the `odecc` script and the 'iostream.h'
