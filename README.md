@@ -23,12 +23,16 @@ header file to help with following the instructions in the ODEManualCompile docu
 A prebuilt ODE for x86_linux_2 is also supplied.
 
 A sample project buildable with ODE is available with 'git clone git@github.com:IBM/BlueMatter.git'
+
 Make a sandbox with a command like
+
 mksb -back ${HOME}/eclipse-workspace/ode/ODE/ -dir ${HOME}/eclipse-workspace/BlueMatter/  -m x86_linux_2 svntrunk
 
 Select the sandbox with
+
 workon -sb svntrunk
 
 Attempt the build with
+
 TRY_LINUX_BUILD_ANYWAY=1 build -k
 
