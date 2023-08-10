@@ -1,6 +1,8 @@
 # ode
 OSF Development Environment IBM modified
 
+ODE had tooling for building projects written in C, C++, and Java
+
 As coded, you will need to install the 'ksh' package to run an ODE build.
 
 You need to set TOOLSBASE environment variable to the directory where the ODE binaries can be found
