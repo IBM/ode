@@ -1,7 +1,8 @@
 #!/bin/bash -x
 function bootstrap_compile
 {
-  g++ -D_POSIX_SOURCE -D_POSIX_C_SOURCE=199309L -D_DEFAULT_SOURCE -DLINUX -DLINUX_X86 -DUNIX -DUSE_OPENMODE_TYPE -DODEDLLPORT= -fPIC -I bootstrap/include/ -I src/include -x c++ "$@" 
+#  g++ -D_POSIX_SOURCE -D_POSIX_C_SOURCE=199309L -D_DEFAULT_SOURCE -DLINUX -DLINUX_X86 -DUNIX -DUSE_OPENMODE_TYPE -DODEDLLPORT= -fPIC -I bootstrap/include/ -I src/include -x c++ "$@" 
+  g++ -D_DEFAULT_SOURCE -DLINUX -DUNIX -DUSE_OPENMODE_TYPE -DODEDLLPORT= -fPIC -I bootstrap/include/ -I src/include -x c++ "$@" 
 }
 
 (
@@ -87,5 +88,5 @@ export LD_LIBRARY_PATH=$PWD/src/bin/bootstrap_bin:$LD_LIBRARY_PATH
 export TOOLSBASE=$PWD/src/bin/bootstrap_bin/
 
 mkbb -dir $PWD/.. -m x86_linux_2 ODE
-echo "build build_all install_all"|workon -sb ODE
-echo "build build_all install_all"|workon -sb ODE
+echo "build build_all install_all"|workon -sb ODE -m x86_linux_2
+echo "build build_all install_all"|workon -sb ODE -m x86_linux_2
