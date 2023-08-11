@@ -18,8 +18,13 @@ cd ODE
   while read filename
   do
     bootstrap_compile -I ../include -c ${filename}
-  done 
+  done
+
+# architecture specific code is in one object file. For Linux, unixarch.o is the one to use
+  ARCH_OBJECT=unixarch.o
+  
   ar crv libmy.a \
+  ${ARCH_OBJECT} \
   archcach.o \
   bitset.o \
   bldlstcf.o \
@@ -63,7 +68,6 @@ cd ODE
   string.o \
   strings.o \
   ui.o \
-  unixarch.o \
   variable.o \
   version.o
 )
