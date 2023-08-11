@@ -20,6 +20,8 @@ This package includes assistance for bootstrapping for linux in directory 'boots
 
 There is a log of a successful bootstrap run in bootstrap/bootstrap_log.txt
 
+The resulting installable file tree is in ODE/inst.images/x86_linux_2 .
+
 A prebuilt ODE for x86_linux_2 is also supplied. 
 The files under bootstrap/prebuilt/fedora38 were built by Fedora 38, and the
 files under bootstrap/prebuilt/inst.images/x86_linux_2.rhel8 were built by Red Hat Enterprise Linux 8. It should not be necessary to use this prebuilt ODE as the bootstrap_linux should succeed.
