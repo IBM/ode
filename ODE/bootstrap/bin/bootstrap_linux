@@ -1,0 +1,91 @@
+#!/bin/bash -x
+function bootstrap_compile
+{
+  g++ -D_POSIX_SOURCE -D_POSIX_C_SOURCE=199309L -D_DEFAULT_SOURCE -DLINUX -DLINUX_X86 -DUNIX -DUSE_OPENMODE_TYPE -DODEDLLPORT= -fPIC -I bootstrap/x86_linux_2/include/ -I src/include -x c++ "$@" 
+}
+
+(
+  cd src/lib && 
+  find . -name \*.c -o -name \*.cpp |
+  while read filename
+  do
+    bootstrap_compile -I ../include -c ${filename}
+  done 
+  ar crv libmy.a \
+  archcach.o \
+  bitset.o \
+  bldlstcf.o \
+  body.o \
+  cachamem.o \
+  cacharch.o \
+  cfgf.o \
+  cmdline.o \
+  condeval.o \
+  cond.o \
+  depmkfil.o \
+  dirent.o \
+  dir.o \
+  env.o \
+  exceptn.o \
+  filecach.o \
+  filec.o \
+  file.o \
+  genpath.o \
+  hashable.o \
+  ilist.o \
+  instant.o \
+  misc.o \
+  mkdep.o \
+  path.o \
+  pattern.o \
+  platcon.o \
+  platver.o \
+  proc.o \
+  regex.o \
+  runcmd.o \
+  sandbox.o \
+  sbcnfrdr.o \
+  sboxcon.o \
+  sbrccf.o \
+  setvarcf.o \
+  signal.o \
+  sleep.o \
+  strarray.o \
+  strcon.o \
+  string.o \
+  strings.o \
+  ui.o \
+  unixarch.o \
+  variable.o \
+  version.o
+)
+(
+  cd src/bin &&
+  for dir in build make mkbb mklinks mksb workon
+  do 
+    (
+      cd $dir
+      bootstrap_compile -I ../../include -I ../.. -c *.cpp
+    )
+  done
+  mkdir bootstrap_bin
+  ( cd build
+    g++ -o ../bootstrap_bin/build *.o -L ../../lib -lmy
+  )
+  ( cd make
+    g++ -o ../bootstrap_bin/mk *.o -L ../../lib -lmy
+  )
+  ( cd mkbb
+    g++ -o ../bootstrap_bin/mkbb *.o ../mksb/mksbc.o ../mklinks/mklinksc.o -L ../../lib -lmy
+  )
+  ( cd workon
+    g++ -o ../bootstrap_bin/workon *.o ../mklinks/mklinksc.o -L ../../lib -lmy
+  )
+)
+export PATH=$PWD/src/bin/bootstrap_bin:$PATH
+export LD_LIBRARY_PATH=$PWD/src/bin/bootstrap_bin:$LD_LIBRARY_PATH
+export TOOLSBASE=$PWD/src/bin/bootstrap_bin/
+
+mkbb -dir $PWD/.. -m x86_linux_2 ODE
+echo "build build_all install_all"|workon -sb ODE
+echo "build build_all install_all"|workon -sb ODE
