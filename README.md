@@ -18,6 +18,8 @@ You need to set LD_LIBRARY_PATH to the directory where the library lib0500.so ca
 
 This package includes assistance for bootstrapping for x86_linux_2 in directory 'bootstrap'; there is a script bin/bootstrap_linux which should bootstrap for linux on other processor architectures. This script has been tested on Fedora 38 and RHEL8, both on x86_64. Part of the bootstrap process writes to ~/.sandboxrc ; if you want to retry the bootstrap process you should remove or rename this file.
 
+There is a log of a successful bootstrap run in ODE/bootstrap/bootstrap_log.txt
+
 A prebuilt ODE for x86_linux_2 is also supplied. 
 The files under bootstrap/prebuilt/fedora38 were built by Fedora 38, and the
 files under bootstrap/prebuilt/inst.images/x86_linux_2.rhel8 were built by Red Hat Enterprise Linux 8. It should not be necessary to use this prebuilt ODE as the bootstrap_linux should succeed.
