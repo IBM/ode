@@ -1,4 +1,9 @@
 #!/bin/bash -x
+#
+# To run this script, cd to the ODE subdirectory of where you checked out this repsitory, and give command
+# './bootstrap/bin/bootstrap_linux'
+#
+
 function bootstrap_compile
 {
 #  g++ -D_POSIX_SOURCE -D_POSIX_C_SOURCE=199309L -D_DEFAULT_SOURCE -DLINUX -DLINUX_X86 -DUNIX -DUSE_OPENMODE_TYPE -DODEDLLPORT= -fPIC -I bootstrap/include/ -I src/include -x c++ "$@" 
