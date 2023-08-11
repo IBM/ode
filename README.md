@@ -16,7 +16,7 @@ You need to set PATH environment variable to the directory where the ODE binarie
 You need to set LD_LIBRARY_PATH to the directory where the library lib0500.so can be found
 (e.g. export LD_LIBRARY_PATH=${HOME}/eclipse-workspace/ode/ODE/inst.images/x86_linux_2/bin/:$LD_LIBRARY_PATH )
 
-This package includes assistance for bootstrapping for x86_linux_2 in directory 'bootstrap'; there is a script bin/bootstrap_linux which should bootstrap for linux on other processor architectures.
+This package includes assistance for bootstrapping for x86_linux_2 in directory 'bootstrap'; there is a script bin/bootstrap_linux which should bootstrap for linux on other processor architectures. This script has been tested on Fedora 38 and RHEL8, both on x86_64.
 
 A prebuilt ODE for x86_linux_2 is also supplied. 
 The files under inst.images/x86_linux_2.fedora38 were built by Fedora 38, and the
