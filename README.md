@@ -26,6 +26,12 @@ A prebuilt ODE for x86_linux_2 is also supplied.
 The files under bootstrap/prebuilt/fedora38 were built by Fedora 38, and the
 files under bootstrap/prebuilt/inst.images/x86_linux_2.rhel8 were built by Red Hat Enterprise Linux 8. It should not be necessary to use this prebuilt ODE as the bootstrap_linux should succeed.
 
+
+There is a 'makemake'  Java tool in sandbox 'bbexample' which is useful to 
+make an initial set of ODE makefiles for a project which has previously been
+built with another build system, but I do not have this building successfully
+yet.
+
 A sample project buildable with ODE is available with 'git clone git@github.com:IBM/BlueMatter.git'
 
 Make a sandbox with a command like

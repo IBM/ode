@@ -106,10 +106,10 @@ cd ODE
 ) 
 
 (
-  export TOOLSBASE=$PWD/ODE/inst.images/x86_linux_2/bin
+  export TOOLSBASE=$PWD/inst.images/x86_linux_2/bin
   export PATH=$TOOLSBASE:$PATH
   export LD_LIBRARY_PATH=$TOOLSBASE:$LD_LIBRARY_PATH
 
-  mksb  -back $PWD/ODE/ -dir $PWD/ODE/src -m x86_linux_2 bbexample
+  mksb  -back $PWD/ -dir $PWD/src -m x86_linux_2 bbexample
 #  echo "build build_all install_all"|workon -sb bbexample -m x86_linux_2
 )
