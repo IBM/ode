@@ -1,0 +1,15 @@
+#!/bin/bash -x
+#
+# To run this script, give command
+# './bootstrap/bin/build_bbexample'
+#
+
+(
+  export TOOLSBASE=$PWD/ODE/inst.images/x86_linux_2/bin
+  export PATH=$TOOLSBASE:$PATH
+  export LD_LIBRARY_PATH=$TOOLSBASE:$LD_LIBRARY_PATH
+  export EXPORT_USING_COPY=1
+
+  mksb  -back $PWD/ODE -dir $PWD/ODE/src -m x86_linux_2 bbexample
+  echo "build build_all install_all"|workon -sb bbexample -m x86_linux_2
+)

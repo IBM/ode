@@ -104,12 +104,3 @@ cd ODE
   echo "build build_all install_all"|workon -sb ODE -m x86_linux_2
   echo "build build_all install_all"|workon -sb ODE -m x86_linux_2
 ) 
-
-(
-  export TOOLSBASE=$PWD/inst.images/x86_linux_2/bin
-  export PATH=$TOOLSBASE:$PATH
-  export LD_LIBRARY_PATH=$TOOLSBASE:$LD_LIBRARY_PATH
-
-  mksb  -back $PWD/ -dir $PWD/src -m x86_linux_2 bbexample
-#  echo "build build_all install_all"|workon -sb bbexample -m x86_linux_2
-)
