@@ -94,10 +94,22 @@ cd ODE
     g++ -o ../bootstrap_bin/workon *.o ../mklinks/mklinksc.o -L ../../lib -lmy
   )
 )
-export PATH=$PWD/src/bin/bootstrap_bin:$PATH
-export LD_LIBRARY_PATH=$PWD/src/bin/bootstrap_bin:$LD_LIBRARY_PATH
-export TOOLSBASE=$PWD/src/bin/bootstrap_bin/
+ 
+(
+  export PATH=$PWD/src/bin/bootstrap_bin:$PATH
+  export LD_LIBRARY_PATH=$PWD/src/bin/bootstrap_bin:$LD_LIBRARY_PATH
+  export TOOLSBASE=$PWD/src/bin/bootstrap_bin/
 
-mkbb -dir $PWD/.. -m x86_linux_2 ODE
-echo "build build_all install_all"|workon -sb ODE -m x86_linux_2
-echo "build build_all install_all"|workon -sb ODE -m x86_linux_2
+  mkbb -dir $PWD/.. -m x86_linux_2 ODE
+  echo "build build_all install_all"|workon -sb ODE -m x86_linux_2
+  echo "build build_all install_all"|workon -sb ODE -m x86_linux_2
+) 
+
+(
+  export TOOLSBASE=$PWD/ODE/inst.images/x86_linux_2/bin
+  export PATH=$TOOLSBASE:$PATH
+  export LD_LIBRARY_PATH=$TOOLSBASE:$LD_LIBRARY_PATH
+
+  mksb  -back $PWD/ODE/ -dir $PWD/ODE/src -m x86_linux_2 bbexample
+#  echo "build build_all install_all"|workon -sb bbexample -m x86_linux_2
+)
