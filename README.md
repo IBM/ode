@@ -32,15 +32,24 @@ files under `bootstrap/prebuilt/rhel8` were built by Red Hat Enterprise Linux 8.
 
 There is a `MakeMake` Java tool in sandbox `bbexample` which is useful to 
 make an initial set of ODE makefiles for a project which has previously been
-built with another build system. This builds if you run bootstrap/bin/build_bbexample, and you can run it with a command such as 
+built with another build system. This builds if you run `bootstrap/bin/build_bbexample`, and you can run it with a command such as 
 
     tjcw:classes$ pwd
     /home/tjcw/eclipse-workspace/ode/ODE/src/bbexample/export/classes
     tjcw:classes$ java -cp MakeMake.jar COM.ibm.makemake.bin.MakeMake -sub /home/tjcw/eclipse-workspace/BlueMatter/svntrunk/src
     tjcw:classes$
 
-.
+. Its usage message is
 
+    tjcw:classes$ java -cp MakeMake.jar COM.ibm.makemake.bin.MakeMake  -usage
+    Usage: MakeMake [options] <path>
+           path: The root directory of the source tree.
+           options:
+               -mfname <makefile name>
+               -sub
+               -clobber
+               -info -usage -version -rev
+    tjcw:classes$
 
 A sample project buildable with ODE is available with `git clone git@github.com:IBM/BlueMatter.git`
 
